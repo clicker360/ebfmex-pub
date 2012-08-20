@@ -107,21 +107,11 @@ strong {
 /* Fontface */
 @font-face {
     font-family: 'CenturyGothic';
-    src: url('fuentes/CenturyGothic.eot');
-    src: url('fuentes/CenturyGothic.eot?#iefix') format('embedded-opentype'),
-         url('fuentes/CenturyGothic.woff') format('woff'),
-         url('fuentes/CenturyGothic.ttf') format('truetype'),
-         url('fuentes/CenturyGothic.svg#CenturyGothic') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'CenturyGothic-Bold';
-    src: url('fuentes/CenturyGothic-Bold.eot');
-    src: url('fuentes/CenturyGothic-Bold.eot?#iefix') format('embedded-opentype'),
-         url('fuentes/CenturyGothic-Bold.woff') format('woff'),
-         url('fuentes/CenturyGothic-Bold.ttf') format('truetype'),
-         url('fuentes/CenturyGothic-Bold.svg#CenturyGothic-Bold') format('svg');
     font-weight: normal;
     font-style: normal;
 }

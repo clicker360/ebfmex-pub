@@ -1,0 +1,136 @@
+package site
+
+import (
+    "appengine"
+    "appengine/datastore"
+    "appengine/mail"
+	"html/template"
+	"strings"
+	"bytes"
+    "net/http"
+    "time"
+	"fmt"
+	"model"
+	"sess"
+)
+
+func init() {
+    http.HandleFunc("/acceso", Acceso)
+    http.HandleFunc("/recupera", Recover)
+    http.HandleFunc("/salir", Salir)
+}
+
+func Acceso(w http.ResponseWriter, r *http.Request) {
+    c := appengine.NewContext(r)
+	var st sess.Sess
+	if _, ok := sess.IsSess(w, r, c); !ok {
+		//fmt.Fprintf(w, "u:%s, p:%s", r.FormValue("u"), r.FormValue("p"))
+		if(r.FormValue("u") != "" && r.FormValue("p") != "") {
+			/* validar usuario y pass */
+			if(model.ValidEmail.MatchString(r.FormValue("u")) && model.ValidName.MatchString(r.FormValue("p"))) {
+				q := datastore.NewQuery("Cta").Filter("Email =", r.FormValue("u")).Filter("Pass =", r.FormValue("p")).Filter("Status =", true)
+				if count, _ := q.Count(c); count != 0 {
+					for t := q.Run(c); ; {
+						var g model.Cta
+						key, err := t.Next(&g)
+						if err == datastore.Done {
+							break
+						}
+						// Coincide contraseña, se activa una sesión
+						_, _, err = sess.SetSess(w, c, key, g.Email, g.Nombre)
+						if err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+							return
+						}
+
+						// Redireccion
+						http.Redirect(w, r, "/dash", http.StatusFound)
+						return
+					}
+				}
+			}
+			st.User = r.FormValue("u")
+			st.ErrMsg = "Usuario y/o Contraseña no aceptados"
+			st.ErrClass = "show"
+		} else {
+			st.User = r.FormValue("u")
+			st.ErrMsg = "Proporcione usuario y contraseña"
+			st.ErrClass = "show"
+		}
+	} else {
+		// hay sesión
+		http.Redirect(w, r, "/dash", http.StatusFound)
+		return
+	}
+	tc := make(map[string]interface{})
+	tc["Sess"] = st
+    accesoErrorTpl.ExecuteTemplate(w, "cta", tc)
+}
+
+func Salir(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	if s, ok := sess.IsSess(w, r, c); ok {
+		s.Expiration = time.Now().AddDate(-1,0,0)
+		_, err := datastore.Put(c, datastore.NewKey(c, "Sess", s.User, 0, nil), &s)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	}
+	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
+	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
+	http.Redirect(w, r, "/registro", http.StatusFound)
+}
+
+func Recover(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	if _, ok := sess.IsSess(w, r, c); !ok {
+		var email string = strings.TrimSpace(r.FormValue("Email"))
+		var rfc string = strings.TrimSpace(r.FormValue("RFC"))
+		if email != "" && model.ValidEmail.MatchString(email) && rfc != "" && model.ValidRfc.MatchString(rfc) {
+			// intenta buscar en la base un usuario con email y empresa
+			if cta, err := model.GetCta(c, email); err == nil {
+				q := datastore.NewQuery("Empresa").Filter("RFC =", rfc).Ancestor(cta.Key(c)).Limit(3)
+				if count, _ := q.Count(c); count != 0 {
+					for t := q.Run(c); ; {
+						_, err := t.Next(&cta)
+						if err == datastore.Done {
+							break
+						}
+						var hbody bytes.Buffer
+						var sender string
+						if (appengine.AppID(c) == "ebfmxorg") {
+							sender =  "El Buen Fin <contacto@elbuenfin.org>"
+						} else {
+							sender =  "El Buen Fin <ahuezo@clicker360.com>"
+						}
+						if err := mailRecoverTpl.Execute(&hbody, cta); err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+						}
+						// Coincide email y RFC, se manda correo con contraseña
+						msg := &mail.Message{
+							Sender:		sender,
+							To:			[]string{cta.Email},
+							Subject:	"Recuperación de contraseña / El Buen Fin",
+							HTMLBody:	hbody.String(),
+						}
+						if err := mail.Send(c, msg); err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+						} else {
+							http.Redirect(w, r, "/recoverok.html", http.StatusFound)
+							return
+						}
+						//fmt.Fprintf(w, mailRecover, cta.Email, cta.Pass)
+						return
+					}
+				}
+			}
+		}
+		http.Redirect(w, r, "/nocta.html", http.StatusFound)
+		return
+	} else {
+		http.Redirect(w, r, "/dash", http.StatusFound)
+	}
+}
+
+var accesoErrorTpl = template.Must(template.ParseFiles("templates/acceso_error.html"))
+var mailRecoverTpl = template.Must(template.ParseFiles("templates/mail_recover.html"))

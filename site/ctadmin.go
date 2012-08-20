@@ -8,6 +8,8 @@ import (
 	"strings"
     "time"
 	"fmt"
+	"model"
+	"sess"
 )
 
 type FormDataCta struct {
@@ -49,7 +51,7 @@ func mantenimiento(w http.ResponseWriter, r *http.Request) {
 
 func registro(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if _, ok := IsSess(w, r, c); !ok {
+	if _, ok := sess.IsSess(w, r, c); !ok {
 		var fd FormDataCta
 		tc := make(map[string]interface{})
 		//tc["Sess"] = s
@@ -63,8 +65,8 @@ func registro(w http.ResponseWriter, r *http.Request) {
 
 func dash(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		if g, err := GetCta(c, s.User); err != nil {
+	if s, ok := sess.IsSess(w, r, c); ok {
+		if g, err := model.GetCta(c, s.User); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
 			tc := make(map[string]interface{})
@@ -80,8 +82,8 @@ func dash(w http.ResponseWriter, r *http.Request) {
 
 func CtaShow(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		if g, err := GetCta(c, s.User); err != nil {
+	if s, ok := sess.IsSess(w, r, c); ok {
+		if g, err := model.GetCta(c, s.User); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
 			tc := make(map[string]interface{})
@@ -97,8 +99,8 @@ func CtaShow(w http.ResponseWriter, r *http.Request) {
 
 func CtaMod(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		if u, err := GetCta(c, s.User); err != nil {
+	if s, ok := sess.IsSess(w, r, c); ok {
+		if u, err := model.GetCta(c, s.User); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
@@ -106,7 +108,7 @@ func CtaMod(w http.ResponseWriter, r *http.Request) {
 				return 
 			} else {
 				ctaFill(r, u)
-				if _, err := PutCta(c, u); err != nil {
+				if _, err := model.PutCta(c, u); err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}
@@ -123,8 +125,8 @@ func CtaMod(w http.ResponseWriter, r *http.Request) {
 
 func CtaDel(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		if u, err := GetCta(c, s.User); err != nil {
+	if s, ok := sess.IsSess(w, r, c); ok {
+		if u, err := model.GetCta(c, s.User); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
@@ -158,7 +160,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ctaForm(w http.ResponseWriter, r *http.Request, s Sess, valida bool, tpl *template.Template) (FormDataCta, bool){
+func ctaForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, tpl *template.Template) (FormDataCta, bool){
 	fd := FormDataCta {
 		Folio: strings.TrimSpace(r.FormValue("IdEmp")),
 		Nombre: strings.TrimSpace(r.FormValue("Nombre")),
@@ -185,45 +187,45 @@ func ctaForm(w http.ResponseWriter, r *http.Request, s Sess, valida bool, tpl *t
 	if valida {
 		var ef bool
 		ef = false
-		if fd.Nombre == "" || !validName.MatchString(fd.Nombre) {
+		if fd.Nombre == "" || !model.ValidName.MatchString(fd.Nombre) {
 			fd.ErrNombre = "invalid"
 			ef = true
 		}
-		if fd.Apellidos == "" || !validName.MatchString(fd.Apellidos) {
+		if fd.Apellidos == "" || !model.ValidName.MatchString(fd.Apellidos) {
 			fd.ErrApellidos = "invalid"
 			ef = true
 		}
-		if fd.Puesto != "" && !validSimpleText.MatchString(fd.Puesto) {
+		if fd.Puesto != "" && !model.ValidSimpleText.MatchString(fd.Puesto) {
 			fd.ErrPuesto = "invalid"
 			ef = true
 		}
-		if fd.Email == "" || !validEmail.MatchString(fd.Email) {
+		if fd.Email == "" || !model.ValidEmail.MatchString(fd.Email) {
 			fd.ErrEmail = "invalid"
 			ef = true
 		}
-		if fd.EmailAlt != "" && !validEmail.MatchString(fd.EmailAlt) {
+		if fd.EmailAlt != "" && !model.ValidEmail.MatchString(fd.EmailAlt) {
 			fd.ErrEmailAlt = "invalid"
 			ef = true
 		}
 		if r.FormValue("modificar") != "1" {
-			if (fd.Pass != fd.Pass1 || fd.Pass == "" || fd.Pass1 == "" || !validPass.MatchString(fd.Pass)) {
+			if (fd.Pass != fd.Pass1 || fd.Pass == "" || fd.Pass1 == "" || !model.ValidPass.MatchString(fd.Pass)) {
 				fd.ErrPass = "invalid"
 				fd.ErrPass1 = "invalid"
 				ef = true
 			}
 		} else {
-			if ((fd.Pass != fd.Pass1 || !validPass.MatchString(fd.Pass)) && (fd.Pass != "" || fd.Pass1 != "")) {
+			if ((fd.Pass != fd.Pass1 || !model.ValidPass.MatchString(fd.Pass)) && (fd.Pass != "" || fd.Pass1 != "")) {
 			//if (fd.Pass != fd.Pass1 && fd.Pass != "" && fd.Pass1 != "" && !validPass.MatchString(fd.Pass)) {
 				fd.ErrPass = "invalid"
 				fd.ErrPass1 = "invalid"
 				ef = true
 			}
 		}
-		if fd.Tel == "" || !validTel.MatchString(fd.Tel) {
+		if fd.Tel == "" || !model.ValidTel.MatchString(fd.Tel) {
 			fd.ErrTel = "invalid"
 			ef = true
 		}
-		if fd.Cel != "" && !validTel.MatchString(fd.Cel) {
+		if fd.Cel != "" && !model.ValidTel.MatchString(fd.Cel) {
 			fd.ErrCel = "invalid"
 			ef = true
 		}
@@ -243,7 +245,7 @@ func ctaForm(w http.ResponseWriter, r *http.Request, s Sess, valida bool, tpl *t
 	return fd, true
 }
 
-func ctaFill(r *http.Request, cta *Cta) {
+func ctaFill(r *http.Request, cta *model.Cta) {
 	cta.Nombre=		strings.TrimSpace(r.FormValue("Nombre"))
 	cta.Apellidos=	strings.TrimSpace(r.FormValue("Apellidos"))
 	cta.Puesto=		strings.TrimSpace(r.FormValue("Puesto"))
@@ -256,7 +258,7 @@ func ctaFill(r *http.Request, cta *Cta) {
 	cta.Cel=		strings.TrimSpace(r.FormValue("Cel"))
 }
 
-func ctaToForm(e Cta) FormDataCta {
+func ctaToForm(e model.Cta) FormDataCta {
 	fd := FormDataCta {
 		Nombre:		e.Nombre,
 		Apellidos:	e.Apellidos,
@@ -269,3 +271,6 @@ func ctaToForm(e Cta) FormDataCta {
 	}
 	return fd
 }
+
+var dashTpl = template.Must(template.ParseFiles("templates/dashboard.html"))
+var ctadmTpl = template.Must(template.ParseFiles("templates/ctadm.html"))

@@ -5,6 +5,8 @@ import (
 	"html/template"
     "net/http"
 	"fmt"
+	"model"
+	"sess"
 )
 
 func init() {
@@ -13,9 +15,9 @@ func init() {
 
 func municipios(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
-	_, ok := IsSess(w, r, c)
+	_, ok := sess.IsSess(w, r, c)
 	if ok {
-		if entidad, err := GetEntidad(c, r.FormValue("CveEnt")); err == nil {
+		if entidad, err := model.GetEntidad(c, r.FormValue("CveEnt")); err == nil {
 			if municipios, _ := entidad.GetMunicipios(c); err == nil {
 				//Despliega municipios
 				tpl, _ := template.New("Mun").Parse(OptionTpl)
@@ -38,4 +40,5 @@ func municipios(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-const OptionTpl = `<option value="{{.CveMun}}" {{if .Selected}}selected="{{.Selected}}"{{end}}>{{.Municipio}}</option>`
+const OptionTpl = `<option value="{{.CveMun}}" {{if .Selected}}selected="{{.Selected}}"{{end}}>{{.Municipio}}</option>
+`

@@ -73,10 +73,10 @@ function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano')
 				<input type="text" class="validate[optional,custom[email]] small {{.ErrEmailAlt}}" name="EmailAlt" value="{{.EmailAlt}}"  onchange="activateCancel()"/>
             </div>
             <div class="line" id="contrasi">
-				<label><a href="#null" onclick="activeLghtbx()">Cambiar contraseña (click aqui)</a></label>
+				<label><a href="#null" onclick="activeLghtbx()">Cambiar contraseña (clic aqui)</a></label>
             </div>
             <div id="contrano" class="hidden">
-				<label><a href="#null" onclick="deactiveLghtbx()">Cerrar contraseña (click aqui)</a></label>
+				<label><a href="#null" onclick="deactiveLghtbx()">Cerrar contraseña (clic aqui)</a></label>
 				<div class="line">
 				  <label>Contraseña (capture sólo para cambiar)<br /></label>
 				  <input type="password" id="cpass" class="validate[optional] small {{.ErrPass}}" value="{{.Pass}}" name="Pass" onchange="activateCancel()"/>
@@ -90,7 +90,7 @@ function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano')
 				</br>
 				</br>
 				</br>
-				<label for="accept">Para aceptar y realizar cambios a esta Cuenta haga click en el recuadro <span class="typ-Sc">* </span></label>
+				<label for="accept">Para aceptar y realizar cambios a esta Cuenta haga clic en el recuadro <span class="typ-Sc">* </span></label>
 				<input type="checkbox" class="validate[required] last" name="accept" value="1" id="accept"/>
 				</br>
 				</br>
@@ -114,10 +114,10 @@ function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano')
            <ul class="menuAdmin">
              <li><a href="/dash"><span><img src="gfx/inicio.png" width="37" height="35" alt="inicio" /></span> Inicio</a></li>
              <li><a class="selected" href="#"><span><img src="gfx/admin.png"  width="37" height="35" alt="administrador" /></span> Usuario</a></li>
-             <li><a href="/le"><span><img src="gfx/empresa.png"  width="37" height="35" /></span> Empresas</a></li>
-             <li><a href="#"><span><img src="gfx/sucursal.png"  width="37" height="35" alt="sucursales" /></span> Sucursales</a></li>
-             <li><a href="#"><span><img src="gfx/oferta.png"  width="37" height="35" alt="ofertas" /></span> Ofertas</a></li>
-             <li><a href="#"><span><img src="gfx/micrositio.png"  width="37" height="35" alt="micrositios" /></span> Micrositios</a></li>
+			 <li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
+             <li><a href="/prox"><span><img src="gfx/sucursal.png"  width="37" height="35" alt="sucursales" /></span> Sucursales</a></li>
+             <li><a href="/prox#"><span><img src="gfx/oferta.png"  width="37" height="35" alt="ofertas" /></span> Ofertas</a></li>
+			 <li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
            </ul>
          </div>
          

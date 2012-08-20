@@ -30,6 +30,7 @@ func loadOrg(w http.ResponseWriter, r *http.Request) {
 			{"CANACINTRA", "Cámara Nacional de la Industria de Transformación", ""},
 			{"CNA", "Consejo Mexicano de Hombres de Negocios", ""},
 			{"COMCE", "Consejo Empresarial Mexicano de Comercio Exterior, Inversión y Tecnología", ""},
+			{"CANACOPE", "Cámara de Comercio, Servicios y Turismo en Pequeño de la Ciudad de México", ""},
 			{"CONCANACO/CONCAMIN", "Confederación de Cámaras Nacionales de Comercio, Servicio y Turismo", ""},
 			{"COPARMEX", "Confederación Patronal de la República Mexicana", ""},
 			{"OTRO", "Otro Organismo", ""},

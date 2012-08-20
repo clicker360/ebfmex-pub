@@ -4,8 +4,11 @@ import (
     "appengine"
     "appengine/datastore"
     "appengine/user"
+	"html/template"
     "net/http"
 	"fmt"
+	"model"
+	"sess"
 )
 
 func init() {
@@ -39,7 +42,7 @@ func ListaUsuarios(w http.ResponseWriter, r *http.Request) {
 	/* Verifica si el usuario es interno */
     if u := user.Current(c); u != nil {
 		q := datastore.NewQuery("Cta").Order("-FechaHora").Limit(10)
-		usuarios := make([]Cta, 0, 10)
+		usuarios := make([]model.Cta, 0, 10)
 		if _, err := q.GetAll(c, &usuarios); err != nil {
 		    http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -56,7 +59,7 @@ func ListaSesiones(w http.ResponseWriter, r *http.Request) {
 	/* Verifica si el usuario es interno */
     if u := user.Current(c); u != nil {
 		q := datastore.NewQuery("Sess").Limit(10)
-		s := make([]Sess, 0, 10)
+		s := make([]sess.Sess, 0, 10)
 		if _, err := q.GetAll(c, &s); err != nil {
 		    http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -85,3 +88,5 @@ func GaeLogin(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/listausuarios", http.StatusFound)
 }
 
+var listSessTpl = template.Must(template.ParseFiles("templates/list_sess.html"))
+var listUsersTpl = template.Must(template.ParseFiles("templates/list_users.html"))

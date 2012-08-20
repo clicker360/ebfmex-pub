@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
+	function activateCancel(){ $("#cancelbtn").addClass("show") }
+	function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
+	</script>
+	<style type="text/css">
+		#size { width: 300px; margin: 10px 10px; }
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+		var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
+		var $pic = $("#pic");
+		var $url = $("#url");
+		var $size = $("#size");
+		var s = $("#size").val();
+		function update() {
+			var query = "id="+id+"&s="+s;
+			$pic.attr("src", "/simg?"+query);
+			$url.text("/simg?"+query);
+		}
+		$up.click(function(e) {
+			if( s >= -9 and s <= 10) s++;
+			update();
+		});
+		$down.click(function(e) {
+			if( s >= -9 and s <= 10) s--;
+			update();
+		});
+		//$("#size").bind("mouseup", update);
+		update();
+	})
+</script>
+
+	<title>Administración de Micrositio</title>
+</head>
+<body class="bgt-main">
+	<div class="col-100PR  bgt-red-top first">
+		<div class="col-cent">
+			<div class="col-100PR first  BR-R-10px">
+				<div class="col-14">
+					<div class="col-10 marg-U80pix lineUD">
+						<div class="marg-5px last">
+							&nbsp;
+						</div>
+					</div>
+					<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
+				</div>
+				<div class="col-10 last marg-U80pix lineUD marg-R10pix">
+					{{with .Sess}}
+					<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
+					<div class="marg-5px last">
+						<a href="/salir" class="button grey little marg-10pix last"><span>SALIR</span></a>
+					</div>
+					{{end}}
+				</div>
+			</div>
+			<div class="col-24  Bg-Wh marg-D10pix">
+				<div class="menuAdmin">
+					<div class="col-5" style="min-height:600px;">
+						<h3 class="typ-Sc alineCenter">Menú</h3>
+						<ul class="menuAdmin">
+							<li><a href="/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
+							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario Admin</a></li>
+							<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
+							<li><a href="/prox"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
+							<li><a href="/prox"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+						</ul>
+					</div>
+					<div class="col-19 last Bg-Drks">
+						{{with .Empresa}}
+						<div class="titlecond marg-U20pix">
+							<h2 class="first">Micrositio / {{.Nombre}}</h2>
+						</div>
+						{{end}}
+						{{with .Error}}
+							{{if .Badformat}}
+							<p>Formato de imagen Inválido, solo se acepta jpg y png de 1200 pixeles máximo</p>
+							{{end}}
+							{{if .Badencode}}
+							<p>Imagen no puede codificarse intente otra</p>
+							{{end}}
+							{{if .Cantsave}}
+							<p>Su imagen no puede ser almacenada en nuestra base de datos, intente más tarde</p>
+							{{end}}
+						{{end}}
+						{{with .FormData}}
+						<div class="first"> 
+							<form action="/logoup" method="POST" id="enviar" enctype="multipart/form-data">
+								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
+								<div class="col-19" id="addCont"> 
+									<div class="col-18 marg-L10pix">
+										<div class="hr-line"></div>
+										<div class="col-8">
+											<div class="line ">
+												<label>Escoge una imagen</label>
+												<input type="file" class="validate[required]" name="image">
+											</div>
+											<div class="line ">
+												<label>Subir</label>
+												<input type="submit" value="Upload">
+											</div>
+											<div class="line ">
+												<label>Título<span class="typ-Sc">
+												* </span></label>
+												<input type="text" class="validate[required] small {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
+											</div>
+											<div class="line ">
+												<label>URL</label>
+												<input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
+											</div>
+											<div class="line ">
+												<label>Descripción</label>
+												<textarea class="validate[optional] small last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
+											</div>
+										</div>
+										<div class="col-18 marg-L10pix marg-D10pix">
+											<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
+										</div> 
+										<!--input id="size" type="range" min="-9" max="10" step="1" value="0"-->
+										<img id="pic">
+										<input id="size" type="hidden" value="0">
+										<input id="up" type="button" value="+">
+										<input id="down" type="button" value="-">
+										<!--p>Image: <code id="url"></code></p-->
+									</div>
+								</div>
+							</form>
+						</div>
+						{{end}}
+					</div>
+				</div>
+			</div>
+			<div class="box1 alineCenter">
+				<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/>
+			</div>
+			<div class=" box1">
+				<p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
+				Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
+				Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

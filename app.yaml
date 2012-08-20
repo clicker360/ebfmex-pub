@@ -1,4 +1,4 @@
-application: ebfmex-pub
+application: ebfmxorg
 version: 1
 runtime: go
 api_version: go1
@@ -26,7 +26,7 @@ handlers:
   mime_type: text/html
   static_files: static/\1
   upload: static/(.*\.html)
-#  expiration: "1h"
+  expiration: "1h"
 
 - url: /(.*\.css)
   mime_type: text/css
@@ -42,18 +42,19 @@ handlers:
   mime_type: application/json
   static_files: static/\1
   upload: static/(.*\.json)
-#  expiration: "1h"
+  expiration: "1h"
 
 # image files
 - url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
   static_files: static/\1
   upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  expiration: "1h"
 
 # index files
 - url: /(.+)/
   static_files: static/\1/index.html
   upload: static/(.+)/index.html
-#  expiration: "15m"
+  expiration: "1h"
 
 #- url: /(.+)
 #  static_files: static/\1/index.html
@@ -64,10 +65,7 @@ handlers:
 - url: /
   static_files: static/index.html
   upload: static/index.html
-  expiration: "15m"
+  expiration: "1h"
 
 - url: /.*
   script: _go_app
-
-builtins:
-- remote_api: on

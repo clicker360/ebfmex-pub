@@ -6,12 +6,15 @@ import (
 	"appengine/mail"
     "appengine/user"
     "net/http"
+	"html/template"
 	"crypto/md5"
 	"bytes"
     "time"
 	"fmt"
 	"io"
 	"sharded_counter"
+	"model"
+	"sess"
 )
 
 type urlCfm struct {
@@ -31,14 +34,14 @@ func init() {
 
 func Registrar(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
-	s, ok := IsSess(w, r, c)
+	s, ok := sess.IsSess(w, r, c)
 	if ok {
 		http.Redirect(w, r, "/cta", http.StatusFound)
 		return
 	}
 	fd, valid := ctaForm(w, r, s, true, registroTpl)
 	if valid {
-		u, err := GetCta(c, fd.Email)
+		u, err := model.GetCta(c, fd.Email)
 		ctaFill(r, u)
 		if err != nil {
 			// No hay Cuenta registrada
@@ -47,12 +50,12 @@ func Registrar(w http.ResponseWriter, r *http.Request) {
 
 			// Generar código de confirmación distindo cada vez. Md5 del email + fecha-hora
 			h := md5.New()
-			io.WriteString(h, fmt.Sprintf("%s%s%s%s", time.Now(), u.Email, u.Pass, randId(12)))
+			io.WriteString(h, fmt.Sprintf("%s%s%s%s", time.Now(), u.Email, u.Pass, model.RandId(12)))
 			u.CodigoCfm = fmt.Sprintf("%x", h.Sum(nil))
 		}
 
 		// Se agrega la cuenta sin activar para realizar el proceso de código de confirmación
-		if u, err = PutCta(c, u); err != nil {
+		if u, err = model.PutCta(c, u); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -115,7 +118,7 @@ func ConfirmaCodigo(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 	md5 := r.FormValue("m")
     key, _ := datastore.DecodeKey(r.FormValue("c"))
-	var g Cta
+	var g model.Cta
     if err := datastore.Get(c, key, &g); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -135,7 +138,7 @@ func ConfirmaCodigo(w http.ResponseWriter, r *http.Request) {
 					return
 				}
 				/* Prende la sesion */
-				_, _, err = setSess(w, c, key, g.Email, g.Nombre)
+				_, _, err = sess.SetSess(w, c, key, g.Email, g.Nombre)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
@@ -184,3 +187,9 @@ func ConfirmaCodigo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+var registroTpl = template.Must(template.ParseFiles("templates/registro.html")) //, "templates/login.html"))
+var registroErrorTpl = template.Must(template.ParseFiles("templates/registro_aviso.html"))
+var mailActivationCodeTpl = template.Must(template.ParseFiles("templates/activation_code.html"))
+var activationMessageTpl = template.Must(template.ParseFiles("templates/activation_result.html"))
+var mailAvisoActivacionTpl = template.Must(template.ParseFiles("templates/mail_aviso_activacion.html"))

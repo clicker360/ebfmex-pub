@@ -3,10 +3,13 @@ package site
 import (
     "appengine"
     "appengine/datastore"
+	"html/template"
 	"strings"
     "net/http"
 	"strconv"
     "time"
+	"model"
+	"sess"
 //	"fmt"
 )
 
@@ -24,8 +27,8 @@ type FormDataEmp struct {
 	ErrDirCol		string
 	DirEnt			string
 	ErrDirEnt		string
-	Entidades		*[]Entidad
-	Organismos		*[]Organismo
+	Entidades		*[]model.Entidad
+	Organismos		*[]model.Organismo
 	DirMun			string
 	ErrDirMun		string
 	DirCp			string
@@ -56,12 +59,16 @@ func init() {
 
 func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		u, _ := GetCta(c, s.User)
+	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
 		tc["Empresa"] = listEmp(c, u)
-		empadmTpl.ExecuteTemplate(w, "empresa", tc)
+		if(r.FormValue("d") == "a") {
+			empadmTpl.ExecuteTemplate(w, "empresa", tc)
+		} else {
+			empadmTpl.ExecuteTemplate(w, "micrositio", tc)
+		}
 	} else {
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
@@ -69,8 +76,8 @@ func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 
 func GetEmp(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		u, _ := GetCta(c, s.User)
+	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		e, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
 		if err == datastore.ErrNoSuchEntity {
 			//http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -84,8 +91,8 @@ func GetEmp(w http.ResponseWriter, r *http.Request) {
 
 func ModEmp(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		u, _ := GetCta(c, s.User)
+	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		// formato con validación 
 		_, valid := formatoEmp(w, r, s, true)
 		if !valid {return}
@@ -105,15 +112,15 @@ func ModEmp(w http.ResponseWriter, r *http.Request) {
 func NewEmp(w http.ResponseWriter, r *http.Request) {
 	// formato con validación 
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
+	if s, ok := sess.IsSess(w, r, c); ok {
 		_, valid := formatoEmp(w, r, s, true)
 		if !valid { return }
-		u, _ := GetCta(c, s.User)
+		u, _ := model.GetCta(c, s.User)
 		fe := fillEmpresa(r)
 
 		// Se añade una empresa
-		//e, err := u.AddEmpresa(c, &fe)
-		_, err := u.AddEmpresa(c, &fe)
+		//e, err := u.NewEmpresa(c, &fe)
+		_, err := u.NewEmpresa(c, &fe)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -128,9 +135,9 @@ func NewEmp(w http.ResponseWriter, r *http.Request) {
 func DelEmp(w http.ResponseWriter, r *http.Request) {
 	// formato con validación 
 	c := appengine.NewContext(r)
-	if s, ok := IsSess(w, r, c); ok {
-		u, _ := GetCta(c, s.User)
-		if _, err := u.DelEmpresa(c, r.FormValue("IdEmp")); err != nil {
+	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
+		if err := u.DelEmpresa(c, r.FormValue("IdEmp")); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -140,7 +147,7 @@ func DelEmp(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func formEmp(c appengine.Context, w http.ResponseWriter, s *Sess, e *Empresa) {
+func formEmp(c appengine.Context, w http.ResponseWriter, s *sess.Sess, e *model.Empresa) {
 	fd := empresaToForm(*e)
 	fd.Entidades = listEnt(c, e.DirEnt)
 	fd.Organismos = listOrg(c, e.OrgEmp)
@@ -151,18 +158,18 @@ func formEmp(c appengine.Context, w http.ResponseWriter, s *Sess, e *Empresa) {
 	return
 }
 
-func listEmp(c appengine.Context, u *Cta) *[]Empresa {
+func listEmp(c appengine.Context, u *model.Cta) *[]model.Empresa {
 	q := datastore.NewQuery("Empresa").Ancestor(u.Key(c)).Limit(50)
-	empresas := make([]Empresa, 0, 50)
+	empresas := make([]model.Empresa, 0, 50)
 	if _, err := q.GetAll(c, &empresas); err != nil {
 		return nil
 	}
 	return &empresas
 }
 
-func listEnt(c appengine.Context, ent string) *[]Entidad {
+func listEnt(c appengine.Context, ent string) *[]model.Entidad {
 	q := datastore.NewQuery("Entidad")
-	estados := make([]Entidad, 0, 32)
+	estados := make([]model.Entidad, 0, 32)
 	if _, err := q.GetAll(c, &estados); err != nil {
 		return nil
 	}
@@ -174,9 +181,9 @@ func listEnt(c appengine.Context, ent string) *[]Entidad {
 	return &estados
 }
 
-func listOrg(c appengine.Context, siglas string) *[]Organismo {
+func listOrg(c appengine.Context, siglas string) *[]model.Organismo {
 	q := datastore.NewQuery("Organismo")
-	orgs := make([]Organismo, 0, 32)
+	orgs := make([]model.Organismo, 0, 32)
 	if _, err := q.GetAll(c, &orgs); err != nil {
 		return nil
 	}
@@ -188,7 +195,7 @@ func listOrg(c appengine.Context, siglas string) *[]Organismo {
 	return &orgs
 }
 
-func formatoEmp(w http.ResponseWriter, r *http.Request, s Sess, valida bool) (FormDataEmp, bool){
+func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool) (FormDataEmp, bool){
 	c := appengine.NewContext(r)
 	partlinea, _ := strconv.Atoi(r.FormValue("PartLinea"))
 	expcomer, _ := strconv.Atoi(r.FormValue("ExpComer"))
@@ -227,57 +234,57 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s Sess, valida bool) (Fo
 	if valida {
 		var ef bool
 		ef = false
-		if fd.RFC == "" || !validRfc.MatchString(fd.RFC) {
+		if fd.RFC == "" || !model.ValidRfc.MatchString(fd.RFC) {
 			fd.ErrRFC = "invalid"
 			ef = true
 		}
-		if fd.Nombre == "" || !validName.MatchString(fd.Nombre) {
+		if fd.Nombre == "" || !model.ValidName.MatchString(fd.Nombre) {
 			fd.ErrNombre = "invalid"
 			ef = true
 		}
-		if fd.RazonSoc == "" || !validName.MatchString(fd.RazonSoc) {
+		if fd.RazonSoc == "" || !model.ValidName.MatchString(fd.RazonSoc) {
 			fd.ErrRazonSoc = "invalid"
 			ef = true
 		}
 		/*
-		if fd.DirEnt ==  || !validName.MatchString(fd.DirEnt) {
+		if fd.DirEnt ==  || !model.ValidName.MatchString(fd.DirEnt) {
 			fd.ErrDirEnt = "invalid"
 			ef = true
 		}
 		*/
-		if fd.DirMun == "" || !validSimpleText.MatchString(fd.DirMun) {
+		if fd.DirMun == "" || !model.ValidSimpleText.MatchString(fd.DirMun) {
 			fd.ErrDirMun = "invalid"
 			ef = true
 		}
-		if fd.DirCalle == "" || !validSimpleText.MatchString(fd.DirCalle) {
+		if fd.DirCalle == "" || !model.ValidSimpleText.MatchString(fd.DirCalle) {
 			fd.ErrDirCalle = "invalid"
 			ef = true
 		}
-		if fd.DirCol == "" || !validSimpleText.MatchString(fd.DirCol) {
+		if fd.DirCol == "" || !model.ValidSimpleText.MatchString(fd.DirCol) {
 			fd.ErrDirCol = "invalid"
 			ef = true
 		}
-		if fd.DirCp == "" || !validCP.MatchString(fd.DirCp) {
+		if fd.DirCp == "" || !model.ValidCP.MatchString(fd.DirCp) {
 			fd.ErrDirCp = "invalid"
 			ef = true
 		}
-		if fd.NumSuc == "" || !validNum.MatchString(fd.NumSuc) {
+		if fd.NumSuc == "" || !model.ValidNum.MatchString(fd.NumSuc) {
 			fd.ErrNumSuc = "invalid"
 			ef = true
 		}
-		if fd.OrgEmp != "" && !validSimpleText.MatchString(fd.OrgEmp) {
+		if fd.OrgEmp != "" && !model.ValidSimpleText.MatchString(fd.OrgEmp) {
 			fd.ErrOrgEmp = "invalid"
 			ef = true
 		}
-		if fd.OrgEmpOtro != "" && !validSimpleText.MatchString(fd.OrgEmpOtro) {
+		if fd.OrgEmpOtro != "" && !model.ValidSimpleText.MatchString(fd.OrgEmpOtro) {
 			fd.ErrOrgEmpOtro = "invalid"
 			ef = true
 		}
-		if fd.OrgEmpReg != "" && !validSimpleText.MatchString(fd.OrgEmpReg) {
+		if fd.OrgEmpReg != "" && !model.ValidSimpleText.MatchString(fd.OrgEmpReg) {
 			fd.ErrOrgEmpReg = "invalid"
 			ef = true
 		}
-		if fd.Url != "" && !validUrl.MatchString(fd.Url) {
+		if fd.Url != "" && !model.ValidUrl.MatchString(fd.Url) {
 			fd.ErrUrl = "invalid"
 			ef = true
 		}
@@ -301,10 +308,10 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s Sess, valida bool) (Fo
 	return fd, true
 }
 
-func fillEmpresa(r *http.Request) Empresa {
+func fillEmpresa(r *http.Request) model.Empresa {
 	partlinea, _ := strconv.Atoi(r.FormValue("PartLinea"))
 	expcomer, _ := strconv.Atoi(r.FormValue("ExpComer"))
-	e := Empresa {
+	e := model.Empresa {
 		IdEmp:		strings.TrimSpace(r.FormValue("IdEmp")),
 		RFC:		strings.TrimSpace(r.FormValue("RFC")),
 		Nombre:		strings.TrimSpace(r.FormValue("Nombre")),
@@ -328,7 +335,7 @@ func fillEmpresa(r *http.Request) Empresa {
 	return e
 }
 
-func empresaToForm(e Empresa) FormDataEmp {
+func empresaToForm(e model.Empresa) FormDataEmp {
 	fe := FormDataEmp {
 		IdEmp:		e.IdEmp,
 		RFC:		e.RFC,
@@ -350,3 +357,5 @@ func empresaToForm(e Empresa) FormDataEmp {
 	}
 	return fe
 }
+
+var empadmTpl = template.Must(template.ParseFiles("templates/empadm.html"))
