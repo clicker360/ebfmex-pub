@@ -27,12 +27,12 @@
 			$pic.attr("src", "/simg?"+query);
 			$url.text("/simg?"+query);
 		}
-		$up.click(function(e) {
-			if( s >= -9 and s <= 10) s++;
+		$("#up").click(function() {
+			if( s >= -9 && s <= 10){ s++;}
 			update();
 		});
-		$down.click(function(e) {
-			if( s >= -9 and s <= 10) s--;
+		$("#down").click(function() {
+			if( s >= -9 && s <= 10){ s--;}
 			update();
 		});
 		//$("#size").bind("mouseup", update);
@@ -107,7 +107,7 @@
 											</div>
 											<div class="line ">
 												<label>Subir</label>
-												<input type="submit" value="Upload">
+												<input type="submit" class="small" value="Upload">
 											</div>
 											<div class="line ">
 												<label>Título<span class="typ-Sc">
@@ -126,14 +126,23 @@
 										<div class="col-18 marg-L10pix marg-D10pix">
 											<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
 										</div> 
-										<!--input id="size" type="range" min="-9" max="10" step="1" value="0"-->
-										<img id="pic">
-										<input id="size" type="hidden" value="0">
-										<input id="up" type="button" value="+">
-										<input id="down" type="button" value="-">
-										<!--p>Image: <code id="url"></code></p-->
 									</div>
 								</div>
+							</form>
+							<form action="/logosz" method="POST" id="setsize">
+								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
+								<input id="size" type="hidden" value="0">
+								<div class="line ">
+									<img id="pic">
+								</div>
+								<div class="line ">
+									<input id="up" type="button" value="+">
+									<input id="down" type="button" value="-">
+								</div>
+								<div class="line ">
+									<button type="submit" name="Aplicar" value"Aplicar"/>
+								</div>
+								<!--p>Image: <code id="url"></code></p-->
 							</form>
 						</div>
 						{{end}}

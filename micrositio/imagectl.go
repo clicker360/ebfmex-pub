@@ -153,24 +153,11 @@ func upload(w http.ResponseWriter, r *http.Request) {
 
 		// Save the image under a unique key, a hash of the image.
 		img := &model.Image{
-			Data: buf.Bytes(), 
-			IdEmp: idemp, 
-			IdImg: model.RandId(12), 
-			Kind: "EmpLogo", 
-			Name: name, 
-			Desc: desc, 
-			Sizepx: 0,
-			Sizepy: 0,
-			Url: url,
-			Type: "",
-			Sp1: "",
-			Sp2: "",
-			Sp3: "",
-			Sp4: "",
-			Np1: 0,
-			Np2: 0,
-			Np3: 0,
-			Np4: 0,
+			Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(12), 
+			Kind: "EmpLogo", Name: name, Desc: desc, 
+			Sizepx: 0, Sizepy: 0, Url: url, Type: "",
+			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
+			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 		}
 		_, err = model.PutLogo(c, img)
 		if err != nil {
@@ -204,10 +191,12 @@ func img(w http.ResponseWriter, r *http.Request) {
 	m, _, err := image.Decode(bytes.NewBuffer(im.Data))
 	check(err)
 
+	// Ejemplo de cómo mejorar la conversión de datos 
 	//get := func(n string) int { // helper closure
-	//	i, _ := strconv.Atoi(r.FormValue(n))
-	//	return i
-	//}
+//		i, _ := strconv.Atoi(r.FormValue(n))
+//		return i
+//	}
+//	s := get("s")
 
 	w.Header().Set("Content-type", "image/jpeg")
 	jpeg.Encode(w, m, nil)
