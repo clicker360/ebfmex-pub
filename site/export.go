@@ -53,9 +53,19 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
     }
 
 	for _, value := range regdata {
-        	q2 := datastore.NewQuery("Empresa").Ancestor(value.Key(c)).Limit(50)
-        	empresas := make([]model.Empresa, 0, 100)
-        	q2.GetAll(c, &empresas)
+		q2 := datastore.NewQuery("Empresa").Ancestor(value.Key(c)).Limit(50)
+		for cursor := q2.Run(c); ; {
+			var e Empresa
+			_, err := cursor.Next(&e)
+			if err == datastore.Done  {
+				break
+			}
+			// llenar linea de csv
+
+		}
+
+		empresas := make([]model.Empresa, 0, 100)
+		q2.GetAll(c, &empresas)
 		datacsv := value empresas
         //return &empresas
 	}
