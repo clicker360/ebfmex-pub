@@ -7,6 +7,7 @@ import (
     "sess"
     "html/template"
     "time"
+    "model"
 )
 
 type Cta struct {
@@ -44,16 +45,28 @@ func registroExport(w http.ResponseWriter, r *http.Request) {
 func registroCsv(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
     q := datastore.NewQuery("Cta").Order("FechaHora")
-    regdata := make([]Cta,0,10)
+    regdata := make([]model.Cta,0,100)
+
     if _, err := q.GetAll(c, &regdata); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-        w.Header().Set("Content-Type", "text/csv")
-    if err := registrosCsvTpl.Execute(w, regdata); err != nil {
+
+	for _, value := range regdata {
+        	q2 := datastore.NewQuery("Empresa").Ancestor(value.Key(c)).Limit(50)
+        	empresas := make([]model.Empresa, 0, 100)
+        	q2.GetAll(c, &empresas)
+		datacsv := value empresas
+        //return &empresas
+	}
+
+        w.Header().Set("Content-Type", "text/plain")
+    //if err := registrosCsvTpl.Execute(w, regdata); err != nil {
+	if err := cuentasCsvTpl.Execute(w, datacsv); err != nil {
 	return
     }
 }
 
 var exportTpl = template.Must(template.ParseFiles("templates/export.html"))
 var registrosCsvTpl = template.Must(template.ParseFiles("templates/registros.csv"))
+var cuentasCsvTpl = template.Must(template.ParseFiles("templates/cuentas.csv"))
