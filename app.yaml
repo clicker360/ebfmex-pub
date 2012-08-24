@@ -1,5 +1,5 @@
-application: ebfmex-pub
-version: 1
+application: ebfmxorg
+version: 4
 runtime: go
 api_version: go1
 
@@ -27,6 +27,10 @@ handlers:
   static_files: static/\1
   upload: static/(.*\.html)
   expiration: "1h"
+
+- url: /favicon.ico
+  static_files: /imgs/favicon.ico
+  upload: /imgs/favicon.ico
 
 - url: /(.*\.css)
   mime_type: text/css

@@ -19,6 +19,7 @@ func init() {
 }
 
 func loadOrg(w http.ResponseWriter, r *http.Request) {
+//	return
 	c := appengine.NewContext(r)
     if u := user.Current(c); u != nil {
 		o := []Organismo {

@@ -19,13 +19,13 @@ type Sess struct {
 	ErrMsg		string `datastore:"-"`
 	ErrClass	string `datastore:"-"`
 }
-
+const Expiracion = 15 // dias
 func SetSess(w http.ResponseWriter, c appengine.Context, key *datastore.Key, email string, name string) (string, *datastore.Key, error) {
 	h := md5.New()
 	io.WriteString(h, key.Encode())
 	io.WriteString(h, fmt.Sprintf("%s", time.Now()))
 	md5 := fmt.Sprintf("%x", h.Sum(nil))
-	ex := time.Now().AddDate(0,0,5)
+	ex := time.Now().AddDate(0,0,Expiracion)
 	s := Sess{
 		Md5:		md5,
 		Id:			key.Encode(),

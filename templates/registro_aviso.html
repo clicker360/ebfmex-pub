@@ -9,8 +9,8 @@ function activeLghtbx(){ $('#light').removeClass("hidden"); $('#box').removeClas
 function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("hidden") }
 </script>
 <title>Registrate para participar</title>
-<link href="http://violeta.tv/happyending/css/Origami.css" rel="stylesheet" type="text/css" />
-<link href="http://violeta.tv/happyending/css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 <body class=" bgt-main">
 <!--inicia login-->
@@ -18,7 +18,7 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
 <div class="lightcenterdiv hidden" id="box">
 <div class="last pullRight-20 pullup-20"><a href="#null" onclick="deactiveLghtbx()"><img src="gfx/closeBTN.png" width="30" height="29" alt="cerrar" /></a></div>
   <div class="col-7 pullup-10">
-  <h2>Accede a el buen fin</h2>
+  <h2>Accede a El Buen Fin</h2>
   <div class="hr-line"></div>
     <form action="/acceso" method="post" id="entrence">
       <div class="col-7">
@@ -26,11 +26,11 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
  <input type="text" class="validate[required,custom[email]] small first" name="u" value="{{with .Sess}}{{.User}}{{end}}" />
       </div>
       <div class=" col-7">
-      <label>Pasword</label>
+      <label>Contraseña</label>
         <input type="password" class="validate[required] small first" name="p" />
       </div>
       <div class="col-5 last">
-      <button type="submit" class="medium red  marg-U3pix "><span>acceder</span></button></div>
+      <button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
     </form>
   </div>
 </div>

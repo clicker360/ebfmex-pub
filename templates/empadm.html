@@ -16,6 +16,7 @@ $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "t
 function activateCancel(){ $("#cancelbtn").addClass("show") }
 function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 $(document).ready(function() {
+	$('#urlreq').hide()
 	$('#loader').hide();
 	$('#CveEnt').change(function(){
 		$('#show_mun').fadeOut();
@@ -24,6 +25,14 @@ $(document).ready(function() {
 		return false;
 	});
 	getmsp()
+
+	$("#url1").blur(function() {
+		if($('#quest2').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
+		//alert($('#url1').val());
+	});
+	$("#enviar").submit(function() {
+		if($('#quest2').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
+	});
 });
 function getmsp() {
 	$.get("msp", {
@@ -63,7 +72,7 @@ function loadmun(id, response){
 			<div class="col-10 last marg-U80pix lineUD marg-R10pix">
 				{{with .Sess}}
 				<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-				  <div class="marg-5px last"><a href="/salir" class="button grey little marg-10pix last"><span>SALIR</span></a></div>
+				  <div class="marg-5px last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
 				{{end}}
 		  </div>
 		</div>
@@ -88,7 +97,7 @@ function loadmun(id, response){
 				 {{with .FormDataEmp}}
 				 <!--a href="/le" onclick="addCompany()" class="button blue last"><span>LISTA DE EMPRESAS</span></a-->
 				 {{else}}
-				 <a href="/se" onclick="addCompany()" class="button blue last"><span>AGREGAR EMPRESA</span></a>
+				 <a href="/se" onclick="addCompany()" class="button red last"><span>AGREGAR EMPRESA</span></a>
 				 {{end}}
 			 </div>
 			 <div class="first"> 
@@ -108,7 +117,6 @@ function loadmun(id, response){
 			 
 		</div>
 		<div class="col-18 marg-L10pix">
-		 <div class="hr-line"></div>
 		 {{with .FormDataEmp}}
 				{{if .IdEmp}}
 				  <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
@@ -180,7 +188,7 @@ function loadmun(id, response){
 				<div class="line  ">
 					<div class="col-100PR first marg-UD10px">
 					<label>Número de sucursales<span class="typ-Sc"> * </span></label>
-					<input type="text" class="validate[required,minSize[1],custom[onlyIntegerNotCero]] small {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
+					<input type="text" class="validate[required,minSize[1],custom[integer]] small {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
 					</div>
 				  <div class="col-100PR first marg-UD10px">
 					<label>Organismo Empresarial</label>
@@ -201,16 +209,17 @@ function loadmun(id, response){
 				  <input type="text" class="validate[optional] small {{.ErrOrgEmpReg}}" name="OrgEmpReg" value="{{.OrgEmpReg}}"  onchange="activateCancel()"/>
 				</div>
 				<div class="line ">
-				  <label>Sitio de internet</label>
-				   <input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
-				</div>
-				<div class="line ">
 				  <label>¿Desea participar en El Buen Fin en línea?</label>
 				  <input type="checkbox" name="PartLinea" value="1" id="quest1" {{if .PartLinea}}checked="{{.PartLinea}}"{{end}}  onchange="activateCancel()"/>
 				</div>         
 				<div class="line ">
 				  <label>¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
 				  <input type="checkbox" name="ExpComer" value="1" id="quest2" {{if .ExpComer}}checked="{{.ExpComer}}"{{end}} onchange="activateCancel()"/>
+				</div>
+				<div class="line ">
+				  <label>Sitio de internet</label>
+				  <div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()">Obligatorio indicar sitio de internet si su empresa ya tiene experiencia en comercio electrónico</div>
+				  <input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url1" onchange="activateCancel()"/>
 				</div>
 				  <div class="line ">
 				   <label>¿Qué retos o dificultades identificas para implementar o mejorar el comercio electrónico de tu empresa?</label>
@@ -240,12 +249,16 @@ function loadmun(id, response){
 			{{else}}
 
 			{{range .Empresa}}
-				<a href="/se?IdEmp={{.IdEmp}}" class="first col-17 marg-5px typeTle "><span class="icon icochevroright"></span>{{.Nombre}}</a> 
+			<div class="dataGrid">
+				<a href="/se?IdEmp={{.IdEmp}}" class="gridRow"><span class="icon icochevroright"></span>{{.Nombre}}</a> 
 				<!--a href="/de?IdEmp={{.IdEmp}}" class="outlined icon icoremove first Dsblock marg-5px btnicon"><span class="icon icoremov"></span></a-->
+			</div>
 			{{else}}
 				{{if .FormDataEmp}}
 				{{else}}
-					<h3 class="alineCenter" >No hay Empresas</h3>
+			<div class="dataGrid">
+				<div class="warning" >No hay Empresas</div>
+			</div>
 				{{end}}
 			{{end}}
 
@@ -300,7 +313,7 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 				<div class="col-10 last marg-U80pix lineUD marg-R10pix">
 					{{with .Sess}}
 					<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-					<div class="marg-5px last"><a href="/salir" class="button grey little marg-10pix last"><span>SALIR</span></a></div>
+					<div class="marg-5px last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
 					{{end}}
 				</div>
 			</div>
@@ -318,12 +331,19 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 						</ul>
 					</div>
 				<div class="col-19 last Bg-Drks">
+			 	<div class="titlecond marg-U20pix">
+					 <h2 class="first">Micrositio por Empresa</h2>
+				</div>
 				{{range .Empresa}}
-				<a href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}" class="first col-17 marg-5px typeTle "><span class="icon icochevroright"></span>{{.Nombre}}</a> 
+				<div class="dataGrid">
+					<a href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}" class="gridRow"><span class="icon icochevroright"></span>{{.Nombre}}</a> 
+				</div>
 				{{else}}
 				{{if .FormDataEmp}}
 				{{else}}
-				<h3 class="alineCenter" >No hay Empresas</h3>
+			<div class="dataGrid">
+				<div class="warning" >No hay Empresas</div>
+			</div>
 				{{end}}
 				{{end}}
 			</div>

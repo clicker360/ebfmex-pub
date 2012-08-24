@@ -30,7 +30,7 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
 <div class="lightcenterdiv hidden" id="box">
 <div class="last pullRight-20 pullup-20"><a href="#null" onclick="deactiveLghtbx()"><img src="gfx/closeBTN.png" width="30" height="29" alt="cerrar" /></a></div>
   <div class="col-7 pullup-10">
-  <h2>Accede a el buen fin</h2>
+  <h2>Accede a El Buen Fin</h2>
   <div class="hr-line"></div>
     <form id="acceso" action="/acceso" method="post" id="entrence">
       <div class="col-7">
@@ -38,11 +38,11 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
  <input type="text" class="validate[required,custom[email]] small first" name="u" value="{{with .Sess}}{{.User}}{{end}}" />
       </div>
       <div class=" col-7">
-      <label>Pasword</label>
+      <label>Contraseña</label>
         <input type="password" class="validate[required] small first" name="p" />
       </div>
       <div class="col-5 last">
-      <button type="submit" class="medium red  marg-U3pix "><span>acceder</span></button></div>
+      <button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
     </form>
   </div>
 </div>
@@ -115,7 +115,9 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
 			  <input type="text" class="validate[optional,custom[cellphone]] small {{.ErrCel}}" value="{{.Cel}}" id="cmobile" name="Cel"/>
               </div>
           </div>
-          <div class="col-100PR first"> <span class="typ-Sc"> * </span>Todos los campos marcados son obligatorios </div>
+		  <div class="col-100PR first marg-U10pix"><p><span class="typ-Sc"> * </span>Todos los campos marcados son obligatorios   </p>
+			  <p class="typeMin marg-U10pix">Iniciativa México, AC. con domicilio en Av. Chapultepec número 18, Colonia Doctores, Delegación Cuauhtémoc, C.P. 06724, México, D.F., tiene l<strong>a convicción de proteger los datos personales proporcionados por sus usuarios</strong> y es el responsable de su Tratamiento para cuando sean recabados a través del sitio de Internet www.elbuenfin.org (en adelante el “Sitio”), sus páginas web derivadas, medios impresos y/o vía telefónica (Otros Medios). <br />
+Para mayor información acerca del Tratamiento y de los Derechos que puede hacer valer, lo invitamos a visitar la siguiente liga www.elbuenfin.org en donde podrá encontrar nuestro aviso de privacidad completo. </p> </div>
         </div>
        
         <div class="box3 pullup-50 BR-R-3px last marg-R15pix ">
@@ -125,7 +127,8 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
        	        principal<span class="typ-Sc">*</span></label>
 				<input type="text" id="cmail" name="Email" class="validate[required,custom[email]] small {{.ErrEmail}}" value="{{.Email}}" />
                 <div class="col-100PR first">
-                  <p class="typeMin">*Éste será tu usuario. Con él administrarás el registro de tu(s) empresa(s).</p></div>
+                  <p class="typeMin">*Éste será tu usuario. Con él administrarás el registro de tu(s) empresa(s).</p>
+               </div>
             </div>
           </div>
           <div class="Bg-Wh box1">
@@ -151,18 +154,25 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
             <div class="line">
               <div class="col-9 typeMin" style="padding-bottom:5px;">
             <div class="col-8">
-				<label for="cacept" class="first">Si tus datos son correctos, <br />haz clic en el recuadro</label>
+				<label for="cacept" class="first">
+				  <ol class="col-7 padd-0">
+				    <li>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</li>
+				      <li>Sólo las empresas registradas en El Buen Fin podrán hacer uso del logotipo.</li>
+				      <li>Al enviar sus datos acepta el <a href="terminosCondiciones.html" target="_blank">Aviso legal</a></li>
+				    </ol>
+				</label>
             </div>
             <div class="last marg-U10pix">
-              <input type="checkbox" name="TermCond" class="validate[required] last" value="acepted" id="acepted" />
+                  <input type="checkbox" name="TermCond" class="validate[required] last" value="acepted" id="acepted" />
             </div>
-                <br />
+         
               </div>
             </div>
           </div>
-          <button  name="enviar" type="submit" value="enviar" class="big red last"><span>Enviar</span></button>
-          <br />
-        </div>
+          
+              <button  name="enviar" type="submit" value="enviar" class="big red last"><span>Enviar</span></button>
+       
+          </div>
        
       </form>
 	  {{end}}

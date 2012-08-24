@@ -130,33 +130,42 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
-			/* Desactiva Status */
-			if(r.FormValue("desactiva")=="1") {
-				s.Expiration = time.Now().AddDate(-1,0,0)
-				_, err := datastore.Put(c, datastore.NewKey(c, "Sess", s.User, 0, nil), &s)
-				if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				}
-				u.CodigoCfm = ""
-				u.Status = false
-				_, err = datastore.Put(c, u.Key(c), &u)
-				if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
+			// Sólo desactiva cuenta si no hay empresas dependientes
+			e := listEmp(c, u)
+			if len(*e) == 0 {
+				// Desactiva Status
+				if(r.FormValue("desactiva")=="1") {
+					s.Expiration = time.Now().AddDate(-1,0,0)
+					_, err := datastore.Put(c, datastore.NewKey(c, "Sess", s.User, 0, nil), &s)
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusInternalServerError)
+					}
+					u.CodigoCfm = "Desactivado"
+					u.Status = false
+					_, err = datastore.Put(c, u.Key(c), &u)
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusInternalServerError)
+						return
+					}
+					tc := make(map[string]interface{})
+					tc["CanceledCta"] = 1
+					ctadmTpl.ExecuteTemplate(w, "cta", tc)
+					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
+					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
 					return
 				}
 				tc := make(map[string]interface{})
-				tc["CanceledCta"] = 1
+				tc["AskCancelCta"] = 1
 				ctadmTpl.ExecuteTemplate(w, "cta", tc)
-				w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
-				w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
+			} else {
+				// Debe borrar empresas antes o Transferir sus empresas a otro usuario
+				errmsg := struct { ErrMsg string }{ "Para desactivar su usuario debe dar de baja las empresas que tiene registradas" }
+				ErrorGeneralTpl.Execute(w, errmsg)
 				return
 			}
-			tc := make(map[string]interface{})
-			tc["AskCancelCta"] = 1
-			ctadmTpl.ExecuteTemplate(w, "cta", tc)
 		}
 	} else {
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, "/registro", http.StatusFound)
 	}
 }
 
@@ -274,3 +283,4 @@ func ctaToForm(e model.Cta) FormDataCta {
 
 var dashTpl = template.Must(template.ParseFiles("templates/dashboard.html"))
 var ctadmTpl = template.Must(template.ParseFiles("templates/ctadm.html"))
+var ErrorGeneralTpl = template.Must(template.ParseFiles("templates/aviso_error_general.html"))

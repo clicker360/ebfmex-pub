@@ -126,9 +126,10 @@ func (m *Municipio) GetLocalidades(c appengine.Context) (*[]Localidad, error) {
 }
 
 func municipios(w http.ResponseWriter, r *http.Request) {
+	//return
 	c := appengine.NewContext(r)
 
-	/* Verifica si el usuario es interno */
+	//Verifica si el usuario es interno
     if u := user.Current(c); u == nil {
 		return
 	}
@@ -331,8 +332,7 @@ func municipios(w http.ResponseWriter, r *http.Request) {
 		{"07","Chiapas","Chis.","031","Chilón","0001","Chilón"},
 		{"07","Chiapas","Chis.","032","Escuintla","0001","Escuintla"},
 		{"07","Chiapas","Chis.","033","Francisco León","0042","Rivera el Viejo Carmen"},
-		{"07","Chiapas","Chis.","034","Frontera Comalapa","0001","Frontera Comalapa"},
-		{"07","Chiapas","Chis.","035","Frontera Hidalgo","0001","Frontera Hidalgo"},
+		{"07","Chiapas","Chis.","034","Frontera Comalapa","0001","Frontera Comalapa"}, {"07","Chiapas","Chis.","035","Frontera Hidalgo","0001","Frontera Hidalgo"},
 		{"07","Chiapas","Chis.","036","La Grandeza","0001","La Grandeza"},
 		{"07","Chiapas","Chis.","037","Huehuetán","0001","Huehuetán"},
 		{"07","Chiapas","Chis.","038","Huixtán","0001","Huixtán"},

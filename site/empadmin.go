@@ -238,20 +238,18 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool
 			fd.ErrRFC = "invalid"
 			ef = true
 		}
-		if fd.Nombre == "" || !model.ValidName.MatchString(fd.Nombre) {
+		if fd.Nombre == "" || !model.ValidSimpleText.MatchString(fd.Nombre) {
 			fd.ErrNombre = "invalid"
 			ef = true
 		}
-		if fd.RazonSoc == "" || !model.ValidName.MatchString(fd.RazonSoc) {
+		if fd.RazonSoc == "" || !model.ValidSimpleText.MatchString(fd.RazonSoc) {
 			fd.ErrRazonSoc = "invalid"
 			ef = true
 		}
-		/*
-		if fd.DirEnt ==  || !model.ValidName.MatchString(fd.DirEnt) {
+		if fd.DirEnt == "" || !model.ValidSimpleText.MatchString(fd.DirEnt) {
 			fd.ErrDirEnt = "invalid"
 			ef = true
 		}
-		*/
 		if fd.DirMun == "" || !model.ValidSimpleText.MatchString(fd.DirMun) {
 			fd.ErrDirMun = "invalid"
 			ef = true

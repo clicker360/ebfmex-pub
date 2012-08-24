@@ -21,21 +21,33 @@
 		var $pic = $("#pic");
 		var $url = $("#url");
 		var $size = $("#size");
-		var s = $("#size").val();
+		var max_size=400;
+		$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
 		function update() {
-			var query = "id="+id+"&s="+s;
+			var query = "id="+id;
 			$pic.attr("src", "/simg?"+query);
 			$url.text("/simg?"+query);
 		}
 		$("#up").click(function() {
-			if( s >= -9 && s <= 10){ s++;}
-			update();
+			w = $pic.width(); h = $pic.height();
+			if (h > w) {
+				r = w/h; h++; w = Math.ceil(h*r);
+			} else {
+				r = h/w; w++; h = Math.ceil(w*r);
+			}
+			$pic.width(w); $pic.height(h);
+			$("#sizey").val(h); $("#sizex").val(w);
 		});
 		$("#down").click(function() {
-			if( s >= -9 && s <= 10){ s--;}
-			update();
+			w = $pic.width(); h = $pic.height();
+			if (h > w) {
+				r = w/h; w--; h = Math.ceil(w/r);
+			} else {
+				r = h/w; h--; w = Math.ceil(h/r);
+			}
+			$pic.width(w); $pic.height(h);
+			$("#sizey").val(h); $("#sizex").val(w);
 		});
-		//$("#size").bind("mouseup", update);
 		update();
 	})
 </script>
@@ -57,29 +69,27 @@
 				<div class="col-10 last marg-U80pix lineUD marg-R10pix">
 					{{with .Sess}}
 					<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-					<div class="marg-5px last">
-						<a href="/salir" class="button grey little marg-10pix last"><span>SALIR</span></a>
-					</div>
+              		<div class="marg-5px last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
 					{{end}}
 				</div>
 			</div>
 			<div class="col-24  Bg-Wh marg-D10pix">
-				<div class="menuAdmin">
+				<div class="menuAdmin Bg-Sec">
 					<div class="col-5" style="min-height:600px;">
 						<h3 class="typ-Sc alineCenter">Menú</h3>
 						<ul class="menuAdmin">
 							<li><a href="/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
 							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario Admin</a></li>
 							<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-							<li><a href="/prox"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-							<li><a href="/prox"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+							<li><a href="#"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
+							<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 						</ul>
 					</div>
 					<div class="col-19 last Bg-Drks">
 						{{with .Empresa}}
 						<div class="titlecond marg-U20pix">
-							<h2 class="first">Micrositio / {{.Nombre}}</h2>
+							<h2 class="first">Micrositio de {{.Nombre}}</h2>
 						</div>
 						{{end}}
 						{{with .Error}}
@@ -98,57 +108,80 @@
 							<form action="/logoup" method="POST" id="enviar" enctype="multipart/form-data">
 								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
 								<div class="col-19" id="addCont"> 
-									<div class="col-18 marg-L10pix">
-										<div class="hr-line"></div>
-										<div class="col-8">
-											<div class="line ">
-												<label>Escoge una imagen</label>
-												<input type="file" class="validate[required]" name="image">
+							  		<div class="col-18 marg-L10pix">
+                                		<div class="col-7 last"> <img id="pic" src="" alt="Logotipo Empresa" width="100%" /> </div>
+										<div class="col-10">
+											<div class="box1">
+												<p>Sólo imagenes formato jpeg o png. Tamaño máximo 800x600 pixeles.</p>
 											</div>
-											<div class="line ">
-												<label>Subir</label>
-												<input type="submit" class="small" value="Upload">
+											<div class="line">
+												<label>Subir logotipo</label><span class="typ-Sc"> * </span></label>
+												<input id="imgfile" type="text" class="small" readonly="readonly"/>
+												<div class="btn-upload last" style="width: 65px; height: 27px; margin: 0px; overflow: hidden;">
+													<input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val())" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;">
+												</div>
 											</div>
-											<div class="line ">
-												<label>Título<span class="typ-Sc">
-												* </span></label>
-												<input type="text" class="validate[required] small {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
+											<div class="line">
+												<p>Para visualizar la imagen haga clic en Subir. Cada que subes una imagen sustituyes la anterior.</p>
+												<button  name="Upload"  id="Upload" type="submit" class="grey medium last" value="Upload"  ><span>Subir</span></button>
 											</div>
-											<div class="line ">
-												<label>URL</label>
-												<input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
+											<div class="line">
 											</div>
-											<div class="line ">
-												<label>Descripción</label>
-												<textarea class="validate[optional] small last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
+											<div class="line">
 											</div>
 										</div>
 										<div class="col-18 marg-L10pix marg-D10pix">
-											<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
 										</div> 
 									</div>
 								</div>
 							</form>
+							<form action="/midata" method="POST" id="enviarmidata" enctype="multipart/form-data">
+								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
+								<div class="col-19" id="addCont"> 
+							  		<div class="col-18 marg-L10pix">
+										<div class="col-10">
+										<hr/>
+										<p>Datos Adicionales</p>
+											<div class="line">
+											</div>
+											<div class="line ">
+												<label>Título de logotipo<span class="typ-Sc"> * </span></label>
+												<input type="text" class="validate[required] small {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
+											</div>
+											<div class="line ">
+												<label>Enlace Web (URL al que debe apuntar el logotipo, opcional)</label>
+												<input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
+											</div>
+											<div class="line ">
+												<label>Descripción al público de la Empresa</label>
+												<textarea class="validate[optional] small last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
+											</div>
+											<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
+											<div class="line ">
+												<button  name="Upload"  id="Uploadmidata" type="submit" class="grey medium last" value="Upload"  ><span>Guardar</span></button>
+											</div>
+										</div>
+										<div class="col-18 marg-L10pix marg-D10pix">
+										</div> 
+									</div>
+								</div>
+							</form>
+							<!-- Próximamente
 							<form action="/logosz" method="POST" id="setsize">
 								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
-								<input id="size" type="hidden" value="0">
+								<input id="sizey" type="hidden" value="0">
+								<input id="sizex" type="hidden" value="0">
 								<div class="line ">
-									<img id="pic">
-								</div>
-								<div class="line ">
-									<input id="up" type="button" value="+">
-									<input id="down" type="button" value="-">
-								</div>
-								<div class="line ">
-									<button type="submit" name="Aplicar" value"Aplicar"/>
-								</div>
-								<!--p>Image: <code id="url"></code></p-->
+									<button  name="up"  id="up" type="button" class="blue last" value="+" ><span>+</span></button>
+									<button  name="down"  id="down" type="button" class="blue last" value="-"  ><span>-</span></button>
+                                	<button name="Aplicar" id="Aplicar" type="submit" class="grey last" value="Aplicar"><span>Aplicar Tamaño</span></button>
+							  	</div>
 							</form>
+							-->
 						</div>
 						{{end}}
 					</div>
 				</div>
-			</div>
 			<div class="box1 alineCenter">
 				<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/>
 			</div>
@@ -158,6 +191,7 @@
 				Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

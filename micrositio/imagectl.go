@@ -12,6 +12,7 @@ import (
 	"resize"
 	"bytes"
 	"strings"
+	"strconv"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -57,6 +58,8 @@ type FormDataImage struct {
 func init() {
 	http.HandleFunc("/mi", errorHandler(micrositio))
 	http.HandleFunc("/logoup", errorHandler(upload))
+	http.HandleFunc("/midata", errorHandler(modData))
+	http.HandleFunc("/logosz", errorHandler(resizeLogo))
 	http.HandleFunc("/simg", errorHandler(img))
 }
 
@@ -79,7 +82,6 @@ func micrositio(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/registro", http.StatusFound)
 	}
 }
-
 
 // upload is the HTTP handler for uploading images; it handles "/".
 func upload(w http.ResponseWriter, r *http.Request) {
@@ -172,6 +174,143 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func modData(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	if s, ok := sess.IsSess(w, r, c); ok {
+		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
+		imgo, _ := model.GetLogo(c, r.FormValue("IdEmp"))
+		fd := imgToForm(*imgo)
+		tc := make(map[string]interface{})
+		tc["Sess"] =  s
+		tc["Empresa"] = emp
+		tc["FormData"] = fd
+		if r.Method != "POST" {
+			// No upload; show the upload form.
+			micrositio(w, r)
+			return
+		}
+
+		idemp := r.FormValue("IdEmp")
+		name := r.FormValue("Name")
+		desc := r.FormValue("Desc")
+		url := r.FormValue("Url")
+
+	//	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
+	//	im := new(model.Image)
+		// Save the image under a unique key, a hash of the image.
+		imgo = &model.Image{
+			Data: imgo.Data, IdEmp: idemp, 
+			Kind: "EmpLogo", Name: name, Desc: desc, 
+			Sizepx: 0, Sizepy: 0, Url: url, Type: "",
+			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
+			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
+		}
+
+		_, err := model.PutLogo(c, imgo)
+		if err != nil {
+			tc["Error"] = struct { Cantsave string }{ "cantsave" }
+			micrositioTpl.Execute(w, tc)
+			return
+		}
+
+		micrositio(w, r)
+	} else {
+		http.Redirect(w, r, "/registro", http.StatusFound)
+	}
+}
+
+// upload is the HTTP handler for uploading images; it handles "/".
+func resizeLogo(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	if s, ok := sess.IsSess(w, r, c); ok {
+		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
+		imgo, _ := model.GetLogo(c, r.FormValue("IdEmp"))
+		sf, _ := strconv.Atoi(r.FormValue("s"))
+		fd := imgToForm(*imgo)
+		tc := make(map[string]interface{})
+		tc["Sess"] =  s
+		tc["Empresa"] = emp
+		tc["FormData"] = fd
+		if r.Method != "POST" {
+			// No upload; show the upload form.
+			micrositio(w, r)
+			return
+		}
+		i, _, err := image.Decode(bytes.NewBuffer(imgo.Data))
+		if err != nil {
+			tc["Error"] = struct { Badformat string }{"badformat"}
+			micrositioTpl.Execute(w, tc)
+			return
+		}
+
+		// Resize if too large, for more efficient moustachioing.
+		// We aim for less than 1200 pixels in any dimension; if the
+		// picture is larger than that, we squeeze it down to 600.
+		const max = 1200
+		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
+			// If it's gigantic, it's more efficient to downsample first
+			// and then resize; resizing will smooth out the roughness.
+			if b.Dx() > 2*max || b.Dy() > 2*max {
+				w, h := max, max
+				if b.Dx() > b.Dy() {
+					h = b.Dy() * h / b.Dx()
+				} else {
+					w = b.Dx() * w / b.Dy()
+				}
+				i = resize.Resample(i, i.Bounds(), w, h)
+				b = i.Bounds()
+			}
+			w, h := max/2, max/2
+			if b.Dx() > b.Dy() {
+				h = b.Dy() * h / b.Dx()
+			} else {
+				w = b.Dx() * w / b.Dy()
+			}
+			i = resize.Resize(i, i.Bounds(), w, h)
+		} else {
+			h := b.Dy()
+			w := b.Dx()
+			if(sf > 0 && sf <= 2) {
+				h = h * sf
+				w = w * sf
+			} else if (sf < 0 && sf > -1){
+				sf = (sf*2)+sf
+				h = h * (1/sf)
+				w = w * (1/sf)
+			}
+			i = resize.Resize(i, i.Bounds(), w, h)
+		}
+
+		// Encode as a new JPEG image.
+		var buf bytes.Buffer
+		err = jpeg.Encode(&buf, i, nil)
+		if err != nil {
+			tc["Error"] = struct { Badencode string }{"badencode"}
+			micrositioTpl.Execute(w, tc)
+			return
+		}
+
+		// Save the image under a unique key, a hash of the image.
+		img := &model.Image{
+			Data: buf.Bytes(), IdEmp: emp.IdEmp, IdImg: imgo.IdImg, 
+			Kind: "EmpLogo", Name: imgo.Name, Desc: imgo.Desc, 
+			Sizepx: 0, Sizepy: 0, Url: imgo.Url, Type: "",
+			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
+			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
+		}
+		_, err = model.PutLogo(c, img)
+		if err != nil {
+			tc["Error"] = struct { Cantsave string }{ "cantsave" }
+			micrositioTpl.Execute(w, tc)
+			return
+		}
+
+		micrositio(w, r)
+	} else {
+		http.Redirect(w, r, "/registro", http.StatusFound)
+	}
+}
+
 // keyOf returns (part of) the SHA-1 hash of the data, as a hex string.
 func keyOf(data []byte) string {
 	sha := sha1.New()
@@ -200,6 +339,10 @@ func img(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-type", "image/jpeg")
 	jpeg.Encode(w, m, nil)
+}
+
+
+func delimg(w http.ResponseWriter, r *http.Request) {
 }
 
 // errorHandler wraps the argument handler with an error-catcher that

@@ -3,98 +3,19 @@ package site
 import (
     "appengine"
     "appengine/datastore"
+    "appengine/user"
     "net/http"
-    "sess"
-    "html/template"
-    "time"
+//    "html/template"
     "model"
-    //"fmt"
+    "fmt"
 )
 
-type Cta struct {
-        Folio                   int32
-        Nombre                  string
-        Apellidos               string
-        Puesto                  string
-        Email                   string
-        EmailAlt                string
-        Pass                    string
-        Tel                             string
-        Cel                             string
-        FechaHora               time.Time
-        UsuarioInt              string
-        CodigoCfm               string
-        Status                  bool
-}
-
-type Empresa struct {
-        IdEmp           string
-        Folio           int32
-        RFC                     string
-        Nombre          string
-        RazonSoc        string
-        DirCalle        string
-        DirCol          string
-        DirEnt          string
-        DirMun          string
-        DirCp           string
-        NumSuc          string
-        OrgEmp          string
-        OrgEmpOtro      string
-        OrgEmpReg       string
-        //Entidades     []Entidad
-        Url                     string
-        Benef           int
-        PartLinea       int
-        ExpComer        int
-        Desc            string
-        FechaHora       time.Time
-        Status          bool
-}
-
-type CtaEmpresa struct {
-        Folio                   int32
-        Nombre                  string
-        Apellidos               string
-        Puesto                  string
-        Email                   string
-        EmailAlt                string
-        Pass                    string
-        Tel                             string
-        Cel                             string
-        FechaHora               time.Time
-        UsuarioInt              string
-        CodigoCfm               string
-        Status                  bool
-        IdEmp           string
-        FolioE           int32
-        RFC                     string
-        NombreE          string
-        RazonSoc        string
-        DirCalle        string
-        DirCol          string
-        DirEnt          string
-        DirMun          string
-        DirCp           string
-        NumSuc          string
-        OrgEmp          string
-        OrgEmpOtro      string
-        OrgEmpReg       string
-        //Entidades     []Entidad
-        Url                     string
-        Benef           int
-        PartLinea       int
-        ExpComer        int
-        Desc            string
-        FechaHoraE       time.Time
-        StatusE          bool
-}
-
 func init() {
-    http.HandleFunc("/registro-export", registroExport)
+    //http.HandleFunc("/registro-export", registroExport)
     http.HandleFunc("/registros.csv", registroCsv)
 }
 
+/*
 func registroExport(w http.ResponseWriter, r *http.Request) {
         c := appengine.NewContext(r)
         if _, ok := sess.IsSess(w, r, c); !ok {
@@ -105,11 +26,15 @@ func registroExport(w http.ResponseWriter, r *http.Request) {
 		return
         }
 }
+*/
 
 func registroCsv(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
+    if u := user.Current(c); u == nil {
+		return
+	}
     q := datastore.NewQuery("Cta").Order("FechaHora")
-    regdata := make([]model.Cta,0,100)
+    regdata := make([]model.Cta,0,500)
 
     if _, err := q.GetAll(c, &regdata); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -117,64 +42,29 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
     }
 
 
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-type", "application/octet-stream");
+	w.Header().Set("Content-Disposition", "attachment; filename=\"reportecta.csv\"");
+	w.Header().Set("Accept-Charset","utf-8");
 
-	for _, value := range regdata {
-		q2 := datastore.NewQuery("Empresa").Ancestor(value.Key(c)).Limit(50)
+	fmt.Fprintf(w, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
+	"cta.Nombre", "cta.Apellidos", "cta.Puesto", "cta.Email", "cta.EmailAlt", "cta.Pass", "cta.Tel", "cta.Cel", "cta.FechaHora", "cta.CodigoCfm", "cta.Status",
+	"IdEmp", "RFC", "Nombre Empresa", "Razon Social", "Dir.Calle", "Dir.Colonia", "Dir.Entidad", "Dir.Municipio", "Dir.Cp", "Dir.Número Suc",
+	"Organiso Emp", "Otro Organismo", "Reg Org. Empresarial", "Url", "PartLinea", "ExpComer", "Descripción", "FechaHora Alta Emp.","emp.Status")
+	for _, cta := range regdata {
+		q2 := datastore.NewQuery("Empresa").Ancestor(cta.Key(c))
 		for cursor := q2.Run(c); ; {
-			var e Empresa
-			_, err := cursor.Next(&e)
+			var emp model.Empresa
+			_, err := cursor.Next(&emp)
 			if err == datastore.Done  {
 				break
 			}
-			// llenar linea de csv
-			ce := CtaEmpresa {
-        			Folio: value.Folio,
-			        Nombre: value.Nombre,
-			        Apellidos: value.Apellidos,
-			        Puesto: value.Puesto,
-			        Email: value.Email,
-			        EmailAlt: value.EmailAlt,
-			        Pass: value.Pass,
-			        Tel: value.Tel,
-			        Cel: value.Cel,
-			        FechaHora: value.FechaHora,
-			        UsuarioInt: value.UsuarioInt,
-			        CodigoCfm: value.CodigoCfm,
-			        Status: value.Status,
-			        IdEmp: e.IdEmp,
-			        FolioE: e.Folio,
-			        RFC: e.RFC,
-			        NombreE: e.Nombre,
-			        RazonSoc: e.RazonSoc,
-			        DirCalle: e.DirCalle,
-			        DirCol: e.DirCol,
-			        DirEnt: e.DirEnt,
-			        DirMun: e.DirMun,
-			        DirCp: e.DirCp,
-			        NumSuc: e.NumSuc,
-			        OrgEmp: e.OrgEmp,
-			        OrgEmpOtro: e.OrgEmpOtro,
-			        OrgEmpReg: e.OrgEmpReg,
-			        Url: e.Url,
-			        Benef: e.Benef,
-			        PartLinea: e.PartLinea,
-			        ExpComer: e.ExpComer,
-			        Desc: e.Desc,
-			        FechaHoraE: e.FechaHora,
-			        StatusE: e.Status,
-			}
-			//fmt.Fprintf(w, "%s", value.Nombre)
-			cuentasCsvTpl.Execute(w, ce)
+			fmt.Fprintf(w, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%t\n",
+			cta.Nombre, cta.Apellidos, cta.Puesto, cta.Email, cta.EmailAlt, cta.Pass, cta.Tel, cta.Cel, cta.FechaHora, cta.CodigoCfm, cta.Status,
+			emp.IdEmp, emp.RFC, emp.Nombre, emp.RazonSoc, emp.DirCalle, emp.DirCol, emp.DirEnt, emp.DirMun, emp.DirCp, emp.NumSuc,
+			emp.OrgEmp, emp.OrgEmpOtro, emp.OrgEmpReg, emp.Url, emp.PartLinea, emp.ExpComer, emp.Desc, emp.FechaHora, emp.Status)
 		}
 
 	}
-
-    //if err := registrosCsvTpl.Execute(w, regdata); err != nil {
-//	return
-    //}
 }
 
-var exportTpl = template.Must(template.ParseFiles("templates/export.html"))
-var registrosCsvTpl = template.Must(template.ParseFiles("templates/registros.csv"))
-var cuentasCsvTpl = template.Must(template.ParseFiles("templates/cuentas.csv"))

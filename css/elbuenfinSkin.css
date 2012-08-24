@@ -83,12 +83,6 @@ a.lnk-sec {
 	border: 1px solid #CCC;
 }
 .lineUD{
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-	border-top-style: solid;
-	border-bottom-style: solid;
-	border-top-color: #2D000E;
-	border-bottom-color: #2D000E;
 }
 .lineL{
 	border-left-width: 1px;
@@ -2111,6 +2105,40 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 	width: 97%;
 }
 
+.dataGrid{ float:left; width:98.1%; margin-left:1%; display:table; margin-top:5px; margin-bottom:5px;}
+.gridRow, a.gridRow {
+	background-image: url(../gfx/backgrid.jpg);
+	width: 98%;
+	padding-left: 2%;
+	display: table-row;
+	height: 30px;
+	padding-top: 10px;
+	padding-bottom: 4px;
+	display: block;
+	background-position: top;	
+	border: 1px solid #686567;
+	font-size: 18px;
+	font-weight: bold;
+	color: #666666;
+}
+a.gridRow:hover { background-position:bottom;}
+
+.warning, a.warning{
+	float: left;
+	width: 98.1%;
+	margin-left: 1%;
+	margin-top:20px;
+	display: table;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: #039;
+	background-image: url(../gfx/warningData.jpg);
+	text-align: center;
+	font-size: 16px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 1px solid #F30;
+}
 
 
 
