@@ -109,7 +109,7 @@ a.lnk-sec {
 
 .typeMin{ font-size:10px}
 .typeStnd+ { font-size:14px}
-.typeMx { font-size:16px}
+.typeMx { font-size:18px}
 .typeTle { font-size:20px}
 
 
@@ -860,7 +860,7 @@ form {
 label {
 	float : left;
 	font-size : 12px;
-	color : #002e68;
+	color :#666;
 	font-weight : bold;
 	cursor : text;
 	margin-top: 0;
@@ -2101,27 +2101,30 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 	background-image: url(../gfx/degradateTitle.jpg);
 	background-repeat: repeat-x;
 	padding: 9px;
-	float: left;
-	width: 97%;
+	float: right;
+	width: 97.3%;
 }
 
-.dataGrid{ float:left; width:98.1%; margin-left:1%; display:table; margin-top:5px; margin-bottom:5px;}
+.dataGrid{ float:left; width:98.1%; margin-left:1%; display:table; margin-top:3px; margin-bottom:3px;}
 .gridRow, a.gridRow {
 	background-image: url(../gfx/backgrid.jpg);
-	width: 98%;
+	width: 97%;
 	padding-left: 2%;
 	display: table-row;
 	height: 30px;
-	padding-top: 10px;
-	padding-bottom: 4px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right:10px;
 	display: block;
 	background-position: top;	
 	border: 1px solid #686567;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: bold;
 	color: #666666;
+	float:left;
 }
-a.gridRow:hover { background-position:bottom;}
+gridRow:hover { background-position:bottom;}
+.gridRow a{ color: #666666; font-size: 20px; font-weight:bold; margin-top:10px; width:400px; display:block; float:left;}
 
 .warning, a.warning{
 	float: left;
@@ -2139,7 +2142,17 @@ a.gridRow:hover { background-position:bottom;}
 	padding-bottom: 5px;
 	border: 1px solid #F30;
 }
-
+a.eliminate{
+	background-image: url(../gfx/btnEliminate.png);
+	background-repeat: no-repeat;
+	background-position: top;
+	display: block;
+	height: 35px;
+	width: 35px;
+	float:right;
+	margin:0px;
+}
+a.eliminate:hover{ background-position:bottom;}
 
 
 

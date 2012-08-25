@@ -69,15 +69,15 @@ function loadmun(id, response){
 				<div class="marg-5px last">&nbsp;</div>
 			  </div>
 			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/></div>
-			<div class="col-10 last marg-U80pix lineUD marg-R10pix">
+			<div class="col-6 last marg-U80pix lineUD marg-R10pix">
 				{{with .Sess}}
 				<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-				  <div class="marg-5px last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
+				  <div class="last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
 				{{end}}
 		  </div>
 		</div>
 		   <div class="col-24  Bg-Wh marg-D10pix">
-			 <div class="menuAdmin">
+			 <div class="menuAdmin Bg-Drks">
 			<div class="col-5" style="min-height:600px;">
 			<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 			   <ul class="menuAdmin">
@@ -90,14 +90,14 @@ function loadmun(id, response){
 			   </ul>
 		   
 			 </div>
-			 <div class="col-19 last Bg-Drks">
+			 <div class="col-19 last">
 			
 			 <div class="titlecond marg-U20pix">
-				 <h2 class="first">Registro de Empresas</h2>
+				 <h2 class="first">Registro de empresas</h2>
 				 {{with .FormDataEmp}}
 				 <!--a href="/le" onclick="addCompany()" class="button blue last"><span>LISTA DE EMPRESAS</span></a-->
 				 {{else}}
-				 <a href="/se" onclick="addCompany()" class="button red last"><span>AGREGAR EMPRESA</span></a>
+				 <a href="/se" onclick="addCompany()" class="button big red last"><span>AGREGAR EMPRESA</span></a>
 				 {{end}}
 			 </div>
 			 <div class="first"> 
@@ -142,7 +142,7 @@ function loadmun(id, response){
 					 
 				  <div class="line ">
 					<div class="col-100PR first marg-UD10px">
-					  <label>Estado<span class="typ-Sc"> * </span></label>
+					  <label class="marg-D10pix">Entidad federativa<span class="typ-Sc"> * </span></label>
 					  <select name="DirEnt" class="last" id="CveEnt">
 						 {{range .Entidades}}
 						 <option value="{{.CveEnt}}" {{if .Selected}}selected="{{.Selected}}"{{end}}>{{.Entidad}}</option>
@@ -150,7 +150,7 @@ function loadmun(id, response){
 					  </select>
 					</div>
 					<div class="col-100PR first marg-UD10px">
-					  <label> Delegación o Municipio<span class="typ-Sc"> * </span></label>   
+					  <label class="marg-D10pix"> Delegación o Municipio<span class="typ-Sc"> * </span></label>   
 					  <!--input type="hidden" class="validate[required,custom[onlyLetterSp]] small {{.ErrDirMun}}" name="DirMun" value="{{.DirMun}}"  onchange="activateCancel()"/-->
 					  <input type="hidden" name="DirMunSel" value="{{.DirMun}}" id="CveMun"/>
 						<div id="show_mun" align="center">
@@ -191,7 +191,7 @@ function loadmun(id, response){
 					<input type="text" class="validate[required,minSize[1],custom[integer]] small {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
 					</div>
 				  <div class="col-100PR first marg-UD10px">
-					<label>Organismo Empresarial</label>
+					<label>Organismo empresarial</label>
 					<select name="OrgEmp" class="last">
 						 {{range .Organismos}}
 						 <option value="{{.Siglas}}" {{if .Selected}}selected="{{.Selected}}"{{end}}>{{.Siglas}}</option>
@@ -213,8 +213,8 @@ function loadmun(id, response){
 				  <input type="checkbox" name="PartLinea" value="1" id="quest1" {{if .PartLinea}}checked="{{.PartLinea}}"{{end}}  onchange="activateCancel()"/>
 				</div>         
 				<div class="line ">
-				  <label>¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
-				  <input type="checkbox" name="ExpComer" value="1" id="quest2" {{if .ExpComer}}checked="{{.ExpComer}}"{{end}} onchange="activateCancel()"/>
+				  <label class="col-6">¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
+				  <input type="checkbox"  class="last" name="ExpComer" value="1" id="quest2" {{if .ExpComer}}checked="{{.ExpComer}}"{{end}} onchange="activateCancel()"/>
 				</div>
 				<div class="line ">
 				  <label>Sitio de internet</label>
@@ -227,9 +227,9 @@ function loadmun(id, response){
 				  </div>
 				  <div class="line ">
 					{{if .IdEmp}}
-						<label for="accept">Para aceptar y realizar cambios a esta Empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
+						<label for="accept">Para aceptar y realizar cambios a esta empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
 					{{else}}
-						<label for="accept">Para aceptar este nuevo registro de Empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
+						<label for="accept">Para aceptar este nuevo registro de empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
 					{{end}}
 					<input type="checkbox" class="validate[required] last" name="accept" value="1" id="accept"/>
 				  </div>
@@ -240,7 +240,7 @@ function loadmun(id, response){
 
 				{{if .IdEmp}}
 					<input type="hidden" value="a" name="d"/>
-					<button type="submit" value="1" name="modificar" class="big blue last"><span>Modificar</span></button>
+					<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
 					<button type="reset" class="grey last big hidden" id="cancelbtn"><span>Restablecer</span></button>
 					{{else}}
 					<button type="submit" class="big red last"><span>Aplicar</span></button>
@@ -250,9 +250,10 @@ function loadmun(id, response){
 
 			{{range .Empresa}}
 			<div class="dataGrid">
-				<a href="/se?IdEmp={{.IdEmp}}" class="gridRow"><span class="icon icochevroright"></span>{{.Nombre}}</a> 
+              <div class="gridRow">
+				<a href="/se?IdEmp={{.IdEmp}}" ><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="#null" class="eliminate"></a>
 				<!--a href="/de?IdEmp={{.IdEmp}}" class="outlined icon icoremove first Dsblock marg-5px btnicon"><span class="icon icoremov"></span></a-->
-			</div>
+			</div></div>
 			{{else}}
 				{{if .FormDataEmp}}
 				{{else}}
@@ -310,17 +311,17 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 					</div>
 					<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 				</div>
-				<div class="col-10 last marg-U80pix lineUD marg-R10pix">
+				<div class="col-6 last marg-U80pix lineUD marg-R10pix">
 					{{with .Sess}}
 					<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-					<div class="marg-5px last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
+					<div class="last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
 					{{end}}
 				</div>
 			</div>
 			<div class="col-24  Bg-Wh marg-D10pix">
 				<div class="menuAdmin">
 					<div class="col-5" style="min-height:600px;">
-						<h3 class="typ-Sc alineCenter">Menú</h3>
+						<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 						<ul class="menuAdmin">
 							<li><a href="/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
 							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario Admin</a></li>
@@ -332,17 +333,19 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 					</div>
 				<div class="col-19 last Bg-Drks">
 			 	<div class="titlecond marg-U20pix">
-					 <h2 class="first">Micrositio por Empresa</h2>
+					 <h2 class="first">Micrositios por empresa</h2>
 				</div>
 				{{range .Empresa}}
+				
 				<div class="dataGrid">
-					<a href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}" class="gridRow"><span class="icon icochevroright"></span>{{.Nombre}}</a> 
+					<a href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}"  class="gridRow"><span class="icon icochevroright"></span>{{.Nombre}}</a>
 				</div>
 				{{else}}
 				{{if .FormDataEmp}}
+				</div>
 				{{else}}
-			<div class="dataGrid">
-				<div class="warning" >No hay Empresas</div>
+<div class="dataGrid">
+	    <div class="warning" >No hay Empresas</div>
 			</div>
 				{{end}}
 				{{end}}
