@@ -142,7 +142,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 					}
 					u.CodigoCfm = "Desactivado"
 					u.Status = false
-					_, err = datastore.Put(c, u.Key(c), &u)
+					_, err = model.PutCta(c, u)
 					if err != nil {
 						http.Error(w, err.Error(), http.StatusInternalServerError)
 						return
@@ -152,6 +152,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 					ctadmTpl.ExecuteTemplate(w, "cta", tc)
 					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
 					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
+					http.Redirect(w, r, "/registro", http.StatusFound)
 					return
 				}
 				tc := make(map[string]interface{})
@@ -159,7 +160,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 				ctadmTpl.ExecuteTemplate(w, "cta", tc)
 			} else {
 				// Debe borrar empresas antes o Transferir sus empresas a otro usuario
-				errmsg := struct { ErrMsg string }{ "Para desactivar su usuario debe dar de baja las empresas que tiene registradas" }
+				errmsg := struct { ErrMsg string }{ "Para cancelar una cuenta se deben dar de baja las empresas registradas" }
 				ErrorGeneralTpl.Execute(w, errmsg)
 				return
 			}

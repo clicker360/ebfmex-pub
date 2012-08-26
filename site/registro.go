@@ -118,9 +118,9 @@ func Registrar(w http.ResponseWriter, r *http.Request) {
 				"registro@elbuenfin.org",
 				m.Md5,
 				url.QueryEscape(m.Llave),
-				m.Email, 
+				m.Email,
 				url.QueryEscape(m.Nombre))
-				r1, err := client.Get(url) 
+				r1, err := client.Get(url)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return

@@ -266,7 +266,7 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool
 			fd.ErrDirCp = "invalid"
 			ef = true
 		}
-		if fd.NumSuc == "" || !model.ValidNum.MatchString(fd.NumSuc) {
+		if fd.NumSuc != "" && !model.ValidNum.MatchString(fd.NumSuc) {
 			fd.ErrNumSuc = "invalid"
 			ef = true
 		}

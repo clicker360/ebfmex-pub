@@ -29,8 +29,8 @@ handlers:
   expiration: "1h"
 
 - url: /favicon.ico
-  static_files: /imgs/favicon.ico
-  upload: /imgs/favicon.ico
+  static_files: imgs/favicon.ico
+  upload: imgs/favicon.ico
 
 - url: /(.*\.css)
   mime_type: text/css

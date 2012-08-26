@@ -11,6 +11,8 @@ function activateCancel(){ $("#cancelbtn").addClass("show") }
 function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 function activeLghtbx(){ $('#contrano').removeClass("hidden");  $('#contrasi').addClass("hidden"); }
 function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano').addClass("hidden"); }
+function activeCancelCtaLghtbx(){ $('#cancelctano').removeClass("hidden");  $('#cancelctasi').addClass("hidden"); }
+function deactiveCancelCtaLghtbx(){ $('#cancelctasi').removeClass("hidden");  $('#cancelctano').addClass("hidden"); }
 </script>
 <title>Administración de cuenta</title>
 <link href="css/Origami.css" rel="stylesheet" type="text/css" />
@@ -71,12 +73,13 @@ function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano')
               <label>Correo electrónico segundo contacto</label>
 				<input type="text" class="validate[optional,custom[email]] small {{.ErrEmailAlt}}" name="EmailAlt" value="{{.EmailAlt}}"  onchange="activateCancel()"/>
             </div>
+
             <div class="line" id="contrasi">
-				<label><a href="#null" onclick="activeLghtbx()">Cambiar contraseña (clic aquí)</a></label>
+				<p><a href="#null" onclick="activeLghtbx()"><span class="typ-Sc">Cambiar contraseña (clic aquí)</span></a></p>
             </div>
             <div id="contrano" class="hidden">
-				<label><a href="#null" onclick="deactiveLghtbx()">Cerrar contraseña (clic aquí)</a></label>
 				<div class="line">
+				<p><a href="#null" onclick="deactiveLghtbx()"><span class="typ-Sc">Cerrar contraseña (clic aquí)</span></a></p>
 				  <label>Contraseña (capture sólo para cambiar)<br /></label>
 				  <input type="password" id="cpass" class="validate[optional] small {{.ErrPass}}" value="{{.Pass}}" name="Pass" onchange="activateCancel()"/>
 				</div>
@@ -86,17 +89,28 @@ function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano')
 				</div>
             </div>
 			<div class="line ">
-				</br>
-				</br>
-				</br>
 				<label for="accept">Para aceptar y realizar cambios a esta cuenta haga clic en el recuadro <span class="typ-Sc">* </span></label>
 				<input type="checkbox" class="validate[required] last" name="accept" value="1" id="accept"/>
 				</br>
 				</br>
 				</br>
-		    </div>
+			</div>	
+			<div class="line" id="cancelctasi">
+				<p><a href="#null" onclick="activeCancelCtaLghtbx()">Para cancelar cuenta (clic aquí)</a></p>
+            </div>
+            <div id="cancelctano" class="hidden">
+				<hr/>
+				<div class="line">
+					<p><a href="#null" onclick="deactiveCancelCtaLghtbx()">Cerrar cancelación (clic aquí)</a></p>
+					<p>Para cancelar la cuenta primero debes dar de baja las empresas.
+						Al cancelar una cuenta se pierden los beneficios adquiridos.
+					</p>
+              		<a href="/ctadel?desactiva=1" class="button grey marg-10pix last" onclick="javascript:if(confirm('¿Está seguro de continuar?')){return true;}else{return false;}"><span>Cancelar cuenta</span></a>
+				</div>
+            </div>
           </div>
           <div class="box1"> <span class="typ-Sc"> * </span>Todos los campos marcados son obligatorios </div>
+
 		<div class="col-15"> 
 	  	{{end}}
 		 {{with .Sess}}

@@ -179,6 +179,7 @@ func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 }
 
 func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
+	_ = DelImg(c, "EmpLogo", id)
     if err := datastore.Delete(c, datastore.NewKey(c, "Empresa", id, 0, r.Key(c))); err != nil {
 		return err
 	}

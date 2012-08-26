@@ -5,28 +5,13 @@ import (
     "appengine/datastore"
     "appengine/user"
     "net/http"
-//    "html/template"
     "model"
     "fmt"
 )
 
 func init() {
-    //http.HandleFunc("/registro-export", registroExport)
     http.HandleFunc("/registros.csv", registroCsv)
 }
-
-/*
-func registroExport(w http.ResponseWriter, r *http.Request) {
-        c := appengine.NewContext(r)
-        if _, ok := sess.IsSess(w, r, c); !ok {
-                tc := make(map[string]interface{})
-                exportTpl.ExecuteTemplate(w, "cta", tc)
-                return
-        } else {
-		return
-        }
-}
-*/
 
 func registroCsv(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)

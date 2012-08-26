@@ -3,14 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<!--Futuro autocomplete script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script-->
+<!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script-->
+<!--link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/blitzer/jquery-ui.css" type="text/css" /-->
 <script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
 <script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
-<!-- Futuro autocomplete style>
-	.ui-autocomplete-loading { background: white url('gfx/ui-anim_basic_16x16.gif') right center no-repeat; } 
-	#city { width: 25em; }
-</style-->
-<!--script type="text/javascript" src="scripts/munselect.js"></script-->
+<!--script src="scripts/jquery.easy-confirm-dialog.js"></script-->
 <script type="text/javascript">
 $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: true}); });
 function activateCancel(){ $("#cancelbtn").addClass("show") }
@@ -33,6 +30,8 @@ $(document).ready(function() {
 	$("#enviar").submit(function() {
 		if($('#quest2').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
 	});
+	//$(".customDialog").easyconfirm({dialog: $("#question")});
+	//$(".customDialog").easyconfirm({locale: $.easyconfirm.locales.esMX});
 });
 function getmsp() {
 	$.get("msp", {
@@ -53,6 +52,10 @@ function loadmun(id, response){
 	#CveEnt{ padding:3px; width:200px;}
 	#MunSelector{ padding:3px; width:200px;}
 	.both{ float:left; margin:0 15px 0 0; padding:0px;}
+	.ui-dialog { font-size: 11px; }
+	#question { width: 300px!important; height: 60px!important; padding: 10px 0 0 10px; }
+	#question img { float: left; }
+	#question span { float: left; margin: 20px 0 0 10px; }
 </style>
 <title>Administración de Empresas</title>
 <link href="css/Origami.css" rel="stylesheet" type="text/css" />
@@ -62,7 +65,6 @@ function loadmun(id, response){
 	<form action="/{{if .FormDataEmp.IdEmp}}me{{else}}ne{{end}}" method="post" id="enviar">
 	<div class="col-100PR  bgt-red-top first">
 	  <div class="col-cent">
-	   
 		<div class="col-100PR first  BR-R-10px">
 			<div class="col-14">
 			  <div class="col-10 marg-U80pix lineUD">
@@ -82,7 +84,7 @@ function loadmun(id, response){
 			<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 			   <ul class="menuAdmin">
 				 <li><a href="/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
-				 <li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario Admin</a></li>
+				 <li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 				 <li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 				 <li><a href="#"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
 				 <li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
@@ -187,8 +189,8 @@ function loadmun(id, response){
 				   <div class="col-9 last">
 				<div class="line  ">
 					<div class="col-100PR first marg-UD10px">
-					<label>Número de sucursales<span class="typ-Sc"> * </span></label>
-					<input type="text" class="validate[required,minSize[1],custom[integer]] small {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
+					<label>Número de sucursales</label>
+					<input type="text" class="validate[optional,minSize[1],custom[integer]] small {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
 					</div>
 				  <div class="col-100PR first marg-UD10px">
 					<label>Organismo empresarial</label>
@@ -243,17 +245,18 @@ function loadmun(id, response){
 					<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
 					<button type="reset" class="grey last big hidden" id="cancelbtn"><span>Restablecer</span></button>
 					{{else}}
+					<input type="hidden" value="a" name="d"/>
 					<button type="submit" class="big red last"><span>Aplicar</span></button>
 					<button type="reset" class="grey last big hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
 				{{end}}
 			{{else}}
 
+			<!--div class="dialog" id="question"><img src="imgs/question.png" alt="" />¿Desea eliminar esta empresa?</div-->
 			{{range .Empresa}}
 			<div class="dataGrid">
               <div class="gridRow">
-				<a href="/se?IdEmp={{.IdEmp}}" ><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="#null" class="eliminate"></a>
-				<!--a href="/de?IdEmp={{.IdEmp}}" class="outlined icon icoremove first Dsblock marg-5px btnicon"><span class="icon icoremov"></span></a-->
-			</div></div>
+				  <a href="/se?IdEmp={{.IdEmp}}" ><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="eliminate customDialog" onclick="javascript:if(confirm('¿Desea continuar?')){return true;}else{return false;}"></a></div>
+		  	</div>
 			{{else}}
 				{{if .FormDataEmp}}
 				{{else}}
@@ -324,7 +327,7 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 						<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 						<ul class="menuAdmin">
 							<li><a href="/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
-							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario Admin</a></li>
+							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 							<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 							<li><a href="#"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
 							<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
