@@ -391,11 +391,11 @@ func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, t
 	if valida {
 		var ef bool
 		ef = false
-		if fd.Name == "" || !model.ValidName.MatchString(fd.Name) {
+		if fd.Name != "" && !model.ValidName.MatchString(fd.Name) {
 			fd.ErrName = "invalid"
 			ef = true
 		}
-		if fd.Url == "" || !model.ValidUrl.MatchString(fd.Url) {
+		if fd.Url != "" && !model.ValidUrl.MatchString(fd.Url) {
 			fd.ErrUrl = "invalid"
 			ef = true
 		}

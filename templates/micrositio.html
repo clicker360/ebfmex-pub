@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
+	$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
 	function activateCancel(){ $("#cancelbtn").addClass("show") }
 	function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 	</script>
@@ -109,10 +110,11 @@
 								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
 								<div class="col-19" id="addCont"> 
 							  		<div class="col-18 marg-L10pix">
-                                		<div class="col-7 last"> <img id="pic" src="" alt="Logotipo Empresa" width="100%" /> </div>
+                                		<div class="col-7 last"> <img id="pic" src="" alt="Logotipo empresa" width="100%" /> </div>
 										<div class="col-10">
+											<p>Subir tu logotipo</p>
 											<div class="box1">
-												<p>Sólo imagenes formato jpeg o png. Tamaño máximo 800x600 pixeles.</p>
+												<p><span class="typ-Sc">Sólo imagenes formato jpeg o png. Tamaño máximo 800x600 pixeles.</span></p>
 											</div>
 											<div class="line">
 												<label>Subir logotipo</label><span class="typ-Sc"> * </span></label>
@@ -122,8 +124,8 @@
 												</div>
 											</div>
 											<div class="line">
-												<p>Para visualizar la imagen haga clic en Subir. Cada que subes una imagen sustituyes la anterior.</p>
-												<button  name="Upload"  id="Upload" type="submit" class="grey medium last" value="Upload"  ><span>Subir</span></button>
+												<p>Cuando hayas seleccionado la imagen presiona el botón de “Guardar”. Si deseas sustituir la imagen sólo necesitas seleccionar otra y guardarla.</p>
+												<button  name="Upload"  id="Upload" type="submit" class="grey medium last" value="Upload"  ><span>Guardar</span></button>
 											</div>
 											<div class="line">
 											</div>
@@ -141,20 +143,24 @@
 							  		<div class="col-18 marg-L10pix">
 										<div class="col-10">
 										<hr/>
-										<p>Datos Adicionales</p>
+										<p>Datos adicionales</p>
 											<div class="line">
 											</div>
 											<div class="line ">
-												<label>Título de logotipo<span class="typ-Sc"> * </span></label>
-												<input type="text" class="validate[required] small {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
+												<label>Título de logotipo</label>
+												<input type="text" class="validate[optional] small {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
 											</div>
 											<div class="line ">
-												<label>Enlace Web (URL al que debe apuntar el logotipo, opcional)</label>
+												<label>Enlace Web al que debe apuntar el logotipo (opcional)</label>
 												<input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
 											</div>
 											<div class="line ">
-												<label>Descripción al público de la Empresa</label>
-												<textarea class="validate[optional] small last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
+												<label>Descripción de la empresa visible al público:</label>
+												<textarea class="validate[optional] medium last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
+											</div>
+											<div class="line">
+											</div>
+											<div class="line">
 											</div>
 											<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
 											<div class="line ">
