@@ -5,7 +5,7 @@ import (
     "appengine"
     "appengine/datastore"
     "appengine/mail"
-    "appengine/user"
+//    "appengine/user"
     "net/http"
 	"strings"
 	"bytes"
@@ -153,12 +153,10 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 						http.Error(w, err.Error(), http.StatusInternalServerError)
 						return
 					}
-					tc := make(map[string]interface{})
-					tc["CanceledCta"] = 1
-					ctadmTpl.ExecuteTemplate(w, "cta", tc)
 					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
 					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
-					http.Redirect(w, r, "/registro", http.StatusFound)
+					errmsg := struct { ErrMsg string }{ "¡Gracias por participar en El Buen Fin!" }
+					ErrorGeneralTpl.Execute(w, errmsg)
 
 					// INICIA ENVIO DE CORREO DE MOTIVOS
 					// Este tramo no debe arrojar errores al usuario
@@ -173,18 +171,19 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 					}
 					mail.Send(c, msg)
 					// Si el hay usuario admin se despliega el motivo (efectos de prueba
-					if gu := user.Current(c); gu != nil {
-						cancelMessageTpl.Execute(w, u)
-					}
+					//if gu := user.Current(c); gu != nil {
+				//		cancelMessageTpl.Execute(w, u)
+				//	}
 					// TERMINA ENVIO DE MOTIVOS
 					return
 				}
-				tc := make(map[string]interface{})
-				tc["AskCancelCta"] = 1
-				ctadmTpl.ExecuteTemplate(w, "cta", tc)
+				http.Redirect(w, r, "/cta", http.StatusFound)
 			} else {
 				// Debe borrar empresas antes o Transferir sus empresas a otro usuario
-				errmsg := struct { ErrMsg string }{ "Para cancelar una cuenta primero se deben dar de baja las empresas registradas" }
+				errmsg := struct {
+					ErrMsg string
+					Back string 
+				}{ "Para cancelar una cuenta primero se deben dar de baja las empresas registradas", "1", }
 				ErrorGeneralTpl.Execute(w, errmsg)
 				return
 			}
