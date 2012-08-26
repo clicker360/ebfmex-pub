@@ -2122,9 +2122,13 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 	font-weight: bold;
 	color: #666666;
 	float:left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	white-space: nowrap;
 }
 gridRow:hover { background-position:bottom;}
-.gridRow a{ color: #666666; font-size: 20px; font-weight:bold; margin-top:10px; width:400px; display:block; float:left;}
+.gridRow a{ color: #666666; font-size: 20px; font-weight:bold; margin-top:10px; width:500px; display:block; float:left; overflow: hidden;}
 
 .warning, a.warning{
 	float: left;
