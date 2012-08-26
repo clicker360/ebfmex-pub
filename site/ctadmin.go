@@ -4,8 +4,11 @@ import (
 	"html/template"
     "appengine"
     "appengine/datastore"
+    "appengine/mail"
+    "appengine/user"
     "net/http"
 	"strings"
+	"bytes"
     "time"
 	"fmt"
 	"model"
@@ -124,6 +127,9 @@ func CtaMod(w http.ResponseWriter, r *http.Request) {
 }
 
 func CtaDel(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		return
+	}
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
 		if u, err := model.GetCta(c, s.User); err != nil {
@@ -153,6 +159,24 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
 					w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Wed, 07-Oct-2000 14:23:42 GMT"))
 					http.Redirect(w, r, "/registro", http.StatusFound)
+
+					// INICIA ENVIO DE CORREO DE MOTIVOS
+					// Este tramo no debe arrojar errores al usuario
+					var hbody bytes.Buffer
+					u.CodigoCfm = r.FormValue("motivo")
+					cancelMessageTpl.Execute(&hbody, u)
+					msg := &mail.Message{
+						Sender:  "Cancelación de cuenta / Buen Fin <contacto@elbuenfin.org>",
+						To:      []string{"contacto@elbuenfin.org"},
+						Subject: "Aviso de motivo de cuenta cancelada / El Buen Fin en línea",
+						HTMLBody: hbody.String(),
+					}
+					mail.Send(c, msg)
+					// Si el hay usuario admin se despliega el motivo (efectos de prueba
+					if gu := user.Current(c); gu != nil {
+						cancelMessageTpl.Execute(w, u)
+					}
+					// TERMINA ENVIO DE MOTIVOS
 					return
 				}
 				tc := make(map[string]interface{})
@@ -160,7 +184,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 				ctadmTpl.ExecuteTemplate(w, "cta", tc)
 			} else {
 				// Debe borrar empresas antes o Transferir sus empresas a otro usuario
-				errmsg := struct { ErrMsg string }{ "Para cancelar una cuenta se deben dar de baja las empresas registradas" }
+				errmsg := struct { ErrMsg string }{ "Para cancelar una cuenta primero se deben dar de baja las empresas registradas" }
 				ErrorGeneralTpl.Execute(w, errmsg)
 				return
 			}
@@ -284,4 +308,5 @@ func ctaToForm(e model.Cta) FormDataCta {
 
 var dashTpl = template.Must(template.ParseFiles("templates/dashboard.html"))
 var ctadmTpl = template.Must(template.ParseFiles("templates/ctadm.html"))
+var cancelMessageTpl = template.Must(template.ParseFiles("templates/mail_cancelmsg.html"))
 var ErrorGeneralTpl = template.Must(template.ParseFiles("templates/aviso_error_general.html"))

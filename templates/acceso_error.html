@@ -1,4 +1,3 @@
-{{define "cta"}}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,9 +10,9 @@ $(document).ready(function() { $("#acceso").validationEngine({promptPosition : "
 function activeLghtbx(){ $('#light').removeClass("hidden"); $('#box').removeClass("hidden") }
 function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("hidden") }
 </script>
-<title>Registrate para participar</title>
-<link href="http://violeta.tv/happyending/css/Origami.css" rel="stylesheet" type="text/css" />
-<link href="http://violeta.tv/happyending/css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+<title>Aviso</title>
+<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 <body class=" bgt-main">
 	
@@ -57,7 +56,7 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
        <div class="col-24 marg-D10pix Bg-Wh marg-D10pix">
   <div class=" box1  boxback Bg-Drks BR-R-3px marg-L10pix marg-U10pix">
   <div class="col-11">
-    <h1 class="alineCenter">Usuario o contraseña incorrectos</h1>
+	  <h1 class="alineCenter">{{.Sess.ErrMsg}}</h1>
   </div>
   <div class="col-12 last">
 	  <p class="typeMx">Proporciona tu usuario (correo electrónico) y contraseña con las que registraste tu cuenta.</p>
@@ -77,4 +76,3 @@ function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("h
 </div>
 </body>
 </html>
-{{end}}

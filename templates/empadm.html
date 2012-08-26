@@ -102,24 +102,34 @@ function loadmun(id, response){
 				 <a href="/se" onclick="addCompany()" class="button big red last"><span>AGREGAR EMPRESA</span></a>
 				 {{end}}
 			 </div>
-			 <div class="first"> 
-			   <div class="col-19" id="addCont"> 
-
-
-
-		<div class="col-19 last marg-R15pix">
-			{{if .FormDataEmp.IdEmp}}
-			  <h3 class="alineCenter" >{{.Nombre}}</h3>
+			{{range .Empresa}}
+			<div class="dataGrid">
+              <div class="gridRow">
+				  <a href="/se?IdEmp={{.IdEmp}}" ><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="button grey marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta empresa? Las ofertas, sucursales y logo asociados se eliminarán también')){return true;}else{return false;}"><span>Baja</span></a>
+			  </div>
+		  	</div>
 			{{else}}
-				{{if .Empresa}}
+				{{if .FormDataEmp}}
 				{{else}}
-				<!--h3 class="alineCenter" >Nueva Empresa</h3-->
+				<div class="dataGrid">
+					<div class="warning" >No hay Empresas</div>
+				</div>
 				{{end}}
 			{{end}}
-			 
-		</div>
-		<div class="col-18 marg-L10pix">
-		 {{with .FormDataEmp}}
+			 <div class="first"> 
+			   <div class="col-19" id="addCont"> 
+				<div class="col-19 last marg-R15pix">
+				{{if .FormDataEmp.IdEmp}}
+				  <h3 class="alineCenter" >{{.Nombre}}</h3>
+				{{else}}
+					{{if .Empresa}}
+					{{else}}
+					<!--h3 class="alineCenter" >Nueva Empresa</h3-->
+					{{end}}
+				{{end}}
+				</div>
+		 	{{with .FormDataEmp}}
+				<div class="col-18 marg-L10pix">
 				{{if .IdEmp}}
 				  <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
 				{{end}}
@@ -251,20 +261,7 @@ function loadmun(id, response){
 				{{end}}
 			{{else}}
 
-			<!--div class="dialog" id="question"><img src="imgs/question.png" alt="" />¿Desea eliminar esta empresa?</div-->
-			{{range .Empresa}}
-			<div class="dataGrid">
-              <div class="gridRow">
-				  <a href="/se?IdEmp={{.IdEmp}}" ><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="eliminate customDialog" onclick="javascript:if(confirm('¿Desea continuar?')){return true;}else{return false;}"></a></div>
-		  	</div>
-			{{else}}
-				{{if .FormDataEmp}}
-				{{else}}
-			<div class="dataGrid">
-				<div class="warning" >No hay Empresas</div>
-			</div>
-				{{end}}
-			{{end}}
+			
 
 			{{end}}
          </div>
@@ -339,18 +336,18 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 					 <h2 class="first">Micrositios por empresa</h2>
 				</div>
 				{{range .Empresa}}
-				
 				<div class="dataGrid">
-					<a href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}"  class="gridRow"><span class="icon icochevroright"></span>{{.Nombre}}</a>
+              		<div class="gridRow">
+						<a href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}"><span class="icon icochevroright"></span>{{.Nombre}}</a>
+					</div>
 				</div>
 				{{else}}
-				{{if .FormDataEmp}}
-				</div>
-				{{else}}
-<div class="dataGrid">
-	    <div class="warning" >No hay Empresas</div>
-			</div>
-				{{end}}
+					{{if .FormDataEmp}}
+					{{else}}
+					<div class="dataGrid">
+						<div class="warning" >No hay Empresas</div>
+					</div>
+					{{end}}
 				{{end}}
 			</div>
 		</div>

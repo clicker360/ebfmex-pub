@@ -54,7 +54,7 @@ func Acceso(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 			st.User = r.FormValue("u")
-			st.ErrMsg = "Usuario y/o Contraseña no aceptados"
+			st.ErrMsg = "Usuario o contraseña incorrectos"
 			st.ErrClass = "show"
 		} else {
 			st.User = r.FormValue("u")
@@ -68,7 +68,7 @@ func Acceso(w http.ResponseWriter, r *http.Request) {
 	}
 	tc := make(map[string]interface{})
 	tc["Sess"] = st
-    accesoErrorTpl.ExecuteTemplate(w, "cta", tc)
+    accesoErrorTpl.Execute(w, tc)
 }
 
 func Salir(w http.ResponseWriter, r *http.Request) {
@@ -94,7 +94,7 @@ func Recover(w http.ResponseWriter, r *http.Request) {
 			// intenta buscar en la base un usuario con email y empresa
 			if cta, err := model.GetCta(c, email); err == nil {
 				//q := datastore.NewQuery("Empresa").Filter("RFC =", rfc).Ancestor(cta.Key(c)).Limit(3)
-				q := datastore.NewQuery("Empresa").Ancestor(cta.Key(c)).Limit(1)
+				q := datastore.NewQuery("Empresa").Filter("Status =", true).Ancestor(cta.Key(c)).Limit(1)
 				if count, _ := q.Count(c); count != 0 {
 					for t := q.Run(c); ; {
 						_, err := t.Next(&cta)
