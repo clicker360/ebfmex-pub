@@ -13,7 +13,8 @@ $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "t
 function activateCancel(){ $("#cancelbtn").addClass("show") }
 function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 $(document).ready(function() {
-	$('#urlreq').hide()
+	$('.ellipsis').ellipsis();
+ 	$('#urlreq').hide()
 	$('#loader').hide();
 	$('#CveEnt').change(function(){
 		$('#show_mun').fadeOut();
@@ -104,8 +105,8 @@ function loadmun(id, response){
 			 </div>
 			{{range .Empresa}}
 			<div class="dataGrid">
-              <div class="gridRow">
-				  <a href="/se?IdEmp={{.IdEmp}}" ><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="button grey marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta empresa? Las ofertas, sucursales y logo asociados se eliminarán también')){return true;}else{return false;}"><span>Baja</span></a>
+              <div class="gridRow ellipsis">
+				  <a href="/se?IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="button grey marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta empresa? Las ofertas, sucursales y logo asociados se eliminarán también')){return true;}else{return false;}"><span>Baja</span></a>
 			  </div>
 		  	</div>
 			{{else}}
