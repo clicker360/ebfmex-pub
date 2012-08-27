@@ -24,11 +24,11 @@ $(document).ready(function() {
 	getmsp()
 
 	$("#url1").blur(function() {
-		if($('#quest2').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
+		if($('#quest1').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
 		//alert($('#url1').val());
 	});
 	$("#enviar").submit(function() {
-		if($('#quest2').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
+		if($('#quest1').attr('checked') && $('#url1').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
 	});
 	//$(".customDialog").easyconfirm({dialog: $("#question")});
 	//$(".customDialog").easyconfirm({locale: $.easyconfirm.locales.esMX});
@@ -225,15 +225,15 @@ function loadmun(id, response){
 				  <input type="checkbox" name="PartLinea" value="1" id="quest1" {{if .PartLinea}}checked="{{.PartLinea}}"{{end}}  onchange="activateCancel()"/>
 				</div>         
 				<div class="line ">
-				  <label class="col-6">¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
-				  <input type="checkbox"  class="last" name="ExpComer" value="1" id="quest2" {{if .ExpComer}}checked="{{.ExpComer}}"{{end}} onchange="activateCancel()"/>
-				</div>
-				<div class="line ">
 				  <label>Sitio de internet</label>
 				  <div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()">Obligatorio indicar sitio de internet si su empresa ya tiene experiencia en comercio electrónico</div>
 				  <input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url1" onchange="activateCancel()"/>
 				</div>
-				  <div class="line ">
+				<div class="line ">
+				  <label class="col-6">¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
+				  <input type="checkbox"  class="last" name="ExpComer" value="1" id="quest2" {{if .ExpComer}}checked="{{.ExpComer}}"{{end}} onchange="activateCancel()"/>
+				</div>
+				<div class="line ">
 				   <label>¿Qué retos o dificultades identificas para implementar o mejorar el comercio electrónico de tu empresa?</label>
 				   <textarea class="validate[optional] small last {{.ErrDesc}}" name="Desc" onchange="activateCancel()">{{.Desc}}</textarea>
 				  </div>
