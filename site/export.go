@@ -32,7 +32,7 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Disposition", "attachment; filename=\"reportecta.csv\"");
 	w.Header().Set("Accept-Charset","utf-8");
 
-	fmt.Fprintf(w, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
+	fmt.Fprintf(w, "'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'\n",
 	"cta.Nombre", "cta.Apellidos", "cta.Puesto", "cta.Email", "cta.EmailAlt", "cta.Pass", "cta.Tel", "cta.Cel", "cta.FechaHora", "cta.CodigoCfm", "cta.Status",
 	"IdEmp", "RFC", "Nombre Empresa", "Razon Social", "Dir.Calle", "Dir.Colonia", "Dir.Entidad", "Dir.Municipio", "Dir.Cp", "Dir.Número Suc",
 	"Organiso Emp", "Otro Organismo", "Reg Org. Empresarial", "Url", "PartLinea", "ExpComer", "Descripción", "FechaHora Alta Emp.","emp.Status")
@@ -44,7 +44,7 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
 			if err == datastore.Done  {
 				break
 			}
-			fmt.Fprintf(w, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%t\n",
+			fmt.Fprintf(w, "'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%d'|'%d'|'%s'|'%s'|'%t'\n",
 			cta.Nombre, cta.Apellidos, cta.Puesto, cta.Email, cta.EmailAlt, cta.Pass, cta.Tel, cta.Cel, cta.FechaHora, cta.CodigoCfm, cta.Status,
 			emp.IdEmp, emp.RFC, emp.Nombre, emp.RazonSoc, emp.DirCalle, emp.DirCol, emp.DirEnt, emp.DirMun, emp.DirCp, emp.NumSuc,
 			emp.OrgEmp, emp.OrgEmpOtro, emp.OrgEmpReg, emp.Url, emp.PartLinea, emp.ExpComer, emp.Desc, emp.FechaHora, emp.Status)
