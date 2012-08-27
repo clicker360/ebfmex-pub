@@ -94,13 +94,12 @@ func Recover(w http.ResponseWriter, r *http.Request) {
 			// intenta buscar en la base un usuario con email y empresa
 			if cta, err := model.GetCta(c, email); err == nil {
 				//q := datastore.NewQuery("Empresa").Filter("RFC =", rfc).Ancestor(cta.Key(c)).Limit(3)
-				q := datastore.NewQuery("Empresa").Filter("Status =", true).Ancestor(cta.Key(c)).Limit(1)
-				if count, _ := q.Count(c); count != 0 {
-					for t := q.Run(c); ; {
-						_, err := t.Next(&cta)
-						if err == datastore.Done {
-							break
-						}
+				//if count, _ := q.Count(c); count != 0 {
+					//for t := q.Run(c); ; {
+					//	_, err := t.Next(&cta)
+					//	if err == datastore.Done {
+					//		break
+					//	}
 						if (MailServer=="gmail") {
 							var hbody bytes.Buffer
 							var sender string
@@ -147,8 +146,8 @@ func Recover(w http.ResponseWriter, r *http.Request) {
 							http.Redirect(w, r, "/recoverok.html", http.StatusFound)
 							return
 						}
-					}
-				}
+					//}
+				//}
 			}
 		}
 		http.Redirect(w, r, "/nocta.html", http.StatusFound)
