@@ -9,8 +9,10 @@ import (
     "fmt"
 )
 
+
 func init() {
     http.HandleFunc("/registros.csv", registroCsv)
+
 }
 
 func registroCsv(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +20,7 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
     if u := user.Current(c); u == nil {
 		return
 	}
+
     q := datastore.NewQuery("Cta").Order("FechaHora")
     regdata := make([]model.Cta,0,500)
 
@@ -44,9 +47,22 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
 			if err == datastore.Done  {
 				break
 			}
+			var entidad string
+			var municipio string
+			munq := datastore.NewQuery("Municipio").Filter("CveEnt =", emp.DirEnt).Filter("CveMun =", emp.DirMun).Limit(1)
+			for muncur := munq.Run(c); ; {
+				var mun model.Municipio
+				_, err := muncur.Next(&mun)
+				if err == datastore.Done  {
+					break
+				}
+				municipio = mun.Municipio
+				entidad = mun.Entidad
+			}
+
 			fmt.Fprintf(w, "'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%s'|'%d'|'%d'|'%s'|'%s'|'%t'\n",
 			cta.Nombre, cta.Apellidos, cta.Puesto, cta.Email, cta.EmailAlt, cta.Pass, cta.Tel, cta.Cel, cta.FechaHora, cta.CodigoCfm, cta.Status,
-			emp.IdEmp, emp.RFC, emp.Nombre, emp.RazonSoc, emp.DirCalle, emp.DirCol, emp.DirEnt, emp.DirMun, emp.DirCp, emp.NumSuc,
+			emp.IdEmp, emp.RFC, emp.Nombre, emp.RazonSoc, emp.DirCalle, emp.DirCol, entidad, municipio, emp.DirCp, emp.NumSuc,
 			emp.OrgEmp, emp.OrgEmpOtro, emp.OrgEmpReg, emp.Url, emp.PartLinea, emp.ExpComer, emp.Desc, emp.FechaHora, emp.Status)
 		}
 
