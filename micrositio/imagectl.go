@@ -113,8 +113,13 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		io.Copy(&buf, f)
 		i, _, err := image.Decode(&buf)
 		if err != nil {
-			tc["Error"] = struct { Badformat string }{"badformat"}
-			micrositioTpl.Execute(w, tc)
+			if(r.FormValue("tipo")=="async") {
+				//w.Header().Set("Content-Type", "application/json")
+				fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó el logotipo, formato no aceptado");
+			} else {
+				tc["Error"] = struct { Badformat string }{"badformat"}
+				micrositioTpl.Execute(w, tc)
+			}
 			return
 		}
 
@@ -148,8 +153,12 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		buf.Reset()
 		err = jpeg.Encode(&buf, i, nil)
 		if err != nil {
-			tc["Error"] = struct { Badencode string }{"badencode"}
-			micrositioTpl.Execute(w, tc)
+			if(r.FormValue("tipo")=="async") {
+				fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó el logotipo, formato no aceptado");
+			} else {
+				tc["Error"] = struct { Badencode string }{"badencode"}
+				micrositioTpl.Execute(w, tc)
+			}
 			return
 		}
 
@@ -163,12 +172,20 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		}
 		_, err = model.PutLogo(c, img)
 		if err != nil {
-			tc["Error"] = struct { Cantsave string }{ "cantsave" }
-			micrositioTpl.Execute(w, tc)
+			if(r.FormValue("tipo")=="async") {
+				fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó el logotipo. Sistema en manetnimiento, intente en unos minutos");
+			} else {
+				tc["Error"] = struct { Cantsave string }{ "cantsave" }
+				micrositioTpl.Execute(w, tc)
+			}
 			return
 		}
-
-		micrositio(w, r)
+		if(r.FormValue("tipo")=="async") {
+			fmt.Fprintf(w, "<p></p>");
+		} else {
+			micrositio(w, r)
+		}
+		return
 	} else {
 		http.Redirect(w, r, "/registro", http.StatusFound)
 	}

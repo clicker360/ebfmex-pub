@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
 	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
 	$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
@@ -15,6 +16,9 @@
 	</script>
 	<style type="text/css">
 		#size { width: 300px; margin: 10px 10px; }
+		.progress { position:relative; width:100%; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+		.bar { background-color: grey; width:0%; height:20px; border-radius: 3px; }
+		.percent { position:absolute; display:inline-block; top:3px; left:48%; }
 	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
@@ -50,6 +54,31 @@
 			$("#sizey").val(h); $("#sizex").val(w);
 		});
 		update();
+	(function() {
+	    
+	var bar = $('.bar');
+	var percent = $('.percent');
+	var status = $('#status');
+	   
+	$('#enviar').ajaxForm({
+		beforeSend: function() {
+			status.empty();
+			var percentVal = '0%';
+			bar.width(percentVal)
+			percent.html(percentVal);
+		},
+		uploadProgress: function(event, position, total, percentComplete) {
+			var percentVal = percentComplete + '%';
+			bar.width(percentVal)
+			percent.html(percentVal);
+		},
+		complete: function(xhr) {
+			status.html(xhr.responseText);
+			update();
+		}
+	}); 
+
+	})();       
 	})
 </script>
 
@@ -108,6 +137,7 @@
 						<div class="first"> 
 							<form action="/logoup" method="POST" id="enviar" enctype="multipart/form-data">
 								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
+								<input type="hidden" name="tipo" value="async"/>
 								<div class="col-19" id="addCont"> 
 							  		<div class="col-18 marg-L10pix">
                                 		<div class="col-7 last"> <img id="pic" src="" alt="Logotipo empresa" width="100%" /> </div>
@@ -117,15 +147,22 @@
 												<p><span class="typ-Sc">Sólo imagenes formato jpeg o png. Tamaño máximo 800x600 pixeles.</span></p>
 											</div>
 											<div class="line">
+												<img id="loading" src="imgs/loader.gif" style="display:none;">
+												<div class="typ-Sc" id="status"></div>
 												<label>Subir logotipo</label><span class="typ-Sc"> * </span></label>
 												<input id="imgfile" type="text" class="small" readonly="readonly"/>
 												<div class="btn-upload last" style="width: 65px; height: 27px; margin: 0px; overflow: hidden;">
-													<input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val())" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;">
+													<input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val()); $('#enviar').submit();" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;">
 												</div>
 											</div>
 											<div class="line">
-												<p>Cuando hayas seleccionado la imagen presiona el botón de “Guardar”. Si deseas sustituir la imagen sólo necesitas seleccionar otra y guardarla.</p>
-												<button  name="Upload"  id="Upload" type="submit" class="grey medium last" value="Upload"  ><span>Guardar</span></button>
+												<div class="progress">
+													<div class="bar"></div >
+													<div class="percent">0%</div >
+												</div>
+												<p>Si deseas sustituir la imagen sólo necesitas seleccionar otra</p>
+												<!--button  name="Upload"  type="submit" id="buttonUpload" class="grey medium last" value="Upload"><span>Guardar</span></button-->
+
 											</div>
 											<div class="line">
 											</div>
