@@ -186,6 +186,7 @@ legend {font-weight:bold;font-size:1.2em;}
 .marg-D20pix {margin-bottom: 20px;}
 .marg-D30pix {margin-bottom: 30px;}
 .marg-U10pix {margin-top: 10px;}
+.marg-U15pix {margin-top: 15px;}
 .marg-U20pix {margin-top: 20px;}
 .marg-U30pix {margin-top: 30px;}
 .marg-U40pix {margin-top: 40px;}
@@ -277,3 +278,4 @@ a.botongrande:hover {background-image:url(btn-grande2.jpg);}
 .pullRight-30{ right:-30px;}
 .pullRight-20{ right:-20px;}
 .pullRight-10{ right:-10px;}
+

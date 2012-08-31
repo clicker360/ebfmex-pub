@@ -27,29 +27,24 @@
 
     <div class="col-100PR bgt-red-top first">
       <div class="col-cent">
-        <div class="col-100PR first BR-R-10px">
-          <div class="col-14">
-          <div class="col-10 marg-U80pix lineUD">
-            <div class="marg-5px last">
-              &#160;
-            </div>
-          </div><img src="imgs/logo_header.png" width="124" height="124" alt="el buen fin" class="marg-5px last" /></div>
+        <div class="col-24 first BR-R-10px">
+          <div class="col-24">
+       <div class="col-4">
+			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/></div>
 
-          <div class="col-6 last marg-U80pix lineUD marg-R10pix">
-            {{with .FormDataCta}}
-
-            <p class="first marg-5px typ-Wh typeMx">Hola {{.Nombre}}</p>
-
-            <div class="last">
-              <a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a>
-            </div>{{end}}
+          <div class="col-6 last marg-U80pix"> {{with .FormDataCta}}
+              <div class="pestana">
+              <p class="first marg-10px  ">Hola {{.Nombre}}</p>
+              <a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a> 
+              </div>
+              {{end}}
           </div>
-        </div>
+</div>
 
         <div class="col-24 Bg-Wh marg-D10pix">
           <div class="menuAdmin">
-            <div class="col-19 last Bg-Drks">
-              <div class="titlecond marg-U20pix">
+            <div class="col-19 last">
+              <div class="titlecond">
                 <h2 class="first">Usuario</h2>
               </div>
 

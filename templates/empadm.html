@@ -65,21 +65,19 @@ function loadmun(id, response){
 	<form action="/{{if .FormDataEmp.IdEmp}}me{{else}}ne{{end}}" method="post" id="enviar">
 	<div class="col-100PR  bgt-red-top first">
 	  <div class="col-cent">
-		<div class="col-100PR first  BR-R-10px">
-			<div class="col-14">
-			  <div class="col-10 marg-U80pix lineUD">
-				<div class="marg-5px last">&nbsp;</div>
-			  </div>
+		<div class="col-24 first  BR-R-10px">
+			<div class="col-4">
 			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/></div>
-			<div class="col-6 last marg-U80pix lineUD marg-R10pix">
+		<div class="col-6 last marg-U80pix lineUD marg-R5pix">
 				{{with .Sess}}
-				<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-				  <div class="last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
-				{{end}}
-		  </div>
+	              <div class="pestana">
+  <p class="first marg-10px">Hola {{.Name}}</p>
+	                <div class="last"><a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
+          </div>
+{{end}} </div>
 		</div>
 		   <div class="col-24  Bg-Wh marg-D10pix">
-			 <div class="menuAdmin Bg-Drks">
+			 <div class="menuAdmin">
 			<div class="col-5" style="min-height:600px;">
 			<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 			   <ul class="menuAdmin">
@@ -94,7 +92,7 @@ function loadmun(id, response){
 			 </div>
 			 <div class="col-19 last">
 			
-			 <div class="titlecond marg-U20pix">
+			 <div class="titlecond">
 				 <h2 class="first">Registro de empresas</h2>
 				 {{with .FormDataEmp}}
 				 <!--a href="/le" onclick="addCompany()" class="button blue last"><span>LISTA DE EMPRESAS</span></a-->
@@ -105,7 +103,7 @@ function loadmun(id, response){
 			{{range .Empresa}}
 			<div class="dataGrid">
               <div class="gridRow ellipsis">
-				  <a href="/se?IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="button grey marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta empresa? Las ofertas, sucursales y logo asociados se eliminarán también')){return true;}else{return false;}"><span>Baja</span></a>
+				  <a href="/se?IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a> <a href="/de?IdEmp={{.IdEmp}}&d=a" class="button orange marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta empresa? Las ofertas, sucursales y logo asociados se eliminarán también')){return true;}else{return false;}"><span>ELIMINAR</span></a>
 			  </div>
 		  	</div>
 			{{else}}
@@ -133,23 +131,23 @@ function loadmun(id, response){
 				{{if .IdEmp}}
 				  <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
 				{{end}}
-				<div class="col-8">
+				<div class="col-9">
 				  <div class="line ">
 					<label>RFC<span class="typ-Sc">
 					* </span></label>
-					<input type="text" class="validate[required,custom[onlyRFC]] small {{.ErrRFC}}" name="RFC" value="{{.RFC}}" onchange="activateCancel()" />
+					<input type="text" class="validate[required,custom[onlyRFC]] medium {{.ErrRFC}}" name="RFC" value="{{.RFC}}" onchange="activateCancel()" />
 				  </div>
 					 
 				  <div class="line ">
 					<label>Nombre comercial<span class="typ-Sc">
 					* </span></label>
-					<input type="text" class="validate[required] small {{.ErrNombre}}" name="Nombre" value="{{.Nombre}}" onchange="activateCancel()" />
+					<input type="text" class="validate[required] medium {{.ErrNombre}}" name="Nombre" value="{{.Nombre}}" onchange="activateCancel()" />
 				  </div>
 					 
 				  <div class="line ">
 					<label>Razón social<span class="typ-Sc">
 					* </span></label>
-					<input type="text" class="validate[required] small {{.ErrRazonSoc}}" name="RazonSoc" value="{{.RazonSoc}}" onchange="activateCancel()" />
+					<input type="text" class="validate[required] medium {{.ErrRazonSoc}}" name="RazonSoc" value="{{.RazonSoc}}" onchange="activateCancel()" />
 				  </div>
 					 
 				  <div class="line ">
@@ -183,16 +181,16 @@ function loadmun(id, response){
 
 					<div class="col-100PR first marg-UD10px">
 					  <label> Calle y número<span class="typ-Sc"> * </span></label>
-					  <input type="text" class="validate[required] small {{.ErrDirCalle}}" name="DirCalle" value="{{.DirCalle}}"  onchange="activateCancel()"/>
+					  <input type="text" class="validate[required] medium {{.ErrDirCalle}}" name="DirCalle" value="{{.DirCalle}}"  onchange="activateCancel()"/>
 						 
 					</div>
 					<div class="col-100PR first marg-UD10px">
 					  <label> Colonia y/o localidad<span class="typ-Sc"> * </span></label>
-					  <input type="text" class="validate[required] small {{.ErrDirCol}}" name="DirCol" value="{{.DirCol}}"  onchange="activateCancel()"/>
+					  <input type="text" class="validate[required] medium {{.ErrDirCol}}" name="DirCol" value="{{.DirCol}}"  onchange="activateCancel()"/>
 					</div>
 
 					<div class="col-100PR first marg-UD10px"> <label> Código Postal<span class="typ-Sc"> * </span></label>
-					   <input type="text" class="validate[required,minSize[5],maxSize[5],custom[onlyNumberSp]] small {{.ErrDirCp}}" name="DirCp"  value="{{.DirCp}}"  onchange="activateCancel()"/>
+					   <input type="text" class="validate[required,minSize[5],maxSize[5],custom[onlyNumberSp]] medium {{.ErrDirCp}}" name="DirCp"  value="{{.DirCp}}"  onchange="activateCancel()"/>
 					</div>
 				  </div>
 				</div>
@@ -200,7 +198,7 @@ function loadmun(id, response){
 				<div class="line  ">
 					<div class="col-100PR first marg-UD10px">
 					<label>Número de sucursales</label>
-					<input type="text" class="validate[optional,minSize[1],custom[integer]] small {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
+					<input type="text" class="validate[optional,minSize[1],custom[integer]] medium {{.ErrNumSuc}}" name="NumSuc" value="{{.NumSuc}}" onchange="activateCancel()" />
 					</div>
 				  <div class="col-100PR first marg-UD10px">
 					<label>Organismo empresarial</label>
@@ -212,13 +210,13 @@ function loadmun(id, response){
 				  </div>
 				  <div class=" col-100PR first marg-UD10px">
 					<label>Otro (Especificar)</label>
-					 <input type="text" class="validate[optional,custom[onlyLetterSp]] small {{.ErrOrgEmpOtro}}" name="OrgEmpOtro" value="{{.OrgEmpOtro}}"  onchange="activateCancel()"/>
+					 <input type="text" class="validate[optional,custom[onlyLetterSp]] medium {{.ErrOrgEmpOtro}}" name="OrgEmpOtro" value="{{.OrgEmpOtro}}"  onchange="activateCancel()"/>
 					</div>
 				</div>
 				   
 				<div class="line ">
 				  <label>Número de registro o afiliación a tu organismo empresarial</label>
-				  <input type="text" class="validate[optional] small {{.ErrOrgEmpReg}}" name="OrgEmpReg" value="{{.OrgEmpReg}}"  onchange="activateCancel()"/>
+				  <input type="text" class="validate[optional] medium {{.ErrOrgEmpReg}}" name="OrgEmpReg" value="{{.OrgEmpReg}}"  onchange="activateCancel()"/>
 				</div>
 				<div class="line ">
 				  <label>¿Desea participar en El Buen Fin en línea?</label>
@@ -227,7 +225,7 @@ function loadmun(id, response){
 				<div class="line ">
 				  <label>Sitio de internet</label>
 				  <div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()">Obligatorio indicar sitio de internet si su empresa ya tiene experiencia en comercio electrónico</div>
-				  <input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url1" onchange="activateCancel()"/>
+				  <input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url1" onchange="activateCancel()"/>
 				</div>
 				<div class="line ">
 				  <label class="col-6">¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
@@ -253,11 +251,11 @@ function loadmun(id, response){
 				{{if .IdEmp}}
 					<input type="hidden" value="a" name="d"/>
 					<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
-					<button type="reset" class="grey last big hidden" id="cancelbtn"><span>Restablecer</span></button>
+					<button type="reset" class="grey last hidden marg-U15	pix" id="cancelbtn"><span>Restablecer</span></button>
 					{{else}}
 					<input type="hidden" value="a" name="d"/>
 					<button type="submit" class="big red last"><span>Aplicar</span></button>
-					<button type="reset" class="grey last big hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
+					<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
 				{{end}}
 			{{else}}
 
@@ -267,10 +265,9 @@ function loadmun(id, response){
          </div>
        </div>
          </div>
+         </div>
          
          
-         </div>
-         </div>
          
       <div class="box1 alineCenter"> <img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> </div>
     <div class=" box1">
@@ -282,6 +279,8 @@ function loadmun(id, response){
   </div>
 </div>
 </form>
+
+         </div>
 </body>
 </html>
 {{end}}
@@ -304,17 +303,18 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 <body class="bgt-main">
 	<div class="col-100PR  bgt-red-top first">
 		<div class="col-cent">
-			<div class="col-100PR first  BR-R-10px">
-				<div class="col-14">
-					<div class="col-10 marg-U80pix lineUD">
-						<div class="marg-5px last">&nbsp;</div>
-					</div>
+			<div class="col-24 first  BR-R-10px">
+				<div class="col-24">
+					<div class="col-4">
+						
 					<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 				</div>
 				<div class="col-6 last marg-U80pix lineUD marg-R10pix">
 					{{with .Sess}}
-					<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-					<div class="last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
+					<div class="pestana">
+  <p class="first marg-10px">Hola {{.Name}}</p>
+	                <div class="last"><a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
+          </div>
 					{{end}}
 				</div>
 			</div>
@@ -331,8 +331,8 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 						</ul>
 					</div>
-				<div class="col-19 last Bg-Drks">
-			 	<div class="titlecond marg-U20pix">
+				<div class="col-19 last">
+			 	<div class="titlecond">
 					 <h2 class="first">Micrositios por empresa</h2>
 				</div>
 				{{range .Empresa}}
@@ -350,8 +350,8 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 					{{end}}
 				{{end}}
 			</div>
-		</div>
-
+		
+</div>
 		<div class="box1 alineCenter">
 			<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> 
 		</div>

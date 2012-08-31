@@ -236,10 +236,12 @@ button.blue span{
 
 button.orange{
 	background : url(../gfx/link-button.png) no-repeat left -46px transparent;
+	color:#333;
 }
 
 button.orange span{
 	background : url(../gfx/link-button.png) no-repeat right -46px transparent;
+	color:#333;
 }
 
 button.red{
@@ -448,6 +450,7 @@ a.button.blue span, a.button.blue:link span, a.button.blue:active span, a.button
 
 a.button.orange, a.button.orange:link, a.button.orange:active, a.button.orange:visited {
 	background : url(../gfx/link-button.png) no-repeat left -46px transparent;
+	color:#333;
 }
 
 a.button.orange span, a.button.orange:link span, a.button.orange:active span, a.button.orange:visited span {
@@ -866,12 +869,13 @@ label {
 	margin-top: 0;
 	margin-right: 10;
 	margin-bottom: 0;
-	margin-left: 10px;
-	padding-top: 4px;
+	margin-left: px;
+	padding-top: 0px;
 	padding-right: 0;
-	padding-bottom: 0;
-	padding-left: 0;
+	padding-bottom: 10px;
+	padding-left: 5px;
 	display: inline-block;
+	width:100%;
 }
 
 /* //////////////////// INPUTFIELD \\\\\\\\\\\\\\\\\\\\ */
@@ -903,6 +907,7 @@ input.medium {
 	*background : transparent;
 	width : 297px;
 	float:right;
+	margin-bottom:5px;
 }
 
 input.big {
@@ -2068,7 +2073,7 @@ ul.menuAdmin li {
 ul.menuAdmin li a{
 	font-family: "Open Sans", "Century", "Palatino Linotype", sans-serif;
 	font-weight: 600;
-	color: #FFF;
+	color:#999;
 	font-size: 17px;
 	background-image: url(../gfx/backBtnadmin.jpg);
 	background-position: top;
@@ -2076,12 +2081,9 @@ ul.menuAdmin li a{
 	float:left;
 	height:38px;
 	width: 100%;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
-	border-bottom-color: #27040F;
 	padding-top: 2px;
 	padding-left: 3px;
-	padding-right: 3px;
+	padding-right: 5px;
 	padding-bottom: 2px;
 	line-height:35px;
 }
@@ -2100,12 +2102,19 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 .titlecond{
 	background-image: url(../gfx/degradateTitle.jpg);
 	background-repeat: repeat-x;
-	padding: 9px;
+	background-position:top;
+	padding-left:8px;
+	padding-right:8px;
+	padding-top:15px;
+	padding-bottom:10px;
 	float: right;
-	width: 97.3%;
+	width: 97.8%;
+	height:35px;
+	background-color:#D6D4D5;
+	margin-bottom:15px;
 }
 
-.dataGrid{ float:left; width:98.1%; margin-left:1%; display:table; margin-top:3px; margin-bottom:3px;}
+.dataGrid{ float:left; width:97.1%; margin-left:1%; display:table; margin-top:3px; margin-bottom:3px;}
 .gridRow, a.gridRow {
 	background-image: url(../gfx/backgrid.jpg);
 	width: 97%;
@@ -2114,37 +2123,41 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 	height: 30px;
 	padding-top: 5px;
 	padding-bottom: 5px;
-	padding-right:10px;
+	padding-right: 10px;
 	display: block;
-	background-position: top;	
-	border: 1px solid #686567;
+	background-position: top;
+	border: 1px solid #B9B9B9;
 	font-size: 20px;
 	font-weight: bold;
-	color: #666666;
-	float:left;
+	color: #B9B9B9;
+	float: left;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
 	white-space: nowrap;
 }
 gridRow:hover { background-position:bottom;}
-.gridRow a{ color: #666666; font-size: 20px; font-weight:bold; margin-top:10px; width:500px; display:block; float:left; overflow: hidden;}
+.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:530px; display:block; float:left; overflow: hidden; height:45px;}
 
 .warning, a.warning{
 	float: left;
 	width: 98.1%;
 	margin-left: 1%;
-	margin-top:20px;
+	margin-top: 20px;
 	display: table;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	color: #039;
+	color: #949898;
 	background-image: url(../gfx/warningData.jpg);
 	text-align: center;
-	font-size: 16px;
+	font-size: 14px;
 	padding-top: 5px;
 	padding-bottom: 5px;
-	border: 1px solid #F30;
+	border: 1px solid #FC0;
+	line-height: normal;
+	background-color: #FEF0A7;
+	background-repeat: repeat-x;
+	background-position: top;
 }
 a.eliminate{
 	background-image: url(../gfx/btnEliminate.png);
@@ -2157,6 +2170,8 @@ a.eliminate{
 	margin:0px;
 }
 a.eliminate:hover{ background-position:bottom;}
+
+.pestana{ float:right; background-image:url(../gfx/pestana.png); width:233px; height:40px; padding-left:5px; padding-right:5px; padding-top:15px;}
 
 
 

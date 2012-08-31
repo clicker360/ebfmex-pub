@@ -87,24 +87,21 @@
 <body class="bgt-main">
 	<div class="col-100PR  bgt-red-top first">
 		<div class="col-cent">
-			<div class="col-100PR first  BR-R-10px">
-				<div class="col-14">
-					<div class="col-10 marg-U80pix lineUD">
-						<div class="marg-5px last">
-							&nbsp;
-						</div>
-					</div>
-					<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
-				</div>
-				<div class="col-6 last marg-U80pix lineUD marg-R10pix">
+			<div class="col-24 first  BR-R-10px">
+			<div class="col-4">
+			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
+            </div>
+				<div class="col-6 last marg-U80pix lineUD marg-R5pix">
 					{{with .Sess}}
-					<p class="first marg-5px typ-Wh typeMx">Hola {{.Name}}</p>
-              		<div class="last"><a href="/salir" class="button grey marg-10pix last"><span>SALIR</span></a></div>
-					{{end}}
-				</div>
+                    
+	                  <div class="pestana">
+  <p class="first marg-10px">Hola {{.Name}}</p>
+	                    <div class="last"><a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
+                  </div>
+{{end}} </div>
 			</div>
 			<div class="col-24  Bg-Wh marg-D10pix">
-				<div class="menuAdmin Bg-Sec">
+				<div class="menuAdmin">
 					<div class="col-5" style="min-height:600px;">
 							<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 						<ul class="menuAdmin">
@@ -116,9 +113,9 @@
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 						</ul>
 					</div>
-					<div class="col-19 last Bg-Drks">
+					<div class="col-19 last ">
 						{{with .Empresa}}
-						<div class="titlecond marg-U20pix">
+						<div class="titlecond">
 							<h2 class="first">Micrositio de {{.Nombre}}</h2>
 						</div>
 						{{end}}
@@ -139,35 +136,35 @@
 								<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
 								<input type="hidden" name="tipo" value="async"/>
 								<div class="col-19" id="addCont"> 
-							  		<div class="col-18 marg-L10pix">
+							  		<div class="col-18 marg-L10pix Bg-Drks padd-10px">
                                 		<div class="col-7 last"> <img id="pic" src="" alt="Logotipo empresa" width="100%" /> </div>
 										<div class="col-10">
-											<p>Subir tu logotipo</p>
+											<h3>Subir tu logotipo</h3>
 											<div class="box1">
-												<p><span class="typ-Sc">Sólo imagenes formato jpeg o png. Tamaño máximo 800x600 pixeles.</span></p>
+												
 											</div>
-											<div class="line">
+										  <div class="line">
 												<img id="loading" src="imgs/loader.gif" style="display:none;">
 												<div class="typ-Sc" id="status"></div>
-												<label>Subir logotipo</label><span class="typ-Sc"> * </span></label>
-												<input id="imgfile" type="text" class="small" readonly="readonly"/>
+											<input id="imgfile" type="text" class="medium" readonly="readonly"/>
 												<div class="btn-upload last" style="width: 65px; height: 27px; margin: 0px; overflow: hidden;">
 													<input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val()); $('#enviar').submit();" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;">
 												</div>
 											</div>
+                                            <div class="col-9 marg-10pix last">
+                                              <div class="progress">
+                                                <div class="bar"></div >
+                                                <div class="percent">0%</div >
+                                                </div>
+                                            </div>
+                                            <div class="warning">Sólo imagenes formato jpeg o png. Tamaño máximo 800x600 pixeles.</div>
 											<div class="line">
-												<div class="progress">
-													<div class="bar"></div >
-													<div class="percent">0%</div >
-												</div>
-												<p>Si deseas sustituir la imagen sólo necesitas seleccionar otra</p>
+												
+											  <div class="first padd-5px">Si deseas sustituir la imagen sólo necesitas seleccionar otra
 												<!--button  name="Upload"  type="submit" id="buttonUpload" class="grey medium last" value="Upload"><span>Guardar</span></button-->
 
 											</div>
-											<div class="line">
-											</div>
-											<div class="line">
-											</div>
+						
 										</div>
 										<div class="col-18 marg-L10pix marg-D10pix">
 										</div> 
@@ -179,17 +176,16 @@
 								<div class="col-19" id="addCont"> 
 							  		<div class="col-18 marg-L10pix">
 										<div class="col-10">
-										<hr/>
-										<p>Datos adicionales</p>
+										<h3>Datos adicionales</h3>
 											<div class="line">
 											</div>
 											<div class="line ">
 												<label>Título de logotipo</label>
-												<input type="text" class="validate[optional] small {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
+												<input type="text" class="validate[optional] medium {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
 											</div>
 											<div class="line ">
 												<label>Enlace Web al que debe apuntar el logotipo (opcional)</label>
-												<input type="text" class="validate[optional,custom[url]] small {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
+												<input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
 											</div>
 											<div class="line ">
 												<label>Descripción de la empresa visible al público:</label>
@@ -201,7 +197,7 @@
 											</div>
 											<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
 											<div class="line ">
-												<button  name="Upload"  id="Uploadmidata" type="submit" class="grey medium last" value="Upload"  ><span>Guardar</span></button>
+												<button  name="Upload"  id="Uploadmidata" type="submit" class="red medium last" value="Upload"  ><span>Guardar</span></button>
 											</div>
 										</div>
 										<div class="col-18 marg-L10pix marg-D10pix">
@@ -224,7 +220,7 @@
 						</div>
 						{{end}}
 					</div>
-				</div>
+				</div></div>
 			<div class="box1 alineCenter">
 				<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/>
 			</div>
@@ -235,6 +231,6 @@
 			</div>
 		</div>
 	</div>
-	</div>
+	
 </body>
 </html>
