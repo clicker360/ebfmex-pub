@@ -218,8 +218,8 @@ a.botongrande:hover {background-image:url(btn-grande2.jpg);}
 
 /* typography.css */
 .alineCenter{ text-align:center;}
-.alineLeft{ text-align:center;}
-.alineRigth{ text-align:center;}
+.alineLeft{ text-align:left;}
+.alineRigth{ text-align:right;}
 .caps {
 	font-variant: small-caps;
 	letter-spacing: 1px;
