@@ -1,106 +1,120 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="css/Origami.css" rel="stylesheet" type="text/css" />
-<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
-<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
-<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
-<script type="text/javascript">
-	$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
-	$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
-	function activateCancel(){ $("#cancelbtn").addClass("show") }
-	function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
-	</script>
-<style type="text/css">
-#size {
-	width: 300px;
-	margin: 10px 10px;
-}
-.progress {
-	position: relative;
-	width: 100%;
-	border: 1px solid #ddd;
-	padding: 1px;
-	border-radius: 3px;
-}
-.bar {
-	background-color: grey;
-	width: 0%;
-	height: 20px;
-	border-radius: 3px;
-}
-.percent {
-	position: absolute;
-	display: inline-block;
-	top: 3px;
-	left: 48%;
-}
-</style>
-<script type="text/javascript" charset="utf-8">
-		$(document).ready(function() {
-		var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
-		var $pic = $("#pic");
-		var $url = $("#url");
-		var $size = $("#size");
-		var max_size=400;
-		$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
-		function update() {
-			var query = "id="+id;
-			$pic.attr("src", "/simg?"+query);
-			$url.text("/simg?"+query);
-		}
-		$("#up").click(function() {
-			w = $pic.width(); h = $pic.height();
-			if (h > w) {
-				r = w/h; h++; w = Math.ceil(h*r);
-			} else {
-				r = h/w; w++; h = Math.ceil(w*r);
-			}
-			$pic.width(w); $pic.height(h);
-			$("#sizey").val(h); $("#sizex").val(w);
-		});
-		$("#down").click(function() {
-			w = $pic.width(); h = $pic.height();
-			if (h > w) {
-				r = w/h; w--; h = Math.ceil(w/r);
-			} else {
-				r = h/w; h--; w = Math.ceil(h/r);
-			}
-			$pic.width(w); $pic.height(h);
-			$("#sizey").val(h); $("#sizex").val(w);
-		});
-		update();
-	(function() {
-	    
-	var bar = $('.bar');
-	var percent = $('.percent');
-	var status = $('#status');
-	   
-	$('#enviar').ajaxForm({
-		beforeSend: function() {
-			status.empty();
-			var percentVal = '0%';
-			bar.width(percentVal)
-			percent.html(percentVal);
-		},
-		uploadProgress: function(event, position, total, percentComplete) {
-			var percentVal = percentComplete + '%';
-			bar.width(percentVal)
-			percent.html(percentVal);
-		},
-		complete: function(xhr) {
-			status.html(xhr.responseText);
-			update();
-		}
-	}); 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
+	<script type="text/javascript">
 
-	})();       
-	})
-</script>
-<title>Administración de Micrositio</title>
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-26907178-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
+		$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
+		function activateCancel(){ $("#cancelbtn").addClass("show") }
+		function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
+		</script>
+	<style type="text/css">
+#size {
+		width: 300px;
+		margin: 10px 10px;
+	}
+	.progress {
+		float: right;
+		position: relative;
+		width: 310px;
+		border: 1px solid #ddd;
+		padding: 1px;
+		border-radius: 3px;
+	}
+	.bar {
+		background-color: grey;
+		width: 0%;
+		height: 20px;
+		border-radius: 3px;
+	}
+	.percent {
+		position: absolute;
+		display: inline-block;
+		top: 3px;
+		left: 48%;
+	}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+			var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
+			var $pic = $("#pic");
+			var $url = $("#url");
+			var $size = $("#size");
+			var max_size=400;
+			$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
+			function update() {
+				var query = "id="+id;
+				$pic.attr("src", "/simg?"+query);
+				$url.text("/simg?"+query);
+			}
+			$("#up").click(function() {
+				w = $pic.width(); h = $pic.height();
+				if (h > w) {
+					r = w/h; h++; w = Math.ceil(h*r);
+				} else {
+					r = h/w; w++; h = Math.ceil(w*r);
+				}
+				$pic.width(w); $pic.height(h);
+				$("#sizey").val(h); $("#sizex").val(w);
+			});
+			$("#down").click(function() {
+				w = $pic.width(); h = $pic.height();
+				if (h > w) {
+					r = w/h; w--; h = Math.ceil(w/r);
+				} else {
+					r = h/w; h--; w = Math.ceil(h/r);
+				}
+				$pic.width(w); $pic.height(h);
+				$("#sizey").val(h); $("#sizex").val(w);
+			});
+			update();
+		(function() {
+			
+		var bar = $('.bar');
+		var percent = $('.percent');
+		var status = $('#status');
+		   
+		$('#enviar').ajaxForm({
+			beforeSend: function() {
+				status.empty();
+				var percentVal = '0%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+			},
+			uploadProgress: function(event, position, total, percentComplete) {
+				var percentVal = percentComplete + '%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+			},
+			complete: function(xhr) {
+				status.html(xhr.responseText);
+				update();
+			}
+		}); 
+
+		})();       
+		})
+	</script>
+	<title>Administración de Micrositio</title>
 </head>
 <body class="bgt-main">
 <div class="col-100PR  bgt-red-top first">
@@ -148,8 +162,8 @@
               <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
               <input type="hidden" name="tipo" value="async"/>
               <div class="col-19" id="addCont">
-              <div class="col-18 marg-L10pix Bg-Drks padd-10px">
-              <div class="col-7 last"> <img id="pic" src="" alt="Logotipo empresa" width="100%" /> </div>
+              <div class="col-18 marg-L10pix padd-10px">
+              <div class="col-7 last"> <img class="outlined" id="pic" src="" alt="Logotipo empresa" width="100%" /> </div>
               <div class="col-10">
               <h3>Subir tu logotipo</h3>
               <div class="box1"> </div>

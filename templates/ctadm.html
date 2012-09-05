@@ -1,20 +1,26 @@
 {{define "cta"}}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="generator" content="HTML Tidy for Linux (vers 25 March 2009), see www.w3.org" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="HTML Tidy for Linux (vers 25 March 2009), see www.w3.org" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+	</script><script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8">
+	</script><script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8">
+	<script type="text/javascript">
 
-  <title>Administración de cuenta</title>
-  <link href="css/Origami.css" rel="stylesheet" type="text/css" />
-  <link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
-</head>
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-26907178-1']);
+		_gaq.push(['_trackPageview']);
 
-<body class="bgt-main">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
-</script><script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8">
-</script><script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8">
-</script><script type="text/javascript">
-//<![CDATA[
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+	</script>
+	<script type="text/javascript">
     $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: true}); });
     function activateCancel(){ $("#cancelbtn").addClass("show") }
     function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
@@ -22,9 +28,15 @@
     function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano').addClass("hidden"); }
     function activeCancelCtaLghtbx(){ $('#cancelctano').removeClass("hidden");  $('#cancelctasi').addClass("hidden"); }
     function deactiveCancelCtaLghtbx(){ $('#cancelctasi').removeClass("hidden");  $('#cancelctano').addClass("hidden"); }
-    //]]>
-</script>
+	</script>
 
+
+  <title>Administración de cuenta</title>
+  <link href="css/Origami.css" rel="stylesheet" type="text/css" />
+  <link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="bgt-main">
     <div class="col-100PR bgt-red-top first">
       <div class="col-cent">
         <div class="col-24 first BR-R-10px">

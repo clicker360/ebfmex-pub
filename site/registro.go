@@ -60,14 +60,15 @@ func Registrar(w http.ResponseWriter, r *http.Request) {
 			u.CodigoCfm = fmt.Sprintf("%x", h.Sum(nil))
 		}
 
-		// Se agrega la cuenta sin activar para realizar el proceso de código de confirmación
-		if u, err = model.PutCta(c, u); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
 		//Si hay estatus es que ya existe
 		if(u.Status == false) {
+
+			// Se agrega la cuenta sin activar para realizar el proceso de código de confirmación
+			if u, err = model.PutCta(c, u); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
 			/* No se ha activado, por tanto se inicia el proceso de código de verificación */
 			m := urlCfm{
 				Md5:		u.CodigoCfm,
