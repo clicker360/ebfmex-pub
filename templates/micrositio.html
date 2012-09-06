@@ -14,7 +14,31 @@
 	function activateCancel(){ $("#cancelbtn").addClass("show") }
 	function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 	</script>
-
+<style type="text/css">
+#size {
+	width: 300px;
+	margin: 10px 10px;
+}
+.progress {
+	position: relative;
+	width: 100%;
+	border: 1px solid #ddd;
+	padding: 1px;
+	border-radius: 3px;
+}
+.bar {
+	background-color: grey;
+	width: 0%;
+	height: 20px;
+	border-radius: 3px;
+}
+.percent {
+	position: absolute;
+	display: inline-block;
+	top: 3px;
+	left: 48%;
+}
+</style>
 <script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 		var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";

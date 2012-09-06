@@ -133,7 +133,6 @@
                           
             
 						{{end}}
-<<<<<<< HEAD
                       
           
                         </select>
@@ -197,77 +196,6 @@
           </div>
         </div>
       </div>
-=======
-					</select>
-				  </div>
-				  <div class=" col-100PR first marg-UD10px">
-					<label>Otro (Especificar)</label>
-					 <input type="text" class="validate[optional,custom[onlyLetterSp]] medium {{.ErrOrgEmpOtro}}" name="OrgEmpOtro" value="{{.OrgEmpOtro}}"  onchange="activateCancel()"/>
-					</div>
-				</div>
-				   
-				<div class="line ">
-				  <label>Número de registro o afiliación a tu organismo empresarial</label>
-				  <input type="text" class="validate[optional] medium {{.ErrOrgEmpReg}}" name="OrgEmpReg" value="{{.OrgEmpReg}}"  onchange="activateCancel()"/>
-				</div>
-				<div class="line ">
-				  <label>¿Desea participar en El Buen Fin en línea?</label>
-				  <input type="checkbox" name="PartLinea" value="1" id="quest1" {{if .PartLinea}}checked="{{.PartLinea}}"{{end}}  onchange="activateCancel()"/>
-				</div>         
-				<div class="line ">
-				  <label>Sitio de internet</label>
-				  <div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()">Obligatorio indicar sitio de internet si su empresa ya tiene experiencia en comercio electrónico</div>
-				  <input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url1" onchange="activateCancel()"/>
-				</div>
-				<div class="line ">
-				  <label class="col-6">¿Tu empresa ya tiene experiencia en el comercio electrónico?</label>
-				  <input type="checkbox"  class="last" name="ExpComer" value="1" id="quest2" {{if .ExpComer}}checked="{{.ExpComer}}"{{end}} onchange="activateCancel()"/>
-				</div>
-				<div class="line ">
-				   <label>¿Qué retos o dificultades identificas para implementar o mejorar el comercio electrónico de tu empresa?</label>
-				   <textarea class="validate[optional] medium last  marg-U10pix {{.ErrDesc}}" name="Desc" onchange="activateCancel()">{{.Desc}}</textarea>
-				  </div>
-				  <div class="line ">
-					{{if .IdEmp}}
-						<label for="accept">Para aceptar y realizar cambios a esta empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
-					{{else}}
-						<label for="accept">Para aceptar este nuevo registro de empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
-					{{end}}
-					<input type="checkbox" class="validate[required] last" name="accept" value="1" id="accept"/>
-				  </div>
-			  </div>
-			  <div class="col-18 marg-L10pix marg-D10pix">
-				<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
-		   		</div> 
-
-				{{if .IdEmp}}
-					<input type="hidden" value="a" name="d"/>
-					<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
-					<button type="reset" class="grey last hidden marg-U15	pix" id="cancelbtn"><span>Restablecer</span></button>
-					{{else}}
-					<input type="hidden" value="a" name="d"/>
-					<button type="submit" class="big red last"><span>Aplicar</span></button>
-					<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
-				{{end}}
-			{{else}}
-
-			
-
-			{{end}}
-         </div>
-       </div>
-         </div>
-         </div>
-         
-         
-         
-      <div class="box1 alineCenter"> <img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> </div>
-    <div class=" box1">
-      <p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
-        Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
-        Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
-    </div>
->>>>>>> dc83cb5494abff8e6b159cfa2ff6ee22eed0d774
     </div>
 
 </body>
