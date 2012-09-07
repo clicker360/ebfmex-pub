@@ -53,8 +53,8 @@ function deactiveLghtbx(){
 	}
 </script>
 <title>Rrecuperación de contraseña</title>
-<link href="css/Origami.css" rel="stylesheet" type="text/css" />
-<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
+<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 <body class=" bgt-main">
 <!--inicia login-->
@@ -66,16 +66,19 @@ function deactiveLghtbx(){
   <div class="hr-line"></div>
     <form id="acceso" action="/acceso" method="post" id="entrence">
       <div class="col-7">
- <label>Usuario</label>
+ <label class="col-2">Usuario</label>
  <input type="text" class="validate[required,custom[email]] small first" name="u" value="" />
       </div>
       <div class=" col-7">
-      <label>Contraseña</label>
+      <label class="col-2">Contraseña</label>
         <input type="password" class="validate[required] small first" name="p" />
+
       </div>
-      <div class="col-5 last">
+      <div class="col-7 last">
+      <a href="#" class="Dsblock first">&#8250;he olvidado mi contraseña</a>
       <button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
     </form>
+            
   </div>
 </div>
 <!--termina login-->
