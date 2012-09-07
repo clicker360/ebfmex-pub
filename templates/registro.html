@@ -25,6 +25,15 @@
 		$("#acceso").validationEngine({promptPosition : "topRight", scroll: false});
 		tgle1();
 	});
+	function validateEmail(field, rules, i, options) {
+		var err=0;
+		$.each( field.val().split(","), function(i,candidate) { 
+			if($.trim(candidate) != "") {
+				if(!$.trim(candidate).match(options.allrules.email.regex)) err++;
+			}
+		});
+		if(err) return options.allrules.email.alertText+". Puede introducir varios correos separados por coma";
+	}
 	function tgle1(){ $( "#toggler1" ).delay(800).animate({ height: 284, opacity: 1 }, 1000, "linear", function() { tgle2(); }); }
 	function tgle2(){ $( "#toggler2" ).animate({ height: 284, opacity: 1 }, 800, "linear", function() { tgle3(); }); }
 	function tgle3(){ $( "#toggler3" ).animate({ height: 284, opacity: 1 }, 600, "linear", function() { tgle3(); }); }
@@ -55,7 +64,7 @@
 	<input type="password" class="validate[required] small first" name="p" />
 	</div>
 	<div class="col-7 last">
-	<a href="#" class="Dsblock first">¿Olvidaste tu contraseña?</a>
+	<a href="recupera.html" class="Dsblock first">¿Olvidaste tu contraseña?</a>
 	<button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
 	</form>
   </div>
@@ -63,21 +72,24 @@
 <!--termina login-->
 
 <div class="col-100PR  bgt-red-top first">
-  <div class="col-cent">
-    <div class="col-100PR first  BR-R-10px">
-             <div class="col-24">
-           <div class="col-14">
-        <img src="imgs/logo_header.png" width="127" height="127"  alt="el buen fin" class="marg-5px first"/>
-        </div>
-            <div class="col-10 last marg-U50pix lineUD marg-R10pix">
-        <div class="col-3 last marg-U10pix">
-        <a href="#null" onclick="activeLghtbx()" class="last"><img src="gfx/btn-sesion.png" width="131" height="30" /></a>
-        </div>
-      </div>
-    </div>
-       <div class="col-24 marg-D10pix Bg-Wh marg-D10pix">
-    <div class=" box1">
-        <div class=" col-23 marg-L10pix" style="height:280px;">
+	<div class="col-cent">
+    	<div class="col-100PR first  BR-R-10px">
+       		<div class="col-24">
+				<div class="col-4">
+					<img src="imgs/logo_header.png" width="127" height="127"  alt="el buen fin" class="marg-5px first"/>
+				</div>
+				<div class="col-14 typ-Wh marg-U80pix">
+					<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+				</div>
+				<div class="col-4 last marg-U50pix lineUD marg-R10pix">
+					<div class="col-4 last marg-U10pix">
+						<a href="#null" onclick="activeLghtbx()" class="last"><img src="gfx/btn-sesion.png" width="131" height="30" /></a>
+					</div>
+				</div>
+			</div>
+			<div class="col-24 marg-D10pix Bg-Wh marg-D10pix">
+			<div class=" box1">
+			<div class=" col-23 marg-L10pix" style="height:280px;">
           <div class="box284x284px marg-R5pix marg-U5pix fade0Alp height1px" id="toggler1"> <img src="imgs/Activa-Tu-Cuenta.jpg" width="284" height="280" alt="registra tu usuario y activa tu cuenta en el buen fin" /></div>
           <div class="box284x284px marg-L30pix marg-U5pix fade0Alp height1px" id="toggler2"><img src="imgs/publica-tus-ofertas-en-el-buen-fin.jpg" width="281" height="280" alt="reciviras un mail para activar tu cuenta" /></div>
           <div class="box284x284px last fade0Alp marg-U5pix height1px" id="toggler3"><img src="imgs/empresas-en-el-buen-fin.jpg" width="282" height="280" alt="registra todas las empresas en tu cuenta" /></div>
@@ -147,8 +159,11 @@
           </div>
           <div class="Bg-Wh box1">
             <div class="line">
-              <label for="cmail2">Correo electrónico alterno</label>
-			<input type="text" class="validate[optional,custom[email]] small {{.ErrEmailAlt}}" id="cmail2" name="EmailAlt" value="{{.EmailAlt}}"/>
+				<label for="cmail2">Correo electrónico alterno<br /></label>
+			<input type="text" class="validate[optional,funcCall[validateEmail]] small {{.ErrEmailAlt}}" id="cmail2" name="EmailAlt" value="{{.EmailAlt}}"/>
+                <div class="col-100PR first">
+                  <p class="typeMin">*Puede incluir varios correos alternos separados por coma.</p>
+               </div>
             </div>
           </div>
           <div class="Bg-Wh box1">
@@ -167,7 +182,7 @@
             <div class="line">
               <div class="col-9 typeMin" style="padding-bottom:5px;">
 				<div class="col-8">
-              	  <label>Acepto copromiso<span class="typ-Sc">*</span></label>
+              	  <label>Acepto compromiso<span class="typ-Sc">*</span></label>
 				  <ol class="col-7 padd-0 marg-L15pix clear">
 					<li>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</li>
 					  <li>Sólo las empresas registradas en El Buen Fin podrán hacer uso del logotipo.</li>

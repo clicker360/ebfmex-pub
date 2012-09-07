@@ -3,11 +3,10 @@
 <head>
 	<meta name="generator" content="HTML Tidy for Linux (vers 25 March 2009), see www.w3.org" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
-	</script><script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8">
-	</script><script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
 	<script type="text/javascript">
-
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26907178-1']);
 		_gaq.push(['_trackPageview']);
@@ -17,23 +16,28 @@
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-
-	</script>
 	</script>
 	<script type="text/javascript">
-    $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: true}); });
-    function activateCancel(){ $("#cancelbtn").addClass("show") }
-    function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
-    function activeLghtbx(){ $('#contrano').removeClass("hidden");  $('#contrasi').addClass("hidden"); }
-    function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano').addClass("hidden"); }
-    function activeCancelCtaLghtbx(){ $('#cancelctano').removeClass("hidden");  $('#cancelctasi').addClass("hidden"); }
-    function deactiveCancelCtaLghtbx(){ $('#cancelctasi').removeClass("hidden");  $('#cancelctano').addClass("hidden"); }
+		$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: true}); });
+		function activateCancel(){ $("#cancelbtn").addClass("show") }
+		function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
+		function activeLghtbx(){ $('#contrano').removeClass("hidden");  $('#contrasi').addClass("hidden"); }
+		function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano').addClass("hidden"); }
+		function activeCancelCtaLghtbx(){ $('#cancelctano').removeClass("hidden");  $('#cancelctasi').addClass("hidden"); }
+		function deactiveCancelCtaLghtbx(){ $('#cancelctasi').removeClass("hidden");  $('#cancelctano').addClass("hidden"); }
+		function validateEmail(field, rules, i, options) {
+			var err=0;
+			$.each( field.val().split(","), function(i,candidate) { 
+				if($.trim(candidate) != "") {
+					if(!$.trim(candidate).match(options.allrules.email.regex)) err++;
+				}
+			});
+			if(err) return options.allrules.email.alertText+". Puede introducir varios correos separados por coma";
+		}
 	</script>
-
-
-  <title>Administración de cuenta</title>
-  <link href="css/Origami.css" rel="stylesheet" type="text/css" />
-  <link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<title>Administración de cuenta</title>
+	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="bgt-main">
@@ -42,7 +46,11 @@
         <div class="col-24 first BR-R-10px">
           <div class="col-24">
        <div class="col-4">
-			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/></div>
+		   <img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
+	   </div>
+		<div class="col-14 typ-Wh marg-U80pix">
+			<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+		</div>
 
           <div class="col-6 last marg-U80pix"> {{with .FormDataCta}}
               <div class="pestana">
@@ -91,7 +99,8 @@
                   </div>
 
                   <div class="line">
-                    <label>Correo electrónico segundo contacto</label> <input type="text" class="validate[optional,custom[email]] small {{.ErrEmailAlt}}" name="EmailAlt" value="{{.EmailAlt}}" onchange="activateCancel()" />
+					  <label>Correo electrónico segundo contacto<br />
+					  <span class="typ-Sc">(Puede incluir varios correos separados por coma)</span></label> <input type="text" class="validate[optional,funcCall[validateEmail]] small {{.ErrEmailAlt}}" name="EmailAlt" value="{{.EmailAlt}}" onchange="activateCancel()" />
                   </div>
 
                   <div class="line" id="contrasi">
@@ -158,16 +167,12 @@
 
               <ul class="menuAdmin">
                 <li><a href="/dash"><span><img src="gfx/inicio.png" width="37" height="35" alt="inicio" /></span> Inicio</a></li>
-
                 <li><a class="selected" href="#"><span><img src="gfx/admin.png" width="37" height="35" alt="administrador" /></span> Usuario</a></li>
-
                 <li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-
                 <li><a href="#"><span><img src="gfx/sucursal.png" width="37" height="35" alt="sucursales" /></span> Sucursales</a></li>
-
                 <li><a href="#"><span><img src="gfx/oferta.png" width="37" height="35" alt="ofertas" /></span> Ofertas</a></li>
-
                 <li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+				<li><a href="/avisos"><span></span>Avisos</a></li>
               </ul>
             </div>
           </div>
@@ -183,6 +188,6 @@
         </div>
       </div>
     </div>
-{{end}}
 </body>
 </html>
+{{end}}

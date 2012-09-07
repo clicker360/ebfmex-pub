@@ -120,7 +120,12 @@
 <div class="col-100PR  bgt-red-top first">
   <div class="col-cent">
     <div class="col-24 first  BR-R-10px">
-      <div class="col-4"> <img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/> </div>
+		<div class="col-4">
+			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
+		</div>
+		<div class="col-14 typ-Wh marg-U80pix">
+			<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+		</div>
       <div class="col-6 last marg-U80pix lineUD marg-R5pix"> {{with .Sess}}
         <div class="pestana">
           <p class="first marg-10px">Hola {{.Name}}</p>
@@ -204,7 +209,7 @@
                     <input type="text" class="validate[optional] medium {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
                   </div>
                   <div class="line ">
-                    <label>Enlace Web al que debe apuntar el logotipo (opcional)</label>
+                    <label>Enlace Web al que debe apuntar el logotipo (opcional, con prefijo http://)</label>
                     <input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
                   </div>
                   <div class="line ">

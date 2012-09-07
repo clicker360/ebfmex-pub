@@ -82,6 +82,9 @@
 						<div class="col-4">
 							<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 						</div>
+						<div class="col-14 typ-Wh marg-U80pix">
+							<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+						</div>
 						<div class="col-6 last marg-U80pix lineUD marg-R5pix">
 							{{with .Sess}}
 							<div class="pestana">
@@ -102,6 +105,7 @@
 									<li><a href="#"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
 									<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 									<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+									<li><a href="/avisos"><span></span>Avisos</a></li>
 								</ul>
 							</div>
 							<div class="col-19 last">
@@ -219,7 +223,7 @@
 											<input class="marg-10pix" type="checkbox" name="PartLinea" value="1" id="quest1" {{if .PartLinea}}checked="{{.PartLinea}}"{{end}}  onchange="activateCancel()"/>
 										</div>         
 										<div class="line ">
-											<label>Sitio de internet</label>
+											<label>Sitio de internet (con prefijo http://)</label>
 											<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()">
 												Obligatorio indicar sitio de internet si su empresa ya tiene experiencia en comercio electrónico
 											</div>
@@ -308,8 +312,10 @@
 			<div class="col-24 first  BR-R-10px">
 				<div class="col-24">
 					<div class="col-4">
-						
 					<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
+				</div>
+				<div class="col-14 typ-Wh marg-U80pix">
+					<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
 				</div>
 				<div class="col-6 last marg-U80pix lineUD marg-R10pix">
 					{{with .Sess}}
@@ -331,6 +337,7 @@
 							<li><a href="#"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
 							<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+							<li><a href="/avisos"><span></span>Avisos</a></li>
 						</ul>
 					</div>
 				<div class="col-19 last">

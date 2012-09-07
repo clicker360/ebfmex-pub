@@ -236,10 +236,12 @@ func ctaForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, t
 			fd.ErrEmail = "invalid"
 			ef = true
 		}
+		/*
 		if fd.EmailAlt != "" && !model.ValidEmail.MatchString(fd.EmailAlt) {
 			fd.ErrEmailAlt = "invalid"
 			ef = true
 		}
+		*/
 		if r.FormValue("modificar") != "1" {
 			if (fd.Pass != fd.Pass1 || fd.Pass == "" || fd.Pass1 == "" || !model.ValidPass.MatchString(fd.Pass)) {
 				fd.ErrPass = "invalid"

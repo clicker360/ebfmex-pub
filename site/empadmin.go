@@ -70,7 +70,7 @@ func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 			empadmTpl.ExecuteTemplate(w, "micrositio", tc)
 		}
 	} else {
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, "/registro", http.StatusFound)
 	}
 }
 
@@ -85,7 +85,7 @@ func GetEmp(w http.ResponseWriter, r *http.Request) {
 		}
 		formEmp(c, w, &s, e)
 	} else {
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, "/registro", http.StatusFound)
 	}
 }
 
@@ -105,7 +105,7 @@ func ModEmp(w http.ResponseWriter, r *http.Request) {
 		}
 		ShowListEmp(w, r)
 	} else {
-		defer http.Redirect(w, r, "/", http.StatusFound)
+		defer http.Redirect(w, r, "/registro", http.StatusFound)
 	}
 }
 
@@ -128,7 +128,7 @@ func NewEmp(w http.ResponseWriter, r *http.Request) {
 		//formEmp(c, w, &s, e)
 		ShowListEmp(w, r)
 	} else {
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, "/registro", http.StatusFound)
 	}
 }
 
@@ -144,7 +144,7 @@ func DelEmp(w http.ResponseWriter, r *http.Request) {
 		ShowListEmp(w, r)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/registro", http.StatusFound)
 }
 
 func formEmp(c appengine.Context, w http.ResponseWriter, s *sess.Sess, e *model.Empresa) {
