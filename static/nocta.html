@@ -5,6 +5,19 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
 <script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
+	<script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-26907178-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#acceso").validationEngine({promptPosition : "topRight", scroll: true});
@@ -53,8 +66,8 @@ function deactiveLghtbx(){
 	}
 </script>
 <title>Rrecuperación de contraseña</title>
-<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
-<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 <body class=" bgt-main">
 <!--inicia login-->
@@ -64,21 +77,20 @@ function deactiveLghtbx(){
   <div class="col-7 pullup-10">
   <h2>Accede a El Buen Fin</h2>
   <div class="hr-line"></div>
-    <form id="acceso" action="/acceso" method="post" id="entrence">
-      <div class="col-7">
- <label class="col-2">Usuario</label>
- <input type="text" class="validate[required,custom[email]] small first" name="u" value="" />
-      </div>
-      <div class=" col-7">
-      <label class="col-2">Contraseña</label>
-        <input type="password" class="validate[required] small first" name="p" />
-
-      </div>
-      <div class="col-7 last">
-      <a href="#" class="Dsblock first">&#8250;he olvidado mi contraseña</a>
-      <button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
-    </form>
-            
+  <form id="acceso" action="/acceso" method="post">
+	<div class="col-7">
+	<label class="col-2">Usuario</label>
+	<input type="text" class="validate[required,custom[email]] small first" name="u" value="" />
+	</div>
+	<div class=" col-7">
+	<label class="col-2">Contraseña</label>
+	<input type="password" class="validate[required] small first" name="p" />
+	</div>
+	<div class="col-7 last">
+	<a href="recupera.html" class="Dsblock first">¿Olvidaste tu contraseña?</a>
+	<button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
+	</form>
+  </div>
   </div>
 </div>
 <!--termina login-->
@@ -87,10 +99,13 @@ function deactiveLghtbx(){
 		<div class="col-cent">
 			<div class="col-100PR first  BR-R-10px">
 				      <div class="col-24">
-           <div class="col-14">
-        <img src="imgs/logo_header.png" width="127" height="127"  alt="el buen fin" class="marg-5px first"/>
-        </div>
-            <div class="col-10 last marg-U50pix lineUD marg-R10pix">
+           	<div class="col-4">
+        		<img src="imgs/logo_header.png" width="127" height="127"  alt="el buen fin" class="marg-5px first"/>
+        	</div>
+			<div class="col-14 typ-Wh marg-U80pix">
+				<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+			</div>
+            <div class="col-4 last marg-U50pix lineUD marg-R10pix">
         <div class="col-3 last marg-U10pix">
         <a href="#null" onclick="activeLghtbx()" class="last"><img src="gfx/btn-sesion.png" width="131" height="30" /></a>
         </div>

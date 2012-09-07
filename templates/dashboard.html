@@ -1,47 +1,38 @@
 {{define "cta"}}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript">
- $(document).ready(function() {
-tgle1();
-});
- function tgle1(){
-	$( "#toggler1" ).delay(800).animate({
-	   height: 284, opacity: 1
-	}, 1000, "linear", function() {
-		 tgle2();
-	});
- }
- function tgle2(){
-	 $( "#toggler2" ).animate({
- 		  height: 284, opacity: 1
-	}, 800, "linear", function() {
- tgle3();
-	});
-	 }
- function tgle3(){
-	 $( "#toggler3" ).animate({
- 		  height: 284, opacity: 1
-	}, 600, "linear", function() {
- tgle3();
-	});
-	 }
-</script>
-<title>Registrate para participar</title>
-<link href="css/Origami.css" rel="stylesheet" type="text/css" />
-<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-26907178-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+	<title>Registrate para participar</title>
+	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 <body class=" bgt-main">
 <div class="col-100PR  bgt-red-top first">
   <div class="col-cent">
    
     <div class="col-24 first  BR-R-10px">
-  <div class="col-4">
-			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/></div>
-      <div class="col-10 last marg-U80pix lineUD marg-R10pix">
+	  <div class="col-4">
+		  <img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
+	  </div>
+		<div class="col-14 typ-Wh marg-U80pix">
+			<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+		</div>
+      <div class="col-6 last marg-U80pix lineUD marg-R10pix">
 		  	{{with .FormDataCta}}
     <div class="pestana">
                 <p class="first marg-10px ">Hola {{.Nombre}}</p>
