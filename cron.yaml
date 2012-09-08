@@ -1,0 +1,4 @@
+cron:
+- description: Lowercase the emails
+  url: /normalize-mail
+  schedule: every 30 minutes
