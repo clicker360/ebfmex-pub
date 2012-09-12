@@ -77,6 +77,6 @@ function mapCenter(){
 	var center = map.getCenter();
 	//alert('ok');
 	//alert(center);
-	return center;
+	//return center;
 }
 //})();

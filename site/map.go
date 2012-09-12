@@ -11,7 +11,7 @@ func init() {
 
 func Mapa(w http.ResponseWriter, r *http.Request){
 	mapa := "Nada"
-	mapTpl.ExecuteTemplate(w, "Mapa", mapa)
+	mapTpl.Execute(w, mapa)
 }
 
 var mapTpl = template.Must(template.ParseFiles("templates/map.html"))
