@@ -110,7 +110,7 @@ div.col-1, div.col-2, div.col-3, div.col-4, div.col-5, div.col-6, div.col-7, div
 .box1{
 	width: 96%;
 	float: left;
-	padding: 1%;
+	padding: .5%;
 	margin-top: 2px;
 	margin-right: 0.5em;
 	margin-bottom: 2px;
