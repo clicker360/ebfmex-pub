@@ -4,8 +4,8 @@ var map, geocoder, marker, infowindow;
 window.onload = function() {
 	// Creating a new map
 	var options = {
-		zoom: 3,
-		center: new google.maps.LatLng(37.09, -95.71),
+		zoom: 4,
+		center: new google.maps.LatLng(22.770856,-102.583243),
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById('map'), options);
