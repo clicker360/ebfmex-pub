@@ -22,7 +22,7 @@ Colonia: <input type="text" id="colonia" value="" /><br />
 CP: <input type="text" id="cp" value="" /><br />
 <input type="hidden" id="latlng" value="" />
 <button id="buscar" onfocus="localize(); return false;">Buscar</button>
-<a onclick="alert(mapCenter());">Center</a>
+<a onclick="alert(mapCenter());">Buscar</a>
 </form>
 
 </body>
