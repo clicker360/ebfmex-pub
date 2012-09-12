@@ -1,4 +1,4 @@
-{{define "cta"}}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta name="generator" content="HTML Tidy for Linux (vers 25 March 2009), see www.w3.org" />
@@ -20,8 +20,8 @@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="/scripts/map.js"></script>
 	<title>Administración de cuenta</title>
-	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
-	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="bgt-main">
@@ -36,12 +36,12 @@
 			<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
 		</div>
 
-          <div class="col-6 last marg-U80pix"> {{with .FormDataCta}}
+          <div class="col-6 last marg-U80pix"> 
               <div class="pestana">
-              <p class="first marg-10px  ">Hola {{.Nombre}}</p>
+              <p class="first marg-10px  ">Hola </p>
               <a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a> 
               </div>
-              {{end}}
+            
           </div>
 </div>
 
@@ -49,38 +49,40 @@
           <div class="menuAdmin">
             <div class="col-19 last">
               <div class="titlecond">
-                <h2 class="first">Sucursal &gt; {{.Name}}</h2>
+                <h2 class="first">Sucursal &gt; </h2>
               </div>
-              <div class="col-15 marg-L50pix marg-U10pix">
+              <div class="box1 marg-U10pix">
               
-              <div id="map"></div>
-     
-<form id="sucursal">
-<div class="line">
-<label>Estado: </label><input type="text" id="estado" value="" />
-</div >
-<div class="line">
-<label>Municipio: </label><input type="text" id="municipio" value="" />
-</div >
-<div class="line">
-<label>Calle: </label><input type="text" id="calle" value="" />
-</div >
-<div class="line">
-<label>Colonia: </label><input type="text" id="colonia" value="" />
-</div >
-<div class="line">
-<label>CP: </label><input type="text" id="cp" value="" />
-</div >
-<input type="hidden" id="latlng" value="" />
-<button id="buscar" onfocus="localize(); return false;" class="big red"><span>Buscar</span></button>
-</form>
-</div>
+              <div class="last  col-50PR outlined">
+                <div id="map"></div>
+                <div class="col-8 Addvice BR-R-3px marg-10pix">Para buscar la sucursal tan solo escribe en los campos la dirección y ubicala en el mapa</div>
+               
+              </div>
+              <div class="col-9">
+                <form id="sucursal">
+                  <div class="line">
+                    <label class="col-5">Entidad Federativa:  </label><input type="text" id="estado" value=""  class="medium"/>
+                  </div >
+                  <div class="line">
+                    <label class="col-5">Delegación o municiopio </label><input type="text" id="municipio" value=""  class="medium"/>
+                  </div >
+                  <div class="line">
+                    <label class="col-5">Colonia: </label><input type="text" id="colonia" value=""  class="medium"/>
+                  </div >
+                  <div class="line">
+                    <label class="col-5">Calle: </label><input type="text" id="calle" value=""  class="medium"/>
+                  </div >
+                  
+                  <div class="line">
+                    <label class="col-5">CP: </label><input type="text" id="cp" value=""  class="medium"/>
+                  </div >
+                  <input type="hidden" id="latlng" value="" />
+                  <button id="buscar" onfocus="localize(); return false;" class="big red last"><span>Buscar</span></button>
+                </form>
+              </div>
+              </div>
 
-			  <form method="post" class="frmE" id="enviar" name="enviar" action="/ctamod">
-			  </form>
-            <form action="/ctadel" method="post" name="cancelcta" id="cancelcta">
-				<input type="hidden" name="desactiva" value="1"/>
-            </form>
+			  
             </div>
 
             <div class="col-5" style="min-height:600px;">
@@ -112,4 +114,4 @@
     </div>
 </body>
 </html>
-{{end}}
+
