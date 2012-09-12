@@ -26,9 +26,6 @@ p{font-family: "Open Sans", "Century", "Palatino Linotype", sans-serif; line-hei
 
 b, strong{ font-family:"Open Sans", "Century", "Palatino Linotype", sans-serif; font-weight:600;}
 
-
-
-
 /**BACKS**/
 
 .Bg-ky{ background-color:#D30800;}
@@ -139,12 +136,8 @@ a.lnk-sec {
 	background-color:#ae2021;
 }
 .bg-top{ background-image:url(../gfx/backTop.jpg); background-repeat:repeat-x; background-position:top;}
-/**others**/
-.SPRTR1-L{background-image:url(../imgs2/separator1.gif);background-repeat: no-repeat;background-position: left;}
-.SPRTR1-R{background-image:url(../imgs2/separator1.gif);background-repeat: no-repeat;background-position: right;}
-.SPRTR2-R{background-image:url(../imgs2/separator2.gif);background-repeat: no-repeat;background-position: right;}
-.SPRTR2-L{background-image:url(../imgs2/separator2.gif);background-repeat: no-repeat;background-position: left;}
-.SPRT-SH-D{background-image: url(../imgs2/shadowSparator.png);padding-bottom: 10px;}
+
+
 
 /***html5 propierties***/
 
@@ -161,10 +154,6 @@ a.lnk-sec {
 .SHW-div-D10px{box-shadow:0px 10px 10px #000; -webkit-box-shadow:10px 10px 10px #000; -moz-box-shadow: 10px 10px 10px #000;}
 .SHW-div-D5px{box-shadow:0px 2px 5px #000; -webkit-box-shadow:0px 2px 5px #000; -moz-box-shadow: 0px2px 5px #000;}
 .SHW-div-D3px{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666;}
-
-
-
-.color{ color:#666}
 /***Butons**/
 
 button::-moz-focus-inner {border:0;padding:0;margin:0;}
@@ -2239,5 +2228,8 @@ a.eliminate:hover{ background-position:bottom;}
 		#question { width: 300px!important; height: 60px!important; padding: 10px 0 0 10px; }
 		#question img { float: left; }
 		#question span { float: left; margin: 20px 0 0 10px; }
+		
+/*Acrdiones*/
+
 
 
