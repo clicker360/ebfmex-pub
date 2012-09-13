@@ -2125,7 +2125,7 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 	white-space: nowrap;
 }
 gridRow:hover { background-position:bottom;}
-.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:530px; display:block; float:left; overflow: hidden; height:45px;}
+.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:530px; display:block; float:left; overflow: hidden; height:45px; line-height:.8em;}
 
 .warning, a.warning{
 	float: left;
