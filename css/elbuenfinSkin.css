@@ -2127,6 +2127,34 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 gridRow:hover { background-position:bottom;}
 .gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:530px; display:block; float:left; overflow: hidden; height:45px; line-height:.8em;}
 
+.gridsubRow a{
+	font-size: 14px;
+	font-weight: bold;
+	width: 99%;
+	display: block;
+	float: left;
+	overflow: hidden;
+	line-height: 0.8em;
+	color: #333;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #E8E8E8;
+	border-right-color: #E8E8E8;
+	border-bottom-color: #E8E8E8;
+	border-left-color: #E8E8E8;
+}
+.gridsubRow a:hover{
+	background-color: #EDDDD7;
+}
+
 .warning, a.warning{
 	float: left;
 	width: 98.1%;
