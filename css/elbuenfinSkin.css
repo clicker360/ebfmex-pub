@@ -111,7 +111,7 @@ a.lnk-sec {
 
 /***Backs-Patrons***/
 .bgt-main{
-	background-image: url(../imgs/fondo_bg.gif);
+	background-image: url(../../imgs/fondo_bg.gif);
 	background-color: #EAF6FF;
 }
 .bgt-red-top{
@@ -119,12 +119,12 @@ a.lnk-sec {
 	background-repeat: repeat-x;
 }
 .bgt-Sec{
-	background-image: url(../imgs/fondo_bg.png);
+	background-image: url(../../imgs/fondo_bg.png);
 }
 .bgt-BK-TR-80pr{
-	background-image: url(../imgs2/Blk80pr.png);
+	background-image: url(../../imgs2/Blk80pr.png);
 }
-.bgt-Wh-TR-80pr{background-image: url(../imgs2/WH80pr.png);}
+.bgt-Wh-TR-80pr{background-image: url(../../imgs2/WH80pr.png);}
 .bgt-Rd-TR-80pr{background-image: url(../imgs2/red1px.png);}
 .bg-form{
 	background-attachment: fixed;
@@ -2153,7 +2153,7 @@ gridRow:hover { background-position:bottom;}
 	float: left;
 	width: 98.1%;
 	margin-left: 1%;
-	margin-top: 20px;
+	margin-top: 10px;
 	display: table;
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -2335,15 +2335,18 @@ a.eliminate:hover{ background-position:bottom;}
 	padding-bottom: 1em;
 	padding-left: .7em;
 }.ui-accordion .ui-accordion-content {
-    border-top: 0 none;
-    display: none;
-    margin-bottom: 2px;
-    margin-top: -2px;
-    overflow: auto;
-    padding: 1em 2.2em;
-    position: relative;
-    top: 1px;
-	background-color:#CCC;
+	border-top: 0 none;
+	display: none;
+	margin-bottom: 2px;
+	margin-top: -2px;
+	overflow: auto;
+	position: relative;
+	top: 1px;
+	background-color: #CCC;
+	padding-top: 5px;
+	padding-right: 2em;
+	padding-bottom: 10px;
+	padding-left: 2em;
 }
 .ui-accordion .ui-accordion-content-active { display: block; }
 

@@ -200,7 +200,7 @@ legend {font-weight:bold;font-size:1.2em;}
 .margLR-1em {margin-right: 1em;margin-bottom: 1em;}
 .margLR-5em {margin-right: 5em;margin-bottom: 5em;}
 .margLR-2em {margin-right: 2em;margin-bottom: 2em;}
-.margLR-auto{margin-right:auto;margin-bottom:auto;}
+.margLR-auto{margin-right:auto;margin-bottom:auto; float:none;}
 
 /***links***/
 a {text-decoration:none;}
