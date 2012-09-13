@@ -66,8 +66,10 @@ func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 		tc["Empresa"] = listEmp(c, u)
 		if(r.FormValue("d") == "a") {
 			empadmTpl.ExecuteTemplate(w, "empresa", tc)
-		} else {
-			empadmTpl.ExecuteTemplate(w, "micrositio", tc)
+		} else if(r.FormValue("d") == "s") {
+			empadmTpl.ExecuteTemplate(w, "vistasucursal", tc)
+		} else if(r.FormValue("d") == "m") {
+			empadmTpl.ExecuteTemplate(w, "vistamicrositio", tc)
 		}
 	} else {
 		http.Redirect(w, r, "/registro", http.StatusFound)
@@ -133,7 +135,6 @@ func NewEmp(w http.ResponseWriter, r *http.Request) {
 }
 
 func DelEmp(w http.ResponseWriter, r *http.Request) {
-	// formato con validación 
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
 		u, _ := model.GetCta(c, s.User)
@@ -149,8 +150,8 @@ func DelEmp(w http.ResponseWriter, r *http.Request) {
 
 func formEmp(c appengine.Context, w http.ResponseWriter, s *sess.Sess, e *model.Empresa) {
 	fd := empresaToForm(*e)
-	fd.Entidades = listEnt(c, e.DirEnt)
-	fd.Organismos = listOrg(c, e.OrgEmp)
+	fd.Entidades = ListEnt(c, e.DirEnt)
+	fd.Organismos = ListOrg(c, e.OrgEmp)
 	tc := make(map[string]interface{})
 	tc["Sess"] = s
 	tc["FormDataEmp"] = fd
@@ -167,7 +168,7 @@ func listEmp(c appengine.Context, u *model.Cta) *[]model.Empresa {
 	return &empresas
 }
 
-func listEnt(c appengine.Context, ent string) *[]model.Entidad {
+func ListEnt(c appengine.Context, ent string) *[]model.Entidad {
 	q := datastore.NewQuery("Entidad")
 	estados := make([]model.Entidad, 0, 32)
 	if _, err := q.GetAll(c, &estados); err != nil {
@@ -181,7 +182,7 @@ func listEnt(c appengine.Context, ent string) *[]model.Entidad {
 	return &estados
 }
 
-func listOrg(c appengine.Context, siglas string) *[]model.Organismo {
+func ListOrg(c appengine.Context, siglas string) *[]model.Organismo {
 	q := datastore.NewQuery("Organismo")
 	orgs := make([]model.Organismo, 0, 32)
 	if _, err := q.GetAll(c, &orgs); err != nil {
@@ -294,8 +295,8 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool
 		*/
 
 		if ef {
-			fd.Entidades = listEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))
-			fd.Organismos = listOrg(c, fd.OrgEmp)
+			fd.Entidades = ListEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))
+			fd.Organismos = ListOrg(c, fd.OrgEmp)
 			tc := make(map[string]interface{})
 			tc["Sess"] = s
 			tc["FormDataEmp"] = fd

@@ -3,11 +3,12 @@
 <head>
 	<meta name="generator" content="HTML Tidy for Linux (vers 25 March 2009), see www.w3.org" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
-	</script><script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8">
-	</script><script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8">
+    	<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script type="text/javascript">
-
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26907178-1']);
 		_gaq.push(['_trackPageview']);
@@ -17,23 +18,15 @@
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-
+		jQuery(document).ready(function(){
+	$('.accordion .head').click(function() {
+		$(this).next().toggle('slow');
+		return false;
+	}).next().hide();
+});
 	</script>
-	</script>
-	<script type="text/javascript">
-    $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: true}); });
-    function activateCancel(){ $("#cancelbtn").addClass("show") }
-    function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
-    function activeLghtbx(){ $('#contrano').removeClass("hidden");  $('#contrasi').addClass("hidden"); }
-    function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano').addClass("hidden"); }
-    function activeCancelCtaLghtbx(){ $('#cancelctano').removeClass("hidden");  $('#cancelctasi').addClass("hidden"); }
-    function deactiveCancelCtaLghtbx(){ $('#cancelctasi').removeClass("hidden");  $('#cancelctano').addClass("hidden"); }
-	</script>
+	<title>Administración de cuenta</title>
 
-
-  <title>Administración de cuenta</title>
-  <link href="css/Origami.css" rel="stylesheet" type="text/css" />
-  <link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="bgt-main">
@@ -48,33 +41,28 @@
 			<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
 		</div>
 
-          <div class="col-6 last marg-U80pix"> {{with .Sess}}
+          <div class="col-6 marg-U80pix"> 
               <div class="pestana">
-              <p class="first marg-10px  ">Hola {{.Name}}</p>
+              <p class="first marg-10px  ">Hola </p>
               <a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a> 
               </div>
-              {{end}}
+            
           </div>
-		</div>
+</div>
 
         <div class="col-24 Bg-Wh marg-D10pix">
           <div class="menuAdmin">
             <div class="col-19 last">
               <div class="titlecond">
-                <h2 class="first">Avisos</h2>
-				<div class="first"> 
-					<br/>
-					<br/>
-					<div class="first"> 
-					<h4>En esta sección encontrarás avisos e información relevante que se irá publicando para mantenerte al tanto.</h4>
-					</div>
-					<div class="col-14"> 
-						<ul>
-							<li>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</li>
-						</ul>
-					</div>
-				</div>
-
+                <h2 class="first">Todas las sucursales </h2>
+              </div>
+              <div class="box1">
+  <div id="accordion">
+    <h3 class="gridRow"><a href="#">Cielito querido cafe</a></h3>
+    <div>Empresa1</div>
+    <h3 class="gridRow"><a href="#">the italian coffe company</a></h3>
+    <div>Empresa 2</div>
+  </div>
               </div>
             </div>
 
@@ -83,17 +71,18 @@
 
               <ul class="menuAdmin">
                 <li><a href="/dash"><span><img src="gfx/inicio.png" width="37" height="35" alt="inicio" /></span> Inicio</a></li>
-                <li><a href="/cta"><span><img src="gfx/admin.png" width="37" height="35" alt="administrador" /></span> Usuario</a></li>
+                <li><a class="selected" href="#"><span><img src="gfx/admin.png" width="37" height="35" alt="administrador" /></span> Usuario</a></li>
                 <li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-                <li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="37" height="35" alt="sucursales" /></span> Sucursales</a></li>
+                <li><a href="#"><span><img src="gfx/sucursal.png" width="37" height="35" alt="sucursales" /></span> Sucursales</a></li>
                 <li><a href="#"><span><img src="gfx/oferta.png" width="37" height="35" alt="ofertas" /></span> Ofertas</a></li>
                 <li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
-				<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
+				<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
               </ul>
             </div>
           </div>
 
-          <div class="box1 alineCenter"><img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial" class="padd-10px" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo" class="padd-10px" /><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex" class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg"
+          <div class="box1 alineCenter"><img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo" class="padd-10px" /><img src="imgs/orgn_5.jpg" width="98"
+          height="68" alt="consejo cordinador empresarial" class="padd-10px" /><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex" class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg"
           width="67" height="49" alt="concanaco" class="padd-10px" /><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico" class="padd-10px" /></div>
 
           <div class=" box1">
@@ -106,3 +95,4 @@
     </div>
 </body>
 </html>
+

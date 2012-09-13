@@ -33,7 +33,6 @@ dfn {font-weight:bold;}
 sup, sub {line-height:0;}
 abbr, acronym {border-bottom:1px dotted #666;}
 address {margin:0 0 1.5em;font-style:italic;}
-del {}
 pre {margin:1.5em 0;white-space:pre;}
 pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
 ol {list-style-type:decimal;}
@@ -50,11 +49,6 @@ caption {background:#eee;}
 .small {font-size:.8em;margin-bottom:1.875em;line-height:1.875em;}
 .large {font-size:1.2em;line-height:2.5em;margin-bottom:1.25em;}
 .hide {display:none;}
-.quiet {}
-.loud {}
-.highlight {}
-.added {}
-.removed {}
 .first {float:left;}
 .last a.last {float:right;}
 .top {margin-top:0;padding-top:0;}
@@ -66,7 +60,6 @@ caption {background:#eee;}
 
 /* grid-970 */
 .container {width:1150px;margin:0 auto;}
-.showgrid {background:url(src/grid.png);}
 div.col-1, div.col-2, div.col-3, div.col-4, div.col-5, div.col-6, div.col-7, div.col-8, div.col-9, div.col-10, div.col-11, div.col-12, div.col-13, div.col-14, div.col-15, div.col-16, div.col-17, div.col-18, div.col-19, div.col-20, div.col-21, div.col-22, div.col-23, div.col-24, div.col-25, div.col-26, div.col-27, div.col-28, div.col-29  {float:left;}
 .last, div.last {float:right;}
 .col-1 {width:30px;}
@@ -117,7 +110,7 @@ div.col-1, div.col-2, div.col-3, div.col-4, div.col-5, div.col-6, div.col-7, div
 .box1{
 	width: 96%;
 	float: left;
-	padding: 1%;
+	padding: .5%;
 	margin-top: 2px;
 	margin-right: 0.5em;
 	margin-bottom: 2px;

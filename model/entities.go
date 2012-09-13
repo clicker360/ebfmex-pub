@@ -58,11 +58,20 @@ type Empresa struct {
 
 type Sucursal struct {
 	IdSuc		string
+	IdEmp		string
 	Nombre		string
-	Dir			string
 	Tel			string
+	DirCalle	string
+	DirCol		string
+	DirEnt		string
+	DirMun		string
+	DirCp		string
 	GeoUrl		string
-	Selected	string
+	Geo1		string
+	Geo2		string
+	Geo3		string
+	Geo4		string
+	FechaHora	time.Time
 }
 
 type Quest struct {
@@ -187,20 +196,6 @@ func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
 }
 
 // Métodos de Empresa
-// Una imagen se coloca dentro de una empresa
-func (e *Empresa) Key(c appengine.Context) *datastore.Key {
-	return datastore.NewKey(c, "Empresa", e.IdEmp, 0, nil)
-}
-
-func (e *Empresa) NewImage(c appengine.Context, i *Image) (*Image, error) {
-	i.IdImg = RandId(12)
-    _, err := datastore.Put(c, datastore.NewKey(c, i.Kind, i.IdImg, 0, e.Key(c)), i)
-	if err != nil {
-		return nil, err
-	}
-	return i, nil
-}
-
 func GetEmpresa(c appengine.Context, id string) (*Empresa) {
 	q := datastore.NewQuery("Empresa").Filter("IdEmp =", id)
 	for i := q.Run(c); ; {
@@ -210,6 +205,65 @@ func GetEmpresa(c appengine.Context, id string) (*Empresa) {
 			break
 		}
 		return &e
+	}
+	return nil
+}
+
+func (e *Empresa) Key(c appengine.Context) *datastore.Key {
+	//return datastore.NewKey(c, "Empresa", e.IdEmp, 0, nil)
+	q := datastore.NewQuery("Empresa").Filter("IdEmp =", e.IdEmp)
+	for i := q.Run(c); ; {
+		var e Empresa
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		return key
+	}
+	return nil
+}
+
+func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*datastore.Key, error) {
+	if s.IdSuc != "" {
+		s.IdSuc = RandId(14)
+	}
+	parentKey := e.Key(c)
+    key, err := datastore.Put(c, datastore.NewKey(c, "Sucursal", s.IdSuc, 0, parentKey), s)
+	if err != nil {
+		return nil, err
+	}
+	return key, err
+}
+
+// Métodos de Sucursal
+func GetSuc(c appengine.Context, id string) (*Sucursal) {
+	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
+	for i := q.Run(c); ; {
+		var e Sucursal
+		_, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		// Regresa la sucursal
+		return &e
+	}
+	// Regresa un cascarón
+	var e Sucursal
+	e.IdEmp = "none";
+	return &e
+}
+
+func DelSuc(c appengine.Context, id string) error {
+	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
+	for i := q.Run(c); ; {
+		var e Sucursal
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -240,6 +294,8 @@ func GetEntidad(c appengine.Context, cveent string) (*Entidad, error) {
 	return e, nil
 }
 
+
+
 // Métodos de Municipio
 func (m *Municipio) Parent(c appengine.Context) *Entidad {
 	e, _ := GetEntidad(c, m.CveEnt)
@@ -264,7 +320,6 @@ func GetMunicipio(c appengine.Context, cvemun string) *Municipio {
 }
 
 // Métodos de Imagen
-
 // Obtiene la llave de una imagen
 func (i *Image) Key(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, i.Kind, i.IdImg, 0, nil)
@@ -279,14 +334,6 @@ func DelImg(c appengine.Context, kind string, id string) error {
 }
 
 // Guarda Imagen modificada
-func PutImage(c appengine.Context, i *Image) (*datastore.Key, error) {
-	key, err := datastore.Put(c, datastore.NewKey(c, i.Kind, i.IdImg, 0, nil), &i)
-	if err != nil {
-		return nil, err
-	}
-	return key, nil
-}
-
 func PutLogo(c appengine.Context, i *Image) (*datastore.Key, error) {
 	key, err := datastore.Put(c, datastore.NewKey(c, i.Kind, i.IdEmp, 0, nil), i)
 	if err != nil {
@@ -320,15 +367,4 @@ func GetImg(c appengine.Context, id string) (*Image, error) {
 	return i, err
 }
 
-/*
-func (r *Empresa) AddSucursal(c appengine.Context, id string, s Sucursal) (*Sucursal, error) {
-	key := datastore.NewKey(c, "Sucursal", id, 0, r.Key(c))
-	s.IdSuc = id
-    //sucursal := &Sucursal{IdSuc: id}
-    _, err := datastore.Put(c, key, &s)
-	if err != nil {
-		return nil, err
-	}
-	return &s, err
-}
-*/
+
