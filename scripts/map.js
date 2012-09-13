@@ -49,13 +49,14 @@ function getCoordinates(address) {
 			if (!marker) {
 				// Creating a new marker and adding it to the map
 				marker = new google.maps.Marker({
-					map: map
+					map: map,
+					draggable: true
 				});
 			}
 			// Setting the position of the marker to the returned location
 			marker.setPosition(results[0].geometry.location);
 			// Check to see if we've already got an InfoWindow object
-			if (!infowindow) {
+			/*if (!infowindow) {
 				// Creating a new InfoWindow
 				infowindow = new google.maps.InfoWindow();
 			}
@@ -67,8 +68,13 @@ function getCoordinates(address) {
 			// Adding the content to the InfoWindow
 			infowindow.setContent(content);
 			// Opening the InfoWindow
-			infowindow.open(map, marker);
+			infowindow.open(map, marker);*/
 			document.getElementById('latlng').value = results[0].geometry.location.lat() + "," + results[0].geometry.location.lng();
+			
+			google.maps.event.addListener(marker, 'dragend', function() {
+				document.getElementById('latlng').value = this.getPosition();
+				map.setCenter(this.getPosition());
+			});
 		}
 	});
 }
