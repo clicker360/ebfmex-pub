@@ -218,10 +218,11 @@
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
-								<h2 class="first">Sucursales de {{with .Empresa}}{{.Nombre}}{{end}}</h2>
+								<h2 class="first">Sucursales</h2>
 								<a href="/sucursal?IdSuc=0&IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR SUCURSAL</span></a>
 								<a href="/le?d=s" class="button big grey last"><span>Listado de empresas</span></a>
 							</div>
+							<h2 class="first">Empresa / {{with .Empresa}}{{.Nombre}}{{end}}</h2>
 							{{range .Sucursal}}
 							<div class="dataGrid">
 								<div class="gridRow">

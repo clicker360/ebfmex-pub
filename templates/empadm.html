@@ -527,14 +527,12 @@
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
-								<h2 class="first">Sucursales de {{with .Empresa}}{{.Nombre}}{{end}}</h2>
-								<a href="/sucursal?IdSuc=0&IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR SUCURSAL</span></a>
-								<a href="/le?d=s" class="button big grey last"><span>Listado de empresas</span></a>
+								<h2 class="first">Sucursales por empresa</h2>
 							</div>
-							{{range .Sucursal}}
+							{{range .Empresa}}
 							<div class="dataGrid">
 								<div class="gridRow">
-									<a href="/sucursal?IdSuc={{.IdSuc}}&IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a><a href="/sucdel?IdSuc={{.IdSuc}}&IdEmp={{.IdEmp}}&d=s" class="button orange marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta sucursal?')){return true;}else{return false;}"><span>ELIMINAR</span></a>
+									<a href="/sucursales?IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a>
 								</div>
 							</div>
 							{{else}}
