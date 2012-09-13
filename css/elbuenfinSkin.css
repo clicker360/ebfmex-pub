@@ -2368,5 +2368,14 @@ a.eliminate:hover{ background-position:bottom;}
     color: #555555;
     font-weight: normal;
 }
+/*Sucursales*/
+		.both h4{ font-family:Arial, Helvetica, sans-serif; margin:0px; font-size:14px;}
+		#CveEnt{ padding:3px; width:200px;}
+		#MunSelector{ padding:3px; width:200px;}
+		.both{ float:left; margin:0 15px 0 0; padding:0px;}
+		.ui-dialog { font-size: 11px; }
+		#question { width: 300px!important; height: 60px!important; padding: 10px 0 0 10px; }
+		#question img { float: left; }
+		#question span { float: left; margin: 20px 0 0 10px; }
 
-
+.hola{ overflow:hidden;}
