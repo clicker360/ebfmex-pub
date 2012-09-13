@@ -68,6 +68,7 @@ func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 			empadmTpl.ExecuteTemplate(w, "empresa", tc)
 		} else if(r.FormValue("d") == "s") {
 			empadmTpl.ExecuteTemplate(w, "vistasucursal", tc)
+			//empadmTpl.ExecuteTemplate(w, "empresassucursales", tc)
 		} else if(r.FormValue("d") == "m") {
 			empadmTpl.ExecuteTemplate(w, "vistamicrositio", tc)
 		}

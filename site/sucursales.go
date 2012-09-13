@@ -1,17 +1,38 @@
 package site
 
 import (
+    "appengine"
+    "appengine/datastore"
+	"html/template"
     "net/http"
-    "html/template"
+	"fmt"
+	"model"
+	"sess"
 )
 
 func init() {
-    http.HandleFunc("/sucursales1", Sucursales)
+    http.HandleFunc("/suc", sucursales)
 }
 
-func Sucursales(w http.ResponseWriter, r *http.Request){
-	mapa := "Nada"
-	sucursalesTpl.Execute(w, mapa)
+func sucursales(w http.ResponseWriter, r *http.Request) {
+    c := appengine.NewContext(r)
+	_, ok := sess.IsSess(w, r, c)
+	if ok {
+		q := datastore.NewQuery("Sucursal").Filter("IdEmp =", r.FormValue("IdEmp"))
+		tpl, _ := template.New("Suc").Parse(SucListTpl)
+		fmt.Fprintf(w, "<div class=\"col-100PR first marg-U20pix\">")
+		for i := q.Run(c); ; {
+			var s model.Sucursal
+			_, err := i.Next(&s)
+			if err == datastore.Done {
+				break
+			}
+			//Despliega sucursales
+			tpl.Execute(w, s)
+		}
+		fmt.Fprintf(w, "</div>")
+	}
+	return
 }
 
-var sucursalesTpl = template.Must(template.ParseFiles("templates/ListSucusales.html"))
+const SucListTpl = `<div class="gridsubRow bg-Gry1"><a href="/sucursal?IdSuc={{.IdSuc}}&IdEmp={{.IdEmp}}">{{.Nombre}}</a><a href="/sucdel?IdSuc={{.IdSuc}}" class="button orange last marg-R5pix"><span>ELIMINAR</span></a> </div>`

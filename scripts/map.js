@@ -1,35 +1,52 @@
-//(function() {
 // Defining some global variables
 var map, geocoder, marker, infowindow;
-window.onload = function() {
+$(document).ready(function() {
 	// Creating a new map
+	var zoom = 17;
+	var lat = $('#lat').val();
+	var lng = $('#lng').val();
+	if(lat == '') { 
+		lat = 22.770856;
+		lng = -102.583243; 
+		zoom = 4;
+	}
+	var center = new google.maps.LatLng(lat,lng);
 	var options = {
-		zoom: 4,
-		center: new google.maps.LatLng(22.770856,-102.583243),
+		zoom: zoom,
+		center: center,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById('map'), options);
-	// Getting a reference to the HTML form
-	var form = document.getElementById('sucursal');
-	// Catching the forms submit event
-	form.onsubmit = function() {
-	//function localize(){
-		// Getting the address from the text input
-		var estado = document.getElementById('estado').value;
-		var municipio = document.getElementById('municipio').value;
-		var calle = document.getElementById('calle').value;
-		var colonia = document.getElementById('colonia').value;
-		var cp = document.getElementById('cp').value;
-		var address = calle + ", " + colonia + ", " + cp + ", " + municipio + ", " + estado + ", MEXICO";
-		//alert(address);
-		// Making the Geocoder call
-		getCoordinates(address);
-		// Preventing the form from doing a page submit
-		return false;
+	if (!marker) {
+		// Creating a new marker and adding it to the map
+		marker = new google.maps.Marker({
+			map: map,
+			draggable: true
+		});
+		marker.setPosition(center);
 	}
-}
-// Create a function the will return the coordinates for the address
-function getCoordinates(address) {
+	// Getting a reference to the HTML form
+	$('#buscar').bind('keydown keyup mousedown',function(e){
+		locateAddress();
+	});
+	google.maps.event.addListener(marker, 'dragend', function() {
+		var tmppos = ''+this.getPosition();
+		var latlng = tmppos.split(',');
+		document.getElementById('lat').value = latlng[0].replace('(','');
+		document.getElementById('lng').value = latlng[1].replace(')','')
+		map.setCenter(this.getPosition());
+	});
+});
+
+function locateAddress() {
+	// Getting the address from the text input
+	var estado = document.getElementById('estado').value;
+	var municipio = document.getElementById('municipio').value;
+	var calle = document.getElementById('calle').value;
+	var colonia = document.getElementById('colonia').value;
+	var cp = document.getElementById('cp').value;
+	var address = calle + ", " + colonia + ", " + cp + ", " + municipio + ", " + estado + ", MEXICO";
+	
 	// Check to see if we already have a geocoded object. If not we create one
 	if(!geocoder) {
 		geocoder = new google.maps.Geocoder();
@@ -69,20 +86,11 @@ function getCoordinates(address) {
 			infowindow.setContent(content);
 			// Opening the InfoWindow
 			infowindow.open(map, marker);*/
-			document.getElementById('latlng').value = results[0].geometry.location.lat() + "," + results[0].geometry.location.lng();
+			document.getElementById('lat').value = results[0].geometry.location.lat();
+			document.getElementById('lng').value = results[0].geometry.location.lng();
 			
-			google.maps.event.addListener(marker, 'dragend', function() {
-				document.getElementById('latlng').value = this.getPosition();
-				map.setCenter(this.getPosition());
-			});
+			
 		}
 	});
 }
 
-function mapCenter(){
-	var center = map.getCenter();
-	//alert('ok');
-	//alert(center);
-	return center;
-}
-//})();
