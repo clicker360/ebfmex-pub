@@ -68,37 +68,47 @@
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
-								<h2 class="first">Registro de Sucursal</h2>
-								<a href="/sucursales?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>Listado por empresa</span></a>
-								<a href="/le?d=s" class="button big grey last"><span>Listado de empresas</span></a>
+								<div class="col-14" style="overflow:hidden;height:38px;"><h3 class="first">Sucursal de {{with .Empresa}}{{.Nombre}}{{end}}</h3></div>
+								<!--a href="/le?d=s" class="button big grey last"><span>Sucursales por empresa</span></a-->
+								<a href="/sucursales?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
 							</div>
 							<div class="box1 marg-U10pix">
+								
 								<form action="/sucmod" method="post" id="enviar">
 									<input type="hidden" value="a" name="s"/>
 									{{with .FormDataSuc}}<input type="hidden" name="IdSuc" value="{{.IdSuc}}"/>{{end}}
 									{{with .Empresa}}<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>{{end}}
-									{{with .Empresa}}<h4>Empresa:</h4>{{end}}
-									{{with .Empresa}}<h4>{{.Nombre}}</h4>{{end}}
 									{{with .FormDataSuc}}
-									<div class="line ">
-										<label class="col-5">Nombre de sucursal<span class="typ-Sc"> * </span></label>
-										<input type="text" class="validate[required] medium {{.ErrNombre}}" name="Nombre" value="{{.Nombre}}" onchange="activateCancel()" />
+									<div class="box2">
+										<label class="col-4">Nombre de sucursal<span class="typ-Sc"> * </span></label>
+										<div class="first">
+											<input type="text" class="validate[required] small {{.ErrNombre}}" name="Nombre" value="{{.Nombre}}" onchange="activateCancel()" />	
+										</div>
 									</div>
-									<div class="line">
-										<label class="col-5" for="cphone">Teléfono fijo con lada</label>
-										<input type="text" id="cphone" name="Tel" class="validate[optional,custom[phone]] medium {{.ErrTel}}" value="{{.Tel}}" onchange="activateCancel()" />
+									<div class="box2">
+										<label class="col-4" for="cphone">Teléfono fijo con lada</label>
+										<div class="first">
+											<input type="text" id="cphone" name="Tel" class="validate[optional,custom[phone]] small {{.ErrTel}}" value="{{.Tel}}" onchange="activateCancel()" />
+										</div>
 									</div>
-									<div class="line ">
-										<hr/>
-									</div>
-									<div class="last col-50PR outlined">
-										<div id="map"></div>
-										<div class="col-8 BR-R-3px marg-10pix">
+									<div class="box1">
+										<div class="outlined pullup-10 BR-R-3px">
 											<ol>
-												<li>Captura la dirección para ubicar la sucursal y haz click en BUSCAR.</li>
-												<li>No siempre coinciden las direcciones con el marcador al centro, por lo que puedes mover, alejar o acercar el mapa, así como cambiar de lugar el marcador hasta que la sucursal se localize al centro del mapa y coincida lo mejor posible con tu dirección real.</li>
-												<li>Cada vez que mueves el marcador y lo sueltas en una posición, el mapa se centra automáticamente.</li>
+												<li>Captura la dirección para ubicar la sucursal.</li>
+												<li>Puedes mover, alejar o acercar el mapa, o cambiar de lugar el marcador, el mapa se centra automáticamente.</li>
 											</ol>
+										</div>
+									</div>
+									<div class="last col-50PR">
+										<div id="map"></div>
+										<div class="last marg-R15pix">
+											{{if .IdSuc}}
+											<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
+											<button type="reset" class="grey last hidden marg-U15pix" id="cancelbtn"><span>Restablecer</span></button>
+											{{else}}
+											<button type="submit" class="big red last"><span>Aplicar</span></button>
+											<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
+											{{end}}
 										</div>
 									</div>
 									<div class="col-9">
@@ -131,18 +141,11 @@
 										</div>
 										<input type="hidden" id="lat" name="Geo1" value="{{.Geo1}}" />
 										<input type="hidden" id="lng" name="Geo2" value="{{.Geo2}}" />
-										<button type="button" id="buscar" class="big red last"><span>Buscar</span></button>
+										<button type="button" id="buscar" class="orange last big"><span>Buscar</span></button>
 									</div>
 									<div class="col-18 marg-L10pix marg-D10pix">
 										<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
 									</div> 
-									{{if .IdSuc}}
-									<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
-									<button type="reset" class="grey last hidden marg-U15	pix" id="cancelbtn"><span>Restablecer</span></button>
-									{{else}}
-									<button type="submit" class="big red last"><span>Aplicar</span></button>
-									<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
-									{{end}}
 									{{else}}
 									{{end}}
 								</form>
@@ -218,11 +221,11 @@
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
-								<h2 class="first">Sucursales</h2>
+								<h2 class="first">Sucursales de</h2>
 								<a href="/sucursal?IdSuc=0&IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR SUCURSAL</span></a>
-								<a href="/le?d=s" class="button big grey last"><span>Listado de empresas</span></a>
+								<a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
 							</div>
-							<h2 class="first">Empresa / {{with .Empresa}}{{.Nombre}}{{end}}</h2>
+							<div class="box1"><h3 class="first">{{with .Empresa}}{{.Nombre}}{{end}}</h3></div>
 							{{range .Sucursal}}
 							<div class="dataGrid">
 								<div class="gridRow">

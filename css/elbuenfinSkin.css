@@ -2127,7 +2127,7 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 	white-space: nowrap;
 }
 gridRow:hover { background-position:bottom;}
-.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:530px; display:block; float:left; overflow: hidden; height:45px; line-height:.8em;}
+.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:600px; display:block; float:left; overflow: hidden; height:45px; line-height:.8em;}
 
 .gridsubRow{ float:left; width:99.8%; padding-top: 1px;
 	padding-bottom: 1px; padding-left:1px;}
@@ -2269,7 +2269,7 @@ a.eliminate:hover{ background-position:bottom;}
 }
 /*Mapas*/
 #map {
-	width: 100%;
+	width: 94%;
 	height: 300px;
 	border: 1px solid #000;
 }
