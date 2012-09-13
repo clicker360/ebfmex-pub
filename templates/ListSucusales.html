@@ -5,9 +5,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     	<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
 	<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26907178-1']);
@@ -18,13 +18,12 @@
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-		jQuery(document).ready(function(){
-	$('.accordion .head').click(function() {
-		$(this).next().toggle('slow');
-		return false;
-	}).next().hide();
-});
 	</script>
+    <script>
+  $(document).ready(function() {
+    $("#accordion").accordion();
+  });
+  </script>
 	<title>Administración de cuenta</title>
 
 </head>
@@ -41,7 +40,7 @@
 			<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
 		</div>
 
-          <div class="col-6 marg-U80pix"> 
+          <div class="col-6 marg-U80pix marg-L20pix"> 
               <div class="pestana">
               <p class="first marg-10px  ">Hola </p>
               <a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a> 
@@ -57,13 +56,27 @@
                 <h2 class="first">Todas las sucursales </h2>
               </div>
               <div class="box1">
-  <div id="accordion">
-    <h3 class="gridRow"><a href="#">Cielito querido cafe</a></h3>
-    <div>Empresa1</div>
-    <h3 class="gridRow"><a href="#">the italian coffe company</a></h3>
-    <div>Empresa 2</div>
-  </div>
-              </div>
+  
+<div id="accordion">
+	<h3><a href="#">Empresa1</a></h3>
+	<div>
+      <div class="warning padd-10px">
+        No hay ninguna sucursal agregada
+      
+      </div>
+	</div>
+	<h3><a href="#">Empresa2</a></h3>
+	<div>
+	  <div class="gridsubRow"><a href="#" class=" bgGRY-l">Sucursal1
+ 
+      </a>    <a href="#" class="button orange marg-10pix last customDialog"><span>ELIMINAR</span></a></div>
+      	  <div class="gridsubRow"><a href="#" class=" bgGRY-lI">Sucursal2</a></div>
+  <div class="gridsubRow"><a href="#" class=" bgGRY-l">Sucursal3</a></div>
+      	  <div class="gridsubRow"><a href="#" class=" bgGRY-lI">Sucursal4</a></div>
+    </div>
+	
+
+</div></div>
             </div>
 
             <div class="col-5" style="min-height:600px;">
