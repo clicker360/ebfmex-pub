@@ -363,11 +363,15 @@
 </body>
 </html>
 {{end}}
+
+
 {{define "vistasucursal"}}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<!--sucusales listas-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script type="text/javascript">
 
 		var _gaq = _gaq || [];
@@ -398,14 +402,15 @@
 		$('#'+id).fadeIn();
 	}
 	</script>
-	<title>Listado de Micrositios</title>
+	<title>Listado de Sucursales</title>
 	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
 	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body class="bgt-main">
 	<div class="col-100PR  bgt-red-top first">
 		<div class="col-cent">
-			<div class="col-24 first  BR-R-10px">
+			<div class="col-24 first">
+            <!--comienza header-->
 				<div class="col-24">
 					<div class="col-4">
 						<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
@@ -422,8 +427,10 @@
 						{{end}}
 					</div>
 				</div>
+                <!--termina  header-->
 				<div class="col-24  Bg-Wh marg-D10pix">
 				<div class="menuAdmin">
+                      <!--In menu-->
 					<div class="col-5" style="min-height:600px;">
 						<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
 						<ul class="menuAdmin">
@@ -436,25 +443,40 @@
 							<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 						</ul>
 					</div>
+                <!--out menu menu-->
+                
 					<div class="col-19 last">
-						<div class="titlecond">
+							<!--Titulo --><div class="titlecond">
 							 <h2 class="first">Sucursales por empresa</h2>
 						</div>
+                        
 						<!--Empiezan Sucusales -->
-						{{range .Empresa}}
+					
 						<div class="box1">
+                        	{{range .Empresa}}
 							<div id="accordion">
-								<h3><a href="/sucursales?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}">{{.Nombre}}</a></h3>
-								<div> <a href="/sucmod?IdEmp={{.IdEmp}}&IdSuc=none" class="button green big last"><span>Agregar sucursal a esta empresa</span></a>
-							</div>
+								<h3><a href="/sucursales?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}">{{.Nombre}}</a><a href="/sucmod?IdEmp={{.IdEmp}}&IdSuc=none" class="button blue last"><span>AGREGAR UNA SUCURSAL</span></a></h3>
+                                <!--Contenido Acordion-->
+								<div> 
+                                	<div class="col-11 margLR-auto"><a href="/sucmod?IdEmp={{.IdEmp}}&IdSuc=none" class="button blue last"><span>AGREGAR UNA SUCURSAL</span></a></div>
+                                    	<div class="warning padd-5px"> No hay ninguna sucursal agregada </div>
+                                </div>
 							{{else}}
-								{{if .FormDataEmp}}
+								<!--{{if .FormDataEmp}}
 								{{else}}
 								<div class="warning padd-10px"> No hay ninguna sucursal agregada </div>
-								{{end}}
+								{{end}}-->
 							{{end}}
+                            
+                            <!--termina Contendio Acordion-->
+
 							</div>
+                             <!--termina #accordion-->     
 						</div>
+                     <!--termina box1-->
+                     
+                     </div></div></div></div>
+                       <!--terminan col19 -> menuAdmin ->col-24 bgWh->col-24-->
 					<div class="box1 alineCenter">
 						<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> 
 					</div>
