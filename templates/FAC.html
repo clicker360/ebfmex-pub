@@ -1,13 +1,9 @@
-{{define "cta"}}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
-	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
-    	<script type="text/javascript" src="scripts/home.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/home.js" charset="utf-8"></script>
 	<script type="text/javascript">
 
 		var _gaq = _gaq || [];
@@ -21,7 +17,6 @@
 		})();
 
 	</script>
-	
 	<title>Registrate para participar</title>
 	<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
 	<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
@@ -56,118 +51,62 @@
       <div class="col-cent">
     <div class="col-100PR first  BR-R-10px">
           <div class="col-24">
-        <div class="col-4"> <img src="imgs/logo_header.png" width="127" height="127"  alt="el buen fin" class="marg-5px first"/> </div>
+        <div class="col-4"> <img src="../imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px first"/> </div>
         <div class="col-14 typ-Wh marg-U80pix">
               <h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
             </div>
         <div class="col-4 last marg-U50pix lineUD marg-R10pix">
-              <div class="col-4 last marg-U10pix"> <a href="#null" onclick="activeLghtbx()" class="last"><img src="gfx/btn-sesion.png" width="131" height="30" alt="inicio de sesion" /></a> </div>
+              <div class="col-4 last marg-U10pix"> <a href="#null" onclick="activeLghtbx()" class="last"><img src="../gfx/btn-sesion.png" width="175" height="34" alt="inicio de sesion" /></a> </div>
             </div>
       </div>
           <div class="col-24 marg-D10pix Bg-Wh marg-D10pix">
-        <div class=" box1">
-              <div class=" col-23 marg-L10pix" style="height:280px;">
-            <div class="box284x284px marg-R5pix marg-U5pix fade0Alp height1px" id="toggler1"> <img src="imgs/Activa-Tu-Cuenta.jpg" width="284" height="280" alt="registra tu usuario y activa tu cuenta en el buen fin" /></div>
-            <div class="box284x284px marg-L30pix marg-U5pix fade0Alp height1px" id="toggler2"><img src="imgs/publica-tus-ofertas-en-el-buen-fin.jpg" width="281" height="280" alt="reciviras un mail para activar tu cuenta" /></div>
-            <div class="box284x284px last fade0Alp marg-U5pix height1px" id="toggler3"><img src="imgs/empresas-en-el-buen-fin.jpg" width="282" height="280" alt="registra todas las empresas en tu cuenta" /></div>
-          </div>
-            </div>
         <div class="box1 boxback Bg-Drks BR-R-3px marg-L10pix marg-U10pix">
-              <div class="col-24 pullRight-20 pullup-30">
-            <h2 class="first marg-U30pix">Registra un usuario</h2>
-            <img src="gfx/paso1.png" width="71" height="71" alt="paso uno" class="last"/> </div>
-              {{with .FormDataCta}}
-              <form method="post" class="frmE" id="enviar" name="enviar" action="/registrar">
-            <input type="hidden" name="t" value="r"/>
-            <div class="box3 pullup-50">
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cname">Nombre(s) <span class="typ-Sc">*</span></label>
-                      <input type="text"  name="Nombre" class="validate[required,custom[onlyLetterSp]] small {{.ErrNombre}}" value="{{.Nombre}}"/>
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="clastname">Apellidos <span class="typ-Sc">*</span></label>
-                      <input type="text" id="clastname" name="Apellidos"  class="validate[required,custom[onlyLetterSp]] small {{.ErrApellidos}}" value="{{.Apellidos}}" />
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cjob">Perfil de puesto</label>
-                      <input type="text" id="cjob"  name="Puesto" class="validate[optional] small {{.ErrPuesto}}" value="{{.Puesto}}"/>
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cphone">Teléfono fijo con lada <span class="typ-Sc">*</span></label>
-                      <input type="text" id="cphone" name="Tel" class="validate[required,custom[phone]] small {{.ErrTel}}" value="{{.Tel}}" />
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cmobile">Teléfono celular</label>
-                      <input type="text" class="validate[optional,custom[cellphone]] small {{.ErrCel}}" value="{{.Cel}}" id="cmobile" name="Cel"/>
-                    </div>
-              </div>
-                  <div class="col-100PR first marg-U10pix">
-                <p><span class="typ-Sc"> * </span>Todos los campos marcados son obligatorios </p>
-              </div>
-                </div>
-            <div class="box3 pullup-50 BR-R-3px last marg-R15pix ">
-                  <div class="Bg-Wh box1">
-                <div class="line ">
-                      <label for="cmail">Correo electrónico<br />
-                    principal<span class="typ-Sc">*</span></label>
-                      <input type="text" id="cmail" name="Email" class="validate[required,custom[email]] small {{.ErrEmail}}" value="{{.Email}}" />
-                      <div class="col-100PR first">
-                    <p class="typeMin">*Éste será tu usuario. Con él administrarás el registro de tu(s) empresa(s).</p>
-                  </div>
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cmail2">Correo electrónico alterno<br />
-                  </label>
-                      <input type="text" class="validate[optional,funcCall[validateEmail]] small {{.ErrEmailAlt}}" id="cmail2" name="EmailAlt" value="{{.EmailAlt}}"/>
-                      <div class="col-100PR first">
-                    <p class="typeMin">*Puede incluir varios correos alternos separados por coma.</p>
-                  </div>
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cpass">Contraseña <span class="typ-Sc">*</span></label>
-                      <input type="password" id="cpass" name="Pass" class="validate[required] small {{.ErrPass}}" value="{{.Pass}}"/>
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1">
-                <div class="line">
-                      <label for="cpassconfirm">Confirmar contraseña <span class="typ-Sc">*</span></label>
-                      <input type="password" id="cpassconfirm" name="Pass1" class="validate[required,equals[cpass]] small {{.ErrPass1}}" value="{{.Pass1}}"/>
-                    </div>
-              </div>
-                  <div class="Bg-Wh box1 marg-D5pix">
-                <div class="line">
-                      <div class="col-9 typeMin" style="padding-bottom:5px;">
-                    <div class="col-8">
-                          <label>Acepto compromiso<span class="typ-Sc">*</span></label>
-                          <ol class="col-7 padd-0 marg-L15pix clear">
-                        <li>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</li>
-                        <li>Sólo las empresas registradas en El Buen Fin podrán hacer uso del logotipo.</li>
-                        <li>Al enviar sus datos acepta el <a href="terminosCondiciones.html" target="_blank">Aviso legal</a></li>
-                      </ol>
-                        </div>
-                    <div class="last marg-U10pix">
-                          <input type="checkbox" name="TermCond" class="validate[required] last" value="acepted" id="acepted" />
-                        </div>
-                  </div>
-                    </div>
-              </div>
-                  <button  name="enviar" type="submit" value="enviar" class="big red last"><span>Enviar</span></button>
-                </div>
-          </form>
-              {{end}} </div>
+              <h2 class="marg-10pix"> Preguntas Frecuentes</h2>
+              <ul>
+            <li><a href="#uno">1.- ¿Cuándo se realizará El Buen Fin?</a></li>
+            <li><a href="#dos">2.- ¿Por qué cambió el diseño de registro?</a></li>
+            <li><a href="#tres">3.- ¿Cuál es la diferencia entre registrarme una vez y dar de alta varias empresas?</a></li>
+            <li><a href="#cuatro">4.- ¿Si tengo dudas sobre algo qué puedo hacer?</a></li>
+            <li><a href="#cinco">5.- ¿Hay un teléfono de atención?</a></li>
+            <li><a href="#seis">6.- ¿Qué pasa si ingreso mal un número de mi RFC?</a></li>
+            <li><a href="#siete">7.- ¿Qué sucede si uno de mis datos está mal escrito, se puede cambiar?</a></li>
+            <li><a href="#ocho">8.- ¿Cuál es la fecha límite para poder registrarme?</a></li>
+            <li><a href="#nueve">9.- ¿Cualquier persona de mi empresa puede registrarla?</a></li>
+            <li><a href="#diez">10.- ¿Si mi empresa está registrada en El Buen Fin del año pasado, automáticamente se registra este año?</a></li>
+            <li><a href="#once">11.- ¿Hay algún cobro por registrarme?</a></li>
+            <li><a href="#doce">12.- ¿Qué marcas puedo encontrar en El Buen Fin?</a></li>
+            <li><a href="#trece">13.- ¿Qué marcas puedo encontrar en El Buen Fin?, ¿Hay algún listado de empresas?</a> </li>
+          </ul>
+              <a name="uno"></a>
+              <h4>1.- ¿Cuándo se realizará El Buen Fin?</h4>
+              El Buen Fin se realizará el 16,17,18 y 19 de Noviembre del 2012, en toda la República Mexicana. <br />
+              <a name="dos"></a>
+              <h4>2.- ¿Por qué cambió el diseño de registro?</h4>
+              Atentos a tus necesidades hemos buscado que el acceso sea más rápido y fácil, por eso se modificó la página de registro. <a name="tres"></a>
+              <h4>3.- ¿Cuál es la diferencia entre registrarme una vez y dar de alta varias empresas?</h4>
+              Cuando te registras se genera un usuario y contraseña, mismo que te será enviado al correo que hayas registrado, así al ingresar a la página de <br />
+              El Buen Fin sólo tienes que acceder con estos datos y dar de alta a 1, 2 ó más empresas sin que tengas que volver a registrarte y dar de alta a cada una de ellas. <a name="cuatro"></a>
+              <h4>4.- ¿Si tengo dudas sobre algo qué puedo hacer?</h4>
+              Esperamos que no tengas dudas y no se te dificulte el registrado de tu empresa, sin embargo si tienes alguna duda o comentario, puedes enviarlo a través de nuestras redes sociales. <br/>
+              En Facebook nos encuentras en <a href="http://www.facebook.com/ElBuenFIN">www.facebook.com/ElBuenFIN</a> o en Twitter como <a href="http://twitter.com/ElBuenFIN">@ElBuenFin</a> donde trataremos de atenderte a la brevedad. <a name="cinco"></a>
+              <h4>5.- ¿Hay un teléfono de atención?</h4>
+              No, no contamos con un equipo de soporte técnico. <a name="seis"></a>
+              <h4>6.- ¿Qué pasa si ingreso mal un número de mi RFC? </h4>
+              Una vez que tengas tu cuenta activa, puedes ingresar al administrador y desde ahí editar cualquier dato que consideres debas de cambiar. <a name="siete"></a>
+              <h4>7.- ¿Qué sucede si uno de mis datos está mal escrito, se puede cambiar?</h4>
+              Una vez que tengas tu cuenta activa, puedes ingresar al administrador y desde ahí editar cualquier dato que consideres debas de cambiar. <a name="ocho"></a>
+              <h4>8.- ¿Cuál es la fecha límite para poder registrarme?</h4>
+              Hasta el último día del evento, el 19 de Noviembre. <a name="nueve"></a>
+              <h4>9.- ¿Cualquier persona de mi empresa puede registrarla?</h4>
+              Sí, te sugerimos que lo haga una persona de confianza y que tenga siempre a la mano su usuario y contraseña. <a name="diez"></a>
+              <h4>10.- ¿Si mi empresa está registrada en El Buen Fin del año pasado, automáticamente se registra este año?</h4>
+              No, el nuevo sistema requiere que se registre desde cero. <a name="once"></a>
+              <h4>11.- ¿Hay algún cobro por registrarme?</h4>
+              No, el registro es totalmente gratuito. <a name="doce"></a>
+              <h4>12.- ¿Todas las empresas pueden registrarse o solo de algún sector?</h4>
+              Todas las empresas son bienvenidas a participar. <a name="trece"></a>
+              <h4>13.- ¿Qué marcas puedo encontrar en El Buen Fin? ¿Hay algún listado de empresas?</h4>
+              No hay listado, por la dinámica del proceso, pero se puede encontrar cualquier empresa por medio del buscador del sitio. </div>
         <div class="box1 alineCenter"> <img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> </div>
         <div class=" box1">
               <p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
@@ -180,4 +119,3 @@
     </div>
 </body>
 </html>
-{{end}}
