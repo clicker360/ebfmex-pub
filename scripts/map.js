@@ -14,7 +14,8 @@ $(document).ready(function() {
 	var options = {
 		zoom: zoom,
 		center: center,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		streetViewControl: false
 	};
 	map = new google.maps.Map(document.getElementById('map'), options);
 	if (!marker) {
