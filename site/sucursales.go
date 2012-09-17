@@ -5,7 +5,7 @@ import (
     "appengine/datastore"
 	"html/template"
     "net/http"
-	"fmt"
+	//"fmt"
 	"model"
 	"sess"
 )
@@ -20,7 +20,7 @@ func sucursales(w http.ResponseWriter, r *http.Request) {
 	if ok {
 		q := datastore.NewQuery("Sucursal").Filter("IdEmp =", r.FormValue("IdEmp"))
 		tpl, _ := template.New("Suc").Parse(SucListTpl)
-		fmt.Fprintf(w, "<div class=\"col-100PR first marg-U20pix\">")
+		//fmt.Fprintf(w, "<div class=\"col-100PR first marg-U20pix\">")
 		for i := q.Run(c); ; {
 			var s model.Sucursal
 			_, err := i.Next(&s)
@@ -30,7 +30,7 @@ func sucursales(w http.ResponseWriter, r *http.Request) {
 			//Despliega sucursales
 			tpl.Execute(w, s)
 		}
-		fmt.Fprintf(w, "</div>")
+		//fmt.Fprintf(w, "</div>")
 	}
 	return
 }

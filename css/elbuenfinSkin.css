@@ -111,7 +111,7 @@ a.lnk-sec {
 
 /***Backs-Patrons***/
 .bgt-main{
-	background-image: url(../imgs/fondo_bg.gif);
+	background-image: url(../../imgs/fondo_bg.gif);
 	background-color: #EAF6FF;
 }
 .bgt-red-top{
@@ -119,12 +119,12 @@ a.lnk-sec {
 	background-repeat: repeat-x;
 }
 .bgt-Sec{
-	background-image: url(../imgs/fondo_bg.png);
+	background-image: url(../../imgs/fondo_bg.png);
 }
 .bgt-BK-TR-80pr{
-	background-image: url(../imgs2/Blk80pr.png);
+	background-image: url(../../imgs2/Blk80pr.png);
 }
-.bgt-Wh-TR-80pr{background-image: url(../imgs2/WH80pr.png);}
+.bgt-Wh-TR-80pr{background-image: url(../../imgs2/WH80pr.png);}
 .bgt-Rd-TR-80pr{background-image: url(../imgs2/red1px.png);}
 .bg-form{
 	background-attachment: fixed;
@@ -2038,20 +2038,6 @@ margin-left:100px;}
 	z-index:999;
 	-moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
 }
-.lghtboxloading{
-	background-color: #000;
-	margin-left:38%;
-	margin-right:38%;
-	margin-top:20%;
-	padding: 10px;
-	height: 100px;
-	width: 130px;
-	border: 3px solid #E4223E;
-	position: fixed;
-	z-index:999;
-	color:#FFF;
-	-moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
-	}
 
 /**menuDashboard*/
 
@@ -2367,8 +2353,9 @@ a.eliminate:hover{ background-position:bottom;}
 .ui-autocomplete { position: absolute; cursor: default; }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-    color: #555555;
+    color: #333333;
     text-decoration: none;
+	font-weight: bold;
 }
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
     border-bottom-right-radius: 4px;
@@ -2391,7 +2378,5 @@ a.eliminate:hover{ background-position:bottom;}
 		#question { width: 300px!important; height: 60px!important; padding: 10px 0 0 10px; }
 		#question img { float: left; }
 		#question span { float: left; margin: 20px 0 0 10px; }
-
-.hola{ overflow:hidden;}
 
 .ui-state-active a{ color:#000;}
