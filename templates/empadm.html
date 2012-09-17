@@ -91,7 +91,7 @@
 									<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 									<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 									<li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-									<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+									<li><a href="#" style="cursor:default;"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 									<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 									<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
 								</ul>
@@ -323,7 +323,7 @@
 							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 							<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 							<li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-							<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+							<li><a href="#" style="cursor:default;"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 							<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
 						</ul>
@@ -369,7 +369,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script type="text/javascript">
 
 		var _gaq = _gaq || [];
@@ -443,7 +443,7 @@
 							<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 							<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 							<li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-							<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+							<li><a href="#" style="cursor:default;"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 							<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 						</ul>
@@ -458,16 +458,17 @@
 						<!--Empiezan Sucusales -->
 					
 						<div class="box1">
+							<div style="z-index:999; position:absolute; z-index:999; margin-top:5px; margin-left:560px;">
+								<a href="/sucursal?IdEmp={{.IdEmp}}&IdSuc=none" class="button orange last customDialog"><span>Agregar sucursal</span></a>
+							</div>
 							<div id="accordion">
-                        	{{range .Empresa}}
-							<h3><a href="#" onclick="javascript:getsuc({{.IdEmp}})">{{.Nombre}}</a>
-									<div style="top:0px; left:540px; z-index:999; position:absolute;"><a href="/sucursal?IdEmp={{.IdEmp}}&IdSuc=0" class="bg-Gry2 Dsblock last outlined"><span style="display:block; margin-left:-19px">Agregar sucursal</span></a></div>
-							</h3>
+								{{range .Empresa}}
+								<h3><a href="#" onclick="javascript:getsuc({{.IdEmp}})">{{.Nombre}}</a></h3>
 								<div>
-                                	<!--Contenido Acordion-->
+									<!--Contenido Acordion-->
 									<p id="show-{{.IdEmp}}" class="col-100PR first marg-U20pix"></p>
 								</div>
-							{{end}}
+								{{end}}
 							</div>
 						</div>
                      <!--termina box1-->
@@ -539,7 +540,7 @@
 								<li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 								<li><a href="/le?d=a" class="selected"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 								<li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-								<li><a href="#"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+								<li><a href="#" style="cursor:default;"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 								<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 								<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 							</ul>

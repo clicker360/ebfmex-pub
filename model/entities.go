@@ -224,7 +224,7 @@ func (e *Empresa) Key(c appengine.Context) *datastore.Key {
 }
 
 func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
-	if(s.IdSuc == "none" || s.IdSuc == "") {
+	if(s.IdSuc == "") {
 		s.IdSuc = RandId(14)
 	}
 	parentKey := e.Key(c)
@@ -249,7 +249,6 @@ func GetSuc(c appengine.Context, id string) (*Sucursal) {
 	}
 	// Regresa un cascarón
 	var e Sucursal
-	e.IdSuc = "none";
 	e.IdEmp = "none";
 	return &e
 }

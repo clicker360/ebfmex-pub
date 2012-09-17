@@ -18,7 +18,7 @@
 		})();
 	</script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-	<script type="text/javascript" src="scripts/map.js"></script>
+	<script type="text/javascript" src="scripts/map.js" charset="utf-8"></script>
 	<style type="text/css">
 
 	</style>
@@ -54,7 +54,7 @@
 								<li><a href="/cta"><span><img src="../gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 								<li><a href="/le?d=a" class="selected"><span><img src="../gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 								<li><a href="/le?d=s"><span><img src="../gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-								<li><a href="#"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+								<li><a href="#" style="cursor:default;"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 								<li><a href="/le?d=m"><span><img src="../gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 								<li><a class="selected" href="/avisos"><span><img src="../gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 							</ul>
@@ -62,8 +62,8 @@
 						<div class="col-19 last">
 							<div class="titlecond">
 								<div class="col-14" style="overflow:hidden;height:38px;"><h3 class="first">Sucursal de {{with .Empresa}}{{.Nombre}}{{end}}</h3></div>
-								<a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
-								<!--a href="/sucursales?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>&lt;&lt;Regresar</span></a-->
+								<!--a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a-->
+								<a href="/sucursales?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
 							</div>
 							<div class="box1 marg-U10pix">
 								
@@ -91,6 +91,11 @@
 												<li>Puedes mover, alejar o acercar el mapa, o cambiar de lugar el marcador, el mapa se centra automáticamente.</li>
 											</ol>
 										</div>
+										{{if .Ackn}}
+										<div class="Addvice alineCenter marg-10pix">
+											<h4>Sus datos han sido guardados</h4>
+										</div>
+										{{end}}
 									</div>
 									<div class="last col-50PR">
 										<div id="map"></div>
@@ -99,7 +104,7 @@
 											<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
 											<button type="reset" class="grey last hidden marg-U15pix" id="cancelbtn"><span>Restablecer</span></button>
 											{{else}}
-											<button type="submit" class="big red last"><span>Aplicar</span></button>
+											<button type="submit" class="big red last"><span>Guardar</span></button>
 											<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
 											{{end}}
 										</div>
@@ -207,7 +212,7 @@
 								<li><a href="/cta"><span><img src="../gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 								<li><a href="/le?d=a" class="selected"><span><img src="../gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 								<li><a href="/le?d=s"><span><img src="../gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-								<li><a href="#"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+								<li><a href="#" style="cursor:default;"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 								<li><a href="/le?d=m"><span><img src="../gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 								<li><a class="selected" href="/avisos"><span><img src="../gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 							</ul>
@@ -215,7 +220,7 @@
 						<div class="col-19 last">
 							<div class="titlecond">
 								<h2 class="first">Sucursales de</h2>
-								<a href="/sucursal?IdSuc=none&IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR SUCURSAL</span></a>
+								<a href="/sucursal?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR SUCURSAL</span></a>
 								<a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
 							</div>
 							<div class="box1"><h3 class="first">{{with .Empresa}}{{.Nombre}}{{end}}</h3></div>
