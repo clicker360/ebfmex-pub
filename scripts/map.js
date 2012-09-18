@@ -56,7 +56,6 @@ function locateAddress() {
 		}
 	});
 	address = address+", MEXICO";
-	alert(address);
 
 	//var address = calle + ", " + colonia + ", " + cp + ", " + municipio + ", " + estado + ", MEXICO";
 	
