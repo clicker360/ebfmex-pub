@@ -87,7 +87,7 @@
 									<div class="box1">
 										<div class="outlined pullup-10 BR-R-3px">
 											<ol>
-												<li>Captura la dirección para ubicar la sucursal.</li>
+												<li>Captura la dirección para ubicar la sucursal. El mapa irá ubicando la zona conforme se llena la dirección</li>
 												<li>Puedes mover, alejar o acercar el mapa, o cambiar de lugar el marcador, el mapa se centra automáticamente.</li>
 											</ol>
 										</div>
@@ -112,7 +112,7 @@
 									<div class="col-9">
 										<div class="line ">
 											<label class="col-5" class="marg-D10pix">Entidad federativa<span class="typ-Sc"> * </span></label>
-											<select name="DirEnt" class="last" id="estado" onchange="activateCancel()">
+											<select name="DirEnt" class="medium last" id="estado" onchange="activateCancel()">
 												{{range .Entidades}}
 												<option value="{{.CveEnt}}" {{if .Selected}}selected="{{.Selected}}"{{end}}>{{.Entidad}}</option>
 												{{end}}
@@ -139,7 +139,7 @@
 										</div>
 										<input type="hidden" id="lat" name="Geo1" value="{{.Geo1}}" />
 										<input type="hidden" id="lng" name="Geo2" value="{{.Geo2}}" />
-										<button type="button" id="buscar" class="orange last big"><span>Buscar</span></button>
+										<!--button type="button" id="buscar" class="orange last big"><span>Buscar</span></button-->
 									</div>
 									<div class="col-18 marg-L10pix marg-D10pix">
 										<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>

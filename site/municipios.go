@@ -21,7 +21,7 @@ func municipios(w http.ResponseWriter, r *http.Request) {
 			if municipios, _ := entidad.GetMunicipios(c); err == nil {
 				//Despliega municipios
 				tpl, _ := template.New("Mun").Parse(OptionTpl)
-				fmt.Fprintf(w, `<select name="DirMun" class="last" id="MunSelector">`)
+				fmt.Fprintf(w, `<select name="DirMun" class="last" id="MunSelector" onchange="locateAddress();">`)
 				for _, m := range *municipios {
 					//fmt.Fprintf(w, "mun: %s, %s", r.FormValue("DirEnt"), m)
 					// Ojo: ver porqué los repite con datos en blanco

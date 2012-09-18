@@ -27,6 +27,18 @@ $(document).ready(function() {
 		marker.setPosition(center);
 	}
 	// Getting a reference to the HTML form
+	$('#estado').bind('change',function(e){
+		locateAddress();
+	});
+	$('#calle').bind('change',function(e){
+		locateAddress();
+	});
+	$('#colonia').bind('change',function(e){
+		locateAddress();
+	});
+	$('#cp').bind('change',function(e){
+		locateAddress();
+	});
 	$('#buscar').bind('keydown keyup mousedown',function(e){
 		locateAddress();
 	});
@@ -49,15 +61,8 @@ function locateAddress() {
 	dir.push($('#cp').val());
 	var address = '';
 	var coma = '';
-	$.each(dir, function(key, value) {
-		if(value) {
-			address = address+coma+value;
-			coma = ', ';
-		}
-	});
+	$.each(dir, function(key, value) { if(value) { address = address+coma+value; coma = ', '; } });
 	address = address+", MEXICO";
-
-	//var address = calle + ", " + colonia + ", " + cp + ", " + municipio + ", " + estado + ", MEXICO";
 	
 	// Check to see if we already have a geocoded object. If not we create one
 	if(!geocoder) {
