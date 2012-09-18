@@ -41,12 +41,24 @@ $(document).ready(function() {
 
 function locateAddress() {
 	// Getting the address from the text input
-	var estado = document.getElementById('estado').value;
-	var municipio = document.getElementById('municipio').value;
-	var calle = document.getElementById('calle').value;
-	var colonia = document.getElementById('colonia').value;
-	var cp = document.getElementById('cp').value;
-	var address = calle + ", " + colonia + ", " + cp + ", " + municipio + ", " + estado + ", MEXICO";
+	var dir = [];
+	dir.push($('#MunSelector option:selected').text());
+	dir.push($('#estado option:selected').text());
+	dir.push($('#calle').val());
+	dir.push($('#colonia').val());
+	dir.push($('#cp').val());
+	var address = '';
+	var coma = '';
+	$.each(dir, function(key, value) {
+		if(value) {
+			address = address+coma+value;
+			coma = ', ';
+		}
+	});
+	address = address+", MEXICO";
+	alert(address);
+
+	//var address = calle + ", " + colonia + ", " + cp + ", " + municipio + ", " + estado + ", MEXICO";
 	
 	// Check to see if we already have a geocoded object. If not we create one
 	if(!geocoder) {
