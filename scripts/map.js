@@ -36,9 +36,9 @@ $(document).ready(function() {
 	$('#colonia').bind('change',function(e){
 		locateAddress();
 	});
-	$('#cp').bind('change',function(e){
+	/*$('#cp').bind('change',function(e){
 		locateAddress();
-	});
+	});*/
 	$('#buscar').bind('keydown keyup mousedown',function(e){
 		locateAddress();
 	});
@@ -58,7 +58,7 @@ function locateAddress() {
 	dir.push($('#estado option:selected').text());
 	dir.push($('#calle').val());
 	dir.push($('#colonia').val());
-	dir.push($('#cp').val());
+	//dir.push($('#cp').val());
 	var address = '';
 	var coma = '';
 	$.each(dir, function(key, value) { if(value) { address = address+coma+value; coma = ', '; } });
@@ -105,6 +105,17 @@ function locateAddress() {
 			infowindow.open(map, marker);*/
 			document.getElementById('lat').value = results[0].geometry.location.lat();
 			document.getElementById('lng').value = results[0].geometry.location.lng();
+
+			
+			nb = 0;
+			for(i = 0; i < results[0].address_components.length; i++){
+				if( results[0].address_components[i].types == 'postal_code'){
+					nb = i;
+				}
+			}
+			if( nb != 0){
+				$('#cp').val(results[0].address_components[nb].long_name)
+			}
 			
 			
 		}
