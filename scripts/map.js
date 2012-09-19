@@ -107,7 +107,7 @@ function locateAddress() {
 			document.getElementById('lng').value = results[0].geometry.location.lng();
 
 			
-			nb = 0;
+			/*nb = 0;
 			for(i = 0; i < results[0].address_components.length; i++){
 				if( results[0].address_components[i].types == 'postal_code'){
 					nb = i;
@@ -115,7 +115,7 @@ function locateAddress() {
 			}
 			if( nb != 0){
 				$('#cp').val(results[0].address_components[nb].long_name)
-			}
+			}*/
 			
 			
 		}
