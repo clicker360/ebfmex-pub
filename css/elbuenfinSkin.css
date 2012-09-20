@@ -2078,6 +2078,16 @@ ul.menuAdmin li a{
 	line-height:35px;
 }
 ul.menuAdmin li a:hover{ background-position:bottom;}
+ul.menuAdmin li a.selected{
+	color: #FFF;
+	background-image: url(../gfx/seletedMenu.png);
+	background-position: left top;
+	width: 227px;
+	height: 38px;
+	margin-top: 1px;
+	margin-left: 1px;
+	background-repeat: no-repeat;
+}
 ul.menuAdmin li span{
 	width: 37px;
 	height: 35px;
