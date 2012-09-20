@@ -22,12 +22,7 @@ p { margin: .5em; }
 blockquote {margin:1.5em;font-style:italic;}
 strong {font-weight:bold;}
 
-.hide {display:none;}
-.first {float:left;}
-.last a.last {float:right;}
-.clear {clear:both;}
-.Dsblock { display:block;}
-.DsIn-line { display:inline;}
+
 
 
 /* grid-970 */
@@ -283,3 +278,9 @@ a:hover {text-decoration:underline;}
 .pullRight-20{ right:-20px;}
 .pullRight-10{ right:-10px;}
 
+.hide {display:none;}
+.first {float:left;}
+.last, a.last  {float:right;}
+.clear {clear:both;}
+.Dsblock { display:block;}
+.DsIn-line { display:inline;}

@@ -132,6 +132,7 @@ a.lnk-sec {
 /***Butons**/
 .button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; height:22px; float:left; width:auto; padding-left:8%; padding-right:8%; padding-top:5px; padding-bottom:2px; color:#FFF; font-weight:400;}
 .button:hover, a.button:hover{ background-position:bottom;}
+.button.last{ float:right;}
 
 /*Menu*/
 .logo{float:left; width:145px; height:142px; margin-top:10px; margin-left:-3px; position:relative;}
