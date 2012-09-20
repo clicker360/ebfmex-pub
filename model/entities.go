@@ -356,6 +356,18 @@ func GetLogo(c appengine.Context, idemp string) (*Image, error) {
 	return i, err
 }
 
+func GetShortLogo(c appengine.Context, idemp string) (*Image, error) {
+	i := &Image{ IdEmp: idemp, Kind: "ShortLogo" }
+	// Para el logo sólo se utiliza la llave IdEmp
+	err := datastore.Get(c, datastore.NewKey(c, i.Kind, i.IdEmp, 0, nil), i)
+	if err == datastore.ErrNoSuchEntity {
+		return nil, err
+	}
+	return i, err
+}
+
+
+
 // Obtiene una imagen
 func GetImg(c appengine.Context, id string) (*Image, error) {
 	i := &Image{ IdImg: id }

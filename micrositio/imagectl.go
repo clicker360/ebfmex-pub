@@ -126,7 +126,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		// Resize if too large, for more efficient moustachioing.
 		// We aim for less than 1200 pixels in any dimension; if the
 		// picture is larger than that, we squeeze it down to 600.
-		const max = 1200
+		const max = 800
 		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
 			// If it's gigantic, it's more efficient to downsample first
 			// and then resize; resizing will smooth out the roughness.
@@ -141,6 +141,14 @@ func upload(w http.ResponseWriter, r *http.Request) {
 				b = i.Bounds()
 			}
 			w, h := max/2, max/2
+			if b.Dx() > b.Dy() {
+				h = b.Dy() * h / b.Dx()
+			} else {
+				w = b.Dx() * w / b.Dy()
+			}
+			i = resize.Resize(i, i.Bounds(), w, h)
+		} else {
+			w, h := max, max
 			if b.Dx() > b.Dy() {
 				h = b.Dy() * h / b.Dx()
 			} else {
@@ -263,7 +271,7 @@ func resizeLogo(w http.ResponseWriter, r *http.Request) {
 		// Resize if too large, for more efficient moustachioing.
 		// We aim for less than 1200 pixels in any dimension; if the
 		// picture is larger than that, we squeeze it down to 600.
-		const max = 1200
+		const max = 800
 		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
 			// If it's gigantic, it's more efficient to downsample first
 			// and then resize; resizing will smooth out the roughness.

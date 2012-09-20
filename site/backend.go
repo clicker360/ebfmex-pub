@@ -13,7 +13,7 @@ import (
 
 func init() {
     http.HandleFunc("/backend", GaeLogin)
-    http.HandleFunc("/listausuarios", ListaUsuarios)
+    //http.HandleFunc("/listausuarios", ListaUsuarios)
     http.HandleFunc("/listasesiones", ListaSesiones)
     http.HandleFunc("/test", test)
 }
@@ -85,7 +85,7 @@ func GaeLogin(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusFound)
         return
     }
-    http.Redirect(w, r, "/listausuarios", http.StatusFound)
+    //http.Redirect(w, r, "/listausuarios", http.StatusFound)
 }
 
 var listSessTpl = template.Must(template.ParseFiles("templates/list_sess.html"))

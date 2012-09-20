@@ -71,7 +71,7 @@
 							<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 						</div>
 						<div class="col-14 typ-Wh marg-U80pix">
-							<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+							<!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4-->
 						</div>
 						<div class="col-6 last marg-U80pix lineUD marg-R5pix">
 							{{with .Sess}}
@@ -95,6 +95,8 @@
 									<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 									<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
 								</ul>
+								<div style="color:white;">.</div>
+								<div style="margin-left:20px; margin-top:10px;"><strong>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 							</div>
 							<div class="col-19 last">
 								<div class="titlecond">
@@ -231,7 +233,7 @@
 											{{else}}
 											<label class="col-7" for="accept">Para aceptar este nuevo registro de empresa haga clic en el recuadro <span class="typ-Sc">* </span></label>
 											{{end}}
-											<input class="marg-10pix" type="checkbox" class="validate[required] last" name="accept" value="1" id="accept"/>
+											<input type="checkbox" class="validate[required] marg-10pix last" name="accept" value="1" id="accept"/>
 										</div>
 									</div>
 								</div>
@@ -241,11 +243,11 @@
 
 								{{if .IdEmp}}
 								<input type="hidden" value="a" name="d"/>
-								<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
-								<button type="reset" class="grey last hidden marg-U15	pix" id="cancelbtn"><span>Restablecer</span></button>
+								<button type="submit" value="1" class="big red last"><span>Modificar</span></button>
+								<button type="reset" class="grey last hidden marg-U15pix" id="cancelbtn"><span>Restablecer</span></button>
 								{{else}}
 								<input type="hidden" value="a" name="d"/>
-								<button type="submit" class="big red last"><span>Aplicar</span></button>
+								<button type="submit" value="" class="big red last"><span>Aplicar</span></button>
 								<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
 								{{end}}
 								{{else}}
@@ -303,7 +305,7 @@
 					<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 				</div>
 				<div class="col-14 typ-Wh marg-U80pix">
-					<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+					<!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4-->
 				</div>
 				<div class="col-6 last marg-U80pix lineUD marg-R10pix">
 					{{with .Sess}}
@@ -327,38 +329,40 @@
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 							<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
 						</ul>
+						<div style="color:white;">.</div>
+						<div style="margin-left:20px; margin-top:10px;"><strong>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 					</div>
-				<div class="col-19 last">
-			 	<div class="titlecond">
-					 <h2 class="first">Micrositios por empresa</h2>
+					<div class="col-19 last">
+						<div class="titlecond">
+							 <h2 class="first">Micrositios por empresa</h2>
+						</div>
+						{{range .Empresa}}
+						<div class="dataGrid">
+							<div class="gridRow">
+								<a  style="width:680px" href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}"><span class="icon icochevroright"></span>{{.Nombre}}</a>
+							</div>
+						</div>
+						{{else}}
+							{{if .FormDataEmp}}
+							{{else}}
+							<div class="dataGrid">
+								<div class="warning" >No hay Empresas</div>
+							</div>
+							{{end}}
+						{{end}}
+					</div>
 				</div>
-				{{range .Empresa}}
-				<div class="dataGrid">
-              		<div class="gridRow">
-						<a  style="width:680px" href="/mi?IdEmp={{.IdEmp}}&amp;Emp={{.Nombre}}"><span class="icon icochevroright"></span>{{.Nombre}}</a>
-					</div>
+				<div class="box1 alineCenter">
+					<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> 
 				</div>
-				{{else}}
-					{{if .FormDataEmp}}
-					{{else}}
-					<div class="dataGrid">
-						<div class="warning" >No hay Empresas</div>
-					</div>
-					{{end}}
-				{{end}}
+				<div class=" box1">
+					<p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
+					Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
+					Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
+				</div>
 			</div>
-		
-</div>
-		<div class="box1 alineCenter">
-			<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> 
 		</div>
-		<div class=" box1">
-			<p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
-			Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
-			Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
-		</div>
-	</div>
-</body>
+	</body>
 </html>
 {{end}}
 
@@ -421,7 +425,7 @@
 						<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 					</div>
 					<div class="col-14 typ-Wh marg-U80pix">
-						<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+						<!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4-->
 					</div>
 					<div class="col-6 last marg-U80pix lineUD marg-R10pix">
 						{{with .Sess}}
@@ -447,6 +451,8 @@
 							<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 							<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 						</ul>
+						<div style="color:white;">.</div>
+						<div style="margin-left:20px; margin-top:10px;"><strong>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 					</div>
                 <!--out menu menu-->
                 
@@ -520,7 +526,7 @@
 						<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 					</div>
 					<div class="col-14 typ-Wh marg-U80pix">
-						<h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4>
+						<!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4-->
 					</div>
 					<div class="col-6 last marg-U80pix lineUD marg-R5pix">
 						{{with .Sess}}
@@ -544,6 +550,8 @@
 								<li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 								<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="micrositios" /></span>Avisos</a></li>
 							</ul>
+							<div style="color:white;">.</div>
+							<div style="margin-left:20px; margin-top:10px;"><strong>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
@@ -565,7 +573,6 @@
 							{{end}}
 						</div>
 					</div>
-				</div>
 				<div class="box1 alineCenter">
 				<img src="imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-10px"/><img src="imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> 
 			</div>
@@ -573,6 +580,7 @@
 				<p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
 				Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
 				Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
+				</div>
 			</div>
 		</div>
 	</body>
