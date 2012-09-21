@@ -2189,7 +2189,7 @@ a.eliminate{
 }
 a.eliminate:hover{ background-position:bottom;}
 
-.pestana{ float:right; background-image:url(../gfx/pestana.png); width:233px; height:40px; padding-left:5px; padding-right:5px; padding-top:15px;}
+.pestana{ float:right; background-image:url(../gfx/pestana.png); width:233px; height:40px; padding-left:5px; padding-right:5px; padding-top:15px; margin-right:-1px; margin-top:80px; position:relative;}
 .pestanAcceso{ background-image:url(../gfx/pestanaAcceso.png); background-repeat:no-repeat;}
 /*Empresas*/
 .both h4 {
