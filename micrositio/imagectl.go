@@ -70,7 +70,10 @@ func micrositio(w http.ResponseWriter, r *http.Request) {
 	if s, ok := sess.IsSess(w, r, c); ok {
 		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
 		if emp != nil {
-			img, _ := model.GetLogo(c, r.FormValue("IdEmp"))
+			img := model.GetLogo(c, r.FormValue("IdEmp"))
+			if(img == nil) {
+				img = new(model.Image)
+			}
 			fd := imgToForm(*img)
 			tc := make(map[string]interface{})
 			tc["Sess"] =  s
@@ -88,7 +91,10 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
 		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
-		imgo, _ := model.GetLogo(c, r.FormValue("IdEmp"))
+		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
+		if imgo == nil {
+			imgo = new(model.Image)
+		}
 		fd := imgToForm(*imgo)
 		tc := make(map[string]interface{})
 		tc["Sess"] =  s
@@ -203,7 +209,10 @@ func modData(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
 		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
-		imgo, _ := model.GetLogo(c, r.FormValue("IdEmp"))
+		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
+		if(imgo == nil) {
+			imgo = new(model.Image)
+		}
 		fd := imgToForm(*imgo)
 		tc := make(map[string]interface{})
 		tc["Sess"] =  s
@@ -249,7 +258,10 @@ func resizeLogo(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
 		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
-		imgo, _ := model.GetLogo(c, r.FormValue("IdEmp"))
+		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
+		if(imgo == nil) {
+			imgo = new(model.Image)
+		}
 		sf, _ := strconv.Atoi(r.FormValue("s"))
 		fd := imgToForm(*imgo)
 		tc := make(map[string]interface{})

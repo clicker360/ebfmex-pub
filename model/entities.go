@@ -342,18 +342,14 @@ func PutLogo(c appengine.Context, i *Image) (*datastore.Key, error) {
 	return key, nil
 }
 
-func GetLogo(c appengine.Context, idemp string) (*Image, error) {
+func GetLogo(c appengine.Context, idemp string) (*Image) {
 	i := &Image{ IdEmp: idemp, Kind: "EmpLogo" }
 	// Para el logo sólo se utiliza la llave IdEmp
 	err := datastore.Get(c, datastore.NewKey(c, i.Kind, i.IdEmp, 0, nil), i)
 	if err == datastore.ErrNoSuchEntity {
-		// Se crea el spaceholder del logo
-		_, err := PutLogo(c, i)
-		if err != nil {
-			return nil, err
-		}
+		return nil
 	}
-	return i, err
+	return i
 }
 
 func GetShortLogo(c appengine.Context, idemp string) (*Image, error) {
