@@ -1359,12 +1359,13 @@ input.timepicker {
 	width: 18px;
 	height: 14px;
   *margin-right: .3em;
-	line-height: 14px;
+	line-height: 18px;
 	vertical-align: text-top;
 	background-image: url(../gfx/glyphicons-halflings.png);
 	background-position: 14px 14px;
 	background-repeat: no-repeat;
 	float: left;
+	margin-top:1px;
 }
 
 
@@ -2099,6 +2100,28 @@ ul.menuAdmin li span{
 }
 ul.menuAdmin li span img{  width:37px; height:35px;}
 
+/*Dashboard*/
+a.btndash, .btndash{
+	color: #494D4E;
+	background-image: url(../gfx/btnDashboard.png);
+	background-position:top;
+	display: block;
+	float: left;
+	width: 223px;
+	margin:5px;
+	height:153px;
+}
+
+a.btndash:hover{
+	background-position:bottom;
+	color:#FFF;
+}
+
+.btndash .title{ float:left; margin-left:5px; margin-top:25px; font-size:16px; font-family:"Montserrat","Century Gothic", Arial, Helvetica, sans-serif}
+.btndash img{ float:left;}
+.btndash .descipt{ clear:both; margin:0px 3px 3px 5px; float:left; width:96%; font-size:13px;}
+
+
 .titlecond{
 	background-image: url(../gfx/degradateTitle.jpg);
 	background-repeat: repeat-x;
@@ -2117,27 +2140,31 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 .dataGrid{ float:left; width:97.1%; margin-left:1%; display:table; margin-top:3px; margin-bottom:3px;}
 .gridRow, a.gridRow {
 	background-image: url(../gfx/backgrid.jpg);
-	width: 97%;
+	width: 95.5%;
 	padding-left: 2%;
 	display: table-row;
-	height: 30px;
-	padding-top: 5px;
+	height: 23px;
+	padding-top: 3px;
 	padding-bottom: 5px;
 	padding-right: 10px;
 	display: block;
 	background-position: top;
-	border: 1px solid #B9B9B9;
-	font-size: 20px;
+	border: 1px solid #D1D1D1;
+	font-size: 16px;
 	font-weight: bold;
-	color: #B9B9B9;
+	color: #AFAFAF;
 	float: left;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
 	white-space: nowrap;
+	margin-top: 1px;
+	margin-left:10px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
-gridRow:hover { background-position:bottom;}
-.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:5px; width:600px; display:block; float:left; overflow: hidden; height:45px; line-height:.8em;}
+.gridRow:hover { background-position:bottom;}
+.gridRow a{ color: #666666; font-size: 19px; font-weight:bold; margin-top:3px; width:600px; display:block; float:left; overflow: hidden; height:45px; line-height:.8em;}
 
 .gridsubRow{ float:left; width:99.8%; padding-top: 1px;
 	padding-bottom: 1px; padding-left:1px;}
@@ -2157,6 +2184,17 @@ gridRow:hover { background-position:bottom;}
 }
 .gridsubRow a:hover{
 	background-color:#C0C0C0;
+}
+.gridtwo{ background-color:#FAFAFA; 
+background-image:url(../gfx/backGrid2.jpg); 
+width:700px; 
+float:left; 
+padding:10px; 
+color:#666;
+-webkit-border-radius: 4px;
+border-radius: 4px; 
+-webkit-box-shadow: 0px 2px 2px 1px #838282;
+box-shadow: 0px 2px 2px 1px #838282; 
 }
 
 .warning, a.warning{

@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
-<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8">	</script>
+	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
 	<script type="text/javascript">
 
 		var _gaq = _gaq || [];
@@ -20,19 +20,11 @@
 
 	</script>
 	<script type="text/javascript">
-    $(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: true}); });
-    function activateCancel(){ $("#cancelbtn").addClass("show") }
-    function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
-    function activeLghtbx(){ $('#contrano').removeClass("hidden");  $('#contrasi').addClass("hidden"); }
-    function deactiveLghtbx(){ $('#contrasi').removeClass("hidden");  $('#contrano').addClass("hidden"); }
-    function activeCancelCtaLghtbx(){ $('#cancelctano').removeClass("hidden");  $('#cancelctasi').addClass("hidden"); }
-    function deactiveCancelCtaLghtbx(){ $('#cancelctasi').removeClass("hidden");  $('#cancelctano').addClass("hidden"); }
+    	$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
 	</script>
-
-
-  <title>Administración de cuenta</title>
-  <link href="css/Origami.css" rel="stylesheet" type="text/css" />
-  <link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<title>Materiales gráficos</title>
+	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="bgt-main">
@@ -56,18 +48,33 @@
           <div class="menuAdmin">
             <div class="col-19 last">
               <div class="titlecond">
-                <h2 class="first ">Avisos</h2>
+                <h2 class="first">Material gráfico para descarga</h2>
                 </div>
-                <h3 class="Dsblock marg-L20pix col-18"><strong>En esta sección encontrarás avisos e información relevante que se irá publicando para mantenerte al tanto.</strong></h3>
-				<div class=" gridtwo marg-U20pix padd-UD20px marg-L10pix"> 
-					
-					
-						<p class="typeMx">El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</p>
-					
+				<div class="gridtwo marg-L10pix marg-D10pix"> 
+              		<form method="post" class="frmE" id="enviar" name="enviar" action="/dmg">
+					<div class="box1"> 
+                    <h3>Manual Corporativo y logotipo</h3>
+						<p><strong>En esta sección podrás descargar el logotipo oficial de El Buen Fin para que elabores la publicidad de tu empresa. </strong></p>
+						<p><strong>El uso de la obra de arte aplicado El BUEN FIN (el “Logotipo”) deberá limitarse única y exclusivamente a aquellas cuestiones inherentes a la promoción o difusión del proyecto y/o campaña de Iniciativa México, A.C. conocida como “EL BUEN FIN, EL FIN DE SEMANA MÁS BARATO DEL AÑO”, misma que se llevará a cabo del próximo 16 al 19 de noviembre. </strong> </p>
+						<div class=" marg-U20pix">
+							<div class="col-5 last"> 
+								<div class="col-4"> 
+									<h4 class="first">Estoy de acuerdo</h4>
+								</div>
+								<div class="col-1 marg-U5pix"> 
+									<input type="checkbox" name="TermCond" class="validate[required] last" value="acepted" id="acepted" />
+								</div>
+							</div>
+							<div class="col-4 mar-10pix last clear"> 
+								<button  name="enviar" type="submit" value="enviar" class="big red last"><span>Descargar</span></button>
+							</div>
+						</div>
+					</div>
+          			</form>
 				</div>
 
               </div>
-            
+           
 
             <div class="col-5" style="min-height:600px;">
               <img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
@@ -79,8 +86,8 @@
                 <li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="37" height="35" alt="sucursales" /></span> Sucursales</a></li>
                 <li><a href="#" style="cursor:default;"><span><img src="gfx/oferta.png" width="37" height="35" alt="ofertas" /></span> Ofertas</a></li>
                 <li><a href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
-				<li><a class="selected" href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-				<li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
+				<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
+				<li><a class="selected" href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
               </ul>
 			  <div class="box1 marg-U15pix"><strong>Recuerda:<br />El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
             </div>
