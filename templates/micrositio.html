@@ -144,9 +144,9 @@
             <li><a href="#" style="cursor:default;"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
             <li><a class="selected" href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 			<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-			<!--li><a href="/ElBuenFin_Materiales.zip"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Material gráfico</a></li-->
+			<!--li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Material gráfico</a></li-->
           </ul>
-		  <div class="box1 marg-U15pix"><strong>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
+		  <div class="box1 marg-U15pix"><strong>Recuerda:<br />El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
         </div>
         <div class="col-19 last "> {{with .Empresa}}
           <div class="titlecond">
@@ -188,18 +188,20 @@
                   <div class="percent">0%</div >
                 </div>
               </div>
-              <div class="warning ">
-                <ul class=" alineLeft">
-                  <li class="alineLeft">Sólo imagenes formato jpeg o png. </li>
+              <div class="Addvice">
+				<div class="first" style="background-color: #FEF0A7; border: 1px solid #FC0; padding-right: 10px;" >
+                <ul class= alineLeft">
+                  <li class="alineLeft">Sólo imagenes formato jpeg o png.</li>
                   <li class="alineLeft">Tamaño máximo 800x600 pixeles.</li>
                   <li class="alineLeft">Logotipo con fondo blanco.</li>
 				  <li class="alineLeft">La imagen debe ser el logotipo de la empresa.</li>
-				  <!--li class="alineLeft">No son admisibles imágenes políticas, religiosas o que atenten contra las buenas costumbres, de ser así no se publicará la empresa en el sitio.</li-->
+				  <li class="alineLeft">No son admisibles imágenes políticas, religiosas o que atenten contra las buenas costumbres, de ser así no se publicará la empresa en el sitio.</li>
                 </ul>
+				</div>
               </div>
             </form>
             <div class="line">
-              <div class="first padd-5px">Si deseas sustituir la imagen sólo necesitas seleccionar otra </div>
+              <div class="first padd-5px">Si deseas sustituir la imagen sólo necesitas seleccionar otra.</div>
             </div>
             <div class="col-18 marg-L10pix marg-D10pix"> </div>
           </div>
@@ -210,11 +212,11 @@
                 <div class="col-10">
                   <div class="line"> </div>
                   <div class="line ">
-                    <label>Título de logotipo</label>
+                    <label>Título de logotipo:</label>
                     <input type="text" class="validate[optional] medium {{.ErrName}}" name="Name" value="{{.Name}}" onchange="activateCancel()" />
                   </div>
                   <div class="line ">
-                    <label>Enlace Web al que debe apuntar el logotipo (opcional, con prefijo http://)</label>
+                    <label>Sitio de internet al que debe apuntar el logotipo (opcional, con prefijo http://)</label>
                     <input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}"  onchange="activateCancel()"/>
                   </div>
                   <div class="line ">
@@ -222,7 +224,6 @@
                     <label>Descripción de la empresa visible al público:</label>
                     <textarea class="validate[optional] medium last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
                   </div>
-                  <div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
                   <div class="line ">
                     <button  name="Upload"  id="Uploadmidata" type="submit" class="red medium last" value="Upload"  ><span>Guardar</span></button>
                   </div>
