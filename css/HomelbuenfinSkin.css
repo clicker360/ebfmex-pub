@@ -48,6 +48,7 @@ h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
 p{}
 
 b, strong{ sans-serif; font-weight:600;}
+.lightText{ font-weight:lighter;}
 
 /**BACKS**/
 
@@ -57,6 +58,8 @@ b, strong{ sans-serif; font-weight:600;}
 .Bg-Sec{background-color:#767676;}
 .Bg-BL{ background-color:#000;}
 .Bg-Wh{ background-color:#FFF;}
+.Bg-bluTw{ background-color:#1aaad3;}
+.Bg-bluFb{ background-color:#3a5898;}
 
 /**LINK**/
 a{
@@ -102,7 +105,7 @@ a.lnk-sec {
 
 .typeMin{ font-size:10px}
 .typeStnd+ { font-size:14px}
-.typeMx { font-size:18px}
+.typeMx { font-size:16px}
 .typeTle { font-size:20px}
 
 
@@ -130,7 +133,7 @@ a.lnk-sec {
 .SHW-div-D5px{box-shadow:0px 2px 5px #000; -webkit-box-shadow:0px 2px 5px #000; -moz-box-shadow: 0px2px 5px #000;}
 .SHW-div-D3px{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666;}
 /***Butons**/
-.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; height:22px; float:left; width:auto; padding-left:8%; padding-right:8%; padding-top:5px; padding-bottom:2px; color:#FFF; font-weight:400;}
+.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; height:22px; float:left; width:auto; padding-left:7%; padding-right:7%; padding-top:5px; padding-bottom:2px; color:#FFF; font-weight:400;}
 .button:hover, a.button:hover{ background-position:bottom;}
 .button.last{ float:right;}
 
@@ -167,7 +170,7 @@ width:145px;
 	font-weight: bolder;
 	line-height: 1.3em;
 }
-.fixedbottom{ position:fixed; bottom:0px;}
+.fixedbottom{ position:fixed; bottom:0px; z-index:990;}
 .logosPat{
 	background-color: #666;
 	position: fixed;
@@ -180,4 +183,5 @@ width:145px;
 }
 .all-img-5px a{ margin:4px; float:left; display:block;}
 .imgpad3px img{ padding:2px;}
-#logos{ height:1560px; float:left;}
+#logos{ height:1690px; float:left; position:relative; width:350px;}
+.twitter{ height:280px; overflow:hidden; z-index:0;}
