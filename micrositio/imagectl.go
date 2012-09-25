@@ -73,6 +73,7 @@ func micrositio(w http.ResponseWriter, r *http.Request) {
 			img := model.GetLogo(c, r.FormValue("IdEmp"))
 			if(img == nil) {
 				img = new(model.Image)
+				img.IdEmp = emp.IdEmp
 			}
 			fd := imgToForm(*img)
 			tc := make(map[string]interface{})
@@ -94,6 +95,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
 		if imgo == nil {
 			imgo = new(model.Image)
+			imgo.IdEmp = emp.IdEmp
 		}
 		fd := imgToForm(*imgo)
 		tc := make(map[string]interface{})
@@ -212,6 +214,7 @@ func modData(w http.ResponseWriter, r *http.Request) {
 		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
 		if(imgo == nil) {
 			imgo = new(model.Image)
+			imgo.IdEmp = emp.IdEmp
 		}
 		fd := imgToForm(*imgo)
 		tc := make(map[string]interface{})
@@ -261,6 +264,7 @@ func resizeLogo(w http.ResponseWriter, r *http.Request) {
 		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
 		if(imgo == nil) {
 			imgo = new(model.Image)
+			imgo.IdEmp = emp.IdEmp
 		}
 		sf, _ := strconv.Atoi(r.FormValue("s"))
 		fd := imgToForm(*imgo)
