@@ -108,21 +108,28 @@ div.col-1, div.col-2, div.col-3, div.col-4, div.col-5, div.col-6, div.col-7, div
 /*box*/
 /**********************boxes****************/
 .box1{
-	width: 96%;
+	width: 97.5%;
 	float: left;
-	padding: .5%;
-	margin-top: 2px;
-	margin-right: 0.5em;
-	margin-bottom: 2px;
-	margin-left: 0.5em;
+	padding-top:.3%;
+	padding-bottom:.3%;
+	padding-left:.3%;
+	padding-right:.3%;
+	margin-top: .5em;
+	margin-right: .5em;
+	margin-bottom: .5em;
+	margin-left: .5em;
 }
 .box2{ width:48%; 
-margin-top: 2px;
-	margin-right: 0.3em;
-	margin-bottom: 2px;
-	margin-left: 0.3em;
-float:left;
-padding:.4%;}
+	padding-top:.3%;
+	padding-bottom:.3%;
+	padding-left:.3%;
+	padding-right:.3%;
+	margin-top: .25em;
+	margin-right: .2em;
+	margin-bottom: .25em;
+	margin-left: .2em;
+	float:left;
+}
 .box3{ width:44%; 
 margin-top: 2px;
 	margin-right: 0.3em;
