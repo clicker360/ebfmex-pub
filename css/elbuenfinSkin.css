@@ -2140,7 +2140,7 @@ a.btndash:hover{
 .dataGrid{ float:left; width:97.1%; margin-left:1%; display:table; margin-top:3px; margin-bottom:3px;}
 .gridRow, a.gridRow {
 	background-image: url(../gfx/backgrid.jpg);
-	width: 96%;
+	width: 95.5%;
 	padding-left: 2%;
 	display: table-row;
 	height: 23px;
@@ -2159,6 +2159,7 @@ a.btndash:hover{
 	-o-text-overflow: ellipsis;
 	white-space: nowrap;
 	margin-top: 1px;
+	margin-left:10px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
 }
