@@ -883,6 +883,53 @@ input {
 	height : 15px;
 	float: right;
 }
+input.selectWord{
+	border: 1px solid #98BBCF;
+	float: left;
+	-webkit-box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #F6FCFC;
+	margin: 5px;
+}
+
+a.wordselected{
+	padding: 1px 2px 1px 2px;
+	display: block;
+	background-color: #E9DFD9;
+	border: solid 1px #990000;
+	color: #46050D;
+	font-size: 10px;
+	float: left;
+	margin: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-image: url(../gfx/closeword.png);
+	padding-right: 23px;
+	background-repeat: no-repeat;
+	background-position: right 1px;
+	text-transform: uppercase;
+}
+a.wordselected:hover{ background-position:right -18px;}
+a.sugestWord{
+	padding: 1px 2px 1px 2px;
+	display: block;
+	background-color: #D9DCDC;
+	border: 1px solid #FFFFFF;
+	color: #46050D;
+	font-size: 10px;
+	float: left;
+	margin: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-image: url(../gfx/upArrow.png);
+	padding-right: 23px;
+	background-repeat: no-repeat;
+	background-position: right 1px;
+	text-transform: uppercase;
+}
+a.sugestWord:hover{ background-position:right -18px;}
 
 input.small {
 	background : url(../gfx/forms/forms-input-small.png) no-repeat left top transparent;

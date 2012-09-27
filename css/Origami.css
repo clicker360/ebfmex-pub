@@ -108,12 +108,12 @@ div.col-1, div.col-2, div.col-3, div.col-4, div.col-5, div.col-6, div.col-7, div
 /*box*/
 /**********************boxes****************/
 .box1{
-	width: 97.5%;
+	width: 98%;
 	float: left;
 	padding-top:.3%;
 	padding-bottom:.3%;
-	padding-left:.3%;
-	padding-right:.3%;
+	padding-left:.28%;
+	padding-right:.28%;
 	margin-top: .5em;
 	margin-right: .5em;
 	margin-bottom: .5em;
