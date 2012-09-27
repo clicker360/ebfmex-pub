@@ -32,7 +32,9 @@ b, strong{ font-family:"Open Sans", "Century", "Palatino Linotype", sans-serif; 
 	background-color: #EFECEC;
 }
 .Bg-Prm{ background-color:#D93545	;}
-.Bg-Sec{background-color: #F3EAF1;}
+.Bg-Sec{
+	background-color: #FBFAF7;
+}
 .Bg-BL{ background-color:#000;}
 .Bg-Wh{ background-color:#FFF;}
 
@@ -96,7 +98,7 @@ a.lnk-sec {
 .ellipsis {overflow: hidden; text-overflow: ellipsis;}/*CS3*/
 .typ-Sc {color: #FF3333;}
 .typ-Tr {
-	color:#666;
+	color: #767676;
 }
 .typ-Wh {color: #FFFFFF;}
 .typ-BK {color: #000000;}
@@ -262,6 +264,7 @@ button.medium.green span{
 
 button.medium.blue{
 	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	color:#56585f;
 }
 
 button.medium.blue span{
@@ -475,6 +478,7 @@ a.button.green.medium span, a.button.green.medium:link span, a.button.green.medi
 
 a.button.blue.medium, a.button.blue.medium:link, a.button.blue.medium:active, a.button.blue.medium:visited {
 	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	color:#56585f;
 }
 
 a.button.blue.medium span, a.button.blue.medium:link span, a.button.blue.medium:active span, a.button.blue.medium:visited span {
@@ -916,7 +920,7 @@ a.sugestWord{
 	padding: 1px 2px 1px 2px;
 	display: block;
 	background-color: #D9DCDC;
-	border: 1px solid #FFFFFF;
+	border: 1px solid #AEADAB;
 	color: #46050D;
 	font-size: 10px;
 	float: left;
@@ -2149,14 +2153,17 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 
 /*Dashboard*/
 a.btndash, .btndash{
-	color: #494D4E;
+	color: #c5c4c4;
 	background-image: url(../gfx/btnDashboard.png);
 	background-position:top;
+	background-repeat:no-repeat;
 	display: block;
 	float: left;
-	width: 223px;
+	width: 215px;
+	height:143px;
+	padding:5px;
 	margin:5px;
-	height:153px;
+
 }
 
 a.btndash:hover{
@@ -2164,9 +2171,9 @@ a.btndash:hover{
 	color:#FFF;
 }
 
-.btndash .title{ float:left; margin-left:5px; margin-top:25px; font-size:16px; font-family:"Montserrat","Century Gothic", Arial, Helvetica, sans-serif}
+.btndash .title{ float:left; margin-left:3px; margin-top:25px; font-size:16px; font-family:"Montserrat","Century Gothic", Arial, Helvetica, sans-serif}
 .btndash img{ float:left;}
-.btndash .descipt{ clear:both; margin:0px 3px 3px 5px; float:left; width:96%; font-size:13px;}
+.btndash .descipt{ clear:both; margin:0px 3px 3px 5px; float:left; width:96%; font-size:13px; text-align:center;}
 
 
 .titlecond{
