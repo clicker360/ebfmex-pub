@@ -34,6 +34,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if r.Method == "GET" {
 		sf, _ := strconv.Atoi(r.FormValue("s"))
+		force, _ := strconv.Atoi(r.FormValue("force"))
 		// Check for shortlogo
 		var simg model.Image
 		simg.Kind = "ShortLogo"
@@ -42,15 +43,17 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		} else {
 			return
 		}
-		shortlogo, _ := model.GetShortLogo(c, r.FormValue("IdEmp"))
+		if(force!=1) {
+			shortlogo, _ := model.GetShortLogo(c, r.FormValue("IdEmp"))
 
-		// Stream short logo if already exists
-		if(shortlogo != nil) {
-			m, _, err := image.Decode(bytes.NewBuffer(shortlogo.Data))
-			model.Check(err)
-			w.Header().Set("Content-type", "image/jpeg")
-			jpeg.Encode(w, m, nil)
-			return
+			// Stream short logo if already exists
+			if(shortlogo != nil) {
+				m, _, err := image.Decode(bytes.NewBuffer(shortlogo.Data))
+				model.Check(err)
+				w.Header().Set("Content-type", "image/jpeg")
+				jpeg.Encode(w, m, nil)
+				return
+			}
 		}
 
 		// Process biglogo if shortlogo doesn't exists 

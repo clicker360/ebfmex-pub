@@ -32,7 +32,7 @@ func ShowEmpresas(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<title>Untitled Document</title>\n");
 	fmt.Fprintf(w, "<style type=\"text/css\">\n");
 	fmt.Fprintf(w, ".divCenter{ width:95%; margin-left:auto; margin-right:auto; text-align:center;}\n");
-	fmt.Fprintf(w, ".imgCont{ width:60px; height:60px; float:left; margin:10px;}\n");
+	fmt.Fprintf(w, ".imgCont{ float:left; margin:10px;}\n");
 	fmt.Fprintf(w, ".imgCont img { width:100%;}\n");
 	fmt.Fprintf(w, "</style>\n");
 	fmt.Fprintf(w, "</head>\n");
