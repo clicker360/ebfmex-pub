@@ -19,7 +19,7 @@ import (
 	_ "image/png" // import so we can read PNG files.
 	"io"
 	"net/http"
-	"html/template"
+	"text/template"
 	"sess"
 	"model"
 )
