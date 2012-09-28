@@ -71,6 +71,8 @@ func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 			empadmTpl.ExecuteTemplate(w, "empresassucursales", tc)
 		} else if(r.FormValue("d") == "m") {
 			empadmTpl.ExecuteTemplate(w, "vistamicrositio", tc)
+		} else if(r.FormValue("d") == "o") {
+			empadmTpl.ExecuteTemplate(w, "vistaoferta", tc)
 		}
 	} else {
 		http.Redirect(w, r, "/registro", http.StatusFound)

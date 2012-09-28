@@ -19,7 +19,6 @@ import (
 	_ "image/png" // import so we can read PNG files.
 	//"io"
 	"net/http"
-	//"text/template"
 	//"sess"
 	"model"
 )
@@ -48,7 +47,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		// Stream short logo if already exists
 		if(shortlogo != nil) {
 			m, _, err := image.Decode(bytes.NewBuffer(shortlogo.Data))
-			check(err)
+			model.Check(err)
 			w.Header().Set("Content-type", "image/jpeg")
 			jpeg.Encode(w, m, nil)
 			return
@@ -148,7 +147,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 			// Don't return, stream image either way
 		}
 		m, _, err := image.Decode(bytes.NewBuffer(simg.Data))
-		check(err)
+		model.Check(err)
 		w.Header().Set("Content-type", "image/jpeg")
 		jpeg.Encode(w, m, nil)
 	}

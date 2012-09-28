@@ -32,7 +32,9 @@ b, strong{ font-family:"Open Sans", "Century", "Palatino Linotype", sans-serif; 
 	background-color: #EFECEC;
 }
 .Bg-Prm{ background-color:#D93545	;}
-.Bg-Sec{background-color: #F3EAF1;}
+.Bg-Sec{
+	background-color: #FBFAF7;
+}
 .Bg-BL{ background-color:#000;}
 .Bg-Wh{ background-color:#FFF;}
 
@@ -96,7 +98,7 @@ a.lnk-sec {
 .ellipsis {overflow: hidden; text-overflow: ellipsis;}/*CS3*/
 .typ-Sc {color: #FF3333;}
 .typ-Tr {
-	color:#666;
+	color: #767676;
 }
 .typ-Wh {color: #FFFFFF;}
 .typ-BK {color: #000000;}
@@ -262,6 +264,7 @@ button.medium.green span{
 
 button.medium.blue{
 	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	color:#56585f;
 }
 
 button.medium.blue span{
@@ -475,6 +478,7 @@ a.button.green.medium span, a.button.green.medium:link span, a.button.green.medi
 
 a.button.blue.medium, a.button.blue.medium:link, a.button.blue.medium:active, a.button.blue.medium:visited {
 	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	color:#56585f;
 }
 
 a.button.blue.medium span, a.button.blue.medium:link span, a.button.blue.medium:active span, a.button.blue.medium:visited span {
@@ -883,6 +887,53 @@ input {
 	height : 15px;
 	float: right;
 }
+input.selectWord{
+	border: 1px solid #98BBCF;
+	float: left;
+	-webkit-box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #F6FCFC;
+	margin: 5px;
+}
+
+a.wordselected{
+	padding: 1px 2px 1px 2px;
+	display: block;
+	background-color: #E9DFD9;
+	border: solid 1px #990000;
+	color: #46050D;
+	font-size: 10px;
+	float: left;
+	margin: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-image: url(../gfx/closeword.png);
+	padding-right: 23px;
+	background-repeat: no-repeat;
+	background-position: right 1px;
+	text-transform: uppercase;
+}
+a.wordselected:hover{ background-position:right -18px;}
+a.sugestWord{
+	padding: 1px 2px 1px 2px;
+	display: block;
+	background-color: #D9DCDC;
+	border: 1px solid #AEADAB;
+	color: #46050D;
+	font-size: 10px;
+	float: left;
+	margin: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-image: url(../gfx/upArrow.png);
+	padding-right: 23px;
+	background-repeat: no-repeat;
+	background-position: right 1px;
+	text-transform: uppercase;
+}
+a.sugestWord:hover{ background-position:right -18px;}
 
 input.small {
 	background : url(../gfx/forms/forms-input-small.png) no-repeat left top transparent;
@@ -2102,14 +2153,17 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 
 /*Dashboard*/
 a.btndash, .btndash{
-	color: #494D4E;
+	color: #c5c4c4;
 	background-image: url(../gfx/btnDashboard.png);
 	background-position:top;
+	background-repeat:no-repeat;
 	display: block;
 	float: left;
-	width: 223px;
+	width: 215px;
+	height:143px;
+	padding:5px;
 	margin:5px;
-	height:153px;
+
 }
 
 a.btndash:hover{
@@ -2117,9 +2171,9 @@ a.btndash:hover{
 	color:#FFF;
 }
 
-.btndash .title{ float:left; margin-left:5px; margin-top:25px; font-size:16px; font-family:"Montserrat","Century Gothic", Arial, Helvetica, sans-serif}
+.btndash .title{ float:left; margin-left:3px; margin-top:25px; font-size:16px; font-family:"Montserrat","Century Gothic", Arial, Helvetica, sans-serif}
 .btndash img{ float:left;}
-.btndash .descipt{ clear:both; margin:0px 3px 3px 5px; float:left; width:96%; font-size:13px;}
+.btndash .descipt{ clear:both; margin:0px 3px 3px 5px; float:left; width:96%; font-size:13px; text-align:center;}
 
 
 .titlecond{

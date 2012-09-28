@@ -58,7 +58,7 @@ func wsSucursales(w http.ResponseWriter, r *http.Request) {
 func Oferta(w http.ResponseWriter, r *http.Request) {
 //	w.Header().Set("Accept-Charset","utf-8");
 	w.Header().Set("Content-Type", "application/json")
-    var json =`{"id":1, "empresa":{"id": 1, "nombre":"Marti" }, "tipo_oferta":1, "oferta":"tennis 2 x 1", "descripcion":"Descuento en NIKE", "distancia":384, "sucursales": [ { "id": 1, "lat": "19.123456", "long": "-99.123456" }, { "id": 2, "lat": "19.123456", "long": "-99.123456" }, { "id": 3, "lat": "19.123456", "long": "-99.123456" } ], "ofertas_relacionadas": [ { "id": 33, "oferta": "tennis 2 x 1" }, { "id": 34, "oferta": "tennis 2 x 1" } ], "url":"http://www.elbuenfin.org", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv" }`
+    var json =`{"id":1, "empresa":{"id": 1, "nombre":"Marti" }, "tipo_oferta":1, "oferta":"tennis Nike", "descuento":25, "descripcion":"Todos los tenis NIKE modelo X, 25% de descuento", "distancia":384, "sucursales": [ { "id": 1, "lat": "19.123456", "lon": "-99.123456" }, { "id": 2, "lat": "19.123456", "lon": "-99.123456" }, { "id": 3, "lat": "19.123456", "lon": "-99.123456" } ], "ofertas_relacionadas": [ { "id": 33, "oferta": "tennis 2 x 1" }, { "id": 34, "oferta": "tennis 2 x 1" } ], "url":"http://www.elbuenfin.org", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv" }`
 	fmt.Fprintf(w, "%s", json)
 }
 
@@ -71,13 +71,13 @@ func Oferta(w http.ResponseWriter, r *http.Request) {
 // Las ofertas relacionadas se limitan a 3. (Ofertas relacionadas son 3 ofertas de la misma empresa y devolver
 // en orden de cercania
 // En caso de no enviar PARAMS regresar 10 ofertas random
-// Tipo de Oferta: 1 si es descuento, 2 si es promoción. Si es descuento se debe incluir porcentaje,
+// Tipo de Oferta: 1 si es descuento, 2 si es promoción. Si es descuento se debe incluir descuento,
 //                 si es promoción se debe poner "promoción" y su tipo "2x1" "meses sin intereses", etc.
 
 func TopOfertas(w http.ResponseWriter, r *http.Request) {
 //	w.Header().Set("Accept-Charset","utf-8");
 	w.Header().Set("Content-Type", "application/json")
-	var json = `{ "ofertas": [ { "id": 1, "empresa": { "id": 1, "nombre": "Marti" }, "tipo_oferta":1, "oferta": "tennis 2 x 1", "descripcion": "Descuento en NIKE", "distancia":384, "sucursales": [ { "id": 1, "lat": "19.123456", "long": "-99.123456" }, { "id": 2, "lat": "19.123456", "long": "-99.123456" }, { "id": 3, "lat": "19.123456", "long": "-99.123456" } ], "ofertas_relacionadas": [ { "id": 33, "oferta": "tennis 2 x 1" }, { "id": 34, "oferta": "tennis 2 x 1" } ], "url":"http://www.elbuenfin.org", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv" } ] }`
+	var json = `{ "ofertas": [ { "id": 1, "empresa": { "id": 1, "nombre": "Marti" }, "tipo_oferta":1, "oferta": "tennis Nike", "descuento":25, "descripcion": "Todos los tenis Nike modelo X, 25% de descuento", "distancia":384, "sucursales": [ { "id": 1, "lat": "19.123456", "lon": "-99.123456" }, { "id": 2, "lat": "19.123456", "lon": "-99.123456" }, { "id": 3, "lat": "19.123456", "lon": "-99.123456" } ], "ofertas_relacionadas": [ { "id": 35, "oferta": "tennis para fútbol 0 intereses" }, { "id": 34, "oferta": "tennis 2 x 1" } ], "url":"http://www.elbuenfin.org", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv" }, { "id": 2, "empresa": { "id": 2, "nombre": "Emico" }, "tipo_oferta":1, "oferta": "Zapato de vestir, rebajado", "descuento":25, "descripcion": "Toda la linea para caballero 30% de descuento en efectivo", "distancia":38, "sucursales": [ { "id": 1, "lat": "19.408681", "lon": "-99.144552" }, { "id": 2, "lat": "19.401051", "lon": "-99.133072" }, { "id": 3, "lat": "19.37411", "lon": "-99.154251" } ], "ofertas_relacionadas": [ { "id": 33, "oferta": "tennis 2 x 1" }, { "id": 34, "oferta": "tennis 2 x 1" } ], "url":"http://www.elbuenfin.org", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv" }, { "id": 1, "empresa": { "id": 3, "nombre": "Reebok" }, "tipo_oferta":2, "oferta": "tennis para fútbol 0 intereses", "descripcion": "Todos los tenis para fútbol a 6 meses sin intereses", "promocion":"6 meses sin intereses": "distancia":384, "sucursales": [ { "id": 1, "lat": "19.342144", "lon": "-99.144959" }, { "id": 2, "lat": "19.391922", "lon": "-99.19561" } ], "ofertas_relacionadas": [ { "id": 33, "oferta": "tennis 2 x 1" }, { "id": 34, "oferta": "tennis 2 x 1" } ], "url":"http://www.elbuenfin.org", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv" } ] }`
 	fmt.Fprintf(w, "%s", json)
 }
 
@@ -90,7 +90,7 @@ func TopOfertas(w http.ResponseWriter, r *http.Request) {
 func OfertasPorCategoria(w http.ResponseWriter, r *http.Request) {
 //	w.Header().Set("Accept-Charset","utf-8");
 	w.Header().Set("Content-Type", "application/json")
-	var json = `{ "ofertas": [ { "id": 33, "oferta": "tennis 2 x 1", "distancia":"12312" }, { "id": 34, "oferta": "tennis 2 x 1", "distancia":"4123" } ] }`
+	var json = `{ "ofertas": [ { "id": 33, "oferta": "tennis 2 x 1", "distancia":"1", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv", "empresa": { "id": 2, "nombre": "Marti" } }, { "id": 34, "oferta": "Zapato 2 x 1 1/2" , "distancia":"1.2", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv", "empresa": { "id": 1, "nombre": "Emico" } } ] }`
 	fmt.Fprintf(w, "%s", json)
 }
 
@@ -100,7 +100,7 @@ func OfertasPorCategoria(w http.ResponseWriter, r *http.Request) {
 func OfertasPorPalabraClave(w http.ResponseWriter, r *http.Request) {
 //	w.Header().Set("Accept-Charset","utf-8");
 	w.Header().Set("Content-Type", "application/json")
-	var json = `{ "ofertas": [ { "id": 33, "oferta": "tennis 2 x 1" }, { "id": 34, "oferta": "tennis 2 x 1" } ] }`
+	var json = `{ "ofertas": [ { "id": 33, "oferta": "tennis 2 x 1", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv", "empresa": { "id": 2, "nombre": "Marti" } }, { "id": 34, "oferta": "tennis 2x1 1/2", "url_image":"http://www.elbuenfin.org/simg?id=tmshqympnnvv", "empresa": { "id": 1, "nombre": "Emico" } } ] }`
 	fmt.Fprintf(w, "%s", json)
 }
 

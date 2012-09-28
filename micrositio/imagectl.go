@@ -19,7 +19,7 @@ import (
 	_ "image/png" // import so we can read PNG files.
 	"io"
 	"net/http"
-	"text/template"
+	"html/template"
 	"sess"
 	"model"
 )
@@ -56,11 +56,11 @@ type FormDataImage struct {
 // Because App Engine owns main and starts the HTTP service,
 // we do our setup during initialization.
 func init() {
-	http.HandleFunc("/mi", errorHandler(micrositio))
-	http.HandleFunc("/logoup", errorHandler(upload))
-	http.HandleFunc("/midata", errorHandler(modData))
-	http.HandleFunc("/logosz", errorHandler(resizeLogo))
-	http.HandleFunc("/simg", errorHandler(img))
+	http.HandleFunc("/mi", model.ErrorHandler(micrositio))
+	http.HandleFunc("/logoup", model.ErrorHandler(upload))
+	http.HandleFunc("/midata", model.ErrorHandler(modData))
+	http.HandleFunc("/logosz", model.ErrorHandler(resizeLogo))
+	http.HandleFunc("/simg", model.ErrorHandler(img))
 }
 
 var micrositioTpl = template.Must(template.ParseFiles("templates/micrositio.html")) //, "templates/login.html"))
@@ -113,7 +113,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		desc := r.FormValue("Desc")
 		url := r.FormValue("Url")
 		f, _, err := r.FormFile("image")
-		check(err)
+		model.Check(err)
 		defer f.Close()
 
 		// Grab the image data
@@ -366,10 +366,10 @@ func img(w http.ResponseWriter, r *http.Request) {
 	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 	im := new(model.Image)
 	err := datastore.Get(c, key, im)
-	check(err)
+	model.Check(err)
 
 	m, _, err := image.Decode(bytes.NewBuffer(im.Data))
-	check(err)
+	model.Check(err)
 
 	// Ejemplo de cómo mejorar la conversión de datos 
 	//get := func(n string) int { // helper closure
@@ -388,6 +388,7 @@ func delimg(w http.ResponseWriter, r *http.Request) {
 
 // errorHandler wraps the argument handler with an error-catcher that
 // returns a 500 HTTP error if the request fails (calls check with err non-nil).
+/*
 func errorHandler(fn http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
@@ -411,13 +412,7 @@ func errorHandler(fn http.HandlerFunc) http.HandlerFunc {
 		fn(w, r)
 	}
 }
-
-// check aborts the current execution if err is non-nil.
-func check(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
+*/
 
 func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, tpl *template.Template) (FormDataImage, bool){
 	fd := FormDataImage {
