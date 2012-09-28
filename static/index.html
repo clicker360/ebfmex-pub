@@ -23,7 +23,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	for (i=1; i<=51; i++){
-	var numRam  = Math.round(Math.random()*(175));
+	var numRam  = Math.round(Math.random()*(187));
 	var img = "<img  src = 'imgs/logos/logo"+ numRam +".png' />" 
                              $("#logos").append(img);
 			if(i==51){scrolea();}
@@ -32,7 +32,7 @@ $(document).ready(function(){
 function scrolea(){
 	$('#logos').animate({
 	top: -1000,
-  }, 18000, function() {
+  }, 18500, function() {
 upscroll();
   });
 	
@@ -40,7 +40,7 @@ upscroll();
 function upscroll(){
 	$('#logos').animate({
 	top: 0,
-  }, 18000, function() {
+  }, 18500, function() {
  scrolea();
   });
 	}
