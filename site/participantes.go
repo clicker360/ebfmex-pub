@@ -44,11 +44,15 @@ func ShowEmpresas(w http.ResponseWriter, r *http.Request) {
 		Loop para recorrer todas las empresas 
 	*/
 	prefix := r.FormValue("prefix")
-	date := r.FormValue("date")
+	date := r.FormValue("bydate")
+	name := r.FormValue("showname")
+	all := r.FormValue("all")
 	//o, _ := strconv.Atoi(r.FormValue("o"))
     //q := datastore.NewQuery("Cta").Order("FechaHora").Limit(n).Offset(o)
-    //q := datastore.NewQuery("Empresa").Order("FechaHora").Limit(n)
-	q := datastore.NewQuery("Empresa").Filter("Nombre >=", prefix).Filter("Nombre <", prefix+"\ufffd")
+    q := datastore.NewQuery("Empresa")
+	if all != "1" {
+		q = q.Filter("Nombre >=", prefix).Filter("Nombre <", prefix+"\ufffd")
+	}
 	em, _ := q.Count(c)
 	empresas := make([]model.Empresa, 0, em)
 	if _, err := q.GetAll(c, &empresas); err != nil {
@@ -69,8 +73,12 @@ func ShowEmpresas(w http.ResponseWriter, r *http.Request) {
 			if err == datastore.Done  {
 				break
 			}
+			var val string
+			if name!="" {
+				val = empresas[k].Nombre
+			}
 			if(img.Data != nil) {
-				fmt.Fprintf(w, "<div class=\"imgCont\"><img src=\"/simg?id=%s\" />%s</div>\n", empresas[k].IdEmp, empresas[k].Nombre)
+				fmt.Fprintf(w, "<div class=\"imgCont\"><a href=\"/spic?IdEmp=%s\"><img src=\"/spic?IdEmp=%s\" />%s</a></div>\n", empresas[k].IdEmp, empresas[k].IdEmp, val)
 			}
 		}
 

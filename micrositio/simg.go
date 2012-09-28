@@ -67,14 +67,14 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		const max = 80
+		const max = 70
 		if(sf==0) {
-			// We aim for less than 80 pixels in any dimension.
+			// We aim for less than max pixels in any dimension.
 			if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
 				// If it's gigantic, it's more efficient to downsample first
 				// and then resize; resizing will smooth out the roughness.
 				if b.Dx() > 2*max || b.Dy() > 2*max {
-					w, h := max, max
+					w, h := max*2, max*2
 					if b.Dx() > b.Dy() {
 						h = b.Dy() * h / b.Dx()
 					} else {
@@ -83,7 +83,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 					i = resize.Resample(i, i.Bounds(), w, h)
 					b = i.Bounds()
 				}
-				w, h := max/2, max/2
+				w, h := max, max
 				if b.Dx() > b.Dy() {
 					h = b.Dy() * h / b.Dx()
 				} else {
@@ -151,4 +151,107 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-type", "image/jpeg")
 		jpeg.Encode(w, m, nil)
 	}
+}
+
+func slogores(c appengine.Context, id string, max int, sf int) int {
+	var simg model.Image
+	// Process biglogo if shortlogo doesn't exists 
+	// Save and Stream new shortlogo
+	biglogo := model.GetLogo(c, id)
+	if biglogo == nil {
+		// No such imageb
+		return -1
+	}
+
+	i, _, err := image.Decode(bytes.NewBuffer(biglogo.Data))
+	if err != nil {
+		// ERR_BADFORMAT
+		return -1
+	}
+
+	if(sf==0) {
+		// We aim for less than 80 pixels in any dimension.
+		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
+			// If it's gigantic, it's more efficient to downsample first
+			// and then resize; resizing will smooth out the roughness.
+			if b.Dx() > 2*max || b.Dy() > 2*max {
+				w, h := max*2, max*2
+				if b.Dx() > b.Dy() {
+					h = b.Dy() * h / b.Dx()
+				} else {
+					w = b.Dx() * w / b.Dy()
+				}
+				i = resize.Resample(i, i.Bounds(), w, h)
+				b = i.Bounds()
+			}
+			w, h := max, max
+			if b.Dx() > b.Dy() {
+				h = b.Dy() * h / b.Dx()
+			} else {
+				w = b.Dx() * w / b.Dy()
+			}
+			i = resize.Resize(i, i.Bounds(), w, h)
+		} else {
+			w, h := max, max
+			if b.Dx() > b.Dy() {
+				h = b.Dy() * h / b.Dx()
+			} else {
+				w = b.Dx() * w / b.Dy()
+			}
+			i = resize.Resize(i, i.Bounds(), w, h)
+		}
+	} else {
+		// We aim for a resize by ratio.
+		b := i.Bounds()
+		h := b.Dy()
+		w := b.Dx()
+		if(sf > 0 && sf <= 2) {
+			h = h * sf
+			w = w * sf
+		} else if (sf < 0 && sf > -1){
+			sf = (sf*2)+sf
+			h = h * (1/sf)
+			w = w * (1/sf)
+		}
+		i = resize.Resize(i, i.Bounds(), w, h)
+	}
+
+	// Encode as a new JPEG image.
+	var buf bytes.Buffer
+	err = jpeg.Encode(&buf, i, nil)
+	if err != nil {
+		// ERR_FAIL_ENCODE
+		return -1
+	}
+
+	// Save the image under a unique key, a hash of the image.
+	shortlogo, _ := model.GetShortLogo(c, id)
+	simg.Kind = "ShortLogo"
+	if(shortlogo != nil) {
+		simg.IdImg = shortlogo.IdImg
+	} else {
+		simg.IdImg = model.RandId(12)
+	}
+	simg.IdEmp = id
+	simg.Data = buf.Bytes()
+	simg.Name = biglogo.Name
+	simg.Desc = biglogo.Desc
+	simg.Sizepx = max
+	simg.Sizepy = 0
+	simg.Url = biglogo.Url
+	simg.Type = "jpeg"
+	simg.Sp1 = biglogo.Sp1
+	simg.Sp2 = biglogo.Sp2
+	simg.Sp3 = biglogo.Sp3
+	simg.Sp4 = biglogo.Sp4
+	simg.Np1 = biglogo.Np1
+	simg.Np2 = biglogo.Np2
+	simg.Np3 = biglogo.Np3
+	simg.Np4 = biglogo.Np4
+
+	_, err = model.PutLogo(c, &simg)
+	if err != nil {
+		return -1
+	}
+	return 0
 }
