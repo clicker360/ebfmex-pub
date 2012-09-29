@@ -241,6 +241,9 @@ a.botongrande:hover {background-image:url(btn-grande2.jpg);}
 .padd-UD5px{ padding-bottom:5px; padding-top:5px;}
 .padd-sU10px{ padding-top:10px;}
 .padd-D5px{ padding-bottom:5px;}
+.padd-D10px{ padding-bottom:10px;}
+.padd-D15px{ padding-bottom:15px;}
+.padd-D20px{ padding-bottom:20px;}
 .padd-5pr{ padding:5%;}
 /**general-Backgrounds**/
 

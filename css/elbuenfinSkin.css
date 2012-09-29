@@ -139,6 +139,11 @@ a.lnk-sec {
 .bg-top{ background-image:url(../gfx/backTop.jpg); background-repeat:repeat-x; background-position:top;}
 .bg-Gry1{ background-image:url(../gfx/greys.jpg); background-repeat:repeat-x; background-position:top;}
 .bg-Gry2{background-image:url(../gfx/greys.jpg); background-repeat:repeat-x; background-position:bottom;}
+.bg-Gry3{
+	background-image: url(../gfx/grey3.jpg);
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
 
 
 
@@ -2473,3 +2478,4 @@ a.eliminate:hover{ background-position:bottom;}
 		#question span { float: left; margin: 20px 0 0 10px; }
 
 .ui-state-active a{ color:#000;}
+.toggleZero{ display: none;}

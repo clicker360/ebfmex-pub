@@ -15,286 +15,305 @@
 		})();
 	</script>
                     <script type="text/javascript">
-function showURL() {
-     if($('input[name="onlineofer"]').prop('checked')) {
-            $("#urlonline").show();
-			 $(this).show();
-     }
-     else {
-           $("#urlonline").hide();
-     }
-}
+$(document).ready(function() {
+$("#cards").click(function () {
+$("#allcards").toggle("slow");
+});  
+$("#ONL").click(function () {
+$("#onlineURL").toggle("slow");
+});  
+$("#SUC").click(function () {
+$("#sucursales").toggle("slow");
+});  
+});  
     </script>
                     <title>Ofertas</title>
                     <link href="../css/Origami.css" rel="stylesheet" type="text/css" />
                     <link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
                     </head>
                     <body class="bgt-main">
-                    <div class="col-100PR  bgt-red-top first">
+<div class="col-100PR  bgt-red-top first">
                       <div class="col-cent">
-                        <div class="col-24 first  BR-R-10px">
+    <div class="col-24 first  BR-R-10px">
                           <div class="col-4"> <img src="../imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/> </div>
                           <div class="col-14 typ-Wh marg-U80pix"> 
-                            <!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4--> 
-                          </div>
+        <!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4--> 
+      </div>
                           <div class="pestana">
-                            <p class="first marg-10px">Hola {{.Name}}</p>
-                            <div class="last"><a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
-                          </div>
+        <p class="first marg-10px">Hola {{.Name}}</p>
+        <div class="last"><a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
+      </div>
                         </div>
-                        <div class="col-24  Bg-Wh marg-D10pix">
+    <div class="col-24  Bg-Wh marg-D10pix">
                           <div class="menuAdmin">
-                            <div class="col-5" style="min-height:600px;"> <img src="../gfx/menutitle.jpg" width="208" height="19" alt="menu" />
+        <div class="col-5" style="min-height:600px;"> <img src="../gfx/menutitle.jpg" width="208" height="19" alt="menu" />
                               <ul class="menuAdmin">
-                                <li><a href="/dash"><span><img src="../gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
-                                <li><a href="/cta"><span><img src="../gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
-                                <li><a href="/le?d=a"><span><img src="../gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-                                <li><a href="/le?d=s"><span><img src="../gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-                                <li><a href="#" class="selected"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
-                                <li><a href="/le?d=m"><span><img src="../gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
-                                <li><a  href="/avisos"><span><img src="../gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-                                <!--li><a class="selected" href="/ElBuenFin_Materiales.zip"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Material gráfico</a></li-->
-                              </ul>
+            <li><a href="/dash"><span><img src="../gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
+            <li><a href="/cta"><span><img src="../gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
+            <li><a href="/le?d=a"><span><img src="../gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
+            <li><a href="/le?d=s"><span><img src="../gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
+            <li><a href="#" class="selected"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+            <li><a href="/le?d=m"><span><img src="../gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+            <li><a  href="/avisos"><span><img src="../gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
+            <!--li><a class="selected" href="/ElBuenFin_Materiales.zip"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Material gráfico</a></li-->
+          </ul>
                               <div class="box1 marg-U15pix"><strong>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
                             </div>
-                            <div class="col-19 last">
+        <div class="col-19 last">
                               <div class="titlecond">
-                                <div class="col-18" style="overflow:hidden;height:38px;">
+            <div class="col-18" style="overflow:hidden;height:38px;">
                                   <h3 class="first">Oferta  de {{with .Empresa}}</h3>
                                   <a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a> </div>
-                              </div>
-                                  <form action="/logoup" method="post" id="enviar" enctype="multipart/form-data">
-                              <div class="col-19">
+          </div>
+                              <form action="/logoup" method="post" id="enviar" enctype="multipart/form-data">
+            <div class="col-19">
                                 <div class="last col-8"> 
-                                  <!--   vista previ de l aoferta -->
-                                  <h6 class="col-100PR typeMx typ-Tr alineCenter">Vista preliminar</h6>
-                                  <div class="col-7 marg-L30pix outlined SHW-div-D3px">
-                                    <div class="box1 "> <img src="../imgs/imageDefault.jpg" alt="Imagen de la oferta" width="258" height="256"  id="pic" /></div>
-                                    <div class="box1">
-                                      <h3 class="typeStnd"  id="Empre">Nombre de la Empresa</h3>
-                                      <h4 class="typ-Sc typeMx" id="oferTit">1234567890123456789012345678</h4>
-                                      <div id="dscipt">
-                                        <p class="typeMin marg-L5pix">Esto es una descripcion general de la oferte</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                                       
-                                  <div class="col-7 marg-L30pix Bg-Drks marg-U10pix">
-                                    <div class="gridsubRow">
-                                    <p class="col-7  marg-L5pix typ-Tr typeMx">La oferta esta:</p>
-                                    <div class="col-6 Bg-Wh marg-L15pix padd-5px">
-  									<label class="col-4  marg-L15pix typeMx">En línea</label>
-                                      <input type="checkbox" class="last  marg-5px "  value=""  name="onlineofer" onchange="Javascript:showURL()"/>
-                                    </div>
-                                      <div class="hide first col-6 bg-Gry2 padd-5px marg-L15pix" id="urlonline">
-                                        <label class="col-5  marg-L10pix">Escribe la URL</label>
-                                        <input type="text" class="small marg-L10pix" name="DirCalle" value="" id="oferta" onchange=" "/>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-7  marg-L30pix" >
-                                    <div class="gridsubRow  Bg-Drks">
-                                      <p class="typeMx">En los siguientes lugares:</p>
-                                      <div class="bg-Gry2 col-7">
-  <label class="col-5  marg-L10pix"> Todas las Sucursales</label>
-                                        <input name="selectAll" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-7  marg-L30pix outlined"  style="overflow-y:auto; overflow-x:hidden; height:155px;">
-                                    <div class="gridsubRow  bg-Gry2 ">
-                                      <label class="col-5  marg-L10pix">Condesa</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry1 ">
-                                      <label class="col-5  marg-L10pix">Roma</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry2 ">
-                                      <label class="col-5  marg-L10pix">Polanco</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry1 ">
-                                      <label class="col-5  marg-L10pix">Narvarte</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry2 ">
-                                      <label class="col-5  marg-L10pix">Doctores</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry1 ">
-                                      <label class="col-5  marg-L10pix">Santa Maria la Rivera</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry2 ">
-                                      <label class="col-5  marg-L10pix">Springfield</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                    <div class="gridsubRow  bg-Gry1 ">
-                                      <label class="col-5  marg-L10pix">Roma</label>
-                                      <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
-                                    </div>
-                                  </div>
-                                  
-                                </div>
-                                <div class="col-11">
-         
-                                    <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
-                                    <input type="hidden" name="tipo" value="async"/>
-                                    <div class=" col-10 padd-15px marg-5px  Bg-Drks">
+                <!--   vista previ de l aoferta -->
+                <h6 class="col-100PR typeMx typ-Tr alineCenter">Vista preliminar</h6>
+                <div class="col-7 marg-L30pix outlined SHW-div-D3px">
+                                      <div class="box1 "> <img src="../imgs/imageDefault.jpg" alt="Imagen de la oferta" width="258" height="256"  id="pic" /></div>
+                                      <div class="box1">
+                    <h3 class="typeStnd"  id="Empre">Nombre de la Empresa</h3>
+                    <h4 class="typ-Sc typeMx" id="oferTit">1234567890123456789012345678</h4>
+                    <div id="dscipt">
+                                          <p class="typeMin marg-L5pix">Esto es una descripcion general de la oferte</p>
+                                        </div>
+                  </div>
+                                  </div></div>
+                <div class="col-11 marg-L10pix">
+                <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
+                <input type="hidden" name="tipo" value="async"/>
+                <div class=" col-10 padd-15px marg-5px  Bg-Drks">
                                       <label class="col-5"><span class="typ-Sc"> * </span> Titulo de la Oferta</label>
                                       <input type="text" class="validate[required] medium {{.ErrDirCalle}}" name="DirCalle" value="" id="oferta" onchange="javascript:$('#oferTit').text($('#oferta').val()); "/>
                                     </div>
-                                    <div class=" col-10  Bg-Drks padd-15px marg-5px">
+                <div class=" col-10  Bg-Drks padd-15px marg-5px">
                                       <label class="col-5  marg-L10pix">Subir Imagen</label>
                                       <img id="loading" src="imgs/loader.gif" style="display:none;" alt="cargador" />
                                       <div class="typ-Sc" id="status"></div>
                                       <input id="imgfile" type="text" class="medium" readonly="readonly"/>
                                       <div class="btn-upload last" style="width: 65px; height: 27px; margin: 0px; overflow: hidden;">
-                                        <input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val()); $('#enviar').submit();" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;"/>
-                                      </div>
+                    <input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val()); $('#enviar').submit();" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;"/>
+                  </div>
                                       <div class=" last Addvice"> Sólo imagenes formato jpeg o png. <br />
-                                        Tamaño máximo 800x600 pixeles. </div>
+                    Tamaño máximo 800x600 pixeles. </div>
                                       <div class="col-8 last marg-U10pix bg-Gry2">
-                                        <div class="progress">
+                    <div class="progress">
                                           <div class="bar"></div >
                                           <div class="percent">0%</div >
                                         </div>
-                                      </div>
+                  </div>
                                     </div>
-                                    <div class="box2 Bg-Drks">
-                                      <label class="col-5 ">Precio</label>
-                                      <input type="text" class="small first marg-L10pix" name="DirCalle" value="" id="oferta" onchange="javascript:$('#oferTit').text($('#oferta').val()); "/>
-                                    </div>
-                                    <div class="box2 Bg-Drks">
-                                      <label class="col-5">Descuento</label>
-                                      <input type="text" class="small first marg-L10pix" name="DirCalle" value="" id="oferta" onchange="javascript:$('#oferTit').text($('#oferta').val()); "/>
-                                    </div>
-                                    <div class="col-10 padd-15px marg-5px  Bg-Drks">
+                <div class="col-10 padd-15px marg-5px  Bg-Drks">
                                       <label class="col-5"><span class="typ-Sc"> * </span> Descripción de la oferta</label>
                                       <textarea name="DesciptOfer" cols="6" rows="6" class="medium last"></textarea>
                                       <span class="typeMin last Addvice">Maximo 350 carcteres</span> </div>
-                                    <div class="col-10 padd-15px marg-5px  Bg-Drks">
-                                      <label class="col-10">Tarjetas participantes</label>
-                                      <div class="bg-Gry2 col-10">
-  <label class="col-3 marg-L10pix"> Todas </label>
-                                        <input name="selectAll" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                      <div class=" bg-Gry1 col-5">
-                                        <label class="col-3 marg-L10pix"> American Expres</label>
-                                        <input name="selectAll3" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                      <div class="bg-Gry2 col-5 marg-L10pix">
-                                        <label class="col-3 marg-L10pix"> Visa</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                         <div class="bg-Gry2 col-5 ">
-                                        <label class="col-3 marg-L10pix"> Master Card</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                         <div class="bg-Gry1 col-5 marg-L10pix">
-                                        <label class="col-3 marg-L10pix"> Bancomer</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                         <div class="bg-Gry1 col-5 ">
-                                        <label class="col-3 marg-L10pix"> Banamex</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                            <div class="bg-Gry2 col-5 marg-L10pix">
-                                        <label class="col-3 marg-L10pix"> Santander</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                         <div class="bg-Gry2 col-5 ">
-                                        <label class="col-3 marg-L10pix"> HSBC</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                            <div class="bg-Gry1 col-5 marg-L10pix">
-                                        <label class="col-3 marg-L10pix"> IXE</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                            <div class="bg-Gry1 col-5 ">
-                                        <label class="col-3 marg-L10pix"> Banco del Bajio</label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                            <div class="bg-Gry2 col-5 marg-L10pix">
-                                        <label class="col-3 marg-L10pix"> ScotianBank<br />
-                                        </label>
-                                        <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
-                                      </div>
-                                    </div> </div>
-                                      
-                                    <div class="col-10 padd-15px marg-5px  Bg-Drks">
-                                      <label class="col-3"><span class="typ-Sc"> * </span> Categoria</label>
-                                      <select name="categorias" size="1" id="categorias" class="last">
-                                        <option value="000">Selecciona Uno</option>
-                                        <option value="001">Abarrotes</option>
-                                        <option value="002">Automóviles y transportes</option>
-                                        <option value="003">Bancos y Seguros</option>
-                                        <option value="004">Blancos</option>
-                                        <option value="005">Calzado</option>
-                                        <option value="006">Cuidado e Higiene Personal</option>
-                                        <option>Deportes</option>
-                                        <option>Electronica y Video</option>
-                                        <option>Electrodomesticos</option>
-                                        <option>Farmacias</option>
-                                        <option>Ferretería</option>
-                                        <option>Fotografía y Computo</option>
-                                        <option>Hogar y decoración</option>
-                                        <option>Jartdineria</option>
-                                        <option>Joyería</option>
-                                        <option>Jugetería</option>
-                                        <option>Línea Blanca</option>
-                                        <option>Muebles</option>
-                                        <option>Oficina y papelería</option>
-                                        <option>Oportunidades</option>
-                                        <option>Óptica</option>
-                                        <option>Perecederos</option>
-                                        <option>Regalos</option>
-                                        <option>Restaurantes</option>
-                                        <option>Ropa</option>
-                                        <option>Servicios</option>
-                                        <option>Varios</option>
-                                        <option>Viajes</option>
-                                      </select>
+                  <div class="col-10 padd-15px marg-L5pix Bg-Drks">
+                                      <h6 class="col-100PR typeMx typ-Tr"> TIPO DE PROMOCION</h6>
+                                      <div class="col-100PR first outlined Bg-Wh">
+               
+                    <p class="clear">Condiciones Agregadas</p>
+                    <a href="#null"class="wordselected">2 x 1</a></div>
+                    <div class=" col-100PR Bg-Sec outlined first">
+                    <p class="marg-5px">Sugerencias</p>
+                    <a href="#null"class="sugestWord">50% de descuento</a>
+                    <a href="#null"class="sugestWord">40% de descuento</a>
+                    <a href="#null"class="sugestWord">35% de descuento</a>
+                    <a href="#null"class="sugestWord">30% de descuento</a>
+                    <a href="#null"class="sugestWord">25% de descuento</a>
+                    <a href="#null"class="sugestWord">20% de descuento</a>
+                    <a href="#null"class="sugestWord">15% de descuento</a>
+                    <a href="#null"class="sugestWord">10% de descuento</a>
+                    <a href="#null"class="sugestWord">5% de descuento</a>
+                    <a href="#null"class="sugestWord">12 meses sin intereses</a>
+                    <a href="#null"class="sugestWord">24 meses sin intereses</a> 
+                    <a href="#null"class="sugestWord">2x1</a>
+                    <a href="#null"class="sugestWord">3x2</a> 
+                    <a href="#null"class="sugestWord">Aticulo gratis en la compra de otro</a> </div>
                                     </div>
-                                    <div class="col-18 padd-15px marg-5px  Bg-Drks">
+                                    
+                <div class="col-10 padd-15px marg-L5pix  bg-Gry2">
+                                      <label class="col-3"><span class="typ-Sc"> * </span> Categoria</label>
+                                      <select name="categorias" size="1" id="categorias" class="last medium">
+                    <option value="000">SELECIONAR UNA</option>
+                    <option value="001">Abarrotes</option>
+                    <option value="002">Automóviles y transportes</option>
+                    <option value="003">Bancos y Seguros</option>
+                    <option value="004">Blancos</option>
+                    <option value="005">Calzado</option>
+                    <option value="006">Cuidado e Higiene Personal</option>
+                    <option>Deportes</option>
+                    <option>Electronica y Video</option>
+                    <option>Electrodomesticos</option>
+                    <option>Farmacias</option>
+                    <option>Ferretería</option>
+                    <option>Fotografía y Computo</option>
+                    <option>Hogar y decoración</option>
+                    <option>Jartdineria</option>
+                    <option>Joyería</option>
+                    <option>Jugetería</option>
+                    <option>Línea Blanca</option>
+                    <option>Muebles</option>
+                    <option>Oficina y papelería</option>
+                    <option>Oportunidades</option>
+                    <option>Óptica</option>
+                    <option>Perecederos</option>
+                    <option>Regalos</option>
+                    <option>Restaurantes</option>
+                    <option>Ropa</option>
+                    <option>Servicios</option>
+                    <option>Varios</option>
+                    <option>Viajes</option>
+                  </select>
+                                    </div>
+                                    
+                <div class="col-10 padd-15px marg-L5pix Bg-Drks">
                                       <h6 class="col-100PR typeMx typ-Tr"> Palabras Clave</h6>
                                       <div class="col-100PR first outlined Bg-Wh">
-                                        <label class="col-15">Agregar palabra </label>
-                                        <input type="text" class="selectWord" name="DirCalle" value="" id="oferta" onchange=""/>
-                                        <div class=" first marg-U5pix marg-L10pix">
-                                        <a href="#null" class=" button blue medium"><span>Agregar palabra </span><img src="../gfx/iconDown.png" width="16" height="20" /></a>
-                                        </div>
-                                        <p class="clear">Palabras elegidas</p>
-                                        <a href="#null"class="wordselected">palabra</a> <a href="#null"class="wordselected">supercalifragilistico</a> <a href="#null"class="wordselected">cali</a> <a href="#null"class="wordselected">califragil</a> </div>
+                    <label class="col-15">Agregar palabra </label>
+                    <input type="text" class="selectWord" name="DirCalle" value="" id="oferta" onchange=""/>
+                    <div class=" first marg-U5pix marg-L10pix"> <a href="#null" class=" button orange medium"><span>Agregar palabra <img src="../gfx/iconDown.png" width="15" height="20" /></span></a> </div>
+                    <p class="clear">Palabras elegidas</p>
+                    <a href="#null"class="wordselected">palabra</a> <a href="#null"class="wordselected">supercalifragilistico</a> <a href="#null"class="wordselected">cali</a> <a href="#null"class="wordselected">califragil</a> </div>
                                       <div class=" col-100PR Bg-Sec outlined first">
-                                        <p class="marg-5px">Sugerencias</p>
-                                        <a href="#null"class="sugestWord">llanta</a> <a href="#null"class="sugestWord">motocicleta</a><a href="#null"class="sugestWord">autoparte</a> <a href="#null"class="sugestWord">automovil</a> <a href="#null"class="sugestWord">electrodomesticos</a> <a href="#null"class="sugestWord">autoestereo</a> </div>
+                    <p class="marg-5px">Sugerencias</p>
+                    <a href="#null"class="sugestWord">llanta</a> <a href="#null"class="sugestWord">motocicleta</a><a href="#null"class="sugestWord">autoparte</a> <a href="#null"class="sugestWord">automovil</a> <a href="#null"class="sugestWord">electrodomesticos</a> <a href="#null"class="sugestWord">autoestereo</a> </div>
+                                      <div class="last Addvice"> Ayudan a mejorar los resultados de busqueda de tu oferta </div>
+                                    </div>
+                <div class=" col-98PR marg-5px  Bg-Drks padd-D15px first">
+                                      <div class="first marg-L10pix marg-U10pix"><a href="#null" class="button orange medium marg-L50pix" id="cards">
+                                        <div class="col-10 padd-D5px alineCenter">Tarjetas Paticipantes <img src="../gfx/iconDown2.png" width="15" height="20" alt="mas informacion" /></div>
+                                        </a></div>
+                                      <div class="first marg-L15pix toggleZero marg-U5pix" id="allcards">
+                    <div class="bg-Gry3 col-10">
+                                          <label class="col-3 marg-L10pix"> Todas </label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class=" bg-Gry1 col-5">
+                                          <label class="col-3 marg-L10pix"> American Expres</label>
+                                          <input name="selectAll3" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry2 col-5 marg-L10pix">
+                                          <label class="col-3 marg-L10pix"> Visa</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry2 col-5 ">
+                                          <label class="col-3 marg-L10pix"> Master Card</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry1 col-5 marg-L10pix">
+                                          <label class="col-3 marg-L10pix"> Bancomer</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry1 col-5 ">
+                                          <label class="col-3 marg-L10pix"> Banamex</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry2 col-5 marg-L10pix">
+                                          <label class="col-3 marg-L10pix"> Santander</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry2 col-5 ">
+                                          <label class="col-3 marg-L10pix"> HSBC</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry1 col-5 marg-L10pix">
+                                          <label class="col-3 marg-L10pix"> IXE</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry1 col-5 ">
+                                          <label class="col-3 marg-L10pix"> Banco del Bajio</label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                    <div class="bg-Gry2 col-5 marg-L10pix">
+                                          <label class="col-3 marg-L10pix"> ScotianBank<br />
+                      </label>
+                                          <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                  </div>
+                                    </div>
+                <div class=" col-98PR marg-5px  Bg-Drks padd-D15px first">
+                                      <div class="first marg-L10pix marg-U10pix">
+                                      <a href="#null" class="button orange medium marg-L50pix" id="ONL"><div class="col-10 padd-D5px alineCenter">Tu Oferta estÁ en línea <img src="../gfx/iconDown2.png" width="15" height="20" alt="mas informacion" /></div></a>
+                                      </div>
+                                      <div class="first marg-L10	pix toggleZero marg-U5pix" id="onlineURL">
+                    					<div class="col-10 padd-5px">
+                                          <label class="col-5  marg-L10pix">Escribe la URL</label>
+                                          <input type="text" class=" medium marg-L10pix first" name="DirCalle" value="" id="oferta" onchange=" "/>
+                                       </div>
+                  					</div>
+                    </div>
+                  <div class=" col-98PR marg-5px  Bg-Drks padd-D15px first">
+                                      <div class="first marg-L10pix marg-U10pix">
+                                      <a href="#null" class="button orange medium marg-L50pix" id="SUC">
+                                      <div class="col-10 padd-D5px alineCenter">Tu Oferta estÁ las siguientes sucurzales<img src="../gfx/iconDown2.png" width="15" height="20" alt="mas informacion" /></div></a>
+                                      </div>
+                                      <div class="first marg-L10	pix toggleZero marg-U5pix" id="sucursales">
+                    		
+                   						<div class="bg-Gry3 col-10 marg-L15pix">
+                                              <label class="col-5  marg-L10pix"> Todas las Sucursales</label>
+                                              <input name="selectAll" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+                                        </div>
+                 			
+                <div class="col-10  marg-L15pix outlined"  style="overflow-y:auto; overflow-x:hidden; height:200px;">
+                                      <div class="gridsubRow  bg-Gry2 ">
+                    <label class="col-5  marg-L10pix">Condesa</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry1 ">
+                    <label class="col-5  marg-L10pix">Roma</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry2 ">
+                    <label class="col-5  marg-L10pix">Polanco</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry1 ">
+                    <label class="col-5  marg-L10pix">Narvarte</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry2 ">
+                    <label class="col-5  marg-L10pix">Doctores</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry1 ">
+                    <label class="col-5  marg-L10pix">Santa Maria la Rivera</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry2 ">
+                    <label class="col-5  marg-L10pix">Springfield</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
+                                      <div class="gridsubRow  bg-Gry1 ">
+                    <label class="col-5  marg-L10pix">Roma</label>
+                    <input name="selectAll" type="checkbox" class="last  marg-5px " value="" />
+                  </div>
                                     
-                                    </div>  <div class="last Addvice"> Ayudan a mejorar los resultados de busqueda de tu oferta </div>
-                                    <div class="col-4 last clear">
-                                    <button class="red big "><span>ENVIAR OFERTA</span></button>
-                                  
-                                  </div>
-                                    <div class="first Addvice"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
-                                
+                                       </div>
+                  					</div>
+                    </div>
+                <div class="col-4 last clear">
+                                      <button class="red big "><span>ENVIAR OFERTA</span></button>
+                                    </div>
+                <div class="first Addvice"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
+              </div>
                                 </div>
-                                 </form>
-                              </div>
+          </form>
                             </div>
-                           
+      </div>
                           <div class="box1 alineCenter"> <img src="../imgs/abmlogo1.jpg" width="80" height="73" alt="abm" /><img src="../imgs/amipcilogo80.jpg" width="76" height="80" alt="amici" /><img src="../imgs/orgn_4.jpg" width="107" height="80" alt="organismo"  class="padd-0px"/><img src="../imgs/orgn_5.jpg" width="98" height="68" alt="consejo cordinador empresarial"  class="padd-10px"/><img src="../imgs/concamin-75x80.jpg" width="75" height="80" alt="concamin" /><img src="../imgs/logo-concanaco-107x76.jpg" width="96" height="62" alt="coparmex"  class="padd-10px" /> <img src="../imgs/Logo-COPARMEX-95x80.jpg" width="67" height="49" alt="concanaco"  class="padd-10px"/><img src="../imgs/orgn_6.jpg" alt="gobierno federal" width="98" height="73" /><img src="../imgs/orgn_7.jpg" width="95" height="65" alt="iniciativa mexico"  class="padd-10px"/> </div>
                           <div class=" box1">
-                            <p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
+        <p class="typeMin">El Buen Fin © Todos los derechos reservados, México 2011
                               Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
                               Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
-                          </div>
+      </div>
                         </div>
-                      </div>
+  </div>
                     </div>
-                    </div>
+</div>
 </body>
                     </html>
-                    Promocion
+Promocion
                     Meses sin intereses
+                    12 meses
                     Fecha de publicación
