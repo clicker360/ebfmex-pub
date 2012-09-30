@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
 	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
-	<script type="text/javascript" src="scripts/ofertas.js" charset="utf-8"></script>
+	<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
+	<!--script type="text/javascript" src="scripts/ofertas.js" charset="utf-8"></script-->
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26907178-1']);
@@ -17,10 +18,101 @@
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
 	</script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-	<script type="text/javascript" src="scripts/map.js" charset="utf-8"></script>
-	<style type="text/css">
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+		$("#cards").click(function () { $("#allcards").toggle("slow"); });  
+		$("#ONL").click(function () { $("#onlineURL").toggle("slow"); });  
+		$("#SUC").click(function () { $("#sucursales").toggle("slow"); });  
+		$("#enviar").validationEngine({promptPosition : "topRight", scroll: false});
+		$("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false});
+		var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}";
+		var $pic = $("#pic");
+		var $url = $("#urlimg");
+		var max_size=400;
+		if(idoft == 'none') {
+			// se ocultan los campos que requieren IdOft
+			$('#dataoferta').hide();
+		} else {
+			$('#dataoferta').show();
+		}
+		$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
+		function update() {
+			if(idoft != 'none') {
+				var query = "id="+id;
+				$pic.attr("src", "/simg?"+query);
+				$url.text("/simg?"+query);
+			} else {
+				$pic.attr("src", "imgs/imageDefault.jpg");
+			}
+		}
+		update();
+		(function() {
+			
+		var bar = $('.bar');
+		var percent = $('.percent');
+		var status = $('#status');
+		   
+		$('#enviar').ajaxForm({
+			beforeSend: function() {
+				status.empty();
+				var percentVal = '0%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+			},
+			uploadProgress: function(event, position, total, percentComplete) {
+				var percentVal = percentComplete + '%';
+				bar.width(percentVal)
+				percent.html(percentVal);
+			},
+			complete: function(xhr) {
+				status.html(xhr.responseText);
+				update();
+			}
+		}); 
 
+		})();       
+		$('textarea[maxlength]').live('keyup blur', function() {
+			var maxlength = $(this).attr('maxlength'); var val = $(this).val();
+			if (val.length > maxlength) {
+				$(this).val(val.slice(0, maxlength));
+			}
+		});
+		$('.pcve').click(function(e){
+			if($(this).attr("value") == "0") {
+				var palabra = $(this).text();
+				$.get("/addofp", { pcve: palabra, idoft: idoft }, function(resp) {
+					if(resp.status="ok") {
+						$(this).attr("class", "wordselected");	
+						$(this).attr("value", resp.idpcve);	
+						$('.unpickword').append($(this));
+					} else {
+						alert("Hubo un problema de conexión. Intente de nuevo agregar la palabra clave");
+					}
+				}, "json");
+			} else {
+				var idp = $(this).attr('value');
+				$.get("/delofp", { idpcve: $(this).attr('value') }, function(resp) {
+					if(resp.status="ok") {
+						$(this).attr("class", "sugestWord");	
+						// en el regreso del ajax se limpia el valor
+						$(this).attr('value','0');
+						$('.pickword').append($(this));
+					} else {
+						alert("Hubo un problema de conexión. Intente de nuevo eliminar la palabra clave");
+					}
+				}, "json");
+			}
+		});
+
+		});
+		function activateCancel(){ $("#cancelbtn").addClass("show") }
+		function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
+	</script>
+	<style type="text/css">
+	#size { width: 300px; margin: 10px 10px; }
+	.progress { float: right; position: relative; width: 310px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+	.bar { background-color: grey; width: 0%; height: 20px; border-radius: 3px; }
+	.percent { position: absolute; display: inline-block; top: 3px; left: 48%; }
 	</style>
 	<title>Ofertas</title>
 	<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
@@ -49,102 +141,287 @@
 								<li><a href="/cta"><span><img src="../gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 								<li><a href="/le?d=a"><span><img src="../gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 								<li><a href="/le?d=s"><span><img src="../gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-								<li><a class="selected" href="/le?d=o" style="cursor:default;"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+                				<li><a href="/le?d=o" class="selected"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 								<li><a href="/le?d=m"><span><img src="../gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 								<li><a href="/avisos"><span><img src="../gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-								<li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Material gráfico</a></li>
+								<li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
 							</ul>
-							<div class="box1 marg-U15pix"><strong>Recuerda:<br /> el compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
+							<div class="box1 marg-U15pix"><strong>Recuerda:<br /> El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
-								<div class="col-14" style="overflow:hidden;height:38px;"><h3 class="first">Sucursal de {{with .Empresa}}{{.Nombre}}{{end}}</h3></div>
-								<!--a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a-->
-								<a href="/ofertas?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
+                                <div class="col-18" style="overflow:hidden;height:38px;">
+                                    <h3 class="first">
+                                        Oferta de {{with .Empresa}}{{.Nombre}}{{end}}
+                                    </h3>
+									<a href="/ofs?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
+                                </div>
 							</div>
-							<div class="box1 marg-U10pix">
-								
-								<form action="/sucmod" method="post" id="enviar">
-									<input type="hidden" value="a" name="s"/>
-									{{with .FormDataSuc}}<input type="hidden" name="IdOft" value="{{.IdOft}}"/>{{end}}
-									{{with .Empresa}}<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>{{end}}
-									{{with .FormDataSuc}}
-									<div class="box2">
-										<label class="col-4">Nombre de sucursal<span class="typ-Sc"> * </span></label>
-										<div class="first">
-											<input type="text" class="validate[required] small {{.ErrNombre}}" name="Nombre" value="{{.Nombre}}" onchange="activateCancel()" />	
+                            <div class="col-19">
+								<!-- Inicia estructura de campos Oferta -->
+								<div class="last col-8">
+									<!--   vista previ de l aoferta -->
+									<h6 class="col-100PR typeMx typ-Tr alineCenter">
+										Vista preliminar
+									</h6>
+									<div class="col-7 marg-L30pix outlined SHW-div-D3px">
+										<div class="box1">
+											<a href="#" id="urlimg" target="_blank"><img src="" alt="Imagen de la oferta" width="258" height="256" id="pic" /></a>
+										</div>
+										<div class="box1">
+											<h3 class="typeStnd" id="Empre">{{with .Empresa}}{{.Nombre}}{{end}}</h3>
+											<h3 class="typ-Sc typeMx" id="oferLinea"></h3>
+											<h4 class="typ-Sc typeMx" id="oferTit"></h4>
+											<div id="oferDesc">
+												<p class="typeMin marg-L5pix">
+													Esto es una descripcion general de la oferte
+												</p>
+											</div>
 										</div>
 									</div>
-									<div class="box2">
-										<label class="col-4" for="cphone">Teléfono fijo con lada</label>
-										<div class="first">
-											<input type="text" id="cphone" name="Tel" class="validate[optional,custom[phone]] small {{.ErrTel}}" value="{{.Tel}}" onchange="activateCancel()" />
+								</div>
+								<div class="col-11 marg-L10pix">
+									<form action="/logoup" method="post" id="enviar" enctype="multipart/form-data">
+										<input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
+										<input type="hidden" name="tipo" value="async"/>
+										<div class=" col-10 Bg-Drks padd-15px marg-5px">
+											<label class="col-5 marg-L10pix">Subir imagen de oferta</label>
+											<div class="typ-Sc" id="status"></div><input id="imgfile" type="text" class="medium" readonly="readonly" />
+											<div class="btn-upload last" style="width: 65px; height: 27px; margin: 0px; overflow: hidden;">
+												<input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val()); $('#enviar').submit();" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;" />
+											</div>
+											<div class="Addvice last">Sólo formato jpeg o png, tamaño máximo 258x256 pixeles</div>
+											<img id="loading" src="imgs/loader.gif" style="display:none;" alt="cargador" name="loading" />
+											<div class="col-8 last marg-U10pix bg-Gry2">
+												<div class="progress">
+													<div class="bar"></div>
+													<div class="percent">
+														0%
+													</div>
+												</div>
+											</div>
 										</div>
-									</div>
-									<div class="box1">
-										<div class="outlined pullup-10 BR-R-3px">
-											<ol>
-												<li>Captura la dirección de la sucursal y en el mapa se irá ubicando conforme la ingreses.</li>
-												<li>Puedes mover, alejar o acercar el mapa para verificar la ubicación de la sucursal.</li>
-												<li>Si el puntero no está en la ubicación puedes moverlo al lugar preciso.</li>
-											</ol>
+									</form>
+									<form action="/ofmod" method="post" id="enviar">
+										<input type="hidden" value="a" name="s"/>
+										{{with .FormDataOf}}
+										<input type="hidden" name="IdOft" value="{{.IdOft}}" id="IdOft"/>
+										<input type="hidden" name="IdEmp" value="{{.IdEmp}}" id="IdEmp"/>
+										<input type="hidden" name="tipo" value="async" />
+										<div class=" col-10 padd-15px marg-5px Bg-Drks">
+											<label class="col-5"><span class="typ-Sc">*</span> Titulo de la Oferta</label>
+											<input type="text" class="validate[required] medium {{.ErrOferta}}" name="Oferta" value="{{.Oferta}}" id="oferta" onchange="javascript:$('#oferTit').text($('#oferta').val());" />
 										</div>
-										{{if .Ackn}}
-										<div class="Addvice alineCenter marg-10pix">
-											<h4>Los datos han sido guardados correctamente.</h4>
+										<div class="col-10 padd-15px marg-5px Bg-Drks">
+											<label class="col-5"> Descripción de la oferta</label> 
+											<textarea class="validate[optional] medium last {{.ErrDescripcion}}" name="DesciptOfer" cols="6" rows="6" id="descripcion" maxlength="200" onchange="javascript:$('#oferDesc').text($('#descripcion').val());">
+												{{.Descripcion}}
+											</textarea> <span class="typeMin last Addvice">Maximo 200 carcteres</span>
 										</div>
-										{{end}}
-									</div>
-									<div class="last col-50PR">
-										<div id="map"></div>
-										<div class="last marg-R15pix">
+										<div class=" col-10 padd-15px marg-5px Bg-Drks">
+											<label class="col-8"> Si ya tienes promoción de tu producto en Internet ¡Participa en El Buen Fin en línea!</label>
+											<input type="checkbox" class="validate[opcional] medium last" name="Enlinea" value="{{.Enlinea}}" id="enlinea" onchange="javascript:$('#oferLinea').text('Esta promoción participa en El Buen Fin en línea');" />
+										</div>
+										<div class=" col-10 padd-15px marg-5px Bg-Drks">
+											<label class="col-5"> Enlace web a tu oferta y/o sitio web</label>
+											<input type="text" class="validate[optional] medium {{.ErrUrl}}" name="Oferta" value="{{.Url}}" id="url" onchange="javascript:$('#urlimg').attr('href', $('#url').val());" />
+										</div>
+										<div id="dataoferta" style="visibility:hidden;">
+											<div class="col-10 padd-15px marg-L5pix Bg-Drks">
+												<h6 class="col-100PR typeMx typ-Tr">
+													TIPO DE PROMOCION
+												</h6>
+												<div class="col-100PR first outlined Bg-Wh">
+													<p class="clear">
+														Condiciones agregadas
+													</p>
+													<div class="unpickword"></div>
+												</div>
+												<div class=" col-100PR Bg-Sec outlined first">
+													<p class="marg-5px">
+														Sugerencias
+													</p>
+													<div class="pickword">
+														<a href="#null" class="sugestWord pcve" value="0">50%</a>
+														<a href="#null" class="sugestWord pcve" value="0">40%</a>
+														<a href="#null" class="sugestWord pcve" value="0">35%</a>
+														<a href="#null" class="sugestWord pcve" value="0">30%</a>
+														<a href="#null" class="sugestWord pcve" value="0">25%</a>
+														<a href="#null" class="sugestWord pcve" value="0">20%</a>
+														<a href="#null" class="sugestWord pcve" value="0">15%</a>
+														<a href="#null" class="sugestWord pcve" value="0">10%</a>
+														<a href="#null" class="sugestWord pcve" value="0">5%</a>
+														<a href="#null" class="sugestWord pcve" value="0">Liquidación</a>
+														<a href="#null" class="sugestWord pcve" value="0">6 meses sin intereses</a>
+														<a href="#null" class="sugestWord pcve" value="0">12 meses sin intereses</a>
+														<a href="#null" class="sugestWord pcve" value="0">18 meses sin intereses</a>
+														<a href="#null" class="sugestWord pcve" value="0">24 meses sin intereses</a>
+														<a href="#null" class="sugestWord pcve" value="0">2x1</a>
+														<a href="#null" class="sugestWord pcve" value="0">3x2</a>
+														<a href="#null" class="sugestWord pcve" value="0">gratis en la compra de otro</a>
+													</div>
+												</div>
+											</div>
+											<div class="col-10 padd-15px marg-L5pix bg-Gry2">
+												<label class="col-3"><span class="typ-Sc">*</span> Categoria</label> <select name="categorias" size="1" id="categorias" class="last medium">
+													<option value="000"> SELECIONAR UNA </option>
+													<option value="001"> Abarrotes </option>
+													<option value="002"> Automóviles y transportes </option>
+													<option value="003"> Bancos y Seguros </option>
+													<option value="004"> Blancos </option>
+													<option value="005"> Calzado </option>
+													<option value="006"> Cuidado e Higiene Personal </option>
+													<option value="007"> Deportes </option>
+													<option value="008"> Electronica y Video </option>
+													<option value="009"> Electrodomesticos </option>
+													<option value="010"> Farmacias </option>
+													<option value="011"> Ferretería </option>
+													<option value="012"> Fotografía y Computo </option>
+													<option value="013"> Hogar y decoración </option>
+													<option value="014"> Jartdineria </option>
+													<option value="015"> Joyería </option>
+													<option value="016"> Jugetería </option>
+													<option value="017"> Línea Blanca </option>
+													<option value="018"> Muebles </option>
+													<option value="019"> Oficina y papelería </option>
+													<option value="020"> Oportunidades </option>
+													<option value="021"> Óptica </option>
+													<option value="022"> Perecederos </option>
+													<option value="023"> Regalos </option>
+													<option value="024"> Restaurantes </option>
+													<option value="025"> Ropa </option>
+													<option value="026"> Servicios </option>
+													<option value="027"> Varios </option>
+													<option value="028"> Viajes </option>
+												</select>
+											</div>
+											<div class="col-10 padd-15px marg-L5pix Bg-Drks">
+												<h6 class="col-100PR typeMx typ-Tr">
+													Palabras Clave
+												</h6>
+												<div class="col-100PR first outlined Bg-Wh">
+													<label class="col-15">Agregar palabra</label> <input type="text" class="selectWord" name="DirCalle" value="" id="oferta" onchange="" />
+													<div class=" first marg-U5pix marg-L10pix">
+														<a href="#null" class=" button orange medium"><span>Agregar palabra <img src="../gfx/iconDown.png" width="15" height="20" /></span></a>
+													</div>
+													<p class="clear">
+														Palabras elegidas
+													</p><a href="#null" class="wordselected">palabra</a> <a href="#null" class="wordselected">supercalifragilistico</a> <a href="#null" class="wordselected">cali</a> <a href="#null" class="wordselected">califragil</a>
+												</div>
+												<div class=" col-100PR Bg-Sec outlined first">
+													<p class="marg-5px">
+														Sugerencias
+													</p>
+													<a href="#null" class="sugestWord">llanta</a>
+													<a href="#null" class="sugestWord">motocicleta</a>
+													<a href="#null" class="sugestWord">autoparte</a>
+													<a href="#null" class="sugestWord">automovil</a>
+													<a href="#null" class="sugestWord">electrodomesticos</a>
+													<a href="#null" class="sugestWord">autoestereo</a>
+												</div>
+												<div class="last Addvice">
+													Ayudan a mejorar los resultados de busqueda de tu oferta
+												</div>
+											</div>
+											<div class=" col-98PR marg-5px Bg-Drks padd-D15px first">
+												<div class="first marg-L10pix marg-U10pix">
+													<a href="#null" class="button orange medium marg-L50pix" id="cards" name="cards"></a>
+													<div class="col-10 padd-D5px alineCenter">
+														Tarjetas Paticipantes <img src="../gfx/iconDown2.png" width="15" height="20" alt="mas informacion" />
+													</div>
+												</div>
+												<div class="first marg-L15pix toggleZero marg-U5pix" id="allcards">
+													<div class="bg-Gry3 col-10">
+														<label class="col-3 marg-L10pix">Todas</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class=" bg-Gry1 col-5">
+														<label class="col-3 marg-L10pix">American Expres</label> <input name="selectAll3" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry2 col-5 marg-L10pix">
+														<label class="col-3 marg-L10pix">Visa</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry2 col-5">
+														<label class="col-3 marg-L10pix">Master Card</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry1 col-5 marg-L10pix">
+														<label class="col-3 marg-L10pix">Bancomer</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry1 col-5">
+														<label class="col-3 marg-L10pix">Banamex</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry2 col-5 marg-L10pix">
+														<label class="col-3 marg-L10pix">Santander</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry2 col-5">
+														<label class="col-3 marg-L10pix">HSBC</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry1 col-5 marg-L10pix">
+														<label class="col-3 marg-L10pix">IXE</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry1 col-5">
+														<label class="col-3 marg-L10pix">Banco del Bajio</label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="bg-Gry2 col-5 marg-L10pix">
+														<label class="col-3 marg-L10pix">ScotianBank<br /></label> <input name="selectAll2" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+												</div>
+											</div>
+											<div class=" col-98PR marg-5px Bg-Drks padd-D15px first">
+												<div class="first marg-L10pix marg-U10pix">
+													<a href="#null" class="button orange medium marg-L50pix" id="SUC" name="SUC"></a>
+													<div class="col-10 padd-D5px alineCenter">
+														Tu oferta está en las siguientes sucursales<img src="../gfx/iconDown2.png" width="15" height="20" alt="mas informacion" />
+													</div>
+												</div>
+												<div class="first marg-L10 pix toggleZero marg-U5pix" id="sucursales">
+													<div class="bg-Gry3 col-10 marg-L15pix">
+														<label class="col-5 marg-L10pix">Todas las sucursales</label> <input name="selectAll" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
+													</div>
+													<div class="col-10 marg-L15pix outlined" style="overflow-y:auto; overflow-x:hidden; height:200px;">
+														<div class="gridsubRow bg-Gry2">
+															<label class="col-5 marg-L10pix">Condesa</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry1">
+															<label class="col-5 marg-L10pix">Roma</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry2">
+															<label class="col-5 marg-L10pix">Polanco</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry1">
+															<label class="col-5 marg-L10pix">Narvarte</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry2">
+															<label class="col-5 marg-L10pix">Doctores</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry1">
+															<label class="col-5 marg-L10pix">Santa Maria la Rivera</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry2">
+															<label class="col-5 marg-L10pix">Springfield</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+														<div class="gridsubRow bg-Gry1">
+															<label class="col-5 marg-L10pix">Roma</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-4 last clear">
 											{{if .IdOft}}
-											<button type="submit" value="1" name="modificar" class="big red last"><span>Modificar</span></button>
-											<button type="reset" class="grey last hidden marg-U15pix" id="cancelbtn"><span>Restablecer</span></button>
+											<button type="submit" class="big red"><span>Guardar</span></button>
+											<button type="reset" class="grey hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
 											{{else}}
 											<button type="submit" class="big red last"><span>Guardar</span></button>
 											<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
 											{{end}}
 										</div>
-									</div>
-									<div class="col-9">
-										<div class="line ">
-											<label class="col-5" class="marg-D10pix">Entidad federativa<span class="typ-Sc"> * </span></label>
-											<select name="DirEnt" class="medium last" id="estado" onchange="activateCancel()">
-												{{range .Entidades}}
-												<option value="{{.CveEnt}}" {{if .Selected}}selected="{{.Selected}}"{{end}}>{{.Entidad}}</option>
-												{{end}}
-											</select>
+										<div class="first Addvice">
+											<span class="typ-Sc">*</span> Todos los campos marcados son obligatorios
 										</div>
-										<div class="line ">
-											<label class="col-5" class="marg-D10pix"> Delegación o Municipio<span class="typ-Sc"> * </span></label>   
-											<input type="hidden" name="DirMunSel" value="{{.DirMun}}" id="municipio" onchange="activateCancel()"/>
-											<div id="show_mun" align="right" class="medium">
-												<img src="../imgs/loader.gif" style="margin-top:8px; float:left" id="loader" alt="" />
-											</div>
-										</div>
-										<div class="line">
-											<label class="col-5"> Calle y número<span class="typ-Sc"> * </span></label>
-											<input type="text" class="validate[required] medium {{.ErrDirCalle}}" name="DirCalle" value="{{.DirCalle}}" id="calle" onchange="activateCancel()"/>
-										</div>
-										<div class="line">
-											<label class="col-5"> Colonia y/o localidad<span class="typ-Sc"> * </span></label>
-											<input type="text" class="validate[required] medium {{.ErrDirCol}}" name="DirCol" value="{{.DirCol}}" id="colonia"  onchange="activateCancel()"/>
-										</div>
-										<!--<div class="line">
-											<label class="col-5"> Código Postal<span class="typ-Sc"> * </span></label>
-											<input type="text" class="validate[required,minSize[5],maxSize[5],custom[onlyNumberSp]] medium {{.ErrDirCp}}" name="DirCp" value="{{.DirCp}}" id="cp" onchange="activateCancel()"/>
-										</div>-->
-										<input type="hidden" id="lat" name="Geo1" value="{{.Geo1}}" />
-										<input type="hidden" id="lng" name="Geo2" value="{{.Geo2}}" />
-										<!--button type="button" id="buscar" class="orange last big"><span>Buscar</span></button-->
-									</div>
-									<div class="col-18 marg-L10pix marg-D10pix">
-										<div class="col-8"> <span class="typ-Sc">* </span>Todos los campos marcados son obligatorios</div>
-									</div> 
-									{{else}}
-									{{end}}
-								</form>
+										{{end}}
+									</form>
+								</div>
+								<!-- Termina estructura de campos Oferta -->
 							</div>
 						</div>
 					</div>
@@ -210,33 +487,30 @@
 								<li><a href="/cta"><span><img src="../gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
 								<li><a href="/le?d=a"><span><img src="../gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
 								<li><a href="/le?d=s"><span><img src="../gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-								<li><a class="selected" href="/le?d=o" style="cursor:default;"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+                				<li><a href="/le?d=o" class="selected"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
 								<li><a href="/le?d=m"><span><img src="../gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
 								<li><a href="/avisos"><span><img src="../gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-								<li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Material gráfico</a></li>
+								<li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
 							</ul>
-							<div class="box1 marg-U15pix"><strong>Recuerda: el compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
+							<div class="box1 marg-U15pix"><strong>Recuerda: El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 						</div>
 						<div class="col-19 last">
 							<div class="titlecond">
 								<h2 class="first">Ofertas de</h2>
-								<a href="/sucursal?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR SUCURSAL</span></a>
-								<a href="/le?d=s" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
+								<a href="/of?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big red last"><span>AGREGAR OFERTA</span></a>
+								<a href="/le?d=o" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
 							</div>
 							<div class="box1"><h3 class="first">{{with .Empresa}}{{.Nombre}}{{end}}</h3></div>
-							{{range .Sucursal}}
+							{{range .Oferta}}
 							<div class="dataGrid">
 								<div class="gridRow">
-									<a href="/sucursal?IdOft={{.IdOft}}&IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a><a href="/sucdel?IdOft={{.IdOft}}&IdEmp={{.IdEmp}}&d=s" class="button orange marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta sucursal?')){return true;}else{return false;}"><span>ELIMINAR</span></a>
+									<a href="/of?IdOft={{.IdOft}}&IdEmp={{.IdEmp}}"><span class="icon icochevroright"></span>{{.Nombre}}</a><a href="/ofdel?IdOft={{.IdOft}}&IdEmp={{.IdEmp}}&d=s" class="button orange marg-10pix last customDialog" onclick="javascript:if(confirm('¿Desea continuar y dar de baja esta sucursal?')){return true;}else{return false;}"><span>ELIMINAR</span></a>
 								</div>
 							</div>
 							{{else}}
-								{{if .FormDataSuc}}
-								{{else}}
-								<div class="dataGrid">
-									<div class="warning" >No hay Ofertas</div>
-								</div>
-								{{end}}
+							<div class="dataGrid">
+								<div class="warning" >No hay ofertas</div>
+							</div>
 							{{end}}
 						</div>
 					</div>

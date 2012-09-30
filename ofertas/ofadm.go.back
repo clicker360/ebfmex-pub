@@ -94,7 +94,8 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 	if s, ok := sess.IsSess(w, r, c); ok {
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		oferta := model.GetOferta(c, r.FormValue("IdOft"))
+		oferta, err := model.GetOferta(c, r.FormValue("IdOft"))
+		model.Check(err)
 		var id string
 		if oferta.IdEmp != "none" {
 			id = oferta.IdEmp
@@ -103,7 +104,7 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 		}
 		if empresa := model.GetEmpresa(c, id); empresa != nil {
 			tc["Empresa"] = empresa
-			fd := ofToForm(*oferta)
+			fd := sucToForm(*oferta)
 			tc["FormDataOf"] = fd
 		}
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
@@ -121,7 +122,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		tc["Sess"] = s
 		fd, valid :=ofForm(w, r, true)
 		ofertamod := oftFill(fd)
-		oferta := model.GetOferta(c, ofertamod.IdOft)
+		oferta, _ := model.GetOferta(c, ofertamod.IdOft)
 		// TODO
 		// es preferible poner un regreso avisando que no existe la empresa
 		if valid {
@@ -130,7 +131,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 				// TODO
 				// es preferible poner un regreso avisando que no existe la empresa
 				model.Check(err)
-				fd = ofToForm(*o)
+				fd = sucToForm(*o)
 				fd.Ackn = "Ok";
 			}
 		}
@@ -241,7 +242,7 @@ func oftFill(fd FormDataOf) model.Oferta {
 	return s;
 }
 
-func ofToForm(e model.Oferta) FormDataOf {
+func sucToForm(e model.Oferta) FormDataOf {
 	fd := FormDataOf {
 		IdOft:			e.IdOft,
 		IdEmp:			e.IdEmp,

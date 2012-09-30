@@ -34,7 +34,6 @@ type OfertaSucursal struct {
 	lng         float64
 	Empresa     string
 	Oferta      string
-	Descripcion	string
 	Precio      string
 	Descuento   string
 	Url         string
@@ -63,22 +62,13 @@ func (r *Oferta) DelOferta(c appengine.Context) error {
 	return nil
 }
 
-func GetOferta(c appengine.Context, id string) *Oferta {
-	q := datastore.NewQuery("Oferta").Filter("IdOft =", id)
-	for i := q.Run(c); ; {
-		var e Oferta
-		_, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		// Regresa la oferta
-		return &e
+func GetOferta(c appengine.Context, id string) (*Oferta, error) {
+	oferta := &Oferta{ IdOft: id, }
+	err := datastore.Get(c, oferta.Key(c), oferta)
+	if err == datastore.ErrNoSuchEntity {
+		return nil, err
 	}
-	// Regresa un cascarón
-	var e Oferta
-	e.IdEmp = "none";
-	e.IdOft = "none";
-	return &e
+	return oferta, nil
 }
 
 func PutOferta(c appengine.Context, oferta *Oferta) (*Oferta, error) {
@@ -87,15 +77,6 @@ func PutOferta(c appengine.Context, oferta *Oferta) (*Oferta, error) {
 		return nil, err
 	}
 	return oferta, err
-}
-
-func NewOferta(c appengine.Context, oferta *Oferta) error {
-	oferta.IdOft = RandId(14)
-    _, err := datastore.Put(c, datastore.NewKey(c, "Oferta", oferta.IdOft, 0, nil), oferta)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func GetOfertaSucursales(c appengine.Context, idoft string) (*[]OfertaSucursal, error) {
