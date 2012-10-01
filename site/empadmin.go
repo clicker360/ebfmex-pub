@@ -163,8 +163,9 @@ func formEmp(c appengine.Context, w http.ResponseWriter, s *sess.Sess, e *model.
 }
 
 func listEmp(c appengine.Context, u *model.Cta) *[]model.Empresa {
-	q := datastore.NewQuery("Empresa").Ancestor(u.Key(c)).Limit(50)
-	empresas := make([]model.Empresa, 0, 50)
+	q := datastore.NewQuery("Empresa").Ancestor(u.Key(c))
+	n, _ := q.Count(c)
+	empresas := make([]model.Empresa, 0, n)
 	if _, err := q.GetAll(c, &empresas); err != nil {
 		return nil
 	}
