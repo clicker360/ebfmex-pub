@@ -9,13 +9,14 @@ import (
 type Oferta struct {
 	IdOft       string
 	IdEmp       string
-	IdCat       string
+	IdCat       int
 	Empresa		string
 	Oferta      string
 	Descripcion	string
 	Codigo      string
 	Precio      string
 	Descuento   string
+	Promocion	string
 	Enlinea     bool
 	Url         string
 	Tarjetas    string // Texto separado por comas
@@ -23,6 +24,15 @@ type Oferta struct {
 	FechaHoraPub    time.Time
 	StatusPub   bool
 	FechaHora   time.Time
+	Image	[]byte
+	ImageA	[]byte
+	ImageB	[]byte
+	Sizepx	int
+	Sizepy	int
+	SizeApx	int
+	SizeApy	int
+	SizeBpx	int
+	SizeBpy	int
 }
 
 type OfertaSucursal struct {
@@ -44,12 +54,34 @@ type OfertaSucursal struct {
 type Categoria struct {
 	IdCat       int
 	Categoria   string
+	Selected	string `datastore:"-"`
 }
 
 type OfertaPalabra struct {
 	IdSuc      string
 	IdOft      string
 	Palabra    string
+}
+
+type OfertaImage struct {
+	Data	[]byte
+	IdEmp	string
+	IdImg	string
+	Kind	string
+	Name	string
+	Desc	string
+	Sizepx	int
+	Sizepy	int
+	Url		string
+	Type	string
+	Sp1		string
+	Sp2		string
+	Sp3		string
+	Sp4		string
+	Np1		int
+	Np2		int
+	Np3		int
+	Np4		int
 }
 
 func (r *Oferta) Key(c appengine.Context) *datastore.Key {
@@ -78,15 +110,16 @@ func GetOferta(c appengine.Context, id string) *Oferta {
 	var e Oferta
 	e.IdEmp = "none";
 	e.IdOft = "none";
+	e.IdCat = 0;
 	return &e
 }
 
-func PutOferta(c appengine.Context, oferta *Oferta) (*Oferta, error) {
+func PutOferta(c appengine.Context, oferta *Oferta) error {
 	_, err := datastore.Put(c, oferta.Key(c), oferta)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return oferta, err
+	return nil
 }
 
 func NewOferta(c appengine.Context, oferta *Oferta) error {
@@ -130,7 +163,7 @@ func GetOfertaSucursalesGeo(c appengine.Context, lat string, lng string, rad str
 	return nil,nil
 }
 
-func GetCategoria(c appengine.Context, id string) *Categoria {
+func GetCategoria(c appengine.Context, id int) *Categoria {
 	q := datastore.NewQuery("Categoria").Filter("IdCat =", id).Limit(1)
 	for i := q.Run(c); ; {
 		var c Categoria

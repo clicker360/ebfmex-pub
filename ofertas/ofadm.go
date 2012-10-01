@@ -27,7 +27,9 @@ import (
 type FormDataOf struct {
 	IdOft			string
 	IdEmp			string
-	IdCat			string
+	IdCat			int
+	Categorias		*[]model.Categoria
+	Empresa			string
 	Oferta			string
 	ErrOferta		string
 	Descripcion		string
@@ -81,12 +83,28 @@ func OfShowList(w http.ResponseWriter, r *http.Request) {
 }
 
 func listOf(c appengine.Context, IdEmp string) *[]model.Oferta {
-	q := datastore.NewQuery("Oferta").Filter("IdEmp =", IdEmp).Limit(100)
-	ofertas := make([]model.Oferta, 0, 100)
+	q := datastore.NewQuery("Oferta").Filter("IdEmp =", IdEmp).Limit(500)
+	n, _ := q.Count(c)
+	ofertas := make([]model.Oferta, 0, n)
 	if _, err := q.GetAll(c, &ofertas); err != nil {
 		return nil
 	}
 	return &ofertas
+}
+
+func listCat(c appengine.Context, IdCat int) *[]model.Categoria {
+	q := datastore.NewQuery("Categoria")
+	n, _ := q.Count(c)
+	categorias := make([]model.Categoria, 0, n)
+	if _, err := q.GetAll(c, &categorias); err != nil {
+		return nil
+	}
+	for i, _ := range categorias {
+		if(IdCat == categorias[i].IdCat) {
+			categorias[i].Selected = `selected`
+		}
+	}
+	return &categorias
 }
 
 func OfShow(w http.ResponseWriter, r *http.Request) {
@@ -101,11 +119,14 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 		} else {
 			id = r.FormValue("IdEmp")
 		}
+		fd := ofToForm(*oferta)
 		if empresa := model.GetEmpresa(c, id); empresa != nil {
 			tc["Empresa"] = empresa
-			fd := ofToForm(*oferta)
-			tc["FormDataOf"] = fd
+			fd.IdEmp = empresa.IdEmp
+			oferta.Empresa = empresa.Nombre
 		}
+		fd.Categorias = listCat(c, oferta.IdCat);
+		tc["FormDataOf"] = fd
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
 		http.Redirect(w, r, "/registro", http.StatusFound)
@@ -122,18 +143,28 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		fd, valid :=ofForm(w, r, true)
 		ofertamod := oftFill(fd)
 		oferta := model.GetOferta(c, ofertamod.IdOft)
+		if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
+			tc["Empresa"] = empresa
+			fd.IdEmp = empresa.IdEmp
+			fd.Empresa = empresa.Nombre
+			ofertamod.Empresa = empresa.Nombre
+		}
 		// TODO
 		// es preferible poner un regreso avisando que no existe la empresa
 		if valid {
-			if oferta != nil {
-				o, err := model.PutOferta(c, &ofertamod)
-				// TODO
-				// es preferible poner un regreso avisando que no existe la empresa
+			if oferta.IdOft != "none" {
+				// Ya existe
+				err := model.PutOferta(c, &ofertamod)
 				model.Check(err)
-				fd = ofToForm(*o)
-				fd.Ackn = "Ok";
+			} else {
+				// nueva oferta
+				err := model.NewOferta(c, &ofertamod)
+				model.Check(err)
 			}
+			fd = ofToForm(ofertamod)
+			fd.Ackn = "Ok";
 		}
+		fd.Categorias = listCat(c, ofertamod.IdCat);
 		tc["FormDataOf"] = fd
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
@@ -155,13 +186,20 @@ func OfDel(w http.ResponseWriter, r *http.Request) {
 }
 
 func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bool){
-	fh, _ := time.Parse("2012-08-21 14:01:41", strings.TrimSpace(r.FormValue("FechaHoraPub")))
+	c := appengine.NewContext(r)
+	var fh time.Time
+	if r.FormValue("FechaHoraPub") != "" {
+		fh, _ = time.Parse("2012-08-21 14:01:41", strings.TrimSpace(r.FormValue("FechaHoraPub")))
+	} else {
+		fh = time.Now()
+	}
 	el, _ := strconv.ParseBool(strings.TrimSpace(r.FormValue("Enlinea")))
 	st, _ := strconv.ParseBool(strings.TrimSpace(r.FormValue("StatusPub")))
+	ic, _ := strconv.Atoi(strings.TrimSpace(r.FormValue("IdCat")))
 	fd := FormDataOf {
 		IdOft:			strings.TrimSpace(r.FormValue("IdOft")),
 		IdEmp:			strings.TrimSpace(r.FormValue("IdEmp")),
-		IdCat:			strings.TrimSpace(r.FormValue("IdCat")),
+		IdCat:			ic,
 		Oferta:			strings.TrimSpace(r.FormValue("Oferta")),
 		ErrOferta: "",
 		Descripcion:	strings.TrimSpace(r.FormValue("Descripcion")),
@@ -190,29 +228,24 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 			fd.ErrOferta = "invalid"
 			ef = true
 		}
-		if fd.Descripcion == "" || !model.ValidSimpleText.MatchString(fd.Descripcion) {
+		if fd.Descripcion != "" && !model.ValidSimpleText.MatchString(fd.Descripcion) && len(fd.Descripcion) > 200 {
 			fd.ErrDescripcion = "invalid"
 			ef = true
 		}
-		if fd.Codigo == "" || !model.ValidSimpleText.MatchString(fd.Codigo) {
-			fd.ErrCodigo = "invalid"
-			ef = true
-		}
-		if fd.Precio == "" || !model.ValidPrice.MatchString(fd.Precio) {
+		if fd.Precio != "" && !model.ValidPrice.MatchString(fd.Precio) {
 			fd.ErrPrecio = "invalid"
 			ef = true
 		}
-		if fd.Descuento == "" || !model.ValidPercent.MatchString(fd.Descuento) {
+		if fd.Descuento != "" && !model.ValidPercent.MatchString(fd.Descuento) {
 			fd.ErrDescuento = "invalid"
 			ef = true
 		}
-		/*
-		if fd.DirCp == "" || !model.ValidCP.MatchString(fd.DirCp) {
-			fd.ErrDirCp = "invalid"
+		if fd.Url != "" && !model.ValidUrl.MatchString(fd.Url) {
+			fd.ErrUrl = "invalid"
 			ef = true
 		}
-		*/
 
+		fd.Categorias = listCat(c, ic);
 		if ef {
 			return fd, false
 		}

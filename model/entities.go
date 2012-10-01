@@ -86,7 +86,7 @@ type Entidad struct {
 	Abrv		string
 	CveCap		string
 	Capital		string
-	Selected	string
+	Selected	string `datastore:"-"`
 }
 
 type Municipio struct {
@@ -97,13 +97,13 @@ type Municipio struct {
 	Municipio	string
 	CvaCab		string
 	Cabecera	string
-	Selected	string
+	Selected	string `datastore:"-"`
 }
 
 type Organismo struct {
 	Siglas		string
 	Nombre		string
-	Selected	string
+	Selected	string `datastore:"-"`
 }
 
 type Image struct {
