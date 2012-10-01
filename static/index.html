@@ -22,28 +22,33 @@
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
+	var casillero = new Array();
 	for (i=1; i<=51; i++){
-	var numRam  = Math.round(Math.random()*(267));
-	var img = "<img  src = 'imgs/logos/logo"+ numRam +".png' />" 
-                             $("#logos").append(img);
-			if(i==51){scrolea();}
+		var numRam  = Math.round(Math.random()*(267));
+		if(!casillero[numRam] || numRam != 0) {
+			casillero[numRam]=numRam;
+			var img = "<img  src = 'imgs/logos/logo"+ casillero[numRam] +".png' />" 
+			$("#logos").append(img);
+		} else {
+			i--;
+		}
 	}
+	scrolea();
 });
 function scrolea(){
 	$('#logos').animate({
-	top: -1000,
-  }, 18500, function() {
-upscroll();
-  });
-	
-	}
+		top: -1000,
+	}, 18500, function() {
+		upscroll();
+	});
+}
 function upscroll(){
 	$('#logos').animate({
-	top: 0,
-  }, 18500, function() {
- scrolea();
-  });
-	}
+		top: 0,
+	}, 18500, function() {
+		scrolea();
+	});
+}
 </script>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];

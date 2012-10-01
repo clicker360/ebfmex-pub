@@ -62,8 +62,9 @@ func ShowListSuc(w http.ResponseWriter, r *http.Request) {
 }
 
 func listSuc(c appengine.Context, IdEmp string) *[]model.Sucursal {
-	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", IdEmp).Limit(100)
-	sucursales := make([]model.Sucursal, 0, 100)
+	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", IdEmp)
+	n, _ := q.Count(c)
+	sucursales := make([]model.Sucursal, 0, n)
 	if _, err := q.GetAll(c, &sucursales); err != nil {
 		return nil
 	}
