@@ -23,12 +23,18 @@
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
-	for (i=1; i<=45; i++){
-	var numRam  = Math.round(Math.random()*(164));
-	var img = "<img  src = 'imgs/logos/logo"+ numRam +".png' />" 
-                             $("#logos").append(img);
-			if(i==44){scrolea();}
+	var casillero = new Array();
+	for (i=1; i<=51; i++){
+		var numRam  = Math.round(Math.random()*(267));
+		if(!casillero[numRam] || numRam != 0) {
+			casillero[numRam]=numRam;
+			var img = "<img  src = 'imgs/logos/logo"+ casillero[numRam] +".png' />" 
+			$("#logos").append(img);
+		} else {
+			i--;
+		}
 	}
+	scrolea();
 });
 function scrolea(){
 	$('#scrolllog').scrollTo( '100%', 40000 );
@@ -50,7 +56,7 @@ function scrolea(){
       <li><a href="elbunfin-que-es.html">¿Qué es <br />
 El Buen Fin?</a></li>
       <li> <a href="elbunfin-organizadores.html"><span class="Dsblock marg-T10px">Organizadores</span></a></li>
-                <li> <a href="elbunfin-participantes.html"><span class="Dsblock marg-T10px">Participantes</span></a></li>
+                 <li> <a href="elbunfin-participantes.html">Empresas participantes</a></li>
     </ul>
     </div>
   <!--termina header-->
