@@ -37,8 +37,19 @@ $(document).ready(function(){
 	scrolea();
 });
 function scrolea(){
-	$('#scrolllog').scrollTo( '100%', 40000 );
-	}
+	$('#logos').animate({
+		top: -1000,
+	}, 18500, function() {
+		upscroll();
+	});
+}
+function upscroll(){
+	$('#logos').animate({
+		top: 0,
+	}, 18500, function() {
+		scrolea();
+	});
+}
 </script>
 </head>
 
