@@ -65,7 +65,19 @@ a:hover{
 a.lnk-sec {
 	color: #FF4D0D;
 }
-
+/**btnInicio**/
+a.btnInicio{
+	background-image: url(../gfx/btn-sesion.png);
+	background-repeat: no-repeat;
+	background-position: top;
+	display: block;
+	float: left;
+	height: 72px;
+	width: 213px;
+}
+a.btnInicio:hover{
+	background-position: bottom;
+}
 /***outlines***/
 .lineBotm {
 	border-bottom-width: 1px;

@@ -25,10 +25,10 @@
 $(document).ready(function(){
 	var casillero = new Array();
 	for (i=1; i<=51; i++){
-		var numRam  = Math.round(Math.random()*(267));
+		var numRam  = Math.round(Math.random()*(299));
 		if(!casillero[numRam] && numRam != 0) {
 			casillero[numRam]=numRam;
-			var img = "<img  src = 'imgs/logos/logo"+ casillero[numRam] +".png' />" 
+			var img = "<img  src = 'imgs/logos/logo"+ casillero[numRam] +".jpg' />" 
 			$("#logos").append(img);
 		} else {
 			i--;
