@@ -7,9 +7,9 @@ import (
 	"math/rand"
     "net/http"
 	"sortutil"
+	"strings"
     "model"
 	"time"
-    "fmt"
 )
 
 type cimage struct {
@@ -49,24 +49,21 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
-//const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
-
 func directorioLogos(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 
 	/*
 		Loop para recorrer todas las empresas 
 	*/
-	prefix := r.FormValue("prefix")
-	date := r.FormValue("bydate")
-	name := r.FormValue("showname")
-	all := r.FormValue("all")
-	//o, _ := strconv.Atoi(r.FormValue("o"))
-    //q := datastore.NewQuery("Cta").Order("FechaHora").Limit(n).Offset(o)
+	prefixu := strings.ToUpper(r.FormValue("prefix"))
+	//prefixl := strings.ToLower(r.FormValue("prefix"))
+	//date := r.FormValue("bydate")
+	ultimos := r.FormValue("ultimos")
     q := datastore.NewQuery("Empresa")
-	if all != "1" {
-		q = q.Filter("Nombre >=", prefix).Filter("Nombre <", prefix+"\ufffd")
+	if ultimos != "1" {
+		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd")
+	} else {
+		q = q.Filter("FechaHora >=", time.Now().AddDate(0,0,-2))
 	}
 	em, _ := q.Count(c)
 	empresas := make([]model.Empresa, 0, em)
@@ -77,9 +74,11 @@ func directorioLogos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sortutil.AscByField(empresas, "Nombre")
+	/*
 	if date != "" {
 		sortutil.AscByField(empresas, "FechaHora")
 	}
+	*/
 	for k, _ := range empresas {
 		imgq := datastore.NewQuery("EmpLogo").Filter("IdEmp =", empresas[k].IdEmp)
 		for imgcur := imgq.Run(c); ; {
@@ -88,15 +87,18 @@ func directorioLogos(w http.ResponseWriter, r *http.Request) {
 			if err == datastore.Done  {
 				break
 			}
-			var val string
-			if name!="" {
-				val = empresas[k].Nombre
-			}
+			tpl, _ := template.New("Carr").Parse(cajaTpl)
+			var ti cimage
 			if(img.Data != nil) {
-				fmt.Fprintf(w, "<div class=\"imgCont\"><a href=\"/spic?IdEmp=%s\"><img src=\"/spic?IdEmp=%s\" />%s</a></div>\n", empresas[k].IdEmp, empresas[k].IdEmp, val)
+				ti.IdEmp = empresas[k].IdEmp
+				ti.Name = empresas[k].Nombre
+				tpl.Execute(w, ti)
 			}
 		}
 
 	}
 }
+
+const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
+//const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
 

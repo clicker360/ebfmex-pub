@@ -226,3 +226,19 @@ width:145px;
     
 .pagination-H ul li a.border-none{
     border:none 0px;}
+	
+.cajaBlanca {
+	background-image:url(cajablanca.png);
+	width:110px;
+	height:94px;
+	float:left;
+	margin:3px;
+}
+.centerimg {
+	background-position:center center;
+	background-repeat:no-repeat;
+	width:100px;
+	height:82px;
+	margin:6px;
+	overflow:hidden;
+}
