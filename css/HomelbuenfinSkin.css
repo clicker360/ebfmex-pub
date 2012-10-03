@@ -185,3 +185,19 @@ width:145px;
 .imgpad3px img{ padding:2px;}
 #logos{ height:1690px; float:left; position:relative; width:350px;}
 .twitter{ height:280px; overflow:hidden; z-index:0;}
+
+.cajaBlanca {
+	background-image:url(../gfx/cajablanca.png);
+	width:110px;
+	height:94px;
+	float:left;
+	margin:3px;
+}
+.centerimg {
+	background-position:center center;
+	background-repeat:no-repeat;
+	width:100px;
+	height:82px;
+	margin:6px;
+	overflow:hidden;
+}

@@ -43,6 +43,9 @@ func carr(w http.ResponseWriter, r *http.Request) {
 		//b, _ := json.Marshal(ti)
 		//w.Write(b)
 		tpl.Execute(w, ti)
+		if i > 49  {
+			break
+		}
 	}
 }
 

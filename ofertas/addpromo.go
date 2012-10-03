@@ -10,7 +10,7 @@ import (
 type Promo struct{
 	Token	string `json:"token"`
 	Id		string `json:"id"`
-	Tipo  	string `json:"tipo"`
+	Tipo	string `json:"tipo"`
 	Status  string `json:"status"`
 }
 

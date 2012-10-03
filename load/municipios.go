@@ -104,7 +104,7 @@ func GetLocalidad(c appengine.Context, cveloc string) *Localidad {
 func (e *Entidad) GetMunicipios(c appengine.Context) (*[]Municipio, error) {
 	q := datastore.NewQuery("Municipio").Ancestor(e.Key(c))
 	nm, _ := q.Count(c)
-	municipios := make([]Municipio, nm)
+	municipios := make([]Municipio, 0, nm)
 	if _, err := q.GetAll(c, &municipios); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, err

@@ -30,7 +30,7 @@ func nmail(w http.ResponseWriter, r *http.Request) {
 		_, err := datastore.Put(c, cta.Key(c), &cta)
 
 		if err != nil {
-        	}
+	}
 
 		fmt.Fprintf(w, "Email: %s - %s\n", cta.Email, emailL)
 	}

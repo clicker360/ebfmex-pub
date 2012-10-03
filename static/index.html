@@ -22,6 +22,8 @@
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
+	getcarrousel();
+	/*
 	var logos1 = $('#logo1');
 	var logos2 = $('#logo2');
 	var casillero = new Array();
@@ -40,18 +42,25 @@ $(document).ready(function(){
 			i--;
 		}
 	}
+	*/
 	scrolea();
 });
 function scrolea(){
 	$('#logos').animate({
 		top: -825,
-	}, 18500, 'linear', function() {
+	}, 45000, 'linear', function() {
 		$('#logos').append($('#logos').children("div:first").clone());
 		$('#logos').children("div:first").remove();
 		$('#logos').css('top',20);
 		scrolea();
 	});
 }
+function getcarrousel() {
+	$.get("/carr", "", function(response){
+		$('#logo1').html(response);
+	});
+}
+
 </script>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
