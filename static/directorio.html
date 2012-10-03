@@ -24,6 +24,8 @@
 $(document).ready(function(){
 	getultimos();
 	$('.letter').click(function(e){
+		$('.letter').removeClass('selected');
+		$(this).addClass('selected');
 		var letter = $(this).attr('id');
 		if(letter == "ultimos") {
 			getultimos();
@@ -66,7 +68,7 @@ function getultimos() {
       <h1 class="typeTle">Directorio de empresas participantes</h1>
       <div class="pagination-H">
         <ul id="letters">
-          <li><a class="letter" href="#" id="A">A </a></li>
+          <li><a class="letter " href="#" id="A">A </a></li>
           <li><a class="letter" href="#" id="B">B</a></li>
           <li><a class="letter" href="#" id="C">C</a></li>
           <li><a class="letter" href="#" id="D">D</a></li>
@@ -92,7 +94,7 @@ function getultimos() {
           <li><a class="letter" href="#" id="X">X</a></li>
           <li><a class="letter" href="#" id="Y">Y</a></li>
           <li><a class="letter" href="#" id="Z">Z</a></li>
-          <li><a class="letter" href="#" id="ultimos">RECIENTES</a></li>
+          <li><a class="letter selected" href="#" id="ultimos">RECIENTES</a></li>
         </ul>
         </div>
       <!--Columna Izquierda-->

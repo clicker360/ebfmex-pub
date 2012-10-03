@@ -23,31 +23,22 @@
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
-	var casillero = new Array();
-	for (i=1; i<=51; i++){
-		var numRam  = Math.round(Math.random()*(299));
-		if(!casillero[numRam] && numRam != 0) {
-			casillero[numRam]=numRam;
-			var img = "<img  src = 'imgs/logos/logo"+ casillero[numRam] +".jpg' />" 
-			$("#logos").append(img);
-		} else {
-			i--;
-		}
-	}
+	getcarrousel();
 	scrolea();
 });
 function scrolea(){
 	$('#logos').animate({
-		top: -1000,
-	}, 18500, function() {
-		upscroll();
+		top: -825,
+	}, 45000, 'linear', function() {
+		$('#logos').append($('#logos').children("div:first").clone());
+		$('#logos').children("div:first").remove();
+		$('#logos').css('top',20);
+		scrolea();
 	});
 }
-function upscroll(){
-	$('#logos').animate({
-		top: 0,
-	}, 18500, function() {
-		scrolea();
+function getcarrousel() {
+	$.get("/carr", "", function(response){
+		$('#logo1').html(response);
 	});
 }
 </script>
