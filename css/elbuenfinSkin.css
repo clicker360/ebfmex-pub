@@ -2491,3 +2491,19 @@ a.eliminate:hover{ background-position:bottom;}
 
 .ui-state-active a{ color:#000;}
 .toggleZero{ display: none;}
+#slideForm{float:left; width:2000px; position:relative; right:0;}
+a.imageUpload{
+	display: block;
+	float: left;
+	background-image: url(../gfx/uploadImage.png);
+	width: 94px;
+	height: 25px;
+	position:relative;
+	bottom: -45px;
+	right:5px;
+	z-index: 500;
+	float: right;
+	background-repeat: no-repeat;
+	background-position: top;
+}
+a.imageUpload:hover{ background-position:bottom;}
