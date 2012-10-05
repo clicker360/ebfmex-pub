@@ -15,6 +15,7 @@ import (
 type response struct {
 	IdEmp	string `json:"id"`
 	Name	string `json:"name"`
+	Num		int `json:"num"`
 }
 
 func init() {
@@ -124,8 +125,16 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 
 	sortutil.AscByField(empresas, "Nombre")
 	var ti response
+	var tictac int
+	tictac = 1
 	for k, _ := range empresas {
+		if tictac != 1 {
+			tictac = 1
+		} else {
+			tictac = 2
+		}
 		tpl, _ := template.New("Carr").Parse(empresaTpl)
+		ti.Num = tictac
 		ti.IdEmp = empresas[k].IdEmp
 		ti.Name = empresas[k].Nombre
 		tpl.Execute(w, ti)
@@ -133,6 +142,6 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 }
 
 const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
-const empresaTpl = `<div class="gridsubRow bg-Gry2">{{.Name}}</div>`
+const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}">{{.Name}}</div>`
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
 
