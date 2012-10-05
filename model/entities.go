@@ -188,7 +188,15 @@ func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 }
 
 func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
-	_ = DelImg(c, "EmpLogo", id)
+	if err := DelImg(c, "EmpLogo", id); err != nil {
+		return err
+	}
+	if err := DelImg(c, "ShortLogo", id); err != nil {
+		return err
+	}
+	if err := DelSucs(c, id); err != nil {
+		return err
+	}
     if err := datastore.Delete(c, datastore.NewKey(c, "Empresa", id, 0, r.Key(c))); err != nil {
 		return err
 	}
@@ -207,6 +215,16 @@ func GetEmpresa(c appengine.Context, id string) (*Empresa) {
 		return &e
 	}
 	return nil
+}
+
+func GetEmpSucursales(c appengine.Context, IdEmp string) *[]Sucursal {
+	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", IdEmp)
+	n, _ := q.Count(c)
+	sucursales := make([]Sucursal, 0, n)
+	if _, err := q.GetAll(c, &sucursales); err != nil {
+		return nil
+	}
+	return &sucursales
 }
 
 func (e *Empresa) Key(c appengine.Context) *datastore.Key {
@@ -255,6 +273,21 @@ func GetSuc(c appengine.Context, id string) (*Sucursal) {
 
 func DelSuc(c appengine.Context, id string) error {
 	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
+	for i := q.Run(c); ; {
+		var e Sucursal
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func DelSucs(c appengine.Context, idEmp string) error {
+	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", idEmp)
 	for i := q.Run(c); ; {
 		var e Sucursal
 		key, err := i.Next(&e)

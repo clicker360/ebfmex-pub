@@ -199,8 +199,8 @@ width:145px;
 .pagination-H{
     float:left;
     width:bold;
-	width:65px;
-	position:fixed;
+	width:98%;
+	/*position:fixed;*/
 	margin-top:0.5%;}
     
 .pagination-H ul{
@@ -219,9 +219,9 @@ width:145px;
 .pagination-H ul li a{
 	color: #00230b;
 	font-size: 13px;
-	padding: 2px 0px 2px 0px;
-	width: 40px;
-	height: 15px;
+	padding: 4px 6px 5px 6px;
+	margin:1px;
+	height: 16px;
 	display: block;
 	font-weight: bold;
 	text-align: center;

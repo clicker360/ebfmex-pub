@@ -35,12 +35,12 @@ $(document).ready(function(){
 	});
 });
 function getletter(letter) {
-	$.get("/dirlogos", { prefix:""+letter+"" }, function(response){
+	$.get("/dirtexto", { prefix:""+letter+"" }, function(response){
 		$('#contenedor').html(response);
 	});
 }
 function getultimos() {
-	$.get("/dirlogos", { ultimos:1 }, function(response){
+	$.get("/dirtexto", { ultimos:1 }, function(response){
 		$('#contenedor').html(response);
 	});
 }
@@ -96,86 +96,17 @@ function getultimos() {
               <li><a class="letter" href="#" id="X">X</a></li>
               <li><a class="letter" href="#" id="Y">Y</a></li>
               <li><a class="letter" href="#" id="Z">Z</a></li>
+              <li><a class="letter" href="#" id="ultimos">Recientes</a></li>
             </ul>
           </div>
           
           <!--Columna Izquierda-->
-          <div class="col-22 last marg-R20px">
-          <div class=" gridsubRow marg-L10 pix bg-Gry3" > A</div>
-          <div class=" box1  marg-L10 pix" >
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            </div>
-          <div class=" gridsubRow marg-L10 pix bg-Gry3" > B</div>
-          <div class=" box1  marg-L10 pix" >
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            </div>
-       
-        <div class=" gridsubRow marg-L10 pix bg-Gry3" >C</div>
-          <div class=" box1  marg-L10 pix" >
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            </div>
-   
-        <div class="gridsubRow marg-L10 pix bg-Gry3" >D</div>
-          <div class=" box1  marg-L10 pix" >
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            <div class="gridsubRow bg-Gry2"> Apple computer Incoporated</div>
-            <div class="gridsubRow bg-Gry1"> Union de trabajodres en lucha del software libre</div>
-            <div class="gridsubRow bg-Gry2">the homebrew computer club</div>
-            <div class="gridsubRow bg-Gry1">Stallman free ideas</div>
-            <div class="gridsubRow bg-Gry2"> Samsung &amp; coping</div>
-            <div class="gridsubRow bg-Gry1"> Chencho y su organo melodico</div>
-            <div class="gridsubRow bg-Gry2"> Patito Incorporated</div>
-            <div class="gridsubRow bg-Gry1">Doña cuca petacas para todos</div>
-            </div>
+       <div class="col-24 last">
+          <div class=" gridsubRow marg-L10 pix bg-Gry3" ></div>
+			<div class=" box1  marg-L10 pix" id="contenedor"></div>
         </div>
       </div>
-      <div class="all-img-5px col-24" id="contenedor">
-            
-          </div>
+      <!--div class="all-img-5px col-24" id="contenedor"></div-->
       <!--Termina Contenido--> 
     </div>
   </div>

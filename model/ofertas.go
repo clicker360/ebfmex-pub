@@ -40,15 +40,17 @@ type OfertaSucursal struct {
 	IdEmp       string
 	IdSuc       string
 	Sucursal    string
-	lat         float64
-	lng         float64
+	Lat         float64
+	Lng         float64
 	Empresa     string
 	Oferta      string
 	Descripcion	string
+	Promocion	string
 	Precio      string
 	Descuento   string
 	Url         string
 	StatusPub   bool
+	FechaHora	time.Time
 }
 
 type Categoria struct {
@@ -58,9 +60,9 @@ type Categoria struct {
 }
 
 type OfertaPalabra struct {
-	IdSuc      string
 	IdOft      string
 	Palabra    string
+	FechaHora	time.Time
 }
 
 type OfertaImage struct {
@@ -82,6 +84,7 @@ type OfertaImage struct {
 	Np2		int
 	Np3		int
 	Np4		int
+	FechaHora	time.Time
 }
 
 func (r *Oferta) Key(c appengine.Context) *datastore.Key {
@@ -143,6 +146,18 @@ func GetOfertaSucursales(c appengine.Context, idoft string) (*[]OfertaSucursal, 
 	return &ofersuc, nil
 }
 
+func GetOfertaPalabras(c appengine.Context, idoft string) (*[]OfertaPalabra, error) {
+	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", idoft)
+	n, _ := q.Count(c)
+	oferword := make([]OfertaPalabra, n)
+	if _, err := q.GetAll(c, &oferword); err != nil {
+		if err == datastore.ErrNoSuchEntity {
+			return nil, err
+		}
+	}
+	return &oferword, nil
+}
+
 func GetOfertaSucursalesGeo(c appengine.Context, lat string, lng string, rad string) (*Sucursal, error) {
 	/*
 	q := datastore.NewQuery("Sucursal")
@@ -188,7 +203,7 @@ func (r *Oferta) PutOfertaSucursal(c appengine.Context, ofsuc *OfertaSucursal) e
 }
 
 /*
-	Llenar primero struct de OfertaSucursal y luego guardar
+	Llenar primero struct de OfertaPalabra y luego guardar
 */
 func (r *Oferta) PutOfertaPalabra(c appengine.Context, op *OfertaPalabra) error {
 	_, err := datastore.Put(c, datastore.NewKey(c, "OfertaPalabra", "", 0, r.Key(c)), op)
@@ -214,11 +229,28 @@ func DelOferta(c appengine.Context, id string) error {
 }
 
 /*
-	Las sucursales asociadas a una oferta o se crean todas 
-	juntas o se borran todas juntas
+	Método para borrar todas las sucursales de una oferta
 */
 func DelOfertaSucursales(c appengine.Context, id string) error {
 	q := datastore.NewQuery("OfertaSucursal").Filter("IdOft =", id)
+	for i := q.Run(c); ; {
+		var e OfertaSucursal
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+/*
+	Método para borrar todas las sucursales de una oferta
+*/
+func DelOfertaSucursal(c appengine.Context, idoft string, idsuc string) error {
+	q := datastore.NewQuery("OfertaSucursal").Filter("IdSuc =", idsuc).Filter("IdOft =", idoft)
 	for i := q.Run(c); ; {
 		var e OfertaSucursal
 		key, err := i.Next(&e)

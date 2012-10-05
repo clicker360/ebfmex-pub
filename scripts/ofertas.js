@@ -41,10 +41,15 @@ $(document).ready(function() {
 			$pic.attr('src', "imgs/imageDefault.jpg");
 		}
 	}
-	updateimg();
-	fillpromo();
+
+	/* solo se actualizan estos datos si hay id de oferta */
+	if(idoft != 'none') {
+		updateimg();
+		fillpromo();
+		fillsucursales(idoft, idemp);
+	}
+
 	(function() {
-		
 	var bar = $('.bar');
 	var percent = $('.percent');
 	var status = $('#status');
@@ -68,12 +73,14 @@ $(document).ready(function() {
 	}); 
 
 	})();       
+
 	$('textarea[maxlength]').live('keyup blur', function() {
 		var maxlength = $(this).attr('maxlength'); var val = $(this).val();
 		if (val.length > maxlength) {
 			$(this).val(val.slice(0, maxlength));
 		}
 	});
+
 	$('.promo').click(function(e){
 		var token = $(this);
 		var stoppick = false;
@@ -168,9 +175,7 @@ function fillpromo() {
 	.complete(function(){});
 }
 function filltc() {
-	var tc=$.get("/tarjetasxo", { id: "" + idoft + ""}, function(data) {
-		data=$.parseJSON(data);
-		alert(data.desc);
+	$.get("/tarjetasxo", { id: "" + idoft + ""}, function(data) {
 		$.each(data, function(i,item){
 			alert(item);
 		});
@@ -179,6 +184,27 @@ function filltc() {
 	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	.complete(function(){});
 }	
+function fillsucursales(idoft, idemp) {
+	$.get("/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""}, function(data) {
+		$.each(data, function(i,item){
+			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-5px\" id=\""+item.idsuc+"\" onclick=\"setofsuc('"+item.idsuc+"', '"+idoft+"', '"+idemp+"', '"+this+"');\"/></div>";
+			$('#listasuc').append(div);
+			if(item.idoft!="") {
+				chksuc.attr('checked', true)
+			} else {
+				chksuc.attr('checked', false)
+			}
+		});
+	})
+	.success(function(){})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	.complete(function(){});
+}
+function setofsuc(idsuc, idoft, idemp, caller) {
+	$.get("/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + idsuc + ""}, function(data) { })
+	.success(function(){})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+}
 function activateCancel(){ $("#cancelbtn").addClass("show") }
 function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 

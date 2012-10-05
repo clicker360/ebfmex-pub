@@ -20,6 +20,7 @@
 	</script>
 	<script type="text/javascript" charset="utf-8">
 		 var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}"; 
+		 var idemp = "{{with .Empresa}}{{.IdEmp}}{{end}}"; 
 		$(document).ready(function() { $("#urlimg").attr('href', "{{with .FormDataOf}}{{.Url|js}}{{end}}");});
 	</script>
 	<style type="text/css">
@@ -272,31 +273,8 @@
 													<div class="bg-Gry3 col-10 marg-L15pix">
 														<label class="col-5 marg-L10pix">Todas las sucursales</label> <input name="selectAll" type="checkbox" class="last marg-R15pix marg-U5pix" value="" />
 													</div>
-													<div class="col-10 marg-L15pix outlined" style="overflow-y:auto; overflow-x:hidden; height:200px;">
-														<div class="gridsubRow bg-Gry2">
-															<label class="col-5 marg-L10pix">Condesa</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry1">
-															<label class="col-5 marg-L10pix">Roma</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry2">
-															<label class="col-5 marg-L10pix">Polanco</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry1">
-															<label class="col-5 marg-L10pix">Narvarte</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry2">
-															<label class="col-5 marg-L10pix">Doctores</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry1">
-															<label class="col-5 marg-L10pix">Santa Maria la Rivera</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry2">
-															<label class="col-5 marg-L10pix">Springfield</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
-														<div class="gridsubRow bg-Gry1">
-															<label class="col-5 marg-L10pix">Roma</label> <input name="selectAll" type="checkbox" class="last marg-5px" value="" />
-														</div>
+													<div class="col-10 marg-L15pix outlined" style="overflow-y:auto; overflow-x:hidden; height:200px;" id="listasuc">
+														<!-- relleno ajax -->
 													</div>
 												</div>
 											</div>

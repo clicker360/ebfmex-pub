@@ -59,7 +59,6 @@ type FormDataOf struct {
 func init() {
 	http.HandleFunc("/of", model.ErrorHandler(OfShow))
 	http.HandleFunc("/ofs", model.ErrorHandler(OfShowList))
-	//http.HandleFunc("/ofimgup", model.ErrorHandler(ImgOferta))
 	http.HandleFunc("/ofmod", model.ErrorHandler(OfMod))
 	http.HandleFunc("/ofdel", model.ErrorHandler(OfDel))
 	//http.HandleFunc("/ofsucadd", model.ErrorHandler(OfAddSucursal))
@@ -148,6 +147,15 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			fd.IdEmp = empresa.IdEmp
 			fd.Empresa = empresa.Nombre
 			ofertamod.Empresa = empresa.Nombre
+			ofertamod.Image = oferta.Image
+			ofertamod.ImageA = oferta.ImageA
+			ofertamod.ImageB = oferta.ImageB
+			ofertamod.Sizepx = oferta.Sizepx
+			ofertamod.Sizepy = oferta.Sizepy
+			ofertamod.SizeApx = oferta.SizeApx
+			ofertamod.SizeApy = oferta.SizeApy
+			ofertamod.SizeBpx = oferta.SizeBpx
+			ofertamod.SizeBpy = oferta.SizeBpy
 		}
 		// TODO
 		// es preferible poner un regreso avisando que no existe la empresa
@@ -164,6 +172,16 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			fd = ofToForm(ofertamod)
 			fd.Ackn = "Ok";
 		}
+		/*
+			Relaciones oferta-sucursal
+		emsucs := model.GetEmpSucursales(c, ofertamod.IdEmp)
+		for i,es:= range *emsucs {
+			if(r.FormValue(es.IdSuc) == es.IdSuc) {
+				//Añade relación oferta-sucursal
+			}
+		}
+		*/
+
 		fd.Categorias = listCat(c, ofertamod.IdCat);
 		tc["FormDataOf"] = fd
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
