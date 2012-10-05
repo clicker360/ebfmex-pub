@@ -27,6 +27,7 @@ $(document).ready(function(){
 		$('.letter').removeClass('selected');
 		$(this).addClass('selected');
 		var letter = $(this).attr('id');
+		$('#theletter').text( $(this).attr('id') ) 
 		if(letter == "ultimos") {
 			getultimos();
 		} else {
@@ -61,7 +62,7 @@ function getultimos() {
             El Buen Fin?</a></li>
           <li> <a href="elbuenfin-organizadores.html">Organizadores</a></li>
           <li> <a href="#">Empresas participantes</a></li>
-          <li> <a href="elbuenfin-comercio-en-linea.html">El Buen Fin en líena</a></li>
+          <li> <a href="elbuenfin-comercio-en-linea.html">El Buen Fin en Línea</a></li>
         </ul>
       </div>
       <!--termina header-->
@@ -96,13 +97,13 @@ function getultimos() {
               <li><a class="letter" href="#" id="X">X</a></li>
               <li><a class="letter" href="#" id="Y">Y</a></li>
               <li><a class="letter" href="#" id="Z">Z</a></li>
-              <li><a class="letter" href="#" id="ultimos">Recientes</a></li>
+              <li><a class="letter selected" href="#" id="ultimos">Recientes</a></li>
             </ul>
           </div>
           
           <!--Columna Izquierda-->
        <div class="col-24 last">
-          <div class=" gridsubRow marg-L10 pix bg-Gry3" ></div>
+          <div class=" gridsubRow marg-L10 pix bg-Gry3"  id="theletter">Recientes</div>
 			<div class=" box1  marg-L10 pix" id="contenedor"></div>
         </div>
       </div>
