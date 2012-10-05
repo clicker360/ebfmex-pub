@@ -15,6 +15,18 @@ $(document).ready(function() {
 	$("#cards").click(function () { $("#allcards").toggle("slow"); });  
 	$("#ONL").click(function () { $("#onlineURL").toggle("slow"); });  
 	$("#SUC").click(function () { $("#sucursales").toggle("slow"); });  
+	
+/*	$('#saveproges').click(function() {
+  $('#slideForm').animate({
+    left: -760
+  }, 1000, function() {
+     Animation complete.
+  });
+});*/
+	
+	
+	
+	
 	$("#enviar").validationEngine({promptPosition : "topRight", scroll: false});
 	$("#enviardata").validationEngine({promptPosition : "topRight", scroll: false});
 	var $pic = $("#pic");

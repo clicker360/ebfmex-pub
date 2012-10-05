@@ -60,6 +60,13 @@ b, strong{ sans-serif; font-weight:600;}
 .Bg-Wh{ background-color:#FFF;}
 .Bg-bluTw{ background-color:#1aaad3;}
 .Bg-bluFb{ background-color:#3a5898;}
+.bg-Gry1{ background-image:url(../gfx/greys.jpg); background-repeat:repeat-x; background-position:top;}
+.bg-Gry2{background-image:url(../gfx/greys.jpg); background-repeat:repeat-x; background-position:bottom;}
+.bg-Gry3{
+	background-image: url(../gfx/grey3.jpg);
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
 
 /**LINK**/
 a{
@@ -151,24 +158,27 @@ a.lnk-sec {
 	margin-bottom:0px;
 	position:relative;
 }
-.M-menu ul{ float:right; width:440px; padding:0px; margin:0px; margin-top:50px; list-style:none; height:70px; display:block;}
+.M-menu ul{ float:right; width:580px; padding:0px; margin:0px; margin-top:50px; list-style:none; height:70px; display:table-row;}
 .M-menu ul li{ float:left;
 width:145px;
 	height:69px;
-	display:block;
+	display: table-column;
 	}
 .M-menu ul li a{
-	display: block;
+	display: table-cell;
 	width: 145px;
-	height: 52px;
-	padding-top: 18px;
+	height: 69px;
+	padding-top: 0px;
 	color: #FFFFFF;
 	border-left: solid 2px #000000;
 	text-align: center;
-	vertical-align: super;
+	vertical-align:middle;
 	font-size: 16px;
 	font-weight: bolder;
 	line-height: 1.3em;
+}
+.M-menu ul li a:hover{
+	text-decoration: none; background-color:#C40B18;
 }
 .fixedbottom{ position:fixed; bottom:0px; z-index:990;}
 .logosPat{
@@ -186,14 +196,17 @@ width:145px;
 #logos{ height:1690px; float:left; position:relative; width:350px;}
 .twitter{ height:280px; overflow:hidden; z-index:0;}
 
-..pagination-H{
+.pagination-H{
     float:left;
-    width:bold;}
+    width:bold;
+	width:65px;
+	position:fixed;
+	margin-top:0.5%;}
     
 .pagination-H ul{
     padding:0px;
     display:block;
-    width:98%;
+    width:98.8%;
     float:left;
     list-style-type: none;
 	margin:10px;	
@@ -205,20 +218,23 @@ width:145px;
 
 .pagination-H ul li a{
 	color: #00230b;
-	font-size: 14px;
-	padding: 9px;
+	font-size: 13px;
+	padding: 2px 0px 2px 0px;
+	width: 40px;
+	height: 15px;
 	display: block;
 	font-weight: bold;
 	text-align: center;
 	text-decoration: none;
-	background-color: #F8F6F6;
-	border: 1px solid #CCC;
+	background-color: #D3D5D5;
+	border: 1px solid #FFF;
+	-moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
 }
     
 .pagination-H ul li a:hover,  .pagination-H a.selected{
 	color: #FF0000;
 	font-size: 15px;
-	padding: 10px;
+	padding: 5px;
 	display: block;
 	font-weight: bold;
 	text-decoration: none;
@@ -241,4 +257,24 @@ width:145px;
 	height:82px;
 	margin:6px;
 	overflow:hidden;
+}
+
+.gridsubRow{ float:left; width:98.8%; padding-top: 1px;
+	padding-bottom: 1px; padding-left:10px;}
+.gridsubRow a{
+	font-size: 14px;
+	font-weight: bold;
+	width: 85%;
+	display: block;
+	float: left;
+	overflow: hidden;
+	line-height: 0.8em;
+	color:#333;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	padding-left:5px;
+	
+}
+.gridsubRow a:hover{
+	background-color:#C0C0C0;
 }

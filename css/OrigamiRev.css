@@ -207,7 +207,10 @@ a:hover {text-decoration:underline;}
 .alineLeft{ text-align:left;}
 .alineRigth{ text-align:right;}
 .Smallcaps {font-variant: small-caps;}
-.ellipsis {overflow: hidden; text-overflow: ellipsis;}/*CS3*/
+.ellipsis {white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}/*CS3*/
 /***Agregar padings***/
 .padd-0px{ padding:0px;}
 .padd-5px{ padding:5px;}
