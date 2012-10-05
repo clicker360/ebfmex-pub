@@ -27,7 +27,7 @@ $(document).ready(function(){
 		$('.letter').removeClass('selected');
 		$(this).addClass('selected');
 		var letter = $(this).attr('id');
-		$('#theletter').text( $(this).attr('id') ) 
+		$('#theletter').text( $(this).text());
 		if(letter == "ultimos") {
 			getultimos();
 		} else {
