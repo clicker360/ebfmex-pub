@@ -8,6 +8,8 @@ package oferta
 import (
 	"appengine"
 	"appengine/datastore"
+	"encoding/json"
+	"sortutil"
 	//"resize"
 	//"bytes"
 	"strings"
@@ -31,8 +33,10 @@ type FormDataOf struct {
 	Categorias		*[]model.Categoria
 	Empresa			string
 	Oferta			string
+	NOferta			string
 	ErrOferta		string
 	Descripcion		string
+	NDescripcion	string
 	ErrDescripcion	string
 	Codigo			string
 	ErrCodigo		string
@@ -43,7 +47,7 @@ type FormDataOf struct {
 	Enlinea			bool
 	Url				string
 	ErrUrl			string
-	Tarjetas		string // Texto separado por comas
+	Tarjetas		[]byte // json
 	ErrTarjetas		string
 	Meses			string
 	ErrMeses		string
@@ -88,6 +92,7 @@ func listOf(c appengine.Context, IdEmp string) *[]model.Oferta {
 	if _, err := q.GetAll(c, &ofertas); err != nil {
 		return nil
 	}
+	sortutil.AscByField(ofertas, "Oferta")
 	return &ofertas
 }
 
@@ -146,7 +151,11 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			tc["Empresa"] = empresa
 			fd.IdEmp = empresa.IdEmp
 			fd.Empresa = empresa.Nombre
-			ofertamod.Empresa = empresa.Nombre
+			ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
+			ofertamod.Tarjetas = oferta.Tarjetas
+			ofertamod.Promocion = oferta.Promocion
+			ofertamod.Descuento = oferta.Descuento
+			ofertamod.Meses = oferta.Meses
 			ofertamod.Image = oferta.Image
 			ofertamod.ImageA = oferta.ImageA
 			ofertamod.ImageB = oferta.ImageB
@@ -166,6 +175,25 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 				model.Check(err)
 			} else {
 				// nueva oferta
+				// Se inicializan las tarjetas participantes:
+				var jsonBlob = []byte(`[
+				    {"Id":1, "Tarjeta": "American Express", "Selected":0, "Status":""},
+				    {"Id":3, "Tarjeta": "Banamex", "Selected":0, "Status":""},
+				    {"Id":7, "Tarjeta": "Bancomer", "Selected":0, "Status":""},
+				    {"Id":8, "Tarjeta": "Banorte", "Selected":0, "Status":""},
+				    {"Id":4, "Tarjeta": "HSBC", "Selected":0, "Status":""},
+				    {"Id":9, "Tarjeta": "Santander", "Selected":0, "Status":""},
+				    {"Id":5, "Tarjeta": "ScotiaBank", "Selected":0, "Status":""},
+				    {"Id":2, "Tarjeta": "Master Card", "Selected":0, "Status":""},
+				    {"Id":6, "Tarjeta": "Visa", "Selected":0, "Status":""}
+				]`)
+				var tarjetas []jsonTc
+				if err := json.Unmarshal(jsonBlob, &tarjetas); err != nil {
+					model.Check(err)
+				}
+				sortutil.AscByField(tarjetas, "Tarjeta")
+				b, _ := json.Marshal(tarjetas)
+				ofertamod.Tarjetas = b;
 				err := model.NewOferta(c, &ofertamod)
 				model.Check(err)
 			}
@@ -219,22 +247,25 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		IdEmp:			strings.TrimSpace(r.FormValue("IdEmp")),
 		IdCat:			ic,
 		Oferta:			strings.TrimSpace(r.FormValue("Oferta")),
+		NOferta:		strings.ToUpper(strings.TrimSpace(r.FormValue("Oferta"))),
 		ErrOferta: "",
 		Descripcion:	strings.TrimSpace(r.FormValue("Descripcion")),
+		NDescripcion:	strings.ToUpper(strings.TrimSpace(r.FormValue("Descripcion"))),
 		ErrDescripcion: "",
 		Codigo:			strings.TrimSpace(r.FormValue("Codigo")),
 		ErrCodigo: "",
 		Precio:			strings.TrimSpace(r.FormValue("Precio")),
 		ErrPrecio: "",
-		Descuento:		strings.TrimSpace(r.FormValue("Descuento")),
+		//Descuento:		strings.TrimSpace(r.FormValue("Descuento")),
 		ErrDescuento: "",
 		Enlinea:		el,
 		Url:			strings.TrimSpace(r.FormValue("Url")),
 		ErrUrl: "",
-		Tarjetas:		strings.TrimSpace(r.FormValue("Tarjetas")),
-		ErrTarjetas: "",
-		Meses:			strings.TrimSpace(r.FormValue("Meses")),
-		ErrMeses: 	"",
+		//Tarjetas:		strings.TrimSpace(r.FormValue("Tarjetas")),
+		//ErrTarjetas: "",
+		//Meses:			strings.TrimSpace(r.FormValue("Meses")),
+		//Promocion:		strings.TrimSpace(r.FormValue("Promocion")),
+		ErrMeses:	"",
 		FechaHoraPub:	fh,
 		ErrFechaHoraPub: "",
 		StatusPub:		st,
@@ -252,10 +283,6 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		}
 		if fd.Precio != "" && !model.ValidPrice.MatchString(fd.Precio) {
 			fd.ErrPrecio = "invalid"
-			ef = true
-		}
-		if fd.Descuento != "" && !model.ValidPercent.MatchString(fd.Descuento) {
-			fd.ErrDescuento = "invalid"
 			ef = true
 		}
 		if fd.Url != "" && !model.ValidUrl.MatchString(fd.Url) {
@@ -277,14 +304,17 @@ func oftFill(fd FormDataOf) model.Oferta {
 		IdEmp:			fd.IdEmp,
 		IdCat:			fd.IdCat,
 		Oferta:			fd.Oferta,
+		NOferta:		fd.NOferta,
 		Descripcion:	fd.Descripcion,
+		NDescripcion:	fd.NDescripcion,
+		//Promocion:		fd.Promocion,
 		Codigo:			fd.Codigo,
 		Precio:			fd.Precio,
-		Descuento:		fd.Descuento,
+		//Descuento:		fd.Descuento,
 		Enlinea:		fd.Enlinea,
 		Url:			fd.Url,
-		Tarjetas:		fd.Tarjetas,
-		Meses:			fd.Meses,
+		//Tarjetas:		fd.Tarjetas,
+		//Meses:			fd.Meses,
 		FechaHoraPub:	fd.FechaHoraPub,
 		StatusPub:		fd.StatusPub,
 		FechaHora:		time.Now(),
@@ -301,11 +331,12 @@ func ofToForm(e model.Oferta) FormDataOf {
 		Descripcion:	e.Descripcion,
 		Codigo:			e.Codigo,
 		Precio:			e.Precio,
-		Descuento:		e.Descuento,
+		//Descuento:		e.Descuento,
+		//Promocion:		e.Promocion,
 		Enlinea:		e.Enlinea,
 		Url:			e.Url,
-		Tarjetas:		e.Tarjetas,
-		Meses:			e.Meses,
+		//Tarjetas:		e.Tarjetas,
+		//Meses:			e.Meses,
 		FechaHoraPub:	e.FechaHoraPub,
 		StatusPub:		e.StatusPub,
 	}

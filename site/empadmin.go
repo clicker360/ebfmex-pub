@@ -5,6 +5,7 @@ import (
     "appengine/datastore"
 	"html/template"
 	"strings"
+	"sortutil"
     "net/http"
 	"strconv"
     "time"
@@ -169,6 +170,7 @@ func listEmp(c appengine.Context, u *model.Cta) *[]model.Empresa {
 	if _, err := q.GetAll(c, &empresas); err != nil {
 		return nil
 	}
+	sortutil.AscByField(empresas, "Nombre")
 	return &empresas
 }
 

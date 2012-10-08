@@ -5,6 +5,7 @@ import (
     "appengine"
     "appengine/datastore"
     "net/http"
+	"sortutil"
 	"strings"
 	//"fmt"
 	"time"
@@ -68,6 +69,7 @@ func listSuc(c appengine.Context, IdEmp string) *[]model.Sucursal {
 	if _, err := q.GetAll(c, &sucursales); err != nil {
 		return nil
 	}
+	sortutil.AscByField(sucursales, "Nombre")
 	return &sucursales
 }
 

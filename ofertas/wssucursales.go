@@ -3,6 +3,7 @@ package oferta
 import (
     "appengine"
 	"encoding/json"
+	"sortutil"
     "net/http"
 	"strconv"
 	"model"
@@ -14,6 +15,7 @@ type WsSucursal struct{
 	IdEmp       string `json:"idemp"`
 	IdSuc       string `json:"idsuc"`
 	Sucursal    string `json:"sucursal"`
+	FechaHora   time.Time `json:"timestamp"`
 	Status		string `json:"status"`
 }
 
@@ -51,6 +53,7 @@ func AddOfSuc(w http.ResponseWriter, r *http.Request) {
 		ofsuc.Url = oferta.Url
 		ofsuc.StatusPub = oferta.StatusPub
 		ofsuc.FechaHora = time.Now()
+		out.FechaHora = ofsuc.FechaHora
 
 		err := oferta.PutOfertaSucursal(c, &ofsuc)
 		if err != nil {
@@ -87,16 +90,17 @@ func DelOfSuc(w http.ResponseWriter, r *http.Request) {
 func ShowOfSucursales(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	ofsucs, _ := model.GetOfertaSucursales(c, r.FormValue("id"))
-	sucs := make([]WsSucursal, 0 ,len(*ofsucs))
+	wssucs := make([]WsSucursal, 0 ,len(*ofsucs))
 	for i,v:= range *ofsucs {
-		sucs[i].IdOft = v.IdOft
-		sucs[i].IdSuc = v.IdSuc
-		sucs[i].IdEmp = v.IdEmp
-		sucs[i].Sucursal = v.Sucursal
+		wssucs[i].IdOft = v.IdOft
+		wssucs[i].IdSuc = v.IdSuc
+		wssucs[i].IdEmp = v.IdEmp
+		wssucs[i].Sucursal = v.Sucursal
+		wssucs[i].FechaHora = v.FechaHora
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	b, _ := json.Marshal(sucs)
+	b, _ := json.Marshal(wssucs)
 	w.Write(b)
 }
 
@@ -112,6 +116,7 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 		wssucs[i].IdSuc = v.IdSuc
 		wssucs[i].IdEmp = v.IdEmp
 		wssucs[i].Sucursal = v.Nombre
+		wssucs[i].FechaHora = v.FechaHora
 	}
 	w.Header().Set("Content-Type", "application/json")
 	b, _ := json.Marshal(wssucs)
@@ -135,7 +140,9 @@ func ShowEmpSucursalOft(w http.ResponseWriter, r *http.Request) {
 		wssucs[i].IdSuc = es.IdSuc
 		wssucs[i].IdEmp = es.IdEmp
 		wssucs[i].Sucursal = es.Nombre
+		wssucs[i].FechaHora = es.FechaHora
 	}
+	sortutil.AscByField(wssucs, "Sucursal")
 
 	w.Header().Set("Content-Type", "application/json")
 	b, _ := json.Marshal(wssucs)

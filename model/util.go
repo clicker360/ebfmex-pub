@@ -49,6 +49,7 @@ func init() {
 // validName matches a valid name string.
 var ValidNum = regexp.MustCompile(`^[0-9]+$`)
 var ValidCP = regexp.MustCompile(`^[0-9]{5,5}`)
+var ValidKey = regexp.MustCompile(`^[a-zA-Z]+$`)
 var ValidName = regexp.MustCompile(`^[a-zA-Z áéíóúAÉÍÓÚÑñäëïöü\.\'\-]+$`)
 var ValidSimpleText = regexp.MustCompile(`^[a-zA-Z0-9 _áéíóúAÉÍÓÚÑñäëïöü¡¿\.\,\;\:\!\{\}\~\(\)\?\#\_\+\/\%\$\'\"\*\-]+$`)
 //var ValidSimpleText = regexp.MustCompile(`^[a-zA-Z0-9].+$`)

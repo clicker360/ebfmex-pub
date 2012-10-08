@@ -4,7 +4,9 @@ import (
     "appengine"
 	"encoding/json"
     "net/http"
+	"strings"
 	"model"
+	"time"
 )
 
 type Word struct{
@@ -16,7 +18,9 @@ type Word struct{
 func init() {
     http.HandleFunc("/addword", AddWord)
     http.HandleFunc("/delword", DelWord)
-    http.HandleFunc("/wordsxo", ShowWords)
+    http.HandleFunc("/rmword", RmWord)
+    http.HandleFunc("/wordsxo", ShowOfWords)
+    http.HandleFunc("/wordsxe", ShowEmpWords)
 }
 
 func AddWord(w http.ResponseWriter, r *http.Request) {
@@ -24,19 +28,32 @@ func AddWord(w http.ResponseWriter, r *http.Request) {
 	var out Word
 	out.Token = r.FormValue("token")
 	out.Id = r.FormValue("id")
-	oferta := model.GetOferta(c, out.Id)
-	if oferta.IdEmp != "none" {
-		var palabra model.OfertaPalabra
-		palabra.IdOft = out.Id
-		palabra.Palabra = out.Token
-		err := oferta.PutOfertaPalabra(c, &palabra)
-		if err != nil {
-			out.Status = "writeErr"
+	if model.ValidSimpleText.MatchString(out.Token) {
+		tokens := strings.Fields(r.FormValue("token"))
+		oferta := model.GetOferta(c, out.Id)
+		if(len(tokens) > 0) {
+			for _,v:= range tokens {
+				if oferta.IdEmp != "none" {
+					var palabra model.OfertaPalabra
+					palabra.IdOft = out.Id
+					palabra.IdEmp = oferta.IdEmp
+					palabra.Palabra = strings.ToLower(v)
+					palabra.FechaHora = time.Now()
+					err := oferta.PutOfertaPalabra(c, &palabra)
+					if err != nil {
+						out.Status = "writeErr"
+					} else {
+						out.Status = "ok"
+					}
+				} else {
+					out.Status = "notFound"
+				}
+			}
 		} else {
-			out.Status = "ok"
+			out.Status = "invalidText"
 		}
 	} else {
-		out.Status = "notFound"
+		out.Status = "invalidText"
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -44,14 +61,43 @@ func AddWord(w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
+/*
+	Se remueve una palabra de la oferta sólamente
+*/
 func DelWord(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	var out Word
-	out.Token = r.FormValue("token")
+	out.Token = strings.ToLower(r.FormValue("token"))
 	out.Id = r.FormValue("id")
 	oferta := model.GetOferta(c, out.Id)
 	if oferta.IdEmp != "none" {
-		err := model.DelOfertaPalabra(c, out.Id)
+		err := model.DelOfertaPalabra(c, out.Id, out.Token)
+		if err != nil {
+			out.Status = "writeErr"
+		} else {
+			out.Status = "ok"
+		}
+		out.Id = "none"
+	} else {
+		out.Status = "notFound"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	b, _ := json.Marshal(out)
+	w.Write(b)
+}
+
+/*
+	Se remueve una palabra de la empresa
+*/
+func RmWord(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	var out Word
+	out.Token = strings.ToLower(r.FormValue("token"))
+	out.Id = r.FormValue("id")
+	oferta := model.GetOferta(c, out.Id)
+	if oferta.IdEmp != "none" {
+		err := model.RmOfertaPalabra(c, out.Id, out.Token)
 		if err != nil {
 			out.Status = "writeErr"
 		} else {
@@ -66,16 +112,64 @@ func DelWord(w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
-func ShowWords(w http.ResponseWriter, r *http.Request) {
+func ShowOfWords(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	ofertas, _ := model.GetOfertaPalabras(c, r.FormValue("id"))
-	words := make([]Word, 0 ,len(*ofertas))
-	for i,v:= range *ofertas {
-		words[i].Id = v.IdOft
-		words[i].Token = v.Palabra
+	var b []byte
+	ofertas := model.GetOfertaPalabras(c, r.FormValue("id"), "")
+	if *ofertas != nil {
+		if(len(*ofertas) > 0) {
+			words := make([]Word, len(*ofertas) ,len(*ofertas))
+			for i,v:= range *ofertas {
+				words[i].Id = v.IdOft
+				words[i].Token = v.Palabra
+				words[i].Status = ""
+			}
+			b, _ = json.Marshal(words)
+		} else {
+			var out Word
+			out.Id = r.FormValue("id")
+			out.Token = ""
+			out.Status = "notFound"
+			b, _ = json.Marshal(out)
+		}
+	} else {
+		var out Word
+		out.Id = r.FormValue("id")
+		out.Token = ""
+		out.Status = "notFound"
+		b, _ = json.Marshal(out)
 	}
-
 	w.Header().Set("Content-Type", "application/json")
-	b, _ := json.Marshal(words)
+	w.Write(b)
+}
+
+func ShowEmpWords(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	var b []byte
+	ofertas := model.GetOfertaPalabras(c, "", r.FormValue("id"))
+	if *ofertas != nil {
+		if(len(*ofertas) > 0) {
+			words := make([]Word, len(*ofertas) ,len(*ofertas))
+			for i,v:= range *ofertas {
+				words[i].Id = v.IdOft
+				words[i].Token = v.Palabra
+				words[i].Status = ""
+			}
+			b, _ = json.Marshal(words)
+		} else {
+			var out Word
+			out.Id = r.FormValue("id")
+			out.Token = ""
+			out.Status = "notFound"
+			b, _ = json.Marshal(out)
+		}
+	} else {
+		var out Word
+		out.Id = r.FormValue("id")
+		out.Token = ""
+		out.Status = "notFound"
+		b, _ = json.Marshal(out)
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(b)
 }

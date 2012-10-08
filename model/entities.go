@@ -141,7 +141,6 @@ func GetCta(c appengine.Context, email string) (*Cta, error) {
 	err := datastore.Get(c, ua.Key(c), ua)
 	if err == datastore.ErrNoSuchEntity {
 		return ua, err
-		//_, err = datastore.Put(c, ua.Key(), ua)
 	}
 	return ua, nil
 }
@@ -179,6 +178,10 @@ func (r *Cta) PutEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 }
 
 func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
+	/*
+		OJO:
+		Agregar consulta del random antes de crear entity
+	*/
 	e.IdEmp = RandId(12)
     _, err := datastore.Put(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
 	if err != nil {

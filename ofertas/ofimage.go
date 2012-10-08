@@ -56,7 +56,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		// Resize if too large, for more efficient moustachioing.
 		// We aim for less than 1200 pixels in any dimension; if the
 		// picture is larger than that, we squeeze it down to 600.
-		const max = 260
+		const max = 600
 		// We aim for less than max pixels in any dimension.
 		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
 			// If it's gigantic, it's more efficient to downsample first

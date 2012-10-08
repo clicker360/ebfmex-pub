@@ -108,9 +108,6 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		}
 
 		idemp := r.FormValue("IdEmp")
-		name := r.FormValue("Name")
-		desc := r.FormValue("Desc")
-		url := r.FormValue("Url")
 		f, _, err := r.FormFile("image")
 		model.Check(err)
 		defer f.Close()
@@ -181,8 +178,8 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		// Save the image under a unique key, a hash of the image.
 		img := &model.Image{
 			Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(12), 
-			Kind: "EmpLogo", Name: name, Desc: desc, 
-			Sizepx: 0, Sizepy: 0, Url: url, Type: "",
+			Kind: "EmpLogo", Name: imgo.Name, Desc: imgo.Desc, 
+			Sizepx: 0, Sizepy: 0, Url: imgo.Url, Type: "",
 			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
 			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 		}
@@ -248,8 +245,8 @@ func modData(w http.ResponseWriter, r *http.Request) {
 	//	im := new(model.Image)
 		// Save the image under a unique key, a hash of the image.
 		imgo = &model.Image{
-			Data: imgo.Data, IdEmp: idemp, 
-			Kind: "EmpLogo", Name: name, Desc: desc, 
+			Data: imgo.Data, IdEmp: idemp, IdImg: imgo.IdImg,
+			Kind: "EmpLogo", Name: name, Desc: desc,
 			Sizepx: 0, Sizepy: 0, Url: url, Type: "",
 			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
 			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
@@ -300,34 +297,6 @@ func img(w http.ResponseWriter, r *http.Request) {
 
 func delimg(w http.ResponseWriter, r *http.Request) {
 }
-
-// errorHandler wraps the argument handler with an error-catcher that
-// returns a 500 HTTP error if the request fails (calls check with err non-nil).
-/*
-func errorHandler(fn http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		defer func() {
-			if _, ok := recover().(error); ok {
-				w.WriteHeader(http.StatusInternalServerError)
-				c := appengine.NewContext(r)
-				if s, ok := sess.IsSess(w, r, c); ok {
-					emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
-					if emp != nil {
-						tc := make(map[string]interface{})
-						tc["Sess"] =  s
-						tc["Empresa"] = emp
-						tc["Error"] = struct { string }{""}
-						micrositioTpl.Execute(w, tc)
-					}
-				} else {
-					http.Redirect(w, r, "/registro", http.StatusFound)
-				}
-			}
-		}()
-		fn(w, r)
-	}
-}
-*/
 
 func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, tpl *template.Template) (FormDataImage, bool){
 	fd := FormDataImage {

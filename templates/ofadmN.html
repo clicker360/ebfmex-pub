@@ -282,11 +282,11 @@
 									<!--EL BUEN FIN EN LINEA-->
 									<div class=" col-10 padd-UD5px padd-LR15px marg-LR5pix Bg-Drks">
 										<label class="col-9 "> Si ya tienes promoción de tu producto en Internet ¡Participa en El Buen Fin en línea!</label>
-										<input type="checkbox" class="last marg-10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} onchange="javascript:/*$('#oferLinea').text('Esta promoción participa en El Buen Fin en línea'); activateCancel();*/" />
+										<input type="checkbox" class="last marg-10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} onchange="javascript:$('#oferLinea').text('Esta promoción participa en El Buen Fin en línea'); activateCancel();" />
 
 										<label class="col-8"> Enlace web a tu oferta y/o sitio web</label>
 										<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
-										<input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val()); activateCancel();*/" />
+										<input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="javascript:$('#urlimg').attr('href', $('#url').val()); activateCancel();" />
 									</div>
 									<div class="marg-L15pix first"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
 									<div class="col-10" id="newbtn">
@@ -302,11 +302,9 @@
 						</form>
 						{{end}}
 						<!--COMEINZA SEGUNDA PARTE-->
-						<div id="dataoferta" class="col-11">
-							<hr/>
-							<div class="marg-L15pix typeMx first">Los siguientes datos se actualizan automáticamente </div>
+						<div id="dataoferta">
 							<!--SELECTOR DE PROMOCIONES-->
-							<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
+							<div class=" col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
 								<h6 class="col-100PR typeMx typ-Tr"> Promoción</h6>
 								<div class="col-100PR first outlined Bg-Wh">
 									<p class="marg-5px"> Condiciones agregadas </p>
@@ -346,20 +344,20 @@
 								</div>
 								<div id="pcvepicker"><!-- NO MOVER ESTE ID, se utiliza para poblar el contenido de este DIV-->
 									<div class=" col-100PR Bg-Sec outlined first">
-										<p class="clear"> Palabras clave para esta oferta </p>
+										<p class="clear"> Palabras elegidas </p>
 										<div id="unpickpcve"><!--esto se llena automáticamente--></div>
 									</div>
 									<div class=" col-100PR Bg-Sec outlined first">
-										<p class="marg-5px"> Palabras clave disponibles</p>
+										<p class="marg-5px"> Sugerencias </p>
 										<div id="pickpcve"><!--esto se llena automáticamente--></div>
 									</div>
 								</div>
-								<div class="first Addvice"> Ayudan a mejorar los resultados de busqueda de tu oferta. Puedes añadir las palabras clave que consideres necesarias y estarán disponibles para usarse en otras ofertas. Máximo 5 palabras.</div>  
+								<div class="last Addvice"> Ayudan a mejorar los resultados de busqueda de tu oferta </div>  
 							</div>
 							<!--TARJETAS PARTICIPANTES-->
 							<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U10pix">
 								<div class="first"> 
-									<h6 class="col-100PR typeMx typ-Tr">Tarjetas participantes</h6>
+									<p class="typeMx">Tarjetas participantes</p>         
 								</div>
 								<div class="first marg-L6pix marg-U5pix" id="listatc">
 								<!-- relleno ajax -->
@@ -368,7 +366,7 @@
 							<!--SUCURSALES-->
 							<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U10pix">
 								<div class="first" id="sucursales">
-									<h6 class="col-100PR typeMx typ-Tr">Sucursales donde partifica la oferta</h6>
+									<p class="typeMx">Esta oferta estará en:</p>   
 									<div  class="first marg-L6pix marg-U5pix" id="listasuc"> 
 										<!-- relleno ajax --> 
 									</div>

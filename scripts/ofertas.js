@@ -12,9 +12,6 @@ $(document).ready(function() {
 	$("#enviardata").submit(function() {
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
 	});
-	$("#cards").click(function () { $("#allcards").toggle("slow"); });  
-	$("#ONL").click(function () { $("#onlineURL").toggle("slow"); });  
-	$("#SUC").click(function () { $("#sucursales").toggle("slow"); });  
 	$("#enviar").validationEngine({promptPosition : "topRight", scroll: false});
 	$("#enviardata").validationEngine({promptPosition : "topRight", scroll: false});
 	var $pic = $("#pic");
@@ -26,11 +23,15 @@ $(document).ready(function() {
 		$('#imgform').hide();
 		$('#modbtn').hide();
 		$('#newbtn').show();
+		$('#previewer').hide();
+		$('#message').show();
 	} else {
 		$('#dataoferta').show();
 		$('#imgform').show();
 		$('#modbtn').show();
 		$('#newbtn').hide();
+		$('#previewer').show();
+		$('#message').hide();
 	}
 	$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
 	function updateimg() {
@@ -46,6 +47,8 @@ $(document).ready(function() {
 	if(idoft != 'none') {
 		updateimg();
 		fillpromo();
+		filltc(idoft);
+		fillpcve(idoft, idemp);
 		fillsucursales(idoft, idemp);
 	}
 
@@ -81,6 +84,7 @@ $(document).ready(function() {
 		}
 	});
 
+	/* Promociones */
 	$('.promo').click(function(e){
 		var token = $(this);
 		var stoppick = false;
@@ -98,7 +102,7 @@ $(document).ready(function() {
 						token.attr("class", "wordselected");	
 						$('#unpickpromo').append(token);
 					} else {
-						alert("Hubo un problema de conexión. Intente de nuevo agregar la promoción");
+						alert("Hubo un problema de conexión. Intente agregar de nuevo la promoción");
 					}
 				}, "json");
 			}
@@ -108,65 +112,146 @@ $(document).ready(function() {
 					token.attr("class", "sugestWord");	
 					$('#pickpromo').append(token);
 				} else {
-					alert("Hubo un problema de conexión. Intente de nuevo eliminar la promoción");
+					alert("Hubo un problema de conexión. Intente agregar de nuevo la promoción");
 				}
 			}, "json");
 		}
 	});
-	$('.pcve').click(function(e){
+
+	/* Palabras clave */
+	$('#pcvepicker').on("click", "a", function(e){
 		var token = $(this);
 		if($(this).attr("value") == "0") {
-			$.get("/addpcve", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
-				if(resp.status="ok") {
+			$.get("/addword", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
+				if(resp.status=="ok") {
 					token.attr("class", "wordselected");	
 					token.attr("value", resp.id);	
 					$('#unpickpcve').append(token);
 				} else {
-					alert("Hay problemas de conexión. Intente de nuevo agregar la palabra clave");
+					alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
 				}
 			}, "json");
 		} else {
-			$.get("/delpcve", { id: ""+token.attr('value')+"" }, function(resp) {
-				if(resp.status="ok") {
+			$.get("/delword", { id: ""+token.attr('value')+"", token: ""+token.text()+"" }, function(resp) {
+				if(resp.status=="ok") {
 					token.attr("class", "sugestWord");	
 					token.attr('value','0');
 					$('#pickpcve').append(token);
 				} else {
-					alert("Hay problemas de conexión. Intente de nuevo eliminar la palabra clave");
+					alert("Hay problemas de conexión. Intente eliminar de nuevo la palabra clave");
 				}
 			}, "json");
 		}
 	});
-	/* Promociones */
-	/* Palabras clave */
-	/* Tarjetas participantes */
-	
+	$("#nuevapcve").click(function(e) {
+		var token = $("#tokenpcve");
+		$.get("/addword", { token: ""+token.val()+"", id: ""+idoft+"" }, function(resp) {
+			if(resp.status=="ok") {
+				clearpcve();
+				fillpcve(idoft,idemp);
+			} else {
+				alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
+			}
+		}, "json");
+	});
+
 });/* termina onload */
 
-function fillpcve(idoft) {
-	var tc=$.get("/pcvesxo", { id: "" + idoft + ""}, function(data) {
-		data=$.parseJSON(data);
-		alert(data.desc);
-		$.each(data, function(i,item){
-			alert(item);
-		});
+/*
+ * Llena palabras clave por oferta y empresa
+ */
+function fillpcve(idoft, idemp) {
+	$.get("/wordsxo", { id: "" + idoft + ""}, function(data) {
+		if($.isArray(data)) {
+			$.each(data, function(i,item){
+				var anchor = "<a href=\"#null\" class=\"wordselected\" id=\"pcve_"+item.token+"\" value=\""+item.id+"\">"+item.token+"</a>"
+				$('#unpickpcve').append(anchor);
+			});
+		}
+	})
+	.success(function(){})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	.complete(function(){});
+
+	$.get("/wordsxe", { id: "" + idemp + ""}, function(data) {
+		if($.isArray(data)) {
+			$.each(data, function(i,item){
+				// Si en el ajax anterior no se añadio algo, aquí se añade como no seleccionado
+				if($("#pcve_"+item.token).length == 0) {
+					var anchor = "<a href=\"#null\" class=\"sugestWord pcve\" id=\"pcve_"+item.token+"\" value=\"0\">"+item.token+"</a>"
+					$('#pickpcve').append(anchor);
+				}
+			});
+		}
+	})
+	.success(function(){})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	.complete(function(){});
+
+}
+function clearpcve() {
+	$("#unpickpcve").empty();
+	$("#pickpcve").empty();
+}
+
+/*
+ * Llena las promociones
+ */
+function fillpromo() {
+	var tc=$.get("/promosxo", { id: "" + idoft + ""}, function(data) {
+		var pick;
+		var kids = $('#pickpromo').children();
+		if($.isArray(data)) {
+			$.each(data, function(i,item){
+				kids.each(function(ii,obj) {
+					if($(this).attr('value') == item.token) {
+						pick = $(this);
+						pick.attr("class", "wordselected");	
+						pick.attr("value", item.token);	
+						$('#unpickpromo').append(pick);
+					}	
+				});
+			});
+		}
 	})
 	.success(function(){})
 	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	.complete(function(){});
 }
-function fillpromo() {
-	var tc=$.get("/promosxo", { id: "" + idoft + ""}, function(data) {
-		var pick;
-		var kids = $('#pickpromo').children();
+
+/*
+ * Llena tarjetas participantes
+ */
+function filltc(idoft) {
+	$.get("/tcxo", { id: "" + idoft }, function(data) {
 		$.each(data, function(i,item){
-			kids.each(function(ii,obj) {
-				if($(this).attr('value') == item.token) {
-					pick = $(this);
-					pick.attr("class", "wordselected");	
-					pick.attr("value", item.token);	
-					$('#unpickpromo').append(pick);
-				}	
+			var div = "<div class=\"bg-Gry2 col-10\"><label class=\"col-4 marg-L5pix\">"+item.Tarjeta+"</label> <input name=\"tarjeta\" type=\"checkbox\" class=\"last marg-R15pix marg-U5pix\" value=\""+item.Tarjeta+"\" id=\"tc_"+item.Id+"\" /></div>";
+			$('#listatc').append(div);
+			if(item.Selected=="1") {
+				$("#tc_"+item.Id).attr('checked', true);
+			} else {
+				$("#tc_"+item.Id).attr('checked', false);
+			}
+			$("#tc_"+item.Id).change(function() { 
+				var tarjetas = $("#listatc").children();
+				var sep = "";
+				var jsontxt = "";
+				tarjetas.each(function(ii,obj) {
+					i = ii+1;
+					if($("#tc_"+i).is(':checked')) {
+						jsontxt += sep+"{ \"Id\":"+i+", \"Tarjeta\":\""+$("#tc_"+i).val()+"\", \"Selected\":1, \"Status\":\"\" }";
+					} else {
+						jsontxt += sep+"{ \"Id\":"+i+", \"Tarjeta\":\""+$("#tc_"+i).val()+"\", \"Selected\":0, \"Status\":\"\" }";
+					}
+					sep = ",";
+				});
+				$.get("/modtcxo", { token: "["+jsontxt+"]", id: ""+idoft+"" }, function(resp) {
+					if(resp.Status=="ok") {
+						//alert(resp.status);
+					} else {
+						alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
+					}
+				}, "json");
 			});
 		});
 	})
@@ -174,36 +259,35 @@ function fillpromo() {
 	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	.complete(function(){});
 }
-function filltc() {
-	$.get("/tarjetasxo", { id: "" + idoft + ""}, function(data) {
-		$.each(data, function(i,item){
-			alert(item);
-		});
-	})
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
-	.complete(function(){});
-}	
+/* 
+ * Llena las sucursales
+ */
 function fillsucursales(idoft, idemp) {
 	$.get("/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""}, function(data) {
 		$.each(data, function(i,item){
-			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-5px\" id=\""+item.idsuc+"\" onclick=\"setofsuc('"+item.idsuc+"', '"+idoft+"', '"+idemp+"', '"+this+"');\"/></div>";
+			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-5px\" id=\""+item.idsuc+"\"/></div>";
 			$('#listasuc').append(div);
 			if(item.idoft!="") {
-				chksuc.attr('checked', true)
+				$("#"+item.idsuc).attr('checked', true);
 			} else {
-				chksuc.attr('checked', false)
+				$("#"+item.idsuc).attr('checked', false);
 			}
+			$("#"+item.idsuc).change(function() { 
+				if($(this).is(':checked')) {
+					$.get("/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+					.success(function(){})
+					.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+				} else {
+					$.get("/delofsuc", { idoft: "" + idoft + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+					.success(function(){})
+					.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+				}
+			});
 		});
 	})
 	.success(function(){})
 	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	.complete(function(){});
-}
-function setofsuc(idsuc, idoft, idemp, caller) {
-	$.get("/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + idsuc + ""}, function(data) { })
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 }
 function activateCancel(){ $("#cancelbtn").addClass("show") }
 function deactivateCancel(){ $("#cancelbtn").removeClass("show") }

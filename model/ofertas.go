@@ -11,15 +11,17 @@ type Oferta struct {
 	IdEmp       string
 	IdCat       int
 	Empresa		string
-	Oferta      string
-	Descripcion	string
+	Oferta		string
+	NOferta			string
+	Descripcion		string
+	NDescripcion	string
 	Codigo      string
 	Precio      string
 	Descuento   string
 	Promocion	string
 	Enlinea     bool
 	Url         string
-	Tarjetas    string // Texto separado por comas
+	Tarjetas    []byte // json
 	Meses       string
 	FechaHoraPub    time.Time
 	StatusPub   bool
@@ -44,7 +46,9 @@ type OfertaSucursal struct {
 	Lng         float64
 	Empresa     string
 	Oferta      string
-	Descripcion	string
+	NOferta		string
+	Descripcion		string
+	NDescripcion	string
 	Promocion	string
 	Precio      string
 	Descuento   string
@@ -61,6 +65,7 @@ type Categoria struct {
 
 type OfertaPalabra struct {
 	IdOft      string
+	IdEmp      string
 	Palabra    string
 	FechaHora	time.Time
 }
@@ -122,6 +127,10 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 	if err != nil {
 		return err
 	}
+	/* 
+		relación oferta sucursal 
+	*/
+
 	return nil
 }
 
@@ -137,7 +146,7 @@ func NewOferta(c appengine.Context, oferta *Oferta) error {
 func GetOfertaSucursales(c appengine.Context, idoft string) (*[]OfertaSucursal, error) {
 	q := datastore.NewQuery("OfertaSucursal").Filter("IdOft =", idoft)
 	n, _ := q.Count(c)
-	ofersuc := make([]OfertaSucursal, n)
+	ofersuc := make([]OfertaSucursal, 0, n)
 	if _, err := q.GetAll(c, &ofersuc); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, err
@@ -146,16 +155,21 @@ func GetOfertaSucursales(c appengine.Context, idoft string) (*[]OfertaSucursal, 
 	return &ofersuc, nil
 }
 
-func GetOfertaPalabras(c appengine.Context, idoft string) (*[]OfertaPalabra, error) {
-	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", idoft)
+func GetOfertaPalabras(c appengine.Context, idoft string, idemp string) *[]OfertaPalabra {
+	q := datastore.NewQuery("OfertaPalabra")
+	if(idemp != "") {
+		q = q.Filter("IdEmp =", idemp)
+	} else {
+		q = q.Filter("IdOft =", idoft)
+	}
 	n, _ := q.Count(c)
-	oferword := make([]OfertaPalabra, n)
-	if _, err := q.GetAll(c, &oferword); err != nil {
+	op := make([]OfertaPalabra, 0, n)
+	if _, err := q.GetAll(c, &op); err != nil {
 		if err == datastore.ErrNoSuchEntity {
-			return nil, err
+			return nil
 		}
 	}
-	return &oferword, nil
+	return &op
 }
 
 func GetOfertaSucursalesGeo(c appengine.Context, lat string, lng string, rad string) (*Sucursal, error) {
@@ -195,7 +209,7 @@ func GetCategoria(c appengine.Context, id int) *Categoria {
 	Llenar primero struct de OfertaSucursal y luego guardar
 */
 func (r *Oferta) PutOfertaSucursal(c appengine.Context, ofsuc *OfertaSucursal) error {
-	_, err := datastore.Put(c, datastore.NewKey(c, "OfertaSucursal", "", 0, r.Key(c)), ofsuc)
+	_, err := datastore.Put(c, datastore.NewKey(c, "OfertaSucursal", r.IdOft+ofsuc.IdSuc, 0, r.Key(c)), ofsuc)
 	if err != nil {
 		return err
 	}
@@ -206,7 +220,7 @@ func (r *Oferta) PutOfertaSucursal(c appengine.Context, ofsuc *OfertaSucursal) e
 	Llenar primero struct de OfertaPalabra y luego guardar
 */
 func (r *Oferta) PutOfertaPalabra(c appengine.Context, op *OfertaPalabra) error {
-	_, err := datastore.Put(c, datastore.NewKey(c, "OfertaPalabra", "", 0, r.Key(c)), op)
+	_, err := datastore.Put(c, datastore.NewKey(c, "OfertaPalabra", r.IdEmp+op.Palabra, 0, r.Key(c)), op)
 	if err != nil {
 		return err
 	}
@@ -220,6 +234,12 @@ func DelOferta(c appengine.Context, id string) error {
 		key, err := i.Next(&e)
 		if err == datastore.Done {
 			break
+		}
+		if err:= DelOfertaSucursales(c, id); err != nil {
+			return err
+		}
+		if err := DelOfertaPalabras(c, id); err != nil {
+			return err
 		}
 		if err := datastore.Delete(c, key); err != nil {
 			return err
@@ -250,7 +270,7 @@ func DelOfertaSucursales(c appengine.Context, id string) error {
 	Método para borrar todas las sucursales de una oferta
 */
 func DelOfertaSucursal(c appengine.Context, idoft string, idsuc string) error {
-	q := datastore.NewQuery("OfertaSucursal").Filter("IdSuc =", idsuc).Filter("IdOft =", idoft)
+	q := datastore.NewQuery("OfertaSucursal").Filter("IdOft =", idoft).Filter("IdSuc =", idsuc)
 	for i := q.Run(c); ; {
 		var e OfertaSucursal
 		key, err := i.Next(&e)
@@ -265,10 +285,34 @@ func DelOfertaSucursal(c appengine.Context, idoft string, idsuc string) error {
 }
 
 /*
-	Las palabras clave asociadas a una oferta o se crean todas 
-	juntas o se borran todas juntas
+	Las palabras clave asociadas a una oferta se ponen con idoft="none" todas juntas
 */
-func DelOfertaPalabra(c appengine.Context, id string) error {
+func DelOfertaPalabras(c appengine.Context, id string) error {
+	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", id)
+	for i := q.Run(c); ; {
+		var e OfertaPalabra
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		e.IdOft = "none";
+		/*
+			En realidad no se borra ningun entity, solo se desliga la oferta
+			La palabra continua perteneciendo a la empresa para uso de las demás
+			ofertas
+		*/
+		_, err = datastore.Put(c, key, &e)
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+/*
+	Las palabras clave asociadas a una oferta se borran todas juntas
+*/
+func RmOfertaPalabras(c appengine.Context, id string) error {
 	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", id)
 	for i := q.Run(c); ; {
 		var e OfertaPalabra
@@ -279,6 +323,47 @@ func DelOfertaPalabra(c appengine.Context, id string) error {
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+
+/*
+	Las palabra clave asociada se borra individualmente
+*/
+func RmOfertaPalabra(c appengine.Context, id string, palabra string) error {
+	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", id).Filter("Palabra =", palabra)
+	for i := q.Run(c); ; {
+		var e OfertaPalabra
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		/*
+			Aquí si se borra el entity
+		*/
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func DelOfertaPalabra(c appengine.Context, id string, palabra string) error {
+	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", id).Filter("Palabra =", palabra)
+	for i := q.Run(c); ; {
+		var e OfertaPalabra
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		e.IdOft = "none";
+		/*
+			En realidad no se borra ningun entity, solo se desliga la oferta
+			La palabra continua perteneciendo a la empresa para uso de las demás
+			ofertas
+		*/
+		_, err = datastore.Put(c, key, &e)
 	}
 	return nil
 }
