@@ -4,6 +4,7 @@ import (
     "appengine"
     "appengine/datastore"
 	"html/template"
+	"encoding/json"
 	"math/rand"
     "net/http"
 	"sortutil"
@@ -22,6 +23,7 @@ func init() {
     rand.Seed(time.Now().UnixNano())
     http.HandleFunc("/dirlogos", directorioLogos)
     http.HandleFunc("/dirtexto", directorioTexto)
+    http.HandleFunc("/wsdiremp", wsDirTexto)
     http.HandleFunc("/carr", carr)
 }
 
@@ -144,4 +146,36 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
 const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}">{{.Name}}</div>`
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
+
+type WsEmpresa struct{
+	Id		string `json:"id"`
+	Empresa	string `json:"empresa"`
+	Url		string `json:"url"`
+}
+
+func wsDirTexto(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	prefixu := strings.ToUpper(r.FormValue("prefix"))
+    q := datastore.NewQuery("Empresa").Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd") //.Filter("Status =", true)
+	em, _ := q.Count(c)
+	empresas := make([]model.Empresa, em, em)
+	if _, err := q.GetAll(c, empresas); err != nil {
+		if err == datastore.ErrNoSuchEntity {
+			return
+		}
+	}
+
+	var b []byte
+	wsout := make([]WsEmpresa, em, em)
+	sortutil.AscByField(empresas, "Nombre")
+	for i, _ := range empresas {
+		wsout[i].Id = empresas[i].IdEmp
+		wsout[i].Empresa = empresas[i].Nombre
+		wsout[i].Url = empresas[i].Url
+	}
+	w.Header().Set("Content-Type", "application/json")
+	b, _ = json.Marshal(wsout)
+	w.Write(b)
+}
+
 

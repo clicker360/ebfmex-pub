@@ -52,6 +52,7 @@ type OfertaSucursal struct {
 	Promocion	string
 	Precio      string
 	Descuento   string
+	Enlinea     bool
 	Url         string
 	StatusPub   bool
 	FechaHora	time.Time
@@ -129,7 +130,32 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 	}
 	/* 
 		relación oferta sucursal 
-	*/
+	*/	
+	ofsucs, _ := GetOfertaSucursales(c, oferta.IdOft)
+	for _,os:= range *ofsucs {
+		var ofsuc OfertaSucursal
+		ofsuc.IdOft = os.IdOft
+		ofsuc.IdSuc = os.IdSuc
+		ofsuc.IdEmp = os.IdEmp
+		ofsuc.Sucursal = os.Sucursal
+		ofsuc.Lat = os.Lat
+		ofsuc.Lng = os.Lng
+		ofsuc.Empresa = oferta.Empresa
+		ofsuc.Oferta = oferta.Oferta
+		ofsuc.NOferta = oferta.NOferta
+		ofsuc.Descripcion = oferta.Descripcion
+		ofsuc.NDescripcion = oferta.NDescripcion
+		ofsuc.Promocion = oferta.Promocion
+		ofsuc.Precio = oferta.Precio
+		ofsuc.Descuento = oferta.Descuento
+		ofsuc.Enlinea = oferta.Enlinea
+		ofsuc.Url = oferta.Url
+		ofsuc.StatusPub = oferta.StatusPub
+		ofsuc.FechaHora = time.Now()
+		oferta.PutOfertaSucursal(c, &ofsuc)
+		TouchSuc(c, os.IdSuc)
+	}
+	_ = PutChangeControl(c, oferta.IdOft, "Oferta", "M")
 
 	return nil
 }
@@ -140,6 +166,7 @@ func NewOferta(c appengine.Context, oferta *Oferta) error {
 	if err != nil {
 		return err
 	}
+	_ = PutChangeControl(c, oferta.IdOft, "Oferta", "A")
 	return nil
 }
 
@@ -213,6 +240,7 @@ func (r *Oferta) PutOfertaSucursal(c appengine.Context, ofsuc *OfertaSucursal) e
 	if err != nil {
 		return err
 	}
+	_ = TouchSuc(c, ofsuc.IdSuc)
 	return nil
 }
 
@@ -244,6 +272,7 @@ func DelOferta(c appengine.Context, id string) error {
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
+		_ = PutChangeControl(c, e.IdOft, "Oferta", "B")
 	}
 	return nil
 }
@@ -253,6 +282,24 @@ func DelOferta(c appengine.Context, id string) error {
 */
 func DelOfertaSucursales(c appengine.Context, id string) error {
 	q := datastore.NewQuery("OfertaSucursal").Filter("IdOft =", id)
+	for i := q.Run(c); ; {
+		var e OfertaSucursal
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+/*
+	Método para borrar todas una sucursales de todas las ofertas
+*/
+func DelSucursalesOferta(c appengine.Context, id string) error {
+	q := datastore.NewQuery("OfertaSucursal").Filter("IdSuc =", id)
 	for i := q.Run(c); ; {
 		var e OfertaSucursal
 		key, err := i.Next(&e)
@@ -281,6 +328,7 @@ func DelOfertaSucursal(c appengine.Context, idoft string, idsuc string) error {
 			return err
 		}
 	}
+	_ = TouchSuc(c, idsuc)
 	return nil
 }
 

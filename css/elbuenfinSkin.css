@@ -876,7 +876,7 @@ form {
 
 label {
 	float : left;
-	font-size : 14px;
+	font-size : 13px;
 	color :#666;
 	font-weight : bold;
 	cursor : text;
@@ -2537,9 +2537,56 @@ ul.sucList li a{
 }
 ul.sucList li a:hover{ background-color:#CCCCCC;}
 
+ul.datepicker{
+	padding:0px;
+	margin:0px;
+	list-style:none;
+	float:right;
+	width:165px;
+	display:block;
+}
+ul.datepicker li{
+	float:left;
+	display:block;
+	width:21px;
+	background-color:#CECECE;
+	height:20px;
+	margin:1px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border:none;
+	color:#000;
+	text-align:center;
+	font-size:11px;
+	font-weight:bold;
+	padding-bottom:2px;
+}
+ul.datepicker li a{font-size:11px;font-weight:bold;margin:1px;color:#FFFFFF;display:block;padding:1px 3px;float:left;font-variant:small-caps;
+font-weight: bold; background-color: #ff4E3f;-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; width:13px;
+}
+a.ltlbtn{font-size:12px;font-weight:bold;margin:1px;color:#FFFFFF;display:block;padding:1px 3px;float:right;font-variant:small-caps;
+font-weight: bold; background-color: #ff4E3f;-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; width:13px;
+}
+ul.datepicker li a:hover{ background-color:#990000;}
+.dateoverlay{
+	position:absolute;
+	width:168px;
+	height:165px;
+	padding-top:3px;
+	padding-bottom:10px;
+	background-color:#686868;
+	z-index:800;
+	float:left;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	right:inherit;
+	top:695px;
+	left:58%;
+}
+.dateoverlay p{ margin:0px; margin-left:5px;}
+
 hr{ width:96%; margin-left:.5%; margin-right:2.5%; border:none; border-top:solid 1px #CFCFCF; padding:0px; margin-top:5px; margin-bottom:5px;}
 
-
-
-
-
+#urlimg{ height:256px; width:258px; float:left; overflow:hidden; }

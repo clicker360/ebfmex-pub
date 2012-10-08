@@ -235,7 +235,8 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 	c := appengine.NewContext(r)
 	var fh time.Time
 	if r.FormValue("FechaHoraPub") != "" {
-		fh, _ = time.Parse("2012-08-21 14:01:41", strings.TrimSpace(r.FormValue("FechaHoraPub")))
+		fh, _ = time.Parse("_2 Jan 15:04:05", strings.TrimSpace(r.FormValue("FechaHoraPub"))+" 00:00:00")
+		fh = fh.AddDate(2012,0,0)
 	} else {
 		fh = time.Now()
 	}
@@ -267,7 +268,7 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		//Promocion:		strings.TrimSpace(r.FormValue("Promocion")),
 		ErrMeses:	"",
 		FechaHoraPub:	fh,
-		ErrFechaHoraPub: "",
+		ErrFechaHoraPub: strings.TrimSpace(fh.Format("_2 Jan")),
 		StatusPub:		st,
 	}
 	if valida {
@@ -338,6 +339,7 @@ func ofToForm(e model.Oferta) FormDataOf {
 		//Tarjetas:		e.Tarjetas,
 		//Meses:			e.Meses,
 		FechaHoraPub:	e.FechaHoraPub,
+		ErrFechaHoraPub:	strings.TrimSpace(e.FechaHoraPub.Format("_2 Jan")),
 		StatusPub:		e.StatusPub,
 	}
 	return fd

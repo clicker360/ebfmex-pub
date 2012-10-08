@@ -3,6 +3,7 @@ package model
 import (
     "appengine"
     "appengine/datastore"
+	//"strconv"
 	"net/http"
 	"time"
 )
@@ -72,6 +73,8 @@ type Sucursal struct {
 	Geo3		string
 	Geo4		string
 	FechaHora	time.Time
+	Latitud		float64
+	Longitud	float64
 }
 
 type Quest struct {
@@ -127,11 +130,32 @@ type Image struct {
 	Np4		int
 }
 
-// Interfaces
-//type Lister interface {
-//	ListAll() 
-//}
+/*
+ * Métodos de control de cambios
+ */
+type ChangeControl struct {
+	Id		string
+	Kind	string
+	Status	string
+	FechaHora	time.Time
+}
 
+func PutChangeControl(c appengine.Context, id string, kind string, status string) error {
+	var cc ChangeControl
+	cc.Id = id
+	cc.Kind = kind
+	cc.Status = status
+	cc.FechaHora = time.Now()
+	_, err := datastore.Put(c, datastore.NewKey(c, "ChangeControl", kind+"_"+id, 0, nil), &cc)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/*
+ * Métodos de acceso, modificación y limpieza 
+ */
 func (r *Cta) Key(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Cta", r.Email, 0, nil)
 }
@@ -174,6 +198,7 @@ func (r *Cta) PutEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 	if err != nil {
 		return nil, err
 	}
+	_ = PutChangeControl(c, e.IdEmp, "Empresa", "M")
 	return e, err
 }
 
@@ -187,6 +212,7 @@ func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 	if err != nil {
 		return nil, err
 	}
+	_ = PutChangeControl(c, e.IdEmp, "Empresa", "A")
 	return e, err
 }
 
@@ -203,6 +229,7 @@ func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
     if err := datastore.Delete(c, datastore.NewKey(c, "Empresa", id, 0, r.Key(c))); err != nil {
 		return err
 	}
+	_ = PutChangeControl(c, id, "Empresa", "B")
 	return nil
 }
 
@@ -244,15 +271,64 @@ func (e *Empresa) Key(c appengine.Context) *datastore.Key {
 	return nil
 }
 
+func TouchSuc(c appengine.Context, id string) error {
+	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
+	for i := q.Run(c); ; {
+		var e Sucursal
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		// Regresa la sucursal
+		e.FechaHora = time.Now()
+		if _, err := datastore.Put(c, key, &e); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
 	if(s.IdSuc == "") {
 		s.IdSuc = RandId(14)
+		_ = PutChangeControl(c, s.IdSuc, "Sucursal", "A")
+	} else {
+		_ = PutChangeControl(c, s.IdSuc, "Sucursal", "M")
 	}
 	parentKey := e.Key(c)
     _, err := datastore.Put(c, datastore.NewKey(c, "Sucursal", s.IdSuc, 0, parentKey), s)
 	if err != nil {
 		return nil, err
 	}
+	/* 
+		relación oferta sucursal 
+	ofsucs, _ := GetOfertaSucursales(c, s.IdSuc)
+	for _,os:= range *ofsucs {
+		lat,_ := strconv.ParseFloat(s.Geo1, 64)
+		lng,_ := strconv.ParseFloat(s.Geo2, 64)
+		var ofsuc OfertaSucursal
+		ofsuc.IdOft = os.IdOft
+		ofsuc.IdSuc = os.IdSuc
+		ofsuc.IdEmp = os.IdEmp
+		ofsuc.Sucursal = s.Nombre
+		ofsuc.Lat = lat
+		ofsuc.Lng = lng
+		ofsuc.Empresa = os.Empresa
+		ofsuc.Oferta = os.Oferta
+		ofsuc.NOferta = os.NOferta
+		ofsuc.Descripcion = os.Descripcion
+		ofsuc.NDescripcion = os.NDescripcion
+		ofsuc.Promocion = os.Promocion
+		ofsuc.Precio = os.Precio
+		ofsuc.Descuento = os.Descuento
+		ofsuc.Enlinea = os.Enlinea
+		ofsuc.Url = os.Url
+		ofsuc.StatusPub = os.StatusPub
+		ofsuc.FechaHora = time.Now()
+		oferta := GetOferta(c, os.IdOft)
+		_ = oferta.PutOfertaSucursal(c, &ofsuc)
+	}
+	*/	
 	return s, err
 }
 
@@ -282,9 +358,13 @@ func DelSuc(c appengine.Context, id string) error {
 		if err == datastore.Done {
 			break
 		}
+		if err:= DelSucursalesOferta(c, e.IdSuc); err != nil {
+			return err
+		}
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
+		_ = PutChangeControl(c, e.IdSuc, "Sucursal", "B")
 	}
 	return nil
 }
@@ -297,9 +377,13 @@ func DelSucs(c appengine.Context, idEmp string) error {
 		if err == datastore.Done {
 			break
 		}
+		if err:= DelSucursalesOferta(c, e.IdSuc); err != nil {
+			return err
+		}
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
+		_ = PutChangeControl(c, e.IdSuc, "Sucursal", "B")
 	}
 	return nil
 }

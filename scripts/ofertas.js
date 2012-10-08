@@ -25,6 +25,7 @@ $(document).ready(function() {
 		$('#newbtn').show();
 		$('#previewer').hide();
 		$('#message').show();
+		$('#statuspub').attr("checked", true);
 	} else {
 		$('#dataoferta').show();
 		$('#imgform').show();
