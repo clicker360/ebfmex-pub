@@ -2372,14 +2372,14 @@ a.eliminate:hover{ background-position:bottom;}
 #question span { float: left; margin: 20px 0 0 10px; }
 		
 .Addvice{
-	background-color: #EAEDED;
+	background-color: #F4F4F4;
 	color: #515255;
 	font-size: 13px;
 	padding: 2px;
 	padding-left:10px;
 	padding-right:10px;
 	margin:3px;
-	border: 1px solid #ABABAB;
+	border: 1px solid #FFFFFF;
 }
 /*Mapas*/
 #map {
@@ -2546,21 +2546,21 @@ ul.datepicker{
 	display:block;
 }
 ul.datepicker li{
-	float:left;
-	display:block;
-	width:21px;
-	background-color:#CECECE;
-	height:20px;
-	margin:1px;
+	float: left;
+	display: block;
+	width: 21px;
+	background-color: #CECECE;
+	height: 20px;
+	margin: 1px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	border:none;
-	color:#000;
-	text-align:center;
-	font-size:11px;
-	font-weight:bold;
-	padding-bottom:2px;
+	border: none;
+	color: #8C8E8E;
+	text-align: center;
+	font-size: 11px;
+	font-weight: bold;
+	padding-bottom: 2px;
 }
 ul.datepicker li a{font-size:11px;font-weight:bold;margin:1px;color:#FFFFFF;display:block;padding:1px 3px;float:left;font-variant:small-caps;
 font-weight: bold; background-color: #ff4E3f;-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; width:13px;
@@ -2583,7 +2583,7 @@ ul.datepicker li a:hover{ background-color:#990000;}
 	border-radius: 6px;
 	right:inherit;
 	top:695px;
-	left:58%;
+	left:47.8%;
 }
 .dateoverlay p{ margin:0px; margin-left:5px;}
 

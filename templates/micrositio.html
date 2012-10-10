@@ -2,117 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link href="css/Origami.css" rel="stylesheet" type="text/css" />
-	<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+	<link href="../css/Origami.css" rel="stylesheet" type="text/css" />
+	<link href="../css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
-	<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
-	<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../scripts/jquery.validationEngine.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../scripts/jquery.form.js" charset="utf-8"></script>
 	<script type="text/javascript">
 
+				<!--google code-->
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26907178-1']);
 		_gaq.push(['_trackPageview']);
-
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-
+	var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
 	</script>
-	<script type="text/javascript">
-		$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
-		$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
-		function activateCancel(){ $("#cancelbtn").addClass("show") }
-		function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
-		</script>
-	<style type="text/css">
-	#size {
-		width: 300px;
-		margin: 10px 10px;
-	}
-	.progress {
-		float: right;
-		position: relative;
-		width: 310px;
-		border: 1px solid #ddd;
-		padding: 1px;
-		border-radius: 3px;
-	}
-	.bar {
-		background-color: grey;
-		width: 0%;
-		height: 20px;
-		border-radius: 3px;
-	}
-	.percent {
-		position: absolute;
-		display: inline-block;
-		top: 3px;
-		left: 48%;
-	}
-	</style>
-	<script type="text/javascript" charset="utf-8">
-			$(document).ready(function() {
-			var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
-			var $pic = $("#pic");
-			var $url = $("#url");
-			var $size = $("#size");
-			$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
-			function update() {
-				var query = "id="+id;
-				$pic.attr("src", "/simg?"+query);
-				$url.text("/simg?"+query);
-			}
-			$("#up").click(function() {
-				w = $pic.width(); h = $pic.height();
-				if (h > w) {
-					r = w/h; h++; w = Math.ceil(h*r);
-				} else {
-					r = h/w; w++; h = Math.ceil(w*r);
-				}
-				$pic.width(w); $pic.height(h);
-				$("#sizey").val(h); $("#sizex").val(w);
-			});
-			$("#down").click(function() {
-				w = $pic.width(); h = $pic.height();
-				if (h > w) {
-					r = w/h; w--; h = Math.ceil(w/r);
-				} else {
-					r = h/w; h--; w = Math.ceil(h/r);
-				}
-				$pic.width(w); $pic.height(h);
-				$("#sizey").val(h); $("#sizex").val(w);
-			});
-			update();
-		(function() {
-			
-		var bar = $('.bar');
-		var percent = $('.percent');
-		var status = $('#status');
-		   
-		$('#enviar').ajaxForm({
-			beforeSend: function() {
-				status.empty();
-				var percentVal = '0%';
-				bar.width(percentVal)
-				percent.html(percentVal);
-			},
-			uploadProgress: function(event, position, total, percentComplete) {
-				var percentVal = percentComplete + '%';
-				bar.width(percentVal)
-				percent.html(percentVal);
-			},
-			complete: function(xhr) {
-				status.html(xhr.responseText);
-				update();
-			}
-		}); 
-
-		})();       
-		})
-	</script>
+     	<script type="text/javascript" src="../scripts/micrositios.js" charset="utf-8"></script>
 	<title>Administración de Micrositio</title>
 </head>
 <body class="bgt-main">
@@ -122,9 +31,6 @@
 		<div class="col-4">
 			<img src="imgs/logo_header.png" width="124" height="124"  alt="el buen fin" class="marg-5px last"/>
 		</div>
-		<div class="col-14 typ-Wh marg-U80pix">
-			<!--h4>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</h4-->
-		</div>
       {{with .Sess}}
         <div class="pestana">
           <p class="first marg-10px">Hola {{.Name}}</p>
@@ -132,7 +38,7 @@
         </div>
         {{end}} 
     </div>
-    <div class="col-24  Bg-Wh marg-D10pix">
+    <div class="col-24 Bg-Wh marg-D10pix">
       <div class="menuAdmin">
         <div class="col-5" style="min-height:600px;"> <img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
           <ul class="menuAdmin">
@@ -165,45 +71,44 @@
           {{end}}
           {{with .FormData}}
           <div class="first">
+             <div class="col-19" id="addCont">
+              <div class="col-18 marg-L10pix padd-10px">
             <form action="/logoup" method="post" id="enviar" enctype="multipart/form-data">
               <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
               <input type="hidden" name="tipo" value="async"/>
-              <div class="col-19" id="addCont">
-              <div class="col-18 marg-L10pix padd-10px">
-              <div class="col-7 last"> <img class="outlined" id="pic" src="" alt="Logotipo empresa" width="100%" /> </div>
+              <div class="col-7 last">
+                <div class="col-100PR first outlined SHW-div-D3px" id="theImage">
+                <img  id="pic" src='' alt="Logotipo empresa" width="100%" />
+                </div>
+                     <div class="box1">
+                       <div class="first padd-5px Addvice">Si deseas sustituir la imagen sólo necesitas seleccionar otra.</div>
+                    </div>
+                 </div>
               <div class="col-10">
               <h3>Subir tu logotipo</h3>
-              <div class="box1"> </div>
               <div class="line"> <img id="loading" src="imgs/loader.gif" style="display:none;" alt="cargador" />
                 <div class="typ-Sc" id="status"></div>
                 <input id="imgfile" type="text" class="medium" readonly="readonly"/>
                 <div class="btn-upload last" style="width: 65px; height: 27px; margin: 0px; overflow: hidden;">
                   <input id="infile" type="file" class="validate[required]" name="image" onchange="$('#imgfile').val($('#infile').val()); $('#enviar').submit();" style="height: 27px; width: 166px; display: inline; cursor: pointer; opacity: 0; margin-left: -168px;"/>
-                </div>
               </div>
-              <div class="col-9 marg-10pix last">
+              <div class="col-6 last marg-R10pix">
                 <div class="progress">
                   <div class="bar"></div >
                   <div class="percent">0%</div >
                 </div>
               </div>
-              <div class="Addvice">
-				<div class="first" style="background-color: #FEF0A7; border: 1px solid #FC0; padding-right: 10px;" >
-                <ul class= alineLeft">
-                  <li class="alineLeft">Sólo imagenes formato jpeg o png.</li>
-                  <li class="alineLeft">Tamaño máximo 800x600 pixeles.</li>
-                  <li class="alineLeft">Logotipo con fondo blanco.</li>
-				  <li class="alineLeft">La imagen debe ser el logotipo de la empresa.</li>
-				  <li class="alineLeft">No son admisibles imágenes políticas, religiosas o que atenten contra las buenas costumbres, de ser así no se publicará la empresa en el sitio.</li>
-                </ul>
-				</div>
               </div>
+				<div class="first Addvice">
+                    <ul class= "alineLeft">
+                      <li class="alineLeft">Sólo imagenes formato jpeg o png.</li>
+                      <li class="alineLeft">Tamaño máximo 800x600 pixeles.</li>
+                      <li class="alineLeft">Logotipo con fondo blanco.</li>
+                      <li class="alineLeft">La imagen debe ser el logotipo de la empresa.</li>
+                      <li class="alineLeft">No son admisibles imágenes políticas, religiosas o que atenten contra las buenas costumbres, de ser así no se publicará la empresa en el sitio.</li>
+                    </ul>
+				</div>
             </form>
-            <div class="line">
-              <div class="first padd-5px">Si deseas sustituir la imagen sólo necesitas seleccionar otra.</div>
-            </div>
-            <div class="col-18 marg-L10pix marg-D10pix"> </div>
-          </div>
           <form action="/midata" method="post" id="enviarmidata" enctype="multipart/form-data">
             <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
             <div class="col-19" id="addCont">
@@ -231,6 +136,7 @@
               </div>
             </div>
           </form>
+          </div>
         </div>
         {{end}} </div>
 </div></div></div>   
@@ -240,7 +146,7 @@
       Toda la información aquí publicada relativa a las características de los productos y servicios que participan en El Buen Fin © es responsabilidad exclusiva de las tiendas que ofrecen los servicios y/o la venta de los productos. <br />
       Del mismo modo, los precios, los porcentajes de descuento, las promociones y todas las ofertas financieras y/o económicas aquí publicadas son responsabilidad de las tiendas que lo ofrecen. </p>
   </div>
- 
   
+
 </body>
 </html>
