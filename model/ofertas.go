@@ -56,6 +56,8 @@ type OfertaSucursal struct {
 	Url         string
 	StatusPub   bool
 	FechaHora	time.Time
+	IdCat       int
+	Categoria   string
 }
 
 type Categoria struct {
@@ -160,14 +162,14 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 	return nil
 }
 
-func NewOferta(c appengine.Context, oferta *Oferta) error {
+func NewOferta(c appengine.Context, oferta *Oferta) (*Oferta, error) {
 	oferta.IdOft = RandId(14)
     _, err := datastore.Put(c, datastore.NewKey(c, "Oferta", oferta.IdOft, 0, nil), oferta)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	_ = PutChangeControl(c, oferta.IdOft, "Oferta", "A")
-	return nil
+	return oferta, nil
 }
 
 func GetOfertaSucursales(c appengine.Context, idoft string) (*[]OfertaSucursal, error) {
