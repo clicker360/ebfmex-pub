@@ -29,7 +29,7 @@ b, strong{ font-family:"Open Sans", "Century", "Palatino Linotype", sans-serif; 
 
 .Bg-ky{ background-color:#D30800;}
 .Bg-Drks{
-	background-color: #EFECEC;
+	background-color: #f2f0f0;
 }
 .Bg-Prm{ background-color:#D93545	;}
 .Bg-Sec{
@@ -38,6 +38,13 @@ b, strong{ font-family:"Open Sans", "Century", "Palatino Linotype", sans-serif; 
 .Bg-Red{
 	background-color:#ff4e3f;
 }
+.BgC-1{
+	background-color:#fbf8f8;
+}
+.BgC-2{
+	background-color:#e4e3e3;
+}
+
 .Bg-BL{ background-color:#000;}
 .Bg-Wh{ background-color:#FFF;}
 
@@ -121,6 +128,7 @@ a.btnInicio:hover{
 /******font Size******/
 
 .typeMin{ font-size:10px}
+.typeSmall{ font-size:11px medium;1em;}
 .typeStnd	 { font-size:14px}
 .typeMx { font-size:16px}
 .typeTle { font-size:20px}
@@ -915,7 +923,24 @@ input.selectWord{
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	background-color: #F6FCFC;
-	margin: 5px;
+}
+.divAsInput{
+	float: left;
+	-webkit-box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	-webkit-border-radius: 3px;
+	border-radius: 6px;
+	background-color: #FFFFFF;
+	min-height: 40px;
+	padding: 3px;
+	border: 2px solid #DFE2E9;
+}
+.divAsInput2{
+	border: 3px solid #fbf8f8;
+	float: left;
+	border-radius: 3px;
+	background-color: #FFFFFF;
+	min-height: 40px;
 }
 
 a.wordselected{

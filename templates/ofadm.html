@@ -134,8 +134,12 @@
 					<div class="col-19 last">
 						<div class="titlecond">
 							<div class="col-18" style="overflow:hidden;height:38px;">
+                             	<a href="#"  class="orange button last big" id=""><span>Agregar Nueva Oferta</span></a>
 								<h6 class="marg-L5pix first typ-Tr">Oferta de <span class="typ-BK">{{with .Empresa}}{{.Nombre}}{{end}}</span></h6>
 								<a href="/ofs?IdEmp={{with .Empresa}}{{.IdEmp}}{{end}}" class="button big grey last"><span>&lt;&lt;Regresar</span></a>
+                               
+                                  
+                                   
 							</div>
 						</div>
 						<!-- Inicia estructura de campos Oferta -->    
@@ -145,20 +149,16 @@
 							<input type="hidden" name="IdOft" value="{{.IdOft}}" id="IdOft"/>
 							<input type="hidden" name="IdEmp" value="{{.IdEmp}}" id="IdEmp"/>
 							<div class="col-19 "> 
-								<div class="last col-8"> 
+								<div class="last col-8 marg-R5pix"> 
 							
 									<!--vista preliminar de la oferta en la búsqueda-->
                                         <div class="col-8" id="previewer">
-                                            <div class="Addvice col-7">
+                                            <div class=" Bg-Drks col-8 padd-D20px">
                                                 <h6 class="col-100PR typeMx typ-Tr alineCenter"> Vista preliminar </h6>
-                                            </div>
-                                            <div class=" marg-L10pix col-7">
-                                            <a href="#null" class="button grey medium marg-L50pix"  onclick="activeLghtbx()" id="cards" name="cards">
-                                                <span class="col-6 alineCenter">SUBIR O MODIFICAR IMÁGEN</span>
-                                            </a>
-                                            </div>
+                                            
+                                            
                                             <!--div onclick="activeOfer();" -->
-                                            <div class="col-7 marg-L10pix marg-U10pix marg-D10pix outlined SHW-div-D3px"> 
+                                            <div class="col-7 marg-L20pix marg-U10pix marg-D10pix Bg-Wh outlined SHW-div-D3px"> 
                                                 <div class="box1">
                                                     <div id="urlimg"><img src="" alt="Imagen de la oferta" width="258" id="pic" /> </div>
                                                 </div>
@@ -168,20 +168,33 @@
                                                     <h4 class="typ-Sc typeMx" id="oferTit">{{.Oferta}}</h4>
                                                 </div>
                                             </div>
+                                            <div class=" marg-L10pix col-7">
+                                            <a href="#null" class="button grey medium marg-L50pix"  onclick="activeLghtbx()" id="cards" name="cards">
+                                                <span class="col-7 alineCenter">SUBIR O MODIFICAR IMÁGEN</span>
+                                            </a>
+                                            </div>
+                                            </div>
                                             <!--/div-->
                                             <!--div class="Addvice col-7">Haz click en la oferta para ver la vista interior</div-->
                                         </div>
 								</div>
 								<div class="col-11 marg-L5pix">
 									<!--TITULO DE LA OFERTA-->
-									<div class=" col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
+									<div class=" col-10 padd-UD5px padd-LR15px marg-D5pix marg-L5pix Bg-Drks">
 										<label class="col-5"><span class="typ-Sc">*</span> Título de la oferta</label>
 										<input type="text" class="validate[required] medium {{.ErrOferta}}" name="Oferta" value="{{.Oferta}}" id="oferta" maxlength="350" onchange="javascript:$('#oferTit').text($('#oferta').val()); activateCancel();"/>
 										<div class="col-7 Addvice last"> Máximo 55 caracteres</div>
 									</div>
 
-									<!--CATEGORIAS-->
-									<div class=" col-10 padd-UD5px padd-LR15px marg-L5pix Bg-Drks">
+							
+									<!--Descripcion de ofertas-->
+									<div class=" col-10 padd-UD5px padd-LR15px marg-D5pix marg-L5pix Bg-Drks">
+										<label class="col-5"><span class="typ-Sc">*</span>¿En que consiste tu oferta?</label>
+										<textarea class="validate[required] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="350" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
+										<span class="col-7 last Addvice">Máximo 350 caracteres</span>
+									</div>
+                                    		<!--CATEGORIAS-->
+									<div class=" col-10 padd-UD5px padd-LR15px marg-L5pix  marg-D5pix Bg-Drks">
 										<label class="col-3"><span class="typ-Sc">*</span> Categoría</label>
 										<select name="IdCat" size="1" id="categoria" class="validate[required] last medium" onchange="activateCancel();">
 											<option value=""> SELECCIONAR UNA </option>
@@ -190,16 +203,10 @@
 											{{end}}					
 										</select>
 									</div>
-									<!--CATEGORIAS-->
-									<div class=" col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
-										<label class="col-5"><span class="typ-Sc">*</span>Descripción de la oferta</label>
-										<textarea class="validate[required] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="350" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
-										<span class="col-7 last Addvice">Máximo 350 caracteres</span>
-									</div>
 									<!--EL BUEN FIN EN LINEA-->
 									<div class=" col-10 padd-UD5px padd-LR15px marg-LR5pix Bg-Drks">
-										<label class="col-8 "> (Corregir este texto) Si tu oferta está disponible en tu sitio web ¡Participa en El Buen Fin en línea!</label>
-										<input type="checkbox" class="last marg-10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} onchange="javascript:/*$('#oferLinea').text('Esta promoción participa en El Buen Fin en línea'); activateCancel();*/" />
+										<label class="col-8 ">Oferta está disponible en tu sitio web</label>
+										<input type="checkbox" class="last marg-U10pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} onchange="javascript:/*$('#oferLinea').text('Esta promoción participa en El Buen Fin en línea'); activateCancel();*/" />
 										<hr  class="first"	/>
 										<label class="col-8"> Enlace web a tu oferta y/o sitio web</label>
 										<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
@@ -263,32 +270,32 @@
 									<!-- termina datepicker -->
 					
 									<!--SELECTOR DE PALABRAS CLAVE-->
-									<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U5pix">
-										<h6 class="col-100PR typeMx typ-Tr"> Palabras Clave </h6>
-										<div class="col-100PR first outlined Bg-Wh">
-											<label class="col-15">Agregar palabra</label>
-											<input type="text" class="selectWord" name="textopcve" value="" id="tokenpcve" />
+									<div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
+										<p> Palabras Clave </p>
+										<div class="col-100PR first  Bg-Wh padd-UD10px">
+										  <input type="text" class="selectWord  marg-L20pix marg-R10pix marg-U5pix" name="textopcve" value="" id="tokenpcve" />
 											<div class=" first marg-U5pix">
-												<a href="#null" class=" button orange medium" id="nuevapcve"><span>Agregar palabra <img src="gfx/iconDown.png" width="15" height="20" /></span></a>
+												<a href="#null" class=" button orange medium" id="nuevapcve"><span>AÑADIR palabra <img src="gfx/iconDown.png" width="15" height="20" /></span></a>
+											</div>
+                                          <div class=" divAsInput col-9 marg-L20pix marg-U10pix" id="unpickpcve">
+												
+												<!--esto se llena automáticamente-->
+											</div>
+									  </div>
+										<div id="pcvepicker" class=" col-10 padd-D10px BgC-2">
+							
+											
+											<p class="marg-5px typeSmall">Otras palabras que haz capturado</p>
+											<div class=" divAsInput2  col-9 marg-L20pix" id="pickpcve">
+												
+											<!--esto se llena automáticamente-->
 											</div>
 										</div>
-										<div id="pcvepicker">
-										<p class="clear"> Palabras clave para esta oferta </p><!-- NO MOVER ESTE ID, se utiliza para poblar el contenido de este DIV-->
-											<div class=" col-100PR Bg-Sec outlined first">
-												
-												<div id="unpickpcve"><!--esto se llena automáticamente--></div>
-											</div>
-											<p class="marg-5px"> Palabras clave sugeridas</p>
-											<div class=" col-100PR Bg-Sec outlined first">
-												
-												<div id="pickpcve"><!--esto se llena automáticamente--></div>
-											</div>
-										</div>
-										<div class="col-8 Addvice"> Ayudan a mejorar los resultados de búsqueda de tu oferta. Máximo 5 palabras.</div>  
+										<div class="col-9 Addvice last"> Ayuda a mejorar los resultados de búsqueda de tu oferta. Máximo 5 palabras.</div>  
 									</div>
 									
 									<!--SUCURSALES-->
-									<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U10pix">
+									<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U5pix">
 										<div class="first" id="sucursales">
 											<h6 class="col-100PR typeMx typ-Tr">Sucursales donde participa la oferta</h6>
 											<div  class="first marg-L6pix marg-U5pix" id="listasuc"> 
@@ -297,19 +304,16 @@
 										</div>
 									</div>
 
-                        			<div class="marg-L10pix Addvice col-10"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
-									<div class="col-10 marg-L40pix" id="newbtn">
-										<button type="submit" class="big red last"><span class="col-8">Guardar</span></button>
+                        			<div class=" marg-L15pix Addvice col-10"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
+									<div class="col-10 marg-L15pix" id="newbtn">
+										<button type="submit" class="big red last"><span class="col-9">Guardar</span></button>
 										<button type="reset" class="orange hidden" id="cancelbtn"><span class="col-5">Limpiar Campos</span></button>
 									</div>
-									<div class="col-10" id="modbtn">
-										<button type="submit" class="big red last"><span class="col-8">Modificar</span></button>
+									<div class="col-10 marg-L15pix" id="modbtn">
+										<button type="submit" class="big red last"><span class="col-9">Modificar</span></button>
 										<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
                                         
 									</div>
-                                   <div class="col-10" >
-                                   	<button  class="orange medium last marg-U15pix" id=""><span class="col-8">Agregar Nueva Ofertas</span></button>
-                                   </div>
 								</div>
 							</div>
 						</form>
