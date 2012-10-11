@@ -19,44 +19,38 @@ $(document).ready(function() {
 	var max_size=400;
 	if(idoft == 'none') {
 		// se ocultan los campos que requieren IdOft
+		putDefault();
 		$('#dataoferta').hide();
 		$('#imgform').hide();
 		$('#modbtn').hide();
 		$('#newbtn').show();
-		$('#previewer').hide();
-		$('#message').show();
 		$('#statuspub').attr("checked", true);
 	} else {
 		$('#dataoferta').show();
 		$('#imgform').show();
 		$('#modbtn').show();
-		$('#newbtn').hide();
-		$('#previewer').show();
-		$('#message').hide();
+		$('#newbtn').hide();	
 	}
-	$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });
-	function updateimg() {
-		if(idoft != 'none') {
-			var query = "id="+idoft;
-			$pic.attr('src', "/ofimg?"+query);
-		} else {
-			$pic.attr('src', "imgs/imageDefault.jpg");
-		}
-	}
+	
+	
+	/*$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });*/
+	
 
 	/* solo se actualizan estos datos si hay id de oferta */
 	if(idoft != 'none') {
-		updateimg();
+		updateimg(idoft);
 		fillpromo();
-		filltc(idoft);
+		//filltc(idoft);
 		fillpcve(idoft, idemp);
 		fillsucursales(idoft, idemp);
 	}
 
-	(function() {
+
 	var bar = $('.bar');
 	var percent = $('.percent');
 	var status = $('#status');
+	var img;
+		
 	   
 	$('#enviar').ajaxForm({
 		beforeSend: function() {
@@ -72,11 +66,12 @@ $(document).ready(function() {
 		},
 		complete: function(xhr) {
 			status.html(xhr.responseText);
-			updateimg();
+			setTimeout(function(){
+				 updateimg(idoft); }, 1000); 	
 		}
 	}); 
-
-	})();       
+$("#pic").error(function() { putDefault()});
+	     
 
 	$('textarea[maxlength]').live('keyup blur', function() {
 		var maxlength = $(this).attr('maxlength'); var val = $(this).val();
@@ -85,7 +80,7 @@ $(document).ready(function() {
 		}
 	});
 
-	/* Promociones */
+	/* Promociones
 	$('.promo').click(function(e){
 		var token = $(this);
 		var stoppick = false;
@@ -118,7 +113,7 @@ $(document).ready(function() {
 			}, "json");
 		}
 	});
-
+ */
 	/* Palabras clave */
 	$('#pcvepicker').on("click", "a", function(e){
 		var token = $(this);
@@ -157,6 +152,28 @@ $(document).ready(function() {
 	});
 
 });/* termina onload */
+
+function avoidCache(){
+				var numRam = Math.floor(Math.random() * 500);
+				return numRam;
+			}		
+	function putDefault() {
+				$('#pic').remove();
+				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='258px' />" 
+				$('#urlimg').append(img);
+			}
+	function updateimg(idoft) {
+		if(idoft != 'none') {
+			//alert(idoft);
+			$('#pic').remove();
+			var query = "id="+idoft + "&Avc=" + avoidCache();
+			img = "<img  src = '/ofimg?"+ query +"' id='pic' width='256px' />" 
+			$('#urlimg').append(img);
+		} else {
+	 		putDefault();
+		}
+	}
+
 
 /*
  * Llena palabras clave por oferta y empresa
@@ -222,7 +239,7 @@ function fillpromo() {
 
 /*
  * Llena tarjetas participantes
- */
+ 
 function filltc(idoft) {
 	$.get("/tcxo", { id: "" + idoft }, function(data) {
 		$.each(data, function(i,item){
@@ -260,7 +277,6 @@ function filltc(idoft) {
 	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	.complete(function(){});
 }
-/* 
  * Llena las sucursales
  */
 function fillsucursales(idoft, idemp) {

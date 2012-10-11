@@ -6,8 +6,8 @@
 		<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
 		<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
 		<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
-		<script type="text/javascript" src="scripts/ofertas.js" charset="utf-8"></script>
-		<script type="text/javascript" src="scripts/datepicker.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../scripts/ofertas.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../scripts/datepicker.js" charset="utf-8"></script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', 'UA-26907178-1']);
@@ -226,42 +226,40 @@
 							<input type="hidden" value="a" name="s"/>
 							<input type="hidden" name="IdOft" value="{{.IdOft}}" id="IdOft"/>
 							<input type="hidden" name="IdEmp" value="{{.IdEmp}}" id="IdEmp"/>
-							<div class="col-19 marg-D20pix"> 
+							<div class="col-19 "> 
 								<div class="last col-8"> 
-									<!--mensaje de la primera parte-->
-									<div class="col-7 padd-10px Bg-Drks" id="message">
-										<h3>Primera parte</h3>
-										<p class="typeMx">Una vez realizada la primer captura podras ver la vista prelimiar de tu oferta</p>
-									</div>
+							
 									<!--vista preliminar de la oferta en la busqueda-->
-									<div class="col-8 hide" id="previewer">
-										<div class="Addvice col-7">
-											<h6 class="col-100PR typeMx typ-Tr alineCenter"> Vista preliminar </h6>
-										</div>
-										<a href="#null" class="button grey medium marg-L50pix"  onclick="activeLghtbx()" id="cards" name="cards">
-											<span class="col-7 alineCenter">SUBIR O MODIFICAR IMÁGEN</span>
-										</a>
-										<!--div onclick="activeOfer();" -->
-											<div class="col-7 marg-L10pix marg-U10pix marg-D10pix outlined SHW-div-D3px"> 
-												<div class="box1">
-													<div id="urlimg"><img src="" alt="Imagen de la oferta" width="258" id="pic" /> </div>
-												</div>
-												<div class="box1">
-													<h3 class="typeStnd typ-BK" id="Empre">{{with .Empresa}}{{.Nombre}}{{end}}</h3>
-													<h3 class="typ-Sc typeMx" id="oferLinea">{{if .Enlinea}}{{end}}</h3>
-													<h4 class="typ-Sc typeMx" id="oferTit">{{.Oferta}}</h4>
-												</div>
-											</div>
-										<!--/div-->
-										<!--div class="Addvice col-7">Haz click en la oferta para ver la vista interior</div-->
-									</div>
+                                        <div class="col-8" id="previewer">
+                                            <div class="Addvice col-7">
+                                                <h6 class="col-100PR typeMx typ-Tr alineCenter"> Vista preliminar </h6>
+                                            </div>
+                                            <div class=" marg-L10pix col-7">
+                                            <a href="#null" class="button grey medium marg-L50pix"  onclick="activeLghtbx()" id="cards" name="cards">
+                                                <span class="col-6 alineCenter">SUBIR O MODIFICAR IMÁGEN</span>
+                                            </a>
+                                            </div>
+                                            <!--div onclick="activeOfer();" -->
+                                                <div class="col-7 marg-L10pix marg-U10pix marg-D10pix outlined SHW-div-D3px"> 
+                                                    <div class="box1">
+                                                        <div id="urlimg"><img src="" alt="Imagen de la oferta" width="258" id="pic" /> </div>
+                                                    </div>
+                                                    <div class="box1">
+                                                        <h3 class="typeStnd" id="Empre">{{with .Empresa}}{{.Nombre}}{{end}}</h3>
+                                                        <h3 class="typ-Sc typeMx" id="oferLinea">{{if .Enlinea}}{{end}}</h3>
+                                                        <h4 class="typ-Sc typeMx" id="oferTit">{{.Oferta}}</h4>
+                                                    </div>
+                                                </div>
+                                            <!--/div-->
+                                            <!--div class="Addvice col-7">Haz click en la oferta para ver la vista interior</div-->
+                                        </div>
 								</div>
 								<div class="col-11 marg-L5pix">
 									<!--TITULO DE LA OFERTA-->
 									<div class=" col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
 										<label class="col-5"><span class="typ-Sc">*</span> Titulo de la Oferta</label>
 										<input type="text" class="validate[required] medium {{.ErrOferta}}" name="Oferta" value="{{.Oferta}}" id="oferta" onchange="javascript:$('#oferTit').text($('#oferta').val()); activateCancel();"/>
-										<div class="col-6 Addvice last"> Maximo 55 caracteres</div>
+										<div class="col-7 Addvice last"> Maximo 55 caracteres</div>
 									</div>
 
 									<!--CATEGORIAS-->
@@ -276,27 +274,26 @@
 									</div>
 									<!--CATEGORIAS-->
 									<div class=" col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
-										<label class="col-5"> Descripción de la oferta</label>
-										<textarea class="validate[optional] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="200" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
-										<span class="col-6 last Addvice">Maximo 350 carcteres</span>
+										<label class="col-5"><span class="typ-Sc">*</span>Descripción de la oferta</label>
+										<textarea class="validate[required] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="350" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
+										<span class="col-7 last Addvice">Maximo 350 carcteres</span>
 									</div>
 									<!--EL BUEN FIN EN LINEA-->
 									<div class=" col-10 padd-UD5px padd-LR15px marg-LR5pix Bg-Drks">
-										<label class="col-9 "> Si ya tienes promoción de tu producto en Internet ¡Participa en El Buen Fin en línea!</label>
+										<label class="col-8 "> Si ya tienes promoción de tu producto en Internet ¡Participa en El Buen Fin en línea!</label>
 										<input type="checkbox" class="last marg-10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} onchange="javascript:/*$('#oferLinea').text('Esta promoción participa en El Buen Fin en línea'); activateCancel();*/" />
-
+<hr  class="first"	/>
 										<label class="col-8"> Enlace web a tu oferta y/o sitio web</label>
 										<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
-										<input type="text" class="validate[optional,custom[url]] medium {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
+										<input type="text" class="validate[optional,custom[url]] medium  last {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
 									</div>
 
 									<!-- Date picker -->
 									<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
-										<label class="col-9">Oferta publicada</label>
+										<label class="col-5">Oferta publicada</label>
 										<input name="StatusPub" type="checkbox" class="last marg-10pix" id="statuspub" value="1" {{if .StatusPub}}checked="checked"{{end}} onchange="activateCancel()"/>
-									 	<div class="col-8 last Addvice">La oferta estará a la vista pública si selecciona esta opción</div>
-									</div>
-									<div class="col-10 padd-UD5px padd-LR15px marg-LR5pix Bg-Drks">
+									 	<div class=" col-95PR last Addvice">La oferta estará a la vista pública si selecciona esta opción</div>
+										<hr  class="first"/>
 										<div class="col-10">
 											<label class="col-4">Fecha de publicación</label>
 											<input type="text" class="validate[optional] small last" name="FechaHoraPub" id="date1" readonly="readonly" onclick="return toggleCalendar(this);" value="{{.ErrFechaHoraPub}}"/>
@@ -334,99 +331,49 @@
 												<li><a href="#null" onClick="getTheDate(this)" id="17">17</a></li>
 												<li><a href="#null" onClick="getTheDate(this)" id="18">18</a></li>
 												<li><a href="#null" onClick="getTheDate(this)" id="19">19</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="20">20</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="21">21</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="22">22</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="23">23</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="24">24</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="25">25</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="26">26</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="27">27</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="28">28</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="29">29</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="30">30</a></li>
-												<li><a href="#null" onClick="getTheDate(this)" id="31">31</a></li>
+												<li><a href="#null" onClick="getTheDate(this)" id="19">20</a></li>
+												<li>21</li>
+												<li>22</li>
+												<li>23</li>
+												<li>24</li>
+												<li>25</li>
+												<li>26</li>
+												<li>27</li>
+												<li>28</li>
+												<li>29</li>
+												<li>30</li>
+												<li>31</li>
 											</ul>
 										</div>
 									</div>
 									<!-- termina datepicker -->
 
-									<div class="marg-L15pix first"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
-									<div class="col-10" id="newbtn">
-										<button type="submit" class="big red"><span class="col-6">Guardar y proseguir</span></button>
-										<button type="reset" class="orange hidden" id="cancelbtn"><span class="col-5">Limpiar Campos</span></button>
-									</div>
-									<div class="col-10" id="modbtn">
-										<button type="submit" class="big red last"><span>Modificar</span></button>
-										<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
-									</div>
-								</div>
-							</div>
-						</form>
-						{{end}}
+					
 						<!--COMEINZA SEGUNDA PARTE-->
 						<div id="dataoferta" class="col-11">
-							<hr/>
-							<div class="marg-L15pix typeMx first">Los siguientes datos se actualizan automáticamente </div>
-							<!--SELECTOR DE PROMOCIONES-->
-							<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
-								<h6 class="col-100PR typeMx typ-Tr"> Promoción</h6>
-								<div class="col-100PR first outlined Bg-Wh">
-									<p class="marg-5px"> Condiciones agregadas </p>
-									<div id="unpickpromo"><!--esto se llena automáticamente--></div>
-								</div>
-
-								<div class=" col-100PR Bg-Sec outlined first">
-									<p class="marg-5px"> Sugerencias </p>
-									<div id="pickpromo">
-										<a href="#null" class="sugestWord promo" value="50" tipo="desc">50%</a>
-										<a href="#null" class="sugestWord promo" value="40" tipo="desc">40%</a>
-										<a href="#null" class="sugestWord promo" value="35" tipo="desc">35%</a>
-										<a href="#null" class="sugestWord promo" value="30" tipo="desc">30%</a>
-										<a href="#null" class="sugestWord promo" value="25" tipo="desc">25%</a>
-										<a href="#null" class="sugestWord promo" value="20" tipo="desc">20%</a>
-										<a href="#null" class="sugestWord promo" value="15" tipo="desc">15%</a>
-										<a href="#null" class="sugestWord promo" value="10" tipo="desc">10%</a>
-										<a href="#null" class="sugestWord promo" value="5" tipo="desc">5%</a>
-										<a href="#null" class="sugestWord promo" value="2x1" tipo="promo">2x1</a>
-										<a href="#null" class="sugestWord promo" value="3x2" tipo="promo">3x2</a>
-										<a href="#null" class="sugestWord promo" value="Meses sin intereses" tipo="meses">Meses sin intereses</a>
-										<a href="#null" class="sugestWord promo" value="Gratis en la compra de otro" tipo="promo">Gratis en la compra de otro</a>
-										<a href="#null" class="sugestWord promo" value="Liquidación" tipo="promo">Liquidación</a>
-									</div>
-								</div>
-								<div class="last Addvice"> Si no se ajustan las sugerencias, incluya su promoción en la descripción. </div>
-							</div>
-							<!--SELECTOR DE PALABRAS CLAVE-->
-							<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U10pix">
+							<!--SELECTOR DE PROMOCIONES--><!--SELECTOR DE PALABRAS CLAVE-->
+							<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U5pix">
 								<h6 class="col-100PR typeMx typ-Tr"> Palabras Clave </h6>
 								<div class="col-100PR first outlined Bg-Wh">
 									<label class="col-15">Agregar palabra</label>
 									<input type="text" class="selectWord" name="textopcve" value="" id="tokenpcve" />
-									<div class=" first marg-U5pix marg-L10pix">
+									<div class=" first marg-U5pix">
 										<a href="#null" class=" button orange medium" id="nuevapcve"><span>Agregar palabra <img src="gfx/iconDown.png" width="15" height="20" /></span></a>
 									</div>
 								</div>
-								<div id="pcvepicker"><!-- NO MOVER ESTE ID, se utiliza para poblar el contenido de este DIV-->
+								<div id="pcvepicker">
+                                <p class="clear"> Palabras clave para esta oferta </p><!-- NO MOVER ESTE ID, se utiliza para poblar el contenido de este DIV-->
 									<div class=" col-100PR Bg-Sec outlined first">
-										<p class="clear"> Palabras clave para esta oferta </p>
+										
 										<div id="unpickpcve"><!--esto se llena automáticamente--></div>
 									</div>
+                                    <p class="marg-5px"> Palabras clave sugeridas</p>
 									<div class=" col-100PR Bg-Sec outlined first">
-										<p class="marg-5px"> Palabras clave disponibles</p>
+										
 										<div id="pickpcve"><!--esto se llena automáticamente--></div>
 									</div>
 								</div>
-								<div class="first Addvice"> Ayudan a mejorar los resultados de busqueda de tu oferta. Puedes añadir las palabras clave que consideres necesarias y estarán disponibles para usarse en otras ofertas. Máximo 5 palabras.</div>  
-							</div>
-							<!--TARJETAS PARTICIPANTES-->
-							<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U10pix">
-								<div class="first"> 
-									<h6 class="col-100PR typeMx typ-Tr">Tarjetas participantes</h6>
-								</div>
-								<div class="first marg-L6pix marg-U5pix" id="listatc">
-								<!-- relleno ajax -->
-								</div>
+								<div class="col-8 Addvice"> Ayudan a mejorar los resultados de busqueda de tu oferta. Máximo 5 palabras.</div>  
 							</div>
 							<!--SUCURSALES-->
 							<div class="col-10 padd-15px marg-L5pix Bg-Drks marg-U10pix">
@@ -438,6 +385,23 @@
 								</div>
 							</div>
 						</div>
+                        				<div class="marg-L10pix Addvice col-10"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
+									<div class="col-10 marg-L40pix" id="newbtn">
+										<button type="submit" class="big red"><span class="col-8">Guardar y proseguir</span></button>
+										<button type="reset" class="orange hidden" id="cancelbtn"><span class="col-5">Limpiar Campos</span></button>
+									</div>
+									<div class="col-10" id="modbtn">
+										<button type="submit" class="big red last"><span class="col-8">Modificar</span></button>
+										<button type="reset" class="grey last marg-U15pix hidden" id="cancelbtn"><span>Limpiar Campos</span></button>
+                                        
+									</div>
+                                   <div class="col-10" >
+                                    <button  class="orange medium last marg-U15pix" id=""><span class="col-7">Agregar Nueva Ofertas</span></button>
+                                    </div>
+								</div>
+							</div>
+						</form>
+						{{end}}
 					</div>
 					<!-- Termina estructura de campos Oferta --> 
 				</div>
