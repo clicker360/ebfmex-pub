@@ -8,22 +8,19 @@ package oferta
 import (
 	"appengine"
 	"appengine/datastore"
-	"encoding/json"
 	"sortutil"
-	//"resize"
-	//"bytes"
 	"strings"
 	"strconv"
-	//"fmt"
-	//"image"
-	//"image/jpeg"
 	_ "image/png" // import so we can read PNG files.
-	//"io"
 	"net/http"
 	"html/template"
 	"sess"
 	"model"
 	"time"
+	//"encoding/json"
+	//"resize"
+	//"bytes"
+	//"fmt"
 )
 
 type FormDataOf struct {
@@ -144,71 +141,100 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 	if s, ok := sess.IsSess(w, r, c); ok {
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		fd, valid :=ofForm(w, r, true)
-		ofertamod := oftFill(fd)
-		oferta := model.GetOferta(c, ofertamod.IdOft)
-		if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
-			tc["Empresa"] = empresa
-			fd.IdEmp = empresa.IdEmp
-			fd.Empresa = empresa.Nombre
-			ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
-			ofertamod.Tarjetas = oferta.Tarjetas
-			ofertamod.Promocion = oferta.Promocion
-			ofertamod.Descuento = oferta.Descuento
-			ofertamod.Meses = oferta.Meses
-			ofertamod.Image = oferta.Image
-			ofertamod.ImageA = oferta.ImageA
-			ofertamod.ImageB = oferta.ImageB
-			ofertamod.Sizepx = oferta.Sizepx
-			ofertamod.Sizepy = oferta.Sizepy
-			ofertamod.SizeApx = oferta.SizeApx
-			ofertamod.SizeApy = oferta.SizeApy
-			ofertamod.SizeBpx = oferta.SizeBpx
-			ofertamod.SizeBpy = oferta.SizeBpy
-		}
-		// TODO
-		// es preferible poner un regreso avisando que no existe la empresa
-		if valid {
-			if oferta.IdOft != "none" {
-				// Ya existe
-				err := model.PutOferta(c, &ofertamod)
+		var fd FormDataOf
+		var valid bool
+		var ofertamod model.Oferta
+
+		if  r.FormValue("IdOft") == "new" {
+			/*
+			 * Se pide una oferta nueva y se llena una estructura vacía 
+			 * Se escribe a la base de datos sólo con el id oferta para poder
+			 * relacionar el resto de los objetos del formato (imágenes y palabras clave)
+			 */
+
+			 /*
+			  * Sección de tarjetas
+			  * Se crean un hash jason para manejar las opciones del lado del cliente
+			  *
+			  * Se habilitará para posibles verisiones futuras
+			  *
+			var jsonBlob = []byte(`[
+				{"Id":1, "Tarjeta": "American Express", "Selected":0, "Status":""},
+				{"Id":3, "Tarjeta": "Banamex", "Selected":0, "Status":""},
+				{"Id":7, "Tarjeta": "Bancomer", "Selected":0, "Status":""},
+				{"Id":8, "Tarjeta": "Banorte", "Selected":0, "Status":""},
+				{"Id":4, "Tarjeta": "HSBC", "Selected":0, "Status":""},
+				{"Id":9, "Tarjeta": "Santander", "Selected":0, "Status":""},
+				{"Id":5, "Tarjeta": "ScotiaBank", "Selected":0, "Status":""},
+				{"Id":2, "Tarjeta": "Master Card", "Selected":0, "Status":""},
+				{"Id":6, "Tarjeta": "Visa", "Selected":0, "Status":""}
+			]`)
+			var tarjetas []jsonTc
+			if err := json.Unmarshal(jsonBlob, &tarjetas); err != nil {
 				model.Check(err)
+			}
+			sortutil.AscByField(tarjetas, "Tarjeta")
+			b, _ := json.Marshal(tarjetas)
+			ofertamod.Tarjetas = b;
+			*/
+			if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
+				tc["Empresa"] = empresa
+				fd.IdEmp = empresa.IdEmp
+				fd.Empresa = empresa.Nombre
+				ofertamod.IdEmp = empresa.IdEmp
+				ofertamod.Oferta = "Nueva oferta"
+				ofertamod.FechaHora = time.Now()
+				ofertamod.FechaHoraPub = time.Now()
+				ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
+				o, err := model.NewOferta(c, &ofertamod)
+				model.Check(err)
+				fd = ofToForm(*o)
+				fd.Ackn = "Ok";
 			} else {
-				// nueva oferta
-				// Se inicializan las tarjetas participantes:
-				var jsonBlob = []byte(`[
-				    {"Id":1, "Tarjeta": "American Express", "Selected":0, "Status":""},
-				    {"Id":3, "Tarjeta": "Banamex", "Selected":0, "Status":""},
-				    {"Id":7, "Tarjeta": "Bancomer", "Selected":0, "Status":""},
-				    {"Id":8, "Tarjeta": "Banorte", "Selected":0, "Status":""},
-				    {"Id":4, "Tarjeta": "HSBC", "Selected":0, "Status":""},
-				    {"Id":9, "Tarjeta": "Santander", "Selected":0, "Status":""},
-				    {"Id":5, "Tarjeta": "ScotiaBank", "Selected":0, "Status":""},
-				    {"Id":2, "Tarjeta": "Master Card", "Selected":0, "Status":""},
-				    {"Id":6, "Tarjeta": "Visa", "Selected":0, "Status":""}
-				]`)
-				var tarjetas []jsonTc
-				if err := json.Unmarshal(jsonBlob, &tarjetas); err != nil {
-					model.Check(err)
+				// redireccionar
+				http.Redirect(w, r, "/le?d=o", http.StatusFound)
+			}
+		} else {
+			/* 
+			 * Se pide un id oferta que en teoría existe, se consulta y se cambia
+			 * Se valida y si no existe se informa un error
+			 */
+			fd, valid =ofForm(w, r, true)
+			ofertamod = oftFill(fd)
+			oferta := model.GetOferta(c, ofertamod.IdOft)
+			if oferta.IdOft == "none" {
+				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
+					tc["Empresa"] = empresa
+					fd.IdEmp = empresa.IdEmp
+					fd.Empresa = empresa.Nombre
+					ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
+					ofertamod.Tarjetas = oferta.Tarjetas
+					ofertamod.Promocion = oferta.Promocion
+					ofertamod.Descuento = oferta.Descuento
+					ofertamod.Meses = oferta.Meses
+					ofertamod.Image = oferta.Image
+					ofertamod.ImageA = oferta.ImageA
+					ofertamod.ImageB = oferta.ImageB
+					ofertamod.Sizepx = oferta.Sizepx
+					ofertamod.Sizepy = oferta.Sizepy
+					ofertamod.SizeApx = oferta.SizeApx
+					ofertamod.SizeApy = oferta.SizeApy
+					ofertamod.SizeBpx = oferta.SizeBpx
+					ofertamod.SizeBpy = oferta.SizeBpy
 				}
-				sortutil.AscByField(tarjetas, "Tarjeta")
-				b, _ := json.Marshal(tarjetas)
-				ofertamod.Tarjetas = b;
-				err := model.NewOferta(c, &ofertamod)
-				model.Check(err)
-			}
-			fd = ofToForm(ofertamod)
-			fd.Ackn = "Ok";
-		}
-		/*
-			Relaciones oferta-sucursal
-		emsucs := model.GetEmpSucursales(c, ofertamod.IdEmp)
-		for i,es:= range *emsucs {
-			if(r.FormValue(es.IdSuc) == es.IdSuc) {
-				//Añade relación oferta-sucursal
+				// TODO
+				// es preferible poner un regreso avisando que no existe la empresa
+				if valid {
+					if oferta.IdOft != "none" {
+						// Ya existe
+						err := model.PutOferta(c, &ofertamod)
+						model.Check(err)
+					}
+					fd = ofToForm(ofertamod)
+					fd.Ackn = "Ok";
+				}
 			}
 		}
-		*/
 
 		fd.Categorias = listCat(c, ofertamod.IdCat);
 		tc["FormDataOf"] = fd
