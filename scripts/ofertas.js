@@ -20,27 +20,19 @@ $(document).ready(function() {
 	if(idoft == 'none') {
 		// se ocultan los campos que requieren IdOft
 		putDefault();
-		$('#dataoferta').hide();
 		$('#imgform').hide();
 		$('#modbtn').hide();
 		$('#newbtn').show();
 		$('#statuspub').attr("checked", true);
 	} else {
-		$('#dataoferta').show();
 		$('#imgform').show();
 		$('#modbtn').show();
 		$('#newbtn').hide();	
 	}
 	
-	
-	/*$pic.error(function () { $(this).unbind("error").attr("src", "imgs/imageDefault.jpg"); });*/
-	
-
 	/* solo se actualizan estos datos si hay id de oferta */
 	if(idoft != 'none') {
 		updateimg(idoft);
-		fillpromo();
-		//filltc(idoft);
 		fillpcve(idoft, idemp);
 		fillsucursales(idoft, idemp);
 	}
@@ -70,7 +62,7 @@ $(document).ready(function() {
 				 updateimg(idoft); }, 1000); 	
 		}
 	}); 
-$("#pic").error(function() { putDefault()});
+	$("#pic").error(function() { putDefault()});
 	     
 
 	$('textarea[maxlength]').live('keyup blur', function() {
@@ -80,40 +72,13 @@ $("#pic").error(function() { putDefault()});
 		}
 	});
 
-	/* Promociones
-	$('.promo').click(function(e){
-		var token = $(this);
-		var stoppick = false;
-		if(token.attr("class") == "sugestWord promo") {
-			var kids = $('#unpickpromo').children();
-			kids.each(function(ii,obj) {
-				if($(this).attr('tipo') == token.attr('tipo')) {
-					alert("Sólo se permite combinar 3 tipos de promoción diferentes");
-					stoppick = true;
-				}
-			});
-			if(!stoppick) {
-				$.get("/modpromo", { token: ""+token.attr('value')+"", tipo: ""+token.attr('tipo')+"", id: ""+idoft+"" }, function(resp) {
-					if(resp.status=="ok") {
-						token.attr("class", "wordselected");	
-						$('#unpickpromo').append(token);
-					} else {
-						alert("Hubo un problema de conexión. Intente agregar de nuevo la promoción");
-					}
-				}, "json");
-			}
-		} else {
-			$.get("/delpromo", { token: '', tipo: ""+token.attr('tipo')+"", id: ""+idoft+"" }, function(resp) {
-				if(resp.status=="ok") {
-					token.attr("class", "sugestWord");	
-					$('#pickpromo').append(token);
-				} else {
-					alert("Hubo un problema de conexión. Intente agregar de nuevo la promoción");
-				}
-			}, "json");
+	$('oferta').live('keyup blur', function() {
+		var maxlength = $(this).attr('maxlength'); var val = $(this).val();
+		if (val.length > maxlength) {
+			$(this).val(val.slice(0, maxlength));
 		}
 	});
- */
+
 	/* Palabras clave */
 	$('#pcvepicker').on("click", "a", function(e){
 		var token = $(this);
@@ -154,25 +119,25 @@ $("#pic").error(function() { putDefault()});
 });/* termina onload */
 
 function avoidCache(){
-				var numRam = Math.floor(Math.random() * 500);
-				return numRam;
-			}		
-	function putDefault() {
-				$('#pic').remove();
-				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='258px' />" 
-				$('#urlimg').append(img);
-			}
-	function updateimg(idoft) {
-		if(idoft != 'none') {
-			//alert(idoft);
-			$('#pic').remove();
-			var query = "id="+idoft + "&Avc=" + avoidCache();
-			img = "<img  src = '/ofimg?"+ query +"' id='pic' width='256px' />" 
-			$('#urlimg').append(img);
-		} else {
-	 		putDefault();
-		}
+	var numRam = Math.floor(Math.random() * 500);
+	return numRam;
+}		
+function putDefault() {
+	$('#pic').remove();
+	img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='258px' />" 
+	$('#urlimg').append(img);
+}
+function updateimg(idoft) {
+	if(idoft != 'none') {
+		//alert(idoft);
+		$('#pic').remove();
+		var query = "id="+idoft + "&Avc=" + avoidCache();
+		img = "<img  src = '/ofimg?"+ query +"' id='pic' width='256px' />" 
+		$('#urlimg').append(img);
+	} else {
+		putDefault();
 	}
+}
 
 
 /*
@@ -205,78 +170,14 @@ function fillpcve(idoft, idemp) {
 	.success(function(){})
 	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	.complete(function(){});
-
 }
+
 function clearpcve() {
 	$("#unpickpcve").empty();
 	$("#pickpcve").empty();
 }
 
 /*
- * Llena las promociones
- */
-function fillpromo() {
-	var tc=$.get("/promosxo", { id: "" + idoft + ""}, function(data) {
-		var pick;
-		var kids = $('#pickpromo').children();
-		if($.isArray(data)) {
-			$.each(data, function(i,item){
-				kids.each(function(ii,obj) {
-					if($(this).attr('value') == item.token) {
-						pick = $(this);
-						pick.attr("class", "wordselected");	
-						pick.attr("value", item.token);	
-						$('#unpickpromo').append(pick);
-					}	
-				});
-			});
-		}
-	})
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
-	.complete(function(){});
-}
-
-/*
- * Llena tarjetas participantes
- 
-function filltc(idoft) {
-	$.get("/tcxo", { id: "" + idoft }, function(data) {
-		$.each(data, function(i,item){
-			var div = "<div class=\"bg-Gry2 col-10\"><label class=\"col-4 marg-L5pix\">"+item.Tarjeta+"</label> <input name=\"tarjeta\" type=\"checkbox\" class=\"last marg-R15pix marg-U5pix\" value=\""+item.Tarjeta+"\" id=\"tc_"+item.Id+"\" /></div>";
-			$('#listatc').append(div);
-			if(item.Selected=="1") {
-				$("#tc_"+item.Id).attr('checked', true);
-			} else {
-				$("#tc_"+item.Id).attr('checked', false);
-			}
-			$("#tc_"+item.Id).change(function() { 
-				var tarjetas = $("#listatc").children();
-				var sep = "";
-				var jsontxt = "";
-				tarjetas.each(function(ii,obj) {
-					i = ii+1;
-					if($("#tc_"+i).is(':checked')) {
-						jsontxt += sep+"{ \"Id\":"+i+", \"Tarjeta\":\""+$("#tc_"+i).val()+"\", \"Selected\":1, \"Status\":\"\" }";
-					} else {
-						jsontxt += sep+"{ \"Id\":"+i+", \"Tarjeta\":\""+$("#tc_"+i).val()+"\", \"Selected\":0, \"Status\":\"\" }";
-					}
-					sep = ",";
-				});
-				$.get("/modtcxo", { token: "["+jsontxt+"]", id: ""+idoft+"" }, function(resp) {
-					if(resp.Status=="ok") {
-						//alert(resp.status);
-					} else {
-						alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
-					}
-				}, "json");
-			});
-		});
-	})
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
-	.complete(function(){});
-}
  * Llena las sucursales
  */
 function fillsucursales(idoft, idemp) {

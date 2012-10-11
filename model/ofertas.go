@@ -12,9 +12,7 @@ type Oferta struct {
 	IdCat       int
 	Empresa		string
 	Oferta		string
-	NOferta			string
 	Descripcion		string
-	NDescripcion	string
 	Codigo      string
 	Precio      string
 	Descuento   string
@@ -46,9 +44,7 @@ type OfertaSucursal struct {
 	Lng         float64
 	Empresa     string
 	Oferta      string
-	NOferta		string
 	Descripcion		string
-	NDescripcion	string
 	Promocion	string
 	Precio      string
 	Descuento   string
@@ -144,9 +140,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 		ofsuc.Lng = os.Lng
 		ofsuc.Empresa = oferta.Empresa
 		ofsuc.Oferta = oferta.Oferta
-		ofsuc.NOferta = oferta.NOferta
 		ofsuc.Descripcion = oferta.Descripcion
-		ofsuc.NDescripcion = oferta.NDescripcion
 		ofsuc.Promocion = oferta.Promocion
 		ofsuc.Precio = oferta.Precio
 		ofsuc.Descuento = oferta.Descuento

@@ -30,10 +30,8 @@ type FormDataOf struct {
 	Categorias		*[]model.Categoria
 	Empresa			string
 	Oferta			string
-	NOferta			string
 	ErrOferta		string
 	Descripcion		string
-	NDescripcion	string
 	ErrDescripcion	string
 	Codigo			string
 	ErrCodigo		string
@@ -146,37 +144,6 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		var ofertamod model.Oferta
 
 		if  r.FormValue("IdOft") == "new" {
-			/*
-			 * Se pide una oferta nueva y se llena una estructura vacía 
-			 * Se escribe a la base de datos sólo con el id oferta para poder
-			 * relacionar el resto de los objetos del formato (imágenes y palabras clave)
-			 */
-
-			 /*
-			  * Sección de tarjetas
-			  * Se crean un hash jason para manejar las opciones del lado del cliente
-			  *
-			  * Se habilitará para posibles verisiones futuras
-			  *
-			var jsonBlob = []byte(`[
-				{"Id":1, "Tarjeta": "American Express", "Selected":0, "Status":""},
-				{"Id":3, "Tarjeta": "Banamex", "Selected":0, "Status":""},
-				{"Id":7, "Tarjeta": "Bancomer", "Selected":0, "Status":""},
-				{"Id":8, "Tarjeta": "Banorte", "Selected":0, "Status":""},
-				{"Id":4, "Tarjeta": "HSBC", "Selected":0, "Status":""},
-				{"Id":9, "Tarjeta": "Santander", "Selected":0, "Status":""},
-				{"Id":5, "Tarjeta": "ScotiaBank", "Selected":0, "Status":""},
-				{"Id":2, "Tarjeta": "Master Card", "Selected":0, "Status":""},
-				{"Id":6, "Tarjeta": "Visa", "Selected":0, "Status":""}
-			]`)
-			var tarjetas []jsonTc
-			if err := json.Unmarshal(jsonBlob, &tarjetas); err != nil {
-				model.Check(err)
-			}
-			sortutil.AscByField(tarjetas, "Tarjeta")
-			b, _ := json.Marshal(tarjetas)
-			ofertamod.Tarjetas = b;
-			*/
 			if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
 				tc["Empresa"] = empresa
 				fd.IdEmp = empresa.IdEmp
@@ -202,25 +169,25 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			fd, valid =ofForm(w, r, true)
 			ofertamod = oftFill(fd)
 			oferta := model.GetOferta(c, ofertamod.IdOft)
-			if oferta.IdOft == "none" {
+			if oferta.IdOft != "none" {
 				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
 					tc["Empresa"] = empresa
 					fd.IdEmp = empresa.IdEmp
 					fd.Empresa = empresa.Nombre
 					ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
 					ofertamod.Tarjetas = oferta.Tarjetas
-					ofertamod.Promocion = oferta.Promocion
-					ofertamod.Descuento = oferta.Descuento
-					ofertamod.Meses = oferta.Meses
+					//ofertamod.Promocion = oferta.Promocion
+					//ofertamod.Descuento = oferta.Descuento
+					//ofertamod.Meses = oferta.Meses
 					ofertamod.Image = oferta.Image
-					ofertamod.ImageA = oferta.ImageA
-					ofertamod.ImageB = oferta.ImageB
-					ofertamod.Sizepx = oferta.Sizepx
-					ofertamod.Sizepy = oferta.Sizepy
-					ofertamod.SizeApx = oferta.SizeApx
-					ofertamod.SizeApy = oferta.SizeApy
-					ofertamod.SizeBpx = oferta.SizeBpx
-					ofertamod.SizeBpy = oferta.SizeBpy
+					//ofertamod.ImageA = oferta.ImageA
+					//ofertamod.ImageB = oferta.ImageB
+					//ofertamod.Sizepx = oferta.Sizepx
+					//ofertamod.Sizepy = oferta.Sizepy
+					//ofertamod.SizeApx = oferta.SizeApx
+					//ofertamod.SizeApy = oferta.SizeApy
+					//ofertamod.SizeBpx = oferta.SizeBpx
+					//ofertamod.SizeBpy = oferta.SizeBpy
 				}
 				// TODO
 				// es preferible poner un regreso avisando que no existe la empresa
@@ -233,6 +200,8 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					fd = ofToForm(ofertamod)
 					fd.Ackn = "Ok";
 				}
+			} else {
+				// no existe la oferta
 			}
 		}
 
@@ -274,15 +243,13 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		IdEmp:			strings.TrimSpace(r.FormValue("IdEmp")),
 		IdCat:			ic,
 		Oferta:			strings.TrimSpace(r.FormValue("Oferta")),
-		NOferta:		strings.ToUpper(strings.TrimSpace(r.FormValue("Oferta"))),
 		ErrOferta: "",
 		Descripcion:	strings.TrimSpace(r.FormValue("Descripcion")),
-		NDescripcion:	strings.ToUpper(strings.TrimSpace(r.FormValue("Descripcion"))),
 		ErrDescripcion: "",
 		Codigo:			strings.TrimSpace(r.FormValue("Codigo")),
 		ErrCodigo: "",
-		Precio:			strings.TrimSpace(r.FormValue("Precio")),
-		ErrPrecio: "",
+		//Precio:			strings.TrimSpace(r.FormValue("Precio")),
+		//ErrPrecio: "",
 		//Descuento:		strings.TrimSpace(r.FormValue("Descuento")),
 		ErrDescuento: "",
 		Enlinea:		el,
@@ -304,12 +271,8 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 			fd.ErrOferta = "invalid"
 			ef = true
 		}
-		if fd.Descripcion != "" && !model.ValidSimpleText.MatchString(fd.Descripcion) && len(fd.Descripcion) > 200 {
+		if fd.Descripcion == "" || !model.ValidSimpleText.MatchString(fd.Descripcion) && len(fd.Descripcion) > 200 {
 			fd.ErrDescripcion = "invalid"
-			ef = true
-		}
-		if fd.Precio != "" && !model.ValidPrice.MatchString(fd.Precio) {
-			fd.ErrPrecio = "invalid"
 			ef = true
 		}
 		if fd.Url != "" && !model.ValidUrl.MatchString(fd.Url) {
@@ -331,12 +294,10 @@ func oftFill(fd FormDataOf) model.Oferta {
 		IdEmp:			fd.IdEmp,
 		IdCat:			fd.IdCat,
 		Oferta:			fd.Oferta,
-		NOferta:		fd.NOferta,
 		Descripcion:	fd.Descripcion,
-		NDescripcion:	fd.NDescripcion,
 		//Promocion:		fd.Promocion,
-		Codigo:			fd.Codigo,
-		Precio:			fd.Precio,
+		//Codigo:			fd.Codigo,
+		//Precio:			fd.Precio,
 		//Descuento:		fd.Descuento,
 		Enlinea:		fd.Enlinea,
 		Url:			fd.Url,
@@ -356,8 +317,8 @@ func ofToForm(e model.Oferta) FormDataOf {
 		IdCat:			e.IdCat,
 		Oferta:			e.Oferta,
 		Descripcion:	e.Descripcion,
-		Codigo:			e.Codigo,
-		Precio:			e.Precio,
+		//Codigo:			e.Codigo,
+		//Precio:			e.Precio,
 		//Descuento:		e.Descuento,
 		//Promocion:		e.Promocion,
 		Enlinea:		e.Enlinea,
