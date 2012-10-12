@@ -18,46 +18,51 @@ function getTheDate(elem){
 	return false;
 }
 $(document).ready(function() { 
-$("#sugerencia").mouseover(function(event){
+
+$("#sugerencia").mouseenter(slug1In).mouseleave(slug1Out);
+
+function slug1In(){
 	var elmn = $("#slug1");
 	var posicion = $(this).position();
 	var theleft= posicion.left + $(this).width();
 	var thetop =posicion.top;
   	elmn.css('left', theleft+40);
 	elmn.css('top', thetop-100);
-	elmn.toggle("fast");    
-   });
+	elmn.toggle(350);    
+   }
    
-$("#sugerencia").mouseout(function() { 
-   $("#lsug1").toggle("fast");
-   });
-
-$("#dater").mouseover(function(event){
+function slug1Out() { 
+   $("#slug1").toggle(350);s
+   }
+   
+  $("#dater").mouseenter(slug2In).mouseleave(slug2Out); 
+function slug2In(){
 	var elmn = $("#slug2");
 	var posicion = $(this).position();
 	var theleft= posicion.left + $(this).width();
 	var thetop =posicion.top;
-	elmn.css('left', theleft+20);
+	elmn.css('left', theleft+40);
 	elmn.css('top', thetop-30);
 	elmn.toggle("fast");
-   });
+   }
    
-$("#dater").mouseout(function() { 
- $("#slug2").toggle("fast");
-   });
+function slug2Out(){
+ $("#slug2").toggle(400);
+   }
    
-$("#worder").mouseover(function(event){
+$("#worder").mouseenter( slug3In).mouseleave(slug3Out);  
+function slug3In(){
 	var elmn = $("#slug3");
 	var posicion = $(this).position();
 	var theleft= posicion.left + $(this).width();
 	var thetop =posicion.top;
-	elmn.css('left', theleft+20);
-	elmn.css('top', thetop-30);
-	elmn.toggle("fast");
-   });
+	elmn.css('left', theleft+40);
+	elmn.css('top', thetop-20);
+	elmn.toggle(400);
+   }
    
-$("#worder").mouseout(function() { 
- $("#slug3").toggle("fast");
-   });
+function slug3Out(){
+ $("#slug3").toggle(400);
+   }
 });
 
