@@ -190,6 +190,17 @@
 									<!--Descripcion de ofertas-->
 									<div class=" col-10 padd-UD5px padd-LR15px marg-D5pix marg-L5pix Bg-Drks">
 										<label class="col-5"><span class="typ-Sc">*</span>¿En que consiste tu oferta?</label>
+                                        
+                                        						<div class="btnMoreInfo last" id="sugerencia">SUGERENCIA&raquo;</div>
+                                        <div  class="toggleZero sugestions BR-R-10px" id="slug1"><span></span>
+                                      <div class="pullup-20">
+  <p>Sugerimos especificar el producto o servicio de la oferta así como el publico objetivo.<p>
+  <p>Ejemplo Sugerido: Descuento del 30% de todo el departamento de zapatos y ropa para niños. <br />
+    Este ejemplo describe que la oferta es de zapatos, ropa y niños.</p>
+                                        <p>Mal ejemplo: <br />
+                                        30% de descuento en toda la tienda y 12 meses sin intereses. Este ejemplo no describe el producto o el publico objetivo.</p>
+                                      </div>
+                                    </div>
 										<textarea class="validate[required] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="350" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
 										<span class="col-7 last Addvice">Máximo 350 caracteres</span>
 									</div>
@@ -218,7 +229,14 @@
 									<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
 										<div class="col-10">
 											<label class="col-4">Fecha de publicación</label>
-											<input type="text" class="validate[optional] small last" name="FechaHoraPub" id="date1" readonly="readonly" onclick="return toggleCalendar(this);" value="{{.ErrFechaHoraPub}}"/>
+                                                <div class="btnMoreInfo last" id="dater">¿Qué es esto?</div>
+                                       <div  class="toggleZero sugestions BR-R-10px" id="slug2">
+                                       <span></span>
+                                      <div class="pullup-20">
+  										<p>El Buen Fin es del 16 al 19 de Noviembre, sin embargo, usted puede decidir si quiere que su oferta sea visible por internet no solo durante estas fechas sin que se puede publicar desde antes.</p>
+                                      </div>
+                                    </div>
+											<input type="text" class="validate[optional] small last marg-U10pix" name="FechaHoraPub" id="date1" readonly="readonly" onclick="return toggleCalendar(this);" value="{{.ErrFechaHoraPub}}"/>
 										</div>
 										<div class="dateoverlay SHW-div-D3px toggleZero" id="datePick">
 											<a href="#null" class="ltlbtn" onclick="untogleCalendar();">X</a>
@@ -272,7 +290,14 @@
 					
 									<!--SELECTOR DE PALABRAS CLAVE-->
 									<div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
-										<p> Palabras Clave </p>
+										<p class="Dsblock first"> Palabras Clave </p>
+                                        <div class="btnMoreInfo last marg-U10pix" id="worder">¿Qué es esto?</div>
+                                       <div  class="toggleZero sugestions BR-R-10px" id="slug3">
+                                       <span></span>
+                                      <div class="pullup-20">
+  										<p>Las palabras clave son aquellas que el publico objetivo estaría pensando al momento de hacer una búsqueda en la pagina de internet del Buen Fin; siguiendo el ejemplo anterior, las palabras claves son zapatos, ropa, niños.</p>
+                                      </div>
+                                    </div>
 										
 											<div class="col-100PR first  Bg-Wh padd-UD10px">
 											  <input type="text" class="selectWord  marg-L20pix marg-R10pix marg-U5pix" name="textopcve" value="" id="tokenpcve" />
@@ -290,7 +315,10 @@
 												</div>
 											</div>
 										</div>
+                                        <div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
 										<div class="col-9 Addvice last"> Ayuda a mejorar los resultados de búsqueda de tu oferta. Máximo 5 palabras.</div>  
+                                        </div>
+                                        
 									</div>
 									
 									<!--SUCURSALES-->
