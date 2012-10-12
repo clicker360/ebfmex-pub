@@ -51,7 +51,6 @@ $(document).ready(function() {
 		fillsucursales(idoft, idemp);
 	}
 
-
 	var bar = $('.bar');
 	var percent = $('.percent');
 	var status = $('#status');
