@@ -6,6 +6,20 @@ $(document).ready(function() {
 	/*var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}";*/
 	$('#loader').hide();
 	$('#urlreq').hide();
+	$('#enlinea').live('change', function() { 
+		if($('#enlinea').attr('checked')) {
+			$('#muestraurl').show();
+		} else {
+			$('#muestraurl').hide();
+		}
+	});
+
+	if($('#enlinea').attr('checked')) {
+		$('#muestraurl').show();
+	} else {
+		$('#muestraurl').hide();
+	}
+
 	$("#url").blur(function() {
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
 	});
