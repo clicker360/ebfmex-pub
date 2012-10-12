@@ -7,7 +7,7 @@ function untogleCalendar(){
 function toggleCalendar(elem){
 	campoToWrite = elem;
 	campID=$(elem).attr('id');
-	$("#datePick").css('top', 550);//esta la altura del campo1
+	$("#datePick").css('top', 450);//esta la altura del campo1
 	$("#datePick").toggle("slow");
 	return false;
 }

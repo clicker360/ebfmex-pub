@@ -935,6 +935,17 @@ input.selectWord{
 	padding: 3px;
 	border: 2px solid #DFE2E9;
 }
+input.style3{
+	border: 1px solid #98BBCF;
+	float: left;
+	-webkit-box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	box-shadow: inset 0px 0px 1px 2px #E8EFF2;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #F6FCFC;
+	width:222px;
+	margin:8px;
+}
 .divAsInput2{
 	border: 3px solid #fbf8f8;
 	float: left;
@@ -2397,14 +2408,13 @@ a.eliminate:hover{ background-position:bottom;}
 #question span { float: left; margin: 20px 0 0 10px; }
 		
 .Addvice{
-	background-color: #F4F4F4;
 	color: #515255;
 	font-size: 13px;
 	padding: 2px;
 	padding-left:10px;
 	padding-right:10px;
 	margin:3px;
-	border: 1px solid #FFFFFF;
+
 }
 /*Mapas*/
 #map {
