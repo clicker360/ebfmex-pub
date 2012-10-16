@@ -373,10 +373,10 @@ func RmOfertaPalabras(c appengine.Context, id string) error {
 
 
 /*
-	Las palabra clave asociada se borra individualmente
+	Las palabra clave se borra de Empresa 
 */
 func RmOfertaPalabra(c appengine.Context, id string, palabra string) error {
-	q := datastore.NewQuery("OfertaPalabra").Filter("IdOft =", id).Filter("Palabra =", palabra)
+	q := datastore.NewQuery("OfertaPalabra").Filter("IdEmp =", id).Filter("Palabra =", palabra)
 	for i := q.Run(c); ; {
 		var e OfertaPalabra
 		key, err := i.Next(&e)

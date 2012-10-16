@@ -24,6 +24,26 @@ $(document).ready(function() {
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
 	});
 	$("#enviardata").submit(function() {
+		/* 
+		 * Manejo de sucursales
+		 */
+		var sucs = $("#listasuc").find("input");
+		var chain = "";
+		var sep = "";
+		sucs.each(function() {
+			if($(this).is(':checked')) {
+				if($(this).attr('id') != "todassuc") {
+					// Se arma una cadena de ID's
+					chain += sep+$(this).attr('id');
+					sep = " ";
+				}
+			}
+		});
+		$("#schain").val(chain);
+
+		/* 
+		 * Validaciones
+		 */
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
 	});
 	$("#enviar").validationEngine({promptPosition : "topRight", scroll: false});
@@ -96,15 +116,24 @@ $(document).ready(function() {
 	$('#pcvepicker').on("click", "a", function(e){
 		var token = $(this);
 		if($(this).attr("value") == "0") {
-			$.get("/addword", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
-				if(resp.status=="ok") {
-					token.attr("class", "wordselected");	
-					token.attr("value", resp.id);	
-					$('#unpickpcve').append(token);
-				} else {
-					alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
-				}
-			}, "json");
+			if($("#unpickpcve a").length < 5) {
+				$.get("/addword", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
+					if(resp.status=="ok") {
+						token.attr("class", "wordselected");	
+						token.attr("value", resp.id);	
+						$('#unpickpcve').append(token);
+					} else if(resp.status=="notFound") {
+						/* No existe la oferta */
+					} else if(resp.status=="invalidText") {
+						/* El texto es inválido */
+						alert("La palabra clave contiene carácteres no permitidos");
+					} else if(resp.status=="writeErr") {
+						alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
+					}
+				}, "json");
+			} else {
+				alert("Máximo 5 palabras");
+			}
 		} else {
 			$.get("/delword", { id: ""+token.attr('value')+"", token: ""+token.text()+"" }, function(resp) {
 				if(resp.status=="ok") {
@@ -117,17 +146,40 @@ $(document).ready(function() {
 			}, "json");
 		}
 	});
+	
 	$("#nuevapcve").click(function(e) {
 		var token = $("#tokenpcve");
-		$.get("/addword", { token: ""+token.val()+"", id: ""+idoft+"" }, function(resp) {
-			if(resp.status=="ok") {
-				clearpcve();
-				fillpcve(idoft,idemp);
+		if(token.val().length >= 3) {
+			if($("#unpickpcve a").length < 5) {
+				$.get("/addword", { token: ""+token.val()+"", id: ""+idoft+"" }, function(resp) {
+					if(resp.status=="ok") {
+						clearpcve();
+						fillpcve(idoft,idemp);
+					} else {
+						alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave o recargue la página");
+					}
+				}, "json");
 			} else {
-				alert("Hay problemas de conexión. Intente agregar de nuevo la palabra clave");
+				alert("Máximo 5 palabras");
 			}
-		}, "json");
+			$("#tokenpcve").val("");
+		}
+		$("#tokenpcve").trigger("blur");
 	});
+
+	/*
+	 * Selecciona todas las sucursales
+	 */
+	$("#todassuc").click(function(e) {
+		var sucs = $("#listasuc").find("input");
+		sucs.each(function(ii, obj) {
+			if($("#todassuc").is(':checked')) {
+				if($(this).is('id')!="todassuc") $(this).attr('checked', true);
+			} else {
+				if($(this).is('id')!="todassuc") $(this).attr('checked', false);
+			}
+		});
+   	});
 
 });/* termina onload */
 
@@ -157,7 +209,8 @@ function updateimg(idoft) {
  * Llena palabras clave por oferta y empresa
  */
 function fillpcve(idoft, idemp) {
-	$.get("/wordsxo", { id: "" + idoft + ""}, function(data) {
+	$.get("/wordsxo", { id: "" + idoft + ""})
+	.success(function(data) {
 		if($.isArray(data)) {
 			$.each(data, function(i,item){
 				var anchor = "<a href=\"#null\" class=\"wordselected\" id=\"pcve_"+item.token+"\" value=\""+item.id+"\">"+item.token+"</a>"
@@ -165,11 +218,11 @@ function fillpcve(idoft, idemp) {
 			});
 		}
 	})
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y recargue la página');})
 	.complete(function(){});
 
-	$.get("/wordsxe", { id: "" + idemp + ""}, function(data) {
+	$.get("/wordsxe", { id: "" + idemp + ""})
+	.success(function(data) {
 		if($.isArray(data)) {
 			$.each(data, function(i,item){
 				// Si en el ajax anterior no se añadio algo, aquí se añade como no seleccionado
@@ -180,8 +233,7 @@ function fillpcve(idoft, idemp) {
 			});
 		}
 	})
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y recargue la página');})
 	.complete(function(){});
 }
 
@@ -194,7 +246,8 @@ function clearpcve() {
  * Llena las sucursales
  */
 function fillsucursales(idoft, idemp) {
-	$.get("/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""}, function(data) {
+	$.get("/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""})
+	.success(function(data) {
 		$.each(data, function(i,item){
 			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-5px\" id=\""+item.idsuc+"\"/></div>";
 			$('#listasuc').append(div);
@@ -203,23 +256,25 @@ function fillsucursales(idoft, idemp) {
 			} else {
 				$("#"+item.idsuc).attr('checked', false);
 			}
-			$("#"+item.idsuc).change(function() { 
-				if($(this).is(':checked')) {
-					$.get("/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + item.idsuc + ""}, function(data) { })
-					.success(function(){})
-					.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
-				} else {
-					$.get("/delofsuc", { idoft: "" + idoft + "", idsuc: "" + item.idsuc + ""}, function(data) { })
-					.success(function(){})
-					.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
-				}
-			});
 		});
 	})
-	.success(function(){})
-	.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	.error(function(){alert('Hay problemas de conexión, espere un momento y recargue la página');})
 	.complete(function(){});
 }
+
 function activateCancel(){ $("#cancelbtn").addClass("show") }
 function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 
+/*
+$("#"+item.idsuc).change(function() { 
+	if($(this).is(':checked')) {
+		$.get("/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+		.success(function(){})
+		.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	} else {
+		$.get("/delofsuc", { idoft: "" + idoft + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+		.success(function(){})
+		.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
+	}
+});
+*/

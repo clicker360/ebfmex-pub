@@ -315,9 +315,7 @@ func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
 		ofsuc.Lng = lng
 		ofsuc.Empresa = os.Empresa
 		ofsuc.Oferta = os.Oferta
-		ofsuc.NOferta = os.NOferta
 		ofsuc.Descripcion = os.Descripcion
-		ofsuc.NDescripcion = os.NDescripcion
 		ofsuc.Promocion = os.Promocion
 		ofsuc.Precio = os.Precio
 		ofsuc.Descuento = os.Descuento

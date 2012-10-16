@@ -20,8 +20,8 @@ type WsSucursal struct{
 }
 
 func init() {
-    http.HandleFunc("/addofsuc", AddOfSuc)
-    http.HandleFunc("/delofsuc", DelOfSuc)
+    //http.HandleFunc("/addofsuc", AddOfSuc)
+    //http.HandleFunc("/delofsuc", DelOfSuc)
     http.HandleFunc("/ofsuc", ShowEmpSucursalOft)
 }
 

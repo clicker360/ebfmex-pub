@@ -89,6 +89,7 @@ func DelWord(w http.ResponseWriter, r *http.Request) {
 
 /*
 	Se remueve una palabra de la empresa
+	Recibe un Id de Empresa
 */
 func RmWord(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)

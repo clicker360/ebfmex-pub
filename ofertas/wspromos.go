@@ -16,11 +16,11 @@ type Promo struct{
 }
 
 func init() {
-    http.HandleFunc("/modpromo", ModPromo)
+    //http.HandleFunc("/modpromo", ModPromo)
     //http.HandleFunc("/delpromo", ModPromo)
-    http.HandleFunc("/promosxo", ShowPromo)
-    http.HandleFunc("/tcxo", ShowTcxo)
-    http.HandleFunc("/modtcxo", ModTcxo)
+    //http.HandleFunc("/promosxo", ShowPromo)
+    //http.HandleFunc("/tcxo", ShowTcxo)
+    //http.HandleFunc("/modtcxo", ModTcxo)
 }
 
 func ModPromo(w http.ResponseWriter, r *http.Request) {

@@ -51,6 +51,7 @@ type FormDataOf struct {
 	StatusPub		bool
 	FechaHora		time.Time
 	Ackn			string
+	Sucursales		string // cadena de id's de sucursales separadas por espacio
 }
 
 // Because App Engine owns main and starts the HTTP service,
@@ -150,8 +151,8 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 				fd.Empresa = empresa.Nombre
 				ofertamod.IdEmp = empresa.IdEmp
 				ofertamod.Oferta = "Nueva oferta"
-				ofertamod.FechaHora = time.Now()
-				ofertamod.FechaHoraPub = time.Now()
+				ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
+				ofertamod.FechaHoraPub = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
 				ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
 				o, err := model.NewOferta(c, &ofertamod)
 				model.Check(err)
@@ -196,6 +197,40 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 						// Ya existe
 						err := model.PutOferta(c, &ofertamod)
 						model.Check(err)
+
+						// Se borran las relaciones oferta-sucursal
+						err = model.DelOfertaSucursales(c, oferta.IdOft)
+						model.Check(err)
+
+						// Se reconstruyen las Relaciones oferta-sucursal con las solicitadas
+						idsucs := strings.Fields(r.FormValue("schain"))
+						for _, idsuc := range idsucs {
+							suc := model.GetSuc(c, idsuc)
+
+							lat, _ := strconv.ParseFloat(suc.Geo1, 64)
+							lng, _ := strconv.ParseFloat(suc.Geo2, 64)
+
+							var ofsuc model.OfertaSucursal
+							ofsuc.IdOft = ofertamod.IdOft
+							ofsuc.IdSuc = idsuc
+							ofsuc.IdEmp = ofertamod.IdEmp
+							ofsuc.Sucursal = suc.Nombre
+							ofsuc.Lat = lat
+							ofsuc.Lng = lng
+							ofsuc.Empresa = ofertamod.Empresa
+							ofsuc.Oferta = ofertamod.Oferta
+							ofsuc.Descripcion = ofertamod.Descripcion
+							ofsuc.Promocion = ofertamod.Promocion
+							ofsuc.Precio = ofertamod.Precio
+							ofsuc.Descuento = ofertamod.Descuento
+							ofsuc.Url = ofertamod.Url
+							ofsuc.StatusPub = ofertamod.StatusPub
+							ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+
+							err := ofertamod.PutOfertaSucursal(c, &ofsuc)
+							model.Check(err)
+						}
+
 					}
 					fd = ofToForm(ofertamod)
 					fd.Ackn = "Ok";
@@ -233,7 +268,7 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		fh, _ = time.Parse("_2 Jan 15:04:05", strings.TrimSpace(r.FormValue("FechaHoraPub"))+" 00:00:00")
 		fh = fh.AddDate(2012,0,0)
 	} else {
-		fh = time.Now()
+		fh = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
 	}
 	el, _ := strconv.ParseBool(strings.TrimSpace(r.FormValue("Enlinea")))
 	st, _ := strconv.ParseBool(strings.TrimSpace(r.FormValue("StatusPub")))
@@ -305,7 +340,7 @@ func oftFill(fd FormDataOf) model.Oferta {
 		//Meses:			fd.Meses,
 		FechaHoraPub:	fd.FechaHoraPub,
 		StatusPub:		fd.StatusPub,
-		FechaHora:		time.Now(),
+		FechaHora:		time.Now().Add(time.Duration(-18000)*time.Second),
 	}
 	return s;
 }
