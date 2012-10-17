@@ -20,10 +20,41 @@
 			})();
 		</script>
 		<script type="text/javascript" charset="utf-8">
-			function activeLghtbx(){ $('#light').removeClass("hidden"); $('#box').removeClass("hidden"); }
-			function activeOfer(){ $('#light').removeClass("hidden"); $('#boxOfert').removeClass("hidden"); }
-			function deactiveOfer(){ $('#light').addClass("hidden"); $('#boxOfert').addClass("hidden"); }
-			function deactiveLghtbx(){ $('#light').addClass("hidden"); $('#box').addClass("hidden"); }
+						var elimActive= false;
+			function eliminationTime(){
+				if (!elimActive){
+				 $('.sugestWord').addClass("eliminateWord"); 
+				// $('.sugestWord').removeClass("sugestWord"); 
+				 elimActive=true;
+				 
+				  $('#elimilink').addClass("button"); 
+				   $('#elimilink').addClass("red"); 
+					$('#elimilink').addClass("small"); 
+					$('#unpickpcve').addClass('hide');
+					$('#tokenpcve').addClass('hide');
+					$('#btnaddWords').addClass('hide');
+					
+					$('#elimilink').html("<span>Terminar </span>");
+					$('#titleWord').html('Elimina las palabras mal capturadas');  
+				}else{
+				 //$( '.eliminateWord').addClass("'.sugestWord"); 
+				 $('.eliminateWord').removeClass("eliminateWord"); 
+				  $('#elimilink').removeClass("button"); 
+				  $('#elimilink').removeClass("red"); 
+					$('#elimilink').removeClass("small"); 
+					$('#unpickpcve').removeClass('hide');
+					$('#tokenpcve').removeClass('hide');
+					$('#btnaddWords').removeClass('hide');
+					$('#elimilink').html("Eliminar palabras capturadas");		
+					$('#titleWord').html('Otras palabras que has capturado'); 
+				 elimActive=false;
+					}
+					return false;
+			}
+			
+			
+			
+			
 			var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}"; 
 			var idemp = "{{with .Empresa}}{{.IdEmp}}{{end}}"; 
 			$(document).ready(function() { $("#urlimg").attr('href', "{{with .FormDataOf}}{{.Url|js}}{{end}}");});
@@ -291,18 +322,19 @@
 		                                    </div>
 											<div class="col-100PR first  Bg-Wh padd-UD10px">
 											  <input type="text" class="validate[optional, onlyLetterSp, minSize[3], maxSize[25]] selectWord  marg-L20pix marg-R10pix marg-U5pix" maxlength="25" name="textopcve" value="" id="tokenpcve" />
-												<div class=" first marg-U5pix">
+												<div class=" first marg-U5pix" id="btnaddWords">
 													<a href="#null" class=" button orange medium" id="nuevapcve"><span>Añadir palabra <img src="gfx/iconDown.png" width="15" height="20" /></span></a>
 												</div>
 												<div id="pcvepicker">
 		                                          	<div class=" divAsInput col-9 marg-L20pix marg-U10pix" id="unpickpcve">
 														<!--esto se llena automáticamente-->
 													</div>
-													<label class="col-7 marg-L20pix marg-U5pix">Otras palabras que has capturado</label>
+													<label class="col-7 marg-L20pix marg-U5pix" id="titleWord">Otras palabras que has capturado</label>
 													<div class=" divAsInput2  col-9 marg-L20pix" id="pickpcve">
 														<!--esto se llena automáticamente-->
 													</div>
 												</div>
+                                                <div class="last marg-R15pix"><a href="#null" onclick="eliminationTime();" class="last padd-5px typeMin"  id="elimilink">eliminar palabras mal capturadas</a></div>
 											</div>
 										</div>
 	                                    <div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
@@ -312,10 +344,10 @@
 										
 									<!--SUCURSALES-->
 									<div class="col-10 padd-15px marg-L10pix Bg-Drks marg-U5pix">
-										<div class="first" id="sucursales">
+										<div class="col-10" id="sucursales">
 											<p class="Dsblock first">Sucursales donde participa la oferta</p>
 											<div class="first marg-L6pix marg-U5pix col-10" id="listasuc"> 
-												<div class="gridsubRow bg-Gry2"><label class="col-6 marg-L10pix">Seleccionar/Deseleccionar todas</label><input name="todassuc" type="checkbox" class="last marg-5px" id="todassuc"/></div>
+												<div class="gridsubRow bg-Gry3"><label class="col-6 marg-L10pix">Seleccionar/Deseleccionar todas</label><input name="todassuc" type="checkbox" class="last marg-5px" id="todassuc"/></div>
 												<!-- relleno ajax -->
 											</div>
 										</div>

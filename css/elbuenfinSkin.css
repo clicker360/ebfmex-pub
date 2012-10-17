@@ -2642,6 +2642,26 @@ hr{ width:96%; margin-left:.5%; margin-right:2.5%; border:none; border-top:solid
 }
 .btnMoreInfo:hover{ background-color:#666; border:#FFF; color:#FFF;}
 
+/*eleminate words*/
+a.eliminateWord{
+	padding: 1px 2px 1px 2px;
+	display: block;
+	border:none;
+	background-color: #810314;
+	color: #FFFFFF;
+	font-size: 10px;
+	float: left;
+	margin: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-image: url(../gfx/closeword.png);
+	padding-right: 23px;
+	background-repeat: no-repeat;
+	background-position: right 1px;
+	text-transform: uppercase;
+}
+a.eliminateWord:hover{ background-color:#F00;}
+
 
 
 .sugestions{color:#FFF; padding:10px 5px 0px 5px; font-size:11px; position:absolute; background-image:url(../gfx/grey80pr.png); width:280px;}
