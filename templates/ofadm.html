@@ -20,37 +20,8 @@
 			})();
 		</script>
 		<script type="text/javascript" charset="utf-8">
-						var elimActive= false;
-			function eliminationTime(){
-				if (!elimActive){
-				 $('.sugestWord').addClass("eliminateWord"); 
-				// $('.sugestWord').removeClass("sugestWord"); 
-				 elimActive=true;
-				 
-				  $('#elimilink').addClass("button"); 
-				   $('#elimilink').addClass("red"); 
-					$('#elimilink').addClass("small"); 
-					$('#unpickpcve').addClass('hide');
-					$('#tokenpcve').addClass('hide');
-					$('#btnaddWords').addClass('hide');
-					
-					$('#elimilink').html("<span>Terminar </span>");
-					$('#titleWord').html('Elimina las palabras mal capturadas');  
-				}else{
-				 //$( '.eliminateWord').addClass("'.sugestWord"); 
-				 $('.eliminateWord').removeClass("eliminateWord"); 
-				  $('#elimilink').removeClass("button"); 
-				  $('#elimilink').removeClass("red"); 
-					$('#elimilink').removeClass("small"); 
-					$('#unpickpcve').removeClass('hide');
-					$('#tokenpcve').removeClass('hide');
-					$('#btnaddWords').removeClass('hide');
-					$('#elimilink').html("Eliminar palabras capturadas");		
-					$('#titleWord').html('Otras palabras que has capturado'); 
-				 elimActive=false;
-					}
-					return false;
-			}
+		<!-- cambio de aqui  23 - 54-->
+	
 			
 			
 			
@@ -210,19 +181,11 @@
 										<!--Descripcion de ofertas-->
 										<div class=" col-10 padd-UD5px padd-LR15px marg-D5pix marg-L5pix Bg-Drks">
 											<label class="col-5"><span class="typ-Sc">*</span>¿En que consiste la oferta?</label>
-	                                        
-	                						<div class="btnMoreInfo last" id="sugerencia">Sugerencia&raquo;</div>
-	                                        <div  class="toggleZero sugestions BR-R-10px" id="slug1"><span></span>
-												<div class="pullup-20">
-													<p>Sugerimos especificar el producto o servicio de la oferta así como el público objetivo.</p>
-													<p>Ejemplo Sugerido: Descuento del 30% de todo el departamento de zapatos y ropa para niños. <br />
-													Este ejemplo describe que la oferta es de zapatos, ropa y niños.</p>
-													<p>Mal ejemplo: <br />
-													30% de descuento en toda la tienda y 12 meses sin intereses. Este ejemplo no describe el producto o el público objetivo.</p>
-												</div>
-	                                    	</div>
 											<textarea class="validate[required, maxSize[350]] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="350" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
-											<span class="col-7 last Addvice">Máximo 350 caracteres</span>
+											<span class="col-7 last Addvice">Máximo 350 caracteres</span><div class="col-10">
+													<p class="typeMin">Esta es la información que quieres compartirle al público sobre tu oferta. Te recomendamos incluir algunos de los siguientes datos: monto del descuento, tipo de promoción, producto o servicio, departamento, público objetivo.<br />
+												    Por ejemplo: “40% de descuento en zapatos para dama en todas las marcas.”</p>
+	                                    	</div>
 										</div>
 	                                    
 	                                    <!--CATEGORIAS-->
@@ -251,14 +214,11 @@
 										<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
 											<div class="col-10">
 												<label class="col-7">La oferta estará publicada a partir de</label>
-	                                            <div class="btnMoreInfo last" id="dater">¿Qué es esto?</div>
-	                                   			<div  class="toggleZero sugestions BR-R-10px" id="slug2">
-	                                   				<span></span>
-													<div class="pullup-20">
-														<p>El Buen Fin es del 16 al 19 de Noviembre, sin embargo la oferta puede publicarse antes o durante el evento. Haga clic en el campo de fecha para consultar las fechas. </p>
-													</div>
-	                                			</div>
+	                                           	
+	                                   		
 												<input type="text" class="validate[optional] small last marg-U10pix" name="FechaHoraPub" id="date1" readonly="readonly" onclick="return toggleCalendar(this);" value="{{.ErrFechaHoraPub}}"/>
+                                                <div class=" col-10">
+												<p class="typeMin">Se refiere al día en que se hará pública la oferta en la página de internet de El Buen Fin. Puedes elegir cualquier fecha antes del 19 noviembre.</p></div>
 											</div>
 											<div class="dateoverlay SHW-div-D3px toggleZero" id="datePick">
 												<a href="#null" class="ltlbtn" onclick="untogleCalendar();">X</a>
@@ -313,13 +273,8 @@
 										<!--SELECTOR DE PALABRAS CLAVE-->
 										<div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
 											<p class="Dsblock first">Palabras relacionadas con la oferta</p>
-	                                        <div class="btnMoreInfo last marg-U10pix" id="worder">¿Qué es esto?</div>
-	                                       	<div  class="toggleZero sugestions BR-R-10px" id="slug3">
-		                                       	<span></span>
-		                                      	<div class="pullup-20">
-		  											<p>Las palabras relacionadas con la oferta son aquellas que el público objetivo estaría pensando al momento de hacer una búsqueda en la pagina de internet de El Buen Fin; siguiendo el ejemplo anterior  las palabras relacionadas son zapatos, ropa, niños.</p>
-		                                    	</div>
-		                                    </div>
+	                                      
+	                                       	
 											<div class="col-100PR first  Bg-Wh padd-UD10px">
 											  <input type="text" class="validate[optional, onlyLetterSp, minSize[3], maxSize[25]] selectWord  marg-L20pix marg-R10pix marg-U5pix" maxlength="25" name="textopcve" value="" id="tokenpcve" />
 												<div class=" first marg-U5pix" id="btnaddWords">
@@ -338,7 +293,10 @@
 											</div>
 										</div>
 	                                    <div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
-											<div class="col-9 Addvice last">Máximo 5 palabras.</div>  
+											
+                                            <div class=" col-10">
+                                            <p>Máximo 5 palabras.</p>
+												<p class="typeMin">Para facilitar la búsqueda de tu oferta, escribe las palabras que se relacionan directamente con ella y que piensas que la gente escribirá para encontrarte. Del ejemplo anterior, las palabras clave podrían ser: zapatos, mujeres, damas, zapatería.</p></div>
 		                                </div>
 	                                </div>
 										
