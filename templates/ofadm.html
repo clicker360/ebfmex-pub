@@ -150,7 +150,7 @@
 													 <div class="col-6 marg-L10pix">
 														<ul>
 															<li>Su imagen será ajustada en la vista previa</li>
-															<li>Recomendamos subir ofertas en formato cuadrado</li>
+															<li>Recomendamos subir la imagen en formato cuadrado</li>
 														</ul>
 													</div>
 												</div>
@@ -195,19 +195,7 @@
 												{{end}}					
 											</select>
 										</div>
-
-										<!--EL BUEN FIN EN LINEA-->
-										<div class=" col-10 padd-UD5px padd-LR15px marg-LR5pix Bg-Drks">
-											<label class="col-8 ">¿La oferta está disponible en tu sitio de internet? </label>
-											<input type="checkbox" class="last marg-U10pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} />
-											<div id="muestraurl">
-												<label class="col-8"> Sitio de internet de la oferta</label>
-												<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
-												<input type="text" class="validate[optional,custom[url]] medium  last {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
-											</div>
-										</div>
-
-										<!-- Date picker -->
+									<!-- Date picker -->
 										<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
 											<div class="col-10">
 												<label class="col-7">La oferta estará publicada a partir de</label>
@@ -266,9 +254,35 @@
 											</div>
 										</div>
 										<!-- termina datepicker -->
+                                        <!--SUCURSALES-->
+									<div class="col-10 padd-LR15px marg-L5pix Bg-Drks padd-D10px ">
+                                    <!--EL BUEN FIN EN LINEA-->
+                                    <p class="marg-5px"><strong>¿Dónde estará disponible esta oferta?</strong></p>
+		  							 <div class="first marg-L6pix bg-Gry3 col-10" >
+											<label class="col-8 ">El Buen Fin en línea (Comercio electrónico) </label>
+											<input type="checkbox" class="last marg-U5pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} />
+                                      </div>
+                                            
+											<div id="muestraurl">
+                                            <div class="first marg-L6pix bg-Gry2 col-10" > 
+												<label class="col-8"> Sitio de internet de la oferta</label>
+												<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
+												<input type="text" class="validate[optional,custom[url]] medium  last {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
+                                              </div>
+											</div>
+										
+
+										<div class="col-10" id="sucursales">
+										  <div class="first marg-L6pix col-10" id="listasuc" style="max-height:150px; overflow:auto;"> 
+										    <div class="gridsubRow bg-Gry3"><label class="col-6 marg-L10pix">Seleccionar/Deseleccionar todas</label><input name="todassuc" type="checkbox" class="last marg-U5pix marg-R10pix" id="todassuc"/>
+                                            </div>
+												<!-- relleno ajax -->
+										  </div>
+									  </div>
+									</div>
 						
 										<!--SELECTOR DE PALABRAS CLAVE-->
-										<div class="col-10 padd-LR15px marg-L5pix Bg-Drks">
+										<div class="col-10 padd-LR15px marg-L5pix Bg-Drks marg-U5pix">
 											<p class="Dsblock first">Palabras relacionadas con la oferta</p>
 	                                      
 	                                       	
@@ -297,18 +311,9 @@
 		                                </div>
 	                                </div>
 										
-									<!--SUCURSALES-->
-									<div class="col-10 padd-15px marg-L10pix Bg-Drks marg-U5pix">
-										<div class="col-10" id="sucursales">
-											<p class="Dsblock first">Sucursales donde participa la oferta</p>
-											<div class="first marg-L6pix marg-U5pix col-10" id="listasuc"> 
-												<div class="gridsubRow bg-Gry3"><label class="col-6 marg-L10pix">Seleccionar/Deseleccionar todas</label><input name="todassuc" type="checkbox" class="last marg-5px" id="todassuc"/></div>
-												<!-- relleno ajax -->
-											</div>
-										</div>
-									</div>
+				
 
-	                    			<div class=" marg-L15pix Addvice col-10"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
+									<div class=" marg-L15pix Addvice col-10"> <span class="typ-Sc">*</span> Todos los campos marcados son obligatorios </div>
 									<div class="col-10 marg-L15pix" id="newbtn">
 										<button type="submit" class="big red last"><span class="col-9">Guardar</span></button>
 										<button type="reset" class="orange hidden" id="cancelbtn"><span class="col-5">Limpiar Campos</span></button>
