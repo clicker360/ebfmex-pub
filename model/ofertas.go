@@ -3,6 +3,7 @@ package model
 import (
     "appengine"
     "appengine/datastore"
+	"appengine/blobstore"
 	"time"
 )
 
@@ -19,20 +20,11 @@ type Oferta struct {
 	Promocion	string
 	Enlinea     bool
 	Url         string
-	Tarjetas    []byte // json
 	Meses       string
 	FechaHoraPub    time.Time
 	StatusPub   bool
 	FechaHora   time.Time
-	Image	[]byte
-	ImageA	[]byte
-	ImageB	[]byte
-	Sizepx	int
-	Sizepy	int
-	SizeApx	int
-	SizeApy	int
-	SizeBpx	int
-	SizeBpy	int
+	BlobKey	appengine.BlobKey
 }
 
 type OfertaSucursal struct {
@@ -69,33 +61,14 @@ type OfertaPalabra struct {
 	FechaHora	time.Time
 }
 
-type OfertaImage struct {
-	Data	[]byte
-	IdEmp	string
-	IdImg	string
-	Kind	string
-	Name	string
-	Desc	string
-	Sizepx	int
-	Sizepy	int
-	Url		string
-	Type	string
-	Sp1		string
-	Sp2		string
-	Sp3		string
-	Sp4		string
-	Np1		int
-	Np2		int
-	Np3		int
-	Np4		int
-	FechaHora	time.Time
-}
-
 func (r *Oferta) Key(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Oferta", r.IdOft, 0, nil)
 }
 
 func (r *Oferta) DelOferta(c appengine.Context) error {
+	if err := blobstore.Delete(c, r.BlobKey); err != nil {
+		return err
+	}
     if err := datastore.Delete(c, r.Key(c)); err != nil {
 		return err
 	}
@@ -118,6 +91,7 @@ func GetOferta(c appengine.Context, id string) *Oferta {
 	e.IdEmp = "none";
 	e.IdOft = "none";
 	e.IdCat = 0;
+	e.BlobKey = "none";
 	return &e
 }
 
@@ -128,7 +102,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 	}
 	/* 
 		relación oferta sucursal 
-	*/	
+	*/
 	ofsucs, _ := GetOfertaSucursales(c, oferta.IdOft)
 	for _,os:= range *ofsucs {
 		var ofsuc OfertaSucursal
@@ -258,6 +232,9 @@ func DelOferta(c appengine.Context, id string) error {
 		key, err := i.Next(&e)
 		if err == datastore.Done {
 			break
+		}
+		if err := blobstore.Delete(c, e.BlobKey); err != nil {
+			return err
 		}
 		if err:= DelOfertaSucursales(c, id); err != nil {
 			return err

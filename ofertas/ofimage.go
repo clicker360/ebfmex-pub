@@ -1,132 +1,115 @@
 // Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+// license that can be fouerrnd in the LICENSE file.
 
 // On App Engine, the framework sets up main; we should be a different package.
 package oferta
 
 import (
 	"appengine"
-	"resize"
-	"bytes"
-	//"strconv"
-	"fmt"
-	"image"
-	"image/jpeg"
-	_ "image/png" // import so we can read PNG files.
-	"io"
+	"appengine/blobstore"
+	"encoding/json"
 	"net/http"
 	"sess"
 	"model"
 )
 
+type OfImg struct{
+	IdOft		string `json:"idoft"`
+	IdBlob		string `json:"idblob"`
+	Status		string `json:"errstatus"`
+	UploadURL	string `json:"uploadurl"`
+}
+
 // Because App Engine owns main and starts the HTTP service,
 // we do our setup during initialization.
 func init() {
-	http.HandleFunc("/ofimgup", model.ErrorHandler(upload))
-	http.HandleFunc("/ofimg", model.ErrorHandler(img))
+	http.HandleFunc("/ofimgup", handleUpload)
+	http.HandleFunc("/ofimg", handleServe)
+	//http.HandleFunc("/ofimgform", handleRoot)
 }
 
-// upload is the HTTP handler for uploading images; it handles "/".
-func upload(w http.ResponseWriter, r *http.Request) {
+func handleServe(w http.ResponseWriter, r *http.Request) {
+	blobstore.Send(w, appengine.BlobKey(r.FormValue("id")))
+}
+
+/* 
+ * dejamos esto como referencia
+ * El envío de la liga de sesión de upload se genera en ofadm.go
+ *
+func handleRoot(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+		uploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+		if err != nil {
+		serveError(c, w, err)
+		return
+	}
+	tc := make(map[string]interface{})
+	tc["UploadURL"] = uploadURL
+	tc["IdOft"] =  r.FormValue("IdOft")
+	w.Header().Set("Content-Type", "text/html")
+	rootTemplate.ExecuteTemplate(w, "ofupform", tc)
+	return
+}
+ */
+
+func handleUpload(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	var out OfImg
+	out.Status = "invalidId"
+	out.IdBlob = ""
 	if _, ok := sess.IsSess(w, r, c); ok {
-		oferta := model.GetOferta(c, r.FormValue("IdOft"))
-		if oferta.IdEmp == "none" {
-			// No se pude agregar imagen si la oferta es un cascaron
-			return
-		}
-		if r.Method != "POST" {
-			return
-		}
-
-		f, _, err := r.FormFile("image")
-		model.Check(err)
-		defer f.Close()
-
-		// Grab the image data
-		var buf bytes.Buffer
-		io.Copy(&buf, f)
-		i, _, err := image.Decode(&buf)
+		blobs, form, err := blobstore.ParseUpload(r)
+		file := blobs["image"]
+		out.IdBlob = string(file[0].BlobKey)
+		out.IdOft = form.Get("IdOft")
 		if err != nil {
-			fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó la imagen, formato no aceptado");
-			return
-		}
-
-		// Resize if too large, for more efficient moustachioing.
-		// We aim for less than 1200 pixels in any dimension; if the
-		// picture is larger than that, we squeeze it down to 600.
-		const max = 600
-		// We aim for less than max pixels in any dimension.
-		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
-			// If it's gigantic, it's more efficient to downsample first
-			// and then resize; resizing will smooth out the roughness.
-			if b.Dx() > 2*max || b.Dy() > 2*max {
-				w, h := max*2, max*2
-				if b.Dx() > b.Dy() {
-					h = b.Dy() * h / b.Dx()
-				} else {
-					w = b.Dx() * w / b.Dy()
-				}
-				i = resize.Resample(i, i.Bounds(), w, h)
-				b = i.Bounds()
-			}
-			w, h := max, max
-			if b.Dx() > b.Dy() {
-				h = b.Dy() * h / b.Dx()
-			} else {
-				w = b.Dx() * w / b.Dy()
-			}
-			i = resize.Resize(i, i.Bounds(), w, h)
+			out.Status = "invalidUpload"
+			berr := blobstore.Delete(c, file[0].BlobKey)
+			model.Check(berr)
 		} else {
-			w, h := max, max
-			if b.Dx() > b.Dy() {
-				h = b.Dy() * h / b.Dx()
+			oferta := model.GetOferta(c, out.IdOft)
+			if oferta.IdEmp == "none" {
+				out.Status = "invalidUpload"
+				berr := blobstore.Delete(c, file[0].BlobKey)
+				model.Check(berr)
 			} else {
-				w = b.Dx() * w / b.Dy()
+				out.Status = "ok"
+				if len(file) == 0 {
+					out.Status = "invalidUpload"
+					berr := blobstore.Delete(c, file[0].BlobKey)
+					model.Check(berr)
+				} else {
+					var oldblobkey = oferta.BlobKey
+					oferta.BlobKey = file[0].BlobKey
+					out.IdOft = oferta.IdOft
+					err = model.PutOferta(c, oferta)
+					if err != nil {
+						out.Status = "invalidUpload"
+						berr := blobstore.Delete(c, file[0].BlobKey)
+						model.Check(berr)
+					}
+					/* 
+						Se borra el blob anterior, porque siempre crea uno nuevo
+						No se necesita revisar el error
+						Si es el blobkey = none no se borra por obvias razones
+						Se genera una sesion nueva de upload en caso de que quieran
+						cambiar la imágen en la misma pantalla. Esto es debido a que
+						se utiliza un form estático con ajax
+					*/
+					if oldblobkey != "none" {
+						blobstore.Delete(c, oldblobkey)
+						UploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+						out.UploadURL = UploadURL.String()
+						if err != nil {
+							out.Status = "uploadSessionError"
+						}
+					}
+				}
 			}
-			i = resize.Resize(i, i.Bounds(), w, h)
 		}
-
-		// Encode as a new JPEG image.
-		buf.Reset()
-		b := i.Bounds()
-		err = jpeg.Encode(&buf, i, nil)
-		if err != nil {
-			fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó la imagen, formato no aceptado");
-			return
-		}
-
-		// Save the image under a unique key, a hash of the image.
-		oferta.Image = buf.Bytes()
-		oferta.Sizepx = b.Dx()
-		oferta.Sizepy = b.Dy()
-
-		err = model.PutOferta(c, oferta)
-		if err != nil {
-			fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó la imagen. Sistema en matenimiento, intente en unos minutos");
-			return
-		}
-
-		fmt.Fprintf(w, "<p></p>");
-		return
-	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
 	}
-}
-
-// img is the HTTP handler for displaying images;
-// it handles "/simg".
-func img(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	oferta := model.GetOferta(c, r.FormValue("id"))
-	if oferta.IdEmp == "none" {
-		// No se pude agregar imagen si la oferta es un cascaron
-		return
-	}
-	m, _, err := image.Decode(bytes.NewBuffer(oferta.Image))
-	model.Check(err)
-
-	w.Header().Set("Content-type", "image/jpeg")
-	jpeg.Encode(w, m, nil)
+	w.Header().Set("Content-Type", "application/json")
+	b, _ := json.Marshal(out)
+	w.Write(b)
 }

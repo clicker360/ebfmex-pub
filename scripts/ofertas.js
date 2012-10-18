@@ -4,6 +4,29 @@ $(document).ready(function() {
 	 */
 	/*$("#urlimg").attr('href', "{{with .FormDataOf}}{{.Url|js}}{{end}}");*/
 	/*var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}";*/
+	/*var idblob = "{{with .FormDataOf}}{{.IdBlob|js}}{{end}}";*/
+
+	if(idoft == 'none') {
+		// se ocultan los campos que requieren IdOft
+		putDefault();
+		$('#imgform').hide();
+		$('#modbtn').hide();
+		$('#newbtn').show();
+		$('#statuspub').attr("checked", true);
+	} else {
+		/* solo se actualizan estos datos si hay id de oferta */
+		fillpcve(idoft, idemp);
+		fillsucursales(idoft, idemp);
+		$('#imgform').show();
+		$('#modbtn').show();
+		$('#newbtn').hide();	
+	}
+
+	if(idblob != "") {
+		updateimg(idblob);
+	} else {
+		putDefault();
+	}
 	$('#loader').hide();
 	$('#urlreq').hide();
 	$('#enlinea').live('change', function() { 
@@ -23,6 +46,7 @@ $(document).ready(function() {
 	$("#url").blur(function() {
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
 	});
+
 	$("#enviardata").submit(function() {
 		/* 
 		 * Manejo de sucursales
@@ -51,33 +75,18 @@ $(document).ready(function() {
 	var $pic = $("#pic");
 	var $urlimg = $("#urimg");
 	var max_size=400;
-	if(idoft == 'none') {
-		// se ocultan los campos que requieren IdOft
-		putDefault();
-		$('#imgform').hide();
-		$('#modbtn').hide();
-		$('#newbtn').show();
-		$('#statuspub').attr("checked", true);
-	} else {
-		$('#imgform').show();
-		$('#modbtn').show();
-		$('#newbtn').hide();	
-	}
 	
-	/* solo se actualizan estos datos si hay id de oferta */
-	if(idoft != 'none') {
-		updateimg(idoft);
-		fillpcve(idoft, idemp);
-		fillsucursales(idoft, idemp);
-	}
 
+	/* 
+	 * Ajax FORM para imagen de oferta
+	 */
 	var bar = $('.bar');
 	var percent = $('.percent');
 	var status = $('#status');
 	var img;
-		
 	   
 	$('#enviar').ajaxForm({
+		dataType: 'json',
 		beforeSend: function() {
 			status.empty();
 			var percentVal = '0%';
@@ -89,14 +98,21 @@ $(document).ready(function() {
 			bar.width(percentVal)
 			percent.html(percentVal);
 		},
-		complete: function(xhr) {
-			status.html(xhr.responseText);
-			setTimeout(function(){
-				 updateimg(idoft); }, 1000); 	
+		success: function(data) {
+			var resp = "";
+			if(data.errstatus == "invalidUpload") resp = "<p>Intente nuevamente, su imagen no puede ser integrada.</p>";
+			if(data.errstatus == "uploadSessionError") resp = "<p>Favor de refrescar la página para continuar.</p>";
+			if(data.errstatus == "invalidId") resp = "<p>La oferta no existe.</p>";
+			if(data.errstatus == "ok") {
+				resp = "<p>La imagen se integró exitosamente</p>";
+				$("#enviar").attr("action", data.uploadurl);
+				setTimeout(function(){ updateimg(data.idblob); }, 1000); 	
+			}
+			status.html(resp);
 		}
 	}); 
+
 	$("#pic").error(function() { putDefault()});
-	     
 
 	$('textarea[maxlength]').live('keyup blur', function() {
 		var maxlength = $(this).attr('maxlength'); var val = $(this).val();
@@ -134,6 +150,12 @@ $(document).ready(function() {
 			} else {
 				alert("Máximo 5 palabras");
 			}
+		} else if($(this).attr("value") == "E") {
+			$.get("/rmword", { id: ""+idemp+"", token: ""+token.text()+"" }, function(resp) {
+				if(resp.status=="ok") {
+					token.remove();
+				}
+			}, "json");
 		} else {
 			$.get("/delword", { id: ""+token.attr('value')+"", token: ""+token.text()+"" }, function(resp) {
 				if(resp.status=="ok") {
@@ -180,30 +202,62 @@ $(document).ready(function() {
 			}
 		});
    	});
+	var elimActive= false;
+	$("#elimilink").click(function(e){
+		if (!elimActive) {
+			$('.sugestWord').addClass("eliminateWord"); 
+			$('.sugestWord').attr("value", "E"); 
+			elimActive=true;
 
+			$('#elimilink').addClass("button"); 
+			$('#elimilink').addClass("red"); 
+			$('#elimilink').addClass("small"); 
+			
+			$('#unpickpcve').addClass('hide');
+			$('#tokenpcve').addClass('hide');
+			$('#btnaddWords').addClass('hide');
+			$('#elimilink').html("<span>Terminar </span>");
+			$('#titleWord').html('Clic aquí para remover palabras que no necesites');  
+		} else {
+			$('.sugestWord').attr("value", "0"); 
+			$('.eliminateWord').removeClass("eliminateWord"); 
+
+			$('#elimilink').removeClass("button"); 
+			$('#elimilink').removeClass("red"); 
+			$('#elimilink').removeClass("small"); 
+
+			$('#unpickpcve').removeClass('hide');
+			$('#tokenpcve').removeClass('hide');
+			$('#btnaddWords').removeClass('hide');
+			$('#elimilink').html("Eliminar palabras capturadas");		
+			$('#titleWord').html('Otras palabras que has capturado'); 
+			elimActive=false;
+		}
+		return false;
+	});
 });/* termina onload */
 
 function avoidCache(){
 	var numRam = Math.floor(Math.random() * 500);
 	return numRam;
 }		
+
 function putDefault() {
 	$('#pic').remove();
 	img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='258px' />" 
 	$('#urlimg').append(img);
 }
-function updateimg(idoft) {
+
+function updateimg(idblob) {
 	if(idoft != 'none') {
-		//alert(idoft);
 		$('#pic').remove();
-		var query = "id="+idoft + "&Avc=" + avoidCache();
+		var query = "id="+idblob + "&Avc=" + avoidCache();
 		img = "<img  src = '/ofimg?"+ query +"' id='pic' width='256px' />" 
 		$('#urlimg').append(img);
 	} else {
 		putDefault();
 	}
 }
-
 
 /*
  * Llena palabras clave por oferta y empresa
