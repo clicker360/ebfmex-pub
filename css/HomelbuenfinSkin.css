@@ -140,9 +140,22 @@ a.lnk-sec {
 .SHW-div-D5px{box-shadow:0px 2px 5px #000; -webkit-box-shadow:0px 2px 5px #000; -moz-box-shadow: 0px2px 5px #000;}
 .SHW-div-D3px{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666;}
 /***Butons**/
-.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; height:22px; float:left; width:auto; padding-left:7%; padding-right:7%; padding-top:5px; padding-bottom:2px; color:#FFF; font-weight:400;}
+.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; float:left; width:auto; padding-left:4%; padding-right:4%; padding-top:6px; padding-bottom:8px; color:#FFF; font-weight:400;}
 .button:hover, a.button:hover{ background-position:bottom;}
-.button.last{ float:right;}
+
+.button-2, a.button-2{
+	background-image: url(../gfx/btn2.jpg);
+	background-position: top;
+	float: left;
+	width: auto;
+	padding-left: 5%;
+	padding-right: 5%;
+	padding-top: 6px;
+	padding-bottom: 8px;
+	color: #FFF;
+	font-weight: bold;
+}
+.button-2:hover, a.button-2:hover{ background-position:bottom;}
 
 /*Menu*/
 .logo{float:left; width:145px; height:142px; margin-top:10px; margin-left:-3px; position:relative;}
@@ -194,6 +207,7 @@ width:145px;
 .all-img-5px a{ margin:4px; float:left; display:block;}
 .imgpad3px img{ padding:2px;}
 #logos{ height:1690px; float:left; position:relative; width:350px;}
+#logos2{ height:1690px; float:left; position:relative; width:250px;}
 .twitter{ height:280px; overflow:hidden; z-index:0;}
 
 .pagination-H{
@@ -278,3 +292,49 @@ width:145px;
 .gridsubRow a:hover{
 	background-color:#C0C0C0;
 }
+form{ padding:0px; margin:0px; float:left;}
+input.searchform{
+	background-color: #FFF;
+	padding: 7px 4px;
+	float: left;
+	border: 1px solid #a5a5a5;
+	width: auto;
+	font-size: 12px;
+	color: #666;
+}
+select.searchform{
+	background: none repeat scroll 0 0 transparent;
+	padding: 6px 5px 6px 5px;
+	float: left;
+	width: auto;
+	font-size: 12px;
+	color: #666;
+	border:none;
+	margin:0px;
+	height:30px;
+	width:180px;
+}
+.selectCont{
+	background-color: #FFF;
+	background-image: url(../gfx/downArrow.jpg);
+	background-repeat: no-repeat;
+	background-position: right top;
+	float:left;
+	border: 1px solid #a5a5a5;
+	padding: 0px;
+	width:130px;
+	overflow:hidden;
+	}
+.selectCont:hover{ background-position:right bottom;}
+
+.oferta{ float:left; height:260px; width:212px; padding:7px; margin:2px;}
+.oferta:hover{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666; background-color:#F9F4F4;}
+.oferta h3{ font-size:14px; font-weight:bold; height:35px; line-height:1.2em; display:block; overflow:hidden; padding:0px; margin:2px;  float:left; width:210px;}
+.oferta .imgcont{ width:212px; height:200px; overflow:hidden; float:left; display:block;}
+
+.ofertCont{ float:left; width:695px;}
+
+
+/*last part*/
+.first {float:left;}
+.last, a.last  {float:right;}
