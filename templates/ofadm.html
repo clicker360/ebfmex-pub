@@ -6,8 +6,8 @@
 		<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
 		<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
 		<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
-		<script type="text/javascript" src="../scripts/ofertas.js" charset="utf-8"></script>
-		<script type="text/javascript" src="../scripts/datepicker.js" charset="utf-8"></script>
+		<script type="text/javascript" src="scripts/ofertas.js" charset="utf-8"></script>
+		<script type="text/javascript" src="scripts/datepicker.js" charset="utf-8"></script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', 'UA-26907178-1']);
@@ -20,15 +20,12 @@
 			})();
 		</script>
 		<script type="text/javascript" charset="utf-8">
-		<!-- cambio de aqui  23 - 54-->
-	
-			
-			
-			
-			
+				
 			var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}"; 
+			var idblob = "{{with .FormDataOf}}{{.BlobKey}}{{end}}"; 
 			var idemp = "{{with .Empresa}}{{.IdEmp}}{{end}}"; 
 			$(document).ready(function() { $("#urlimg").attr('href', "{{with .FormDataOf}}{{.Url|js}}{{end}}");});
+			
 		</script>
 		<style type="text/css">
 			#size {
@@ -126,7 +123,7 @@
 	                                        </div>
 	                                    </div>
 	                                    <div id="imgform" class="col-8 padd-D10px">
-											<form action="/ofimgup" method="post" id="enviar" enctype="multipart/form-data">
+											<form action="{{with .FormDataOf}}{{.UploadURL}}{{end}}" method="post" id="enviar" enctype="multipart/form-data">
 												<input type="hidden" name="IdOft" value="{{with .FormDataOf}}{{.IdOft}}{{end}}"/>
 												<div class="col-7 marg-L15pix Bg-Wh">
 													<div class=" col-100PR">
@@ -289,7 +286,7 @@
 														<!--esto se llena automáticamente-->
 													</div>
 												</div>
-                                                <div class="last marg-R15pix"><a href="#null" onclick="eliminationTime();" class="last padd-5px typeMin"  id="elimilink">eliminar palabras mal capturadas</a></div>
+                                                <div class="last marg-R15pix"><a href="#null" class="last padd-5px typeMin"  id="elimilink">Clic aquí para remover palabras que no necesites</a></div>
 											</div>
 										</div>
 	                                    <div class="col-10 padd-LR15px marg-L5pix Bg-Drks">

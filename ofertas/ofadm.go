@@ -8,19 +8,18 @@ package oferta
 import (
 	"appengine"
 	"appengine/datastore"
+	"appengine/blobstore"
 	"sortutil"
 	"strings"
 	"strconv"
 	_ "image/png" // import so we can read PNG files.
 	"net/http"
+	"net/url"
 	"html/template"
 	"sess"
 	"model"
 	"time"
-	//"encoding/json"
-	//"resize"
-	//"bytes"
-	//"fmt"
+	"io"
 )
 
 type FormDataOf struct {
@@ -52,17 +51,25 @@ type FormDataOf struct {
 	FechaHora		time.Time
 	Ackn			string
 	Sucursales		string // cadena de id's de sucursales separadas por espacio
+	UploadURL		*url.URL
+	BlobKey			appengine.BlobKey
 }
 
 // Because App Engine owns main and starts the HTTP service,
 // we do our setup during initialization.
+
 func init() {
 	http.HandleFunc("/of", model.ErrorHandler(OfShow))
 	http.HandleFunc("/ofs", model.ErrorHandler(OfShowList))
 	http.HandleFunc("/ofmod", model.ErrorHandler(OfMod))
 	http.HandleFunc("/ofdel", model.ErrorHandler(OfDel))
-	//http.HandleFunc("/ofsucadd", model.ErrorHandler(OfAddSucursal))
-	//http.HandleFunc("/ofsucdel", model.ErrorHandler(OfDelSucursal))
+}
+
+func serveError(c appengine.Context, w http.ResponseWriter, err error) {
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Header().Set("Content-Type", "text/plain")
+	io.WriteString(w, "Internal Server Error")
+	c.Errorf("%v", err)
 }
 
 func OfShowList(w http.ResponseWriter, r *http.Request) {
@@ -126,7 +133,19 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 			oferta.Empresa = empresa.Nombre
 		}
 		fd.Categorias = listCat(c, oferta.IdCat);
+
+		/*
+		 * Se crea el form para el upload del blob
+		 */
+		uploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+		if err != nil {
+			serveError(c, w, err)
+			return
+		}
+		fd.UploadURL = uploadURL
+
 		tc["FormDataOf"] = fd
+		w.Header().Set("Content-Type", "text/html")
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
 		http.Redirect(w, r, "/registro", http.StatusFound)
@@ -154,10 +173,11 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 				ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
 				ofertamod.FechaHoraPub = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
 				ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
+				ofertamod.BlobKey = "none"
 				o, err := model.NewOferta(c, &ofertamod)
 				model.Check(err)
 				fd = ofToForm(*o)
-				fd.Ackn = "Ok";
+			fd.Ackn = "Ok";
 			} else {
 				// redireccionar
 				http.Redirect(w, r, "/le?d=o", http.StatusFound)
@@ -168,7 +188,19 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			 * Se valida y si no existe se informa un error
 			 */
 			fd, valid =ofForm(w, r, true)
-			ofertamod = oftFill(fd)
+
+			ofertamod.IdOft = fd.IdOft
+			ofertamod.IdEmp = fd.IdEmp
+			ofertamod.IdCat = fd.IdCat
+			ofertamod.Oferta = fd.Oferta
+			ofertamod.Descripcion = fd.Descripcion
+			ofertamod.Enlinea =	fd.Enlinea
+			ofertamod.Url =	fd.Url
+			ofertamod.FechaHoraPub = fd.FechaHoraPub
+			ofertamod.StatusPub = fd.StatusPub
+			//ofertamod.BlobKey = fd.BlobKey
+			ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+
 			oferta := model.GetOferta(c, ofertamod.IdOft)
 			if oferta.IdOft != "none" {
 				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
@@ -176,60 +208,46 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					fd.IdEmp = empresa.IdEmp
 					fd.Empresa = empresa.Nombre
 					ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
-					ofertamod.Tarjetas = oferta.Tarjetas
-					//ofertamod.Promocion = oferta.Promocion
-					//ofertamod.Descuento = oferta.Descuento
-					//ofertamod.Meses = oferta.Meses
-					ofertamod.Image = oferta.Image
-					//ofertamod.ImageA = oferta.ImageA
-					//ofertamod.ImageB = oferta.ImageB
-					//ofertamod.Sizepx = oferta.Sizepx
-					//ofertamod.Sizepy = oferta.Sizepy
-					//ofertamod.SizeApx = oferta.SizeApx
-					//ofertamod.SizeApy = oferta.SizeApy
-					//ofertamod.SizeBpx = oferta.SizeBpx
-					//ofertamod.SizeBpy = oferta.SizeBpy
+					ofertamod.BlobKey = oferta.BlobKey
 				}
 				// TODO
 				// es preferible poner un regreso avisando que no existe la empresa
 				if valid {
-					if oferta.IdOft != "none" {
-						// Ya existe
-						err := model.PutOferta(c, &ofertamod)
+					// Ya existe
+					err := model.PutOferta(c, &ofertamod)
+					model.Check(err)
+
+					// Se borran las relaciones oferta-sucursal
+					err = model.DelOfertaSucursales(c, oferta.IdOft)
+					model.Check(err)
+
+					// Se reconstruyen las Relaciones oferta-sucursal con las solicitadas
+					idsucs := strings.Fields(r.FormValue("schain"))
+					for _, idsuc := range idsucs {
+						suc := model.GetSuc(c, idsuc)
+
+						lat, _ := strconv.ParseFloat(suc.Geo1, 64)
+						lng, _ := strconv.ParseFloat(suc.Geo2, 64)
+
+						var ofsuc model.OfertaSucursal
+						ofsuc.IdOft = ofertamod.IdOft
+						ofsuc.IdSuc = idsuc
+						ofsuc.IdEmp = ofertamod.IdEmp
+						ofsuc.Sucursal = suc.Nombre
+						ofsuc.Lat = lat
+						ofsuc.Lng = lng
+						ofsuc.Empresa = ofertamod.Empresa
+						ofsuc.Oferta = ofertamod.Oferta
+						ofsuc.Descripcion = ofertamod.Descripcion
+						ofsuc.Promocion = ofertamod.Promocion
+						ofsuc.Precio = ofertamod.Precio
+						ofsuc.Descuento = ofertamod.Descuento
+						ofsuc.Url = ofertamod.Url
+						ofsuc.StatusPub = ofertamod.StatusPub
+						ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+
+						err := ofertamod.PutOfertaSucursal(c, &ofsuc)
 						model.Check(err)
-
-						// Se borran las relaciones oferta-sucursal
-						err = model.DelOfertaSucursales(c, oferta.IdOft)
-						model.Check(err)
-
-						// Se reconstruyen las Relaciones oferta-sucursal con las solicitadas
-						idsucs := strings.Fields(r.FormValue("schain"))
-						for _, idsuc := range idsucs {
-							suc := model.GetSuc(c, idsuc)
-
-							lat, _ := strconv.ParseFloat(suc.Geo1, 64)
-							lng, _ := strconv.ParseFloat(suc.Geo2, 64)
-
-							var ofsuc model.OfertaSucursal
-							ofsuc.IdOft = ofertamod.IdOft
-							ofsuc.IdSuc = idsuc
-							ofsuc.IdEmp = ofertamod.IdEmp
-							ofsuc.Sucursal = suc.Nombre
-							ofsuc.Lat = lat
-							ofsuc.Lng = lng
-							ofsuc.Empresa = ofertamod.Empresa
-							ofsuc.Oferta = ofertamod.Oferta
-							ofsuc.Descripcion = ofertamod.Descripcion
-							ofsuc.Promocion = ofertamod.Promocion
-							ofsuc.Precio = ofertamod.Precio
-							ofsuc.Descuento = ofertamod.Descuento
-							ofsuc.Url = ofertamod.Url
-							ofsuc.StatusPub = ofertamod.StatusPub
-							ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
-
-							err := ofertamod.PutOfertaSucursal(c, &ofsuc)
-							model.Check(err)
-						}
 
 					}
 					fd = ofToForm(ofertamod)
@@ -241,7 +259,19 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		}
 
 		fd.Categorias = listCat(c, ofertamod.IdCat);
+
+		/*
+		 * Se crea el form para el upload del blob
+		 */
+		uploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+		if err != nil {
+			serveError(c, w, err)
+			return
+		}
+		fd.UploadURL = uploadURL
 		tc["FormDataOf"] = fd
+
+		w.Header().Set("Content-Type", "text/html")
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
 		http.Redirect(w, r, "/registro", http.StatusFound)
@@ -323,28 +353,6 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 	return fd, true
 }
 
-func oftFill(fd FormDataOf) model.Oferta {
-	s := model.Oferta {
-		IdOft:			fd.IdOft,
-		IdEmp:			fd.IdEmp,
-		IdCat:			fd.IdCat,
-		Oferta:			fd.Oferta,
-		Descripcion:	fd.Descripcion,
-		//Promocion:		fd.Promocion,
-		//Codigo:			fd.Codigo,
-		//Precio:			fd.Precio,
-		//Descuento:		fd.Descuento,
-		Enlinea:		fd.Enlinea,
-		Url:			fd.Url,
-		//Tarjetas:		fd.Tarjetas,
-		//Meses:			fd.Meses,
-		FechaHoraPub:	fd.FechaHoraPub,
-		StatusPub:		fd.StatusPub,
-		FechaHora:		time.Now().Add(time.Duration(-18000)*time.Second),
-	}
-	return s;
-}
-
 func ofToForm(e model.Oferta) FormDataOf {
 	fd := FormDataOf {
 		IdOft:			e.IdOft,
@@ -363,6 +371,7 @@ func ofToForm(e model.Oferta) FormDataOf {
 		FechaHoraPub:	e.FechaHoraPub,
 		ErrFechaHoraPub:	strings.TrimSpace(e.FechaHoraPub.Format("_2 Jan")),
 		StatusPub:		e.StatusPub,
+		BlobKey:		e.BlobKey,
 	}
 	return fd
 }

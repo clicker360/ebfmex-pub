@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Fonts */
 
-/* main font */
+/* main font 
 @font-face {
     font-family: 'CenturyGothic';
     src: url('CenturyGothic.eot');
@@ -24,6 +24,8 @@
     font-style: normal;
 
 }
+*/
+
 /*All the site have this font*/
 body{
 	font-family: "CenturyGothic", "Century Gothic", Verdana,Tahoma, sans-serif;

@@ -96,15 +96,8 @@ func RmWord(w http.ResponseWriter, r *http.Request) {
 	var out Word
 	out.Token = strings.ToLower(r.FormValue("token"))
 	out.Id = r.FormValue("id")
-	oferta := model.GetOferta(c, out.Id)
-	if oferta.IdEmp != "none" {
-		err := model.RmOfertaPalabra(c, out.Id, out.Token)
-		if err != nil {
-			out.Status = "writeErr"
-		} else {
-			out.Status = "ok"
-		}
-	} else {
+	out.Status = "ok"
+	if err := model.RmOfertaPalabra(c, out.Id, out.Token); err != nil {
 		out.Status = "notFound"
 	}
 
