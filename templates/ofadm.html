@@ -177,7 +177,7 @@
 								
 										<!--Descripcion de ofertas-->
 										<div class=" col-10 padd-UD5px padd-LR15px marg-D5pix marg-L5pix Bg-Drks">
-											<label class="col-5"><span class="typ-Sc">*</span>¿En que consiste la oferta?</label>
+											<label class="col-5"><span class="typ-Sc">*</span>¿En qué consiste la oferta?</label>
 											<textarea class="validate[required, maxSize[350]] medium last {{.ErrDescripcion}}" name="Descripcion" cols="6" rows="6" id="descripcion" maxlength="350" onchange="javascript:$('#oferDesc').text($('#descripcion').val()); activateCancel();">{{.Descripcion}}</textarea>
 											<span class="col-7 last Addvice">Máximo 350 caracteres</span><div class="col-10">
 													<p class="typeMin">Esta es la información que quieres compartirle al público sobre tu oferta. Te recomendamos incluir algunos de los siguientes datos: monto del descuento, tipo de promoción, producto o servicio, departamento, público objetivo.<br />
@@ -199,8 +199,6 @@
 										<div class="col-10 padd-UD5px padd-LR15px marg-5px Bg-Drks">
 											<div class="col-10">
 												<label class="col-7">La oferta estará publicada a partir de</label>
-	                                           	
-	                                   		
 												<input type="text" class="validate[optional] small last marg-U10pix" name="FechaHoraPub" id="date1" readonly="readonly" onclick="return toggleCalendar(this);" value="{{.ErrFechaHoraPub}}"/>
                                                 <div class=" col-10">
 												<p class="typeMin">Se refiere al día en que se hará pública la oferta en la página de internet de El Buen Fin. Puedes elegir cualquier fecha antes del 19 noviembre.</p></div>
@@ -238,7 +236,7 @@
 													<li><a href="#null" onClick="getTheDate(this)" id="17">17</a></li>
 													<li><a href="#null" onClick="getTheDate(this)" id="18">18</a></li>
 													<li><a href="#null" onClick="getTheDate(this)" id="19">19</a></li>
-													<li><a href="#null" onClick="getTheDate(this)" id="19">20</a></li>
+													<li><a href="#null" onClick="getTheDate(this)" id="20">20</a></li>
 													<li>21</li>
 													<li>22</li>
 													<li>23</li>
@@ -257,7 +255,7 @@
                                         <!--SUCURSALES-->
 									<div class="col-10 padd-LR15px marg-L5pix Bg-Drks padd-D10px ">
                                     <!--EL BUEN FIN EN LINEA-->
-                                    <p class="marg-5px"><strong>¿Dónde estará disponible esta oferta?</strong></p>
+                                    <p class="marg-5px"><strong><span class="typ-Sc">*</span>¿Dónde estará disponible esta oferta?</strong></p>
 		  							 <div class="first marg-L6pix bg-Gry3 col-10" >
 											<label class="col-8 ">El Buen Fin en línea (Comercio electrónico) </label>
 											<input type="checkbox" class="last marg-U5pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} />
