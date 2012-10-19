@@ -142,7 +142,7 @@ a.lnk-sec {
 .SHW-div-D5px{box-shadow:0px 2px 5px #000; -webkit-box-shadow:0px 2px 5px #000; -moz-box-shadow: 0px2px 5px #000;}
 .SHW-div-D3px{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666;}
 /***Butons**/
-.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; float:left; width:auto; padding-left:4%; padding-right:4%; padding-top:6px; padding-bottom:8px; color:#FFF; font-weight:400;}
+.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; float:left; width:auto; padding-left:3.6%; padding-right:3.6%; padding-top:6px; padding-bottom:8px; color:#FFF; font-weight:400;}
 .button:hover, a.button:hover{ background-position:bottom;}
 
 .button-2, a.button-2{
@@ -364,12 +364,60 @@ select.searchform2{
 	}
 .selectCont2:hover{ background-position:right bottom;}
 
-.oferta{ float:left; height:260px; width:212px; padding:7px; margin:2px;}
-.oferta:hover{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666; background-color:#F9F4F4;}
+.oferta{ float:left; height:270px; width:212px; padding:7px; margin:2px;}
+.oferta:hover{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666;}
 .oferta h3{ font-size:14px; font-weight:bold; height:35px; line-height:1.2em; display:block; overflow:hidden; padding:0px; margin:2px;  float:left; width:210px;}
 .oferta .imgcont{ width:212px; height:200px; overflow:hidden; float:left; display:block;}
 
 .ofertCont{ float:left; width:695px;}
+
+/*Ligth box Oferta*/
+ul.sucList{ padding:0px; margin:0px; list-style:none;}
+ul.sucList li a{
+	font-size:12px;
+	margin:3px;
+	color:#FFFFFF;
+	display:inline-block;
+	padding:1px 4px;
+	float:left;
+	font-variant:small-caps;
+	font-weight: bold;
+	background-color: #9D9BAB;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+ul.sucList li a:hover{ background-color:#CCCCCC;}
+
+ul.promotional{ padding:2px; margin:0px; list-style:none;}
+ul.promotional li{ font-size:16px; color:#333333; margin-left:5px;}
+
+ul.horizontalList{ padding:0px; margin:0px; list-style:none;}
+ul.horizontalList li{ font-size:14px; color:#333333; display:inline-block; border-right:solid 1px #999999; padding:1px 5px; float:left;
+font-variant:small-caps;}
+
+.lghtbox{
+	background-image: url(../gfx/wht80pr.png);
+	float: left;
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+	position: fixed;
+	z-index: 998;
+}
+.lightcenterdiv{
+	background-color: #FFF;
+	margin-left:10%;
+	margin-right:10%;
+	margin-top:10%;
+	padding: 10px;
+	height: auto;
+	width: 970px;
+	border: 1px solid #CCC;
+	position: absolute;
+	z-index:999;
+}
+
 
 
 /*last part*/
