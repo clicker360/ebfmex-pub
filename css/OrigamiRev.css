@@ -197,6 +197,7 @@ div.col-1, div.col-2, div.col-3, div.col-4, div.col-5, div.col-6, div.col-7, div
 .marg-B100px { margin-bottom: 100px;}
 
 .margRL-auto{margin-right:auto;margin-left: auto; float:none;}
+.marg-LRauto{margin-right:auto;margin-left: auto; float:none;}
 
 /***links***/
 a {text-decoration:none;}
@@ -282,8 +283,6 @@ a:hover {text-decoration:underline;}
 .pullRight-10{ right:-10px;}
 
 .hide {display:none;}
-.first {float:left;}
-.last, a.last  {float:right;}
 .clear {clear:both;}
 .Dsblock { display:block;}
 .DsIn-line { display:inline;}

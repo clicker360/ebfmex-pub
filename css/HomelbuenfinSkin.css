@@ -329,6 +329,41 @@ select.searchform{
 	}
 .selectCont:hover{ background-position:right bottom;}
 
+
+input.searchform2{
+	background-color: #FFF;
+	padding: 7px 4px;
+	float: left;
+	border: 1px solid #a5a5a5;
+	width: auto;
+	font-size: 12px;
+	color: #666;
+}
+select.searchform2{
+	background: none repeat scroll 0 0 transparent;
+	padding: 6px 5px 6px 5px;
+	float: left;
+	width: auto;
+	font-size: 12px;
+	color: #666;
+	border:none;
+	margin:0px;
+	height:30px;
+	width:200px;
+}
+.selectCont2{
+	background-color: #FFF;
+	background-image: url(../gfx/downArrow.jpg);
+	background-repeat: no-repeat;
+	background-position: right top;
+	float:left;
+	border: 1px solid #a5a5a5;
+	padding: 0px;
+	width:170px;
+	overflow:hidden;
+	}
+.selectCont2:hover{ background-position:right bottom;}
+
 .oferta{ float:left; height:260px; width:212px; padding:7px; margin:2px;}
 .oferta:hover{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666; background-color:#F9F4F4;}
 .oferta h3{ font-size:14px; font-weight:bold; height:35px; line-height:1.2em; display:block; overflow:hidden; padding:0px; margin:2px;  float:left; width:210px;}
