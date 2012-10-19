@@ -42,8 +42,10 @@ func SetSess(w http.ResponseWriter, c appengine.Context, key *datastore.Key, ema
 	//http.SetCookie(w, &csc)
 	//csc = http.Cookie{ Name: "ebfmex-pub-sessid-ua", Value: cKey.Encode(), Expires: ex, Path: "/" }
 	//http.SetCookie(w, &csc)
-	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", md5, ex.Format("Mon Jan 2 15:04:05")))
-	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", cKey.Encode(), ex.Format("Mon Jan 2 15:04:05")))
+	//w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", md5, ex.Format("Mon Jan 2 15:04:05")))
+	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%v; expires=%v; path=/;", md5, ex.Format(time.ANSIC)))
+	//w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", cKey.Encode(), ex.Format("Mon Jan 2 15:04:05")))
+	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%v; expires=%v; path=/;", cKey.Encode(), ex.Format(time.ANSIC)))
 	return md5, cKey, err
 }
 

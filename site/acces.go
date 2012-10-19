@@ -80,8 +80,8 @@ func Salir(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}
-	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Mon Jan 2 15:04:05"))
-	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Mon Jan 2 15:04:05"))
+	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Thu, 18 Oct 2012 01:01:23 GMT;"))
+	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Thu, 18 Oct 2012 01:01:23 GMT;"))
 	http.Redirect(w, r, "/registro", http.StatusFound)
 }
 

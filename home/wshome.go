@@ -21,16 +21,17 @@ type response struct {
 
 func init() {
     rand.Seed(time.Now().UnixNano())
-    http.HandleFunc("/dirlogos", directorioLogos)
     http.HandleFunc("/dirtexto", directorioTexto)
     http.HandleFunc("/wsdiremp", wsDirTexto)
     http.HandleFunc("/carr", carr)
+    rand.Seed(time.Now().UnixNano())
 }
 
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-    q := datastore.NewQuery("ShortLogo")
+	offset := rand.Intn(950)
+    q := datastore.NewQuery("ShortLogo").Offset(offset).Limit(50)
 	n, _ := q.Count(c)
 	logos := make([]model.Image, 0, n)
 	if _, err := q.GetAll(c, &logos); err != nil {
@@ -53,56 +54,6 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func directorioLogos(w http.ResponseWriter, r *http.Request) {
-    c := appengine.NewContext(r)
-
-	/*
-		Loop para recorrer todas las empresas 
-	*/
-	prefixu := strings.ToUpper(r.FormValue("prefix"))
-	//prefixl := strings.ToLower(r.FormValue("prefix"))
-	//date := r.FormValue("bydate")
-	ultimos := r.FormValue("ultimos")
-    q := datastore.NewQuery("Empresa")
-	if ultimos != "1" {
-		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd")
-	} else {
-		q = q.Filter("FechaHora >=", time.Now().AddDate(0,0,-2))
-	}
-	em, _ := q.Count(c)
-	empresas := make([]model.Empresa, 0, em)
-	if _, err := q.GetAll(c, &empresas); err != nil {
-		if err == datastore.ErrNoSuchEntity {
-			return
-		}
-	}
-
-	sortutil.AscByField(empresas, "Nombre")
-	/*
-	if date != "" {
-		sortutil.AscByField(empresas, "FechaHora")
-	}
-	*/
-	var ti response
-	for k, _ := range empresas {
-		imgq := datastore.NewQuery("EmpLogo").Filter("IdEmp =", empresas[k].IdEmp)
-		for imgcur := imgq.Run(c); ; {
-			var img model.Image
-			_, err := imgcur.Next(&img)
-			if err == datastore.Done  {
-				break
-			}
-			tpl, _ := template.New("Carr").Parse(cajaTpl)
-			if(img.Data != nil) {
-				ti.IdEmp = empresas[k].IdEmp
-				ti.Name = empresas[k].Nombre
-				tpl.Execute(w, ti)
-			}
-		}
-
-	}
-}
-
 func directorioTexto(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 
@@ -115,7 +66,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	if ultimos != "1" {
 		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd")
 	} else {
-		q = q.Filter("FechaHora >=", time.Now().AddDate(0,0,-2))
+		q = q.Filter("FechaHora >=", time.Now().AddDate(0,0,-2)).Limit(200)
 	}
 	em, _ := q.Count(c)
 	empresas := make([]model.Empresa, 0, em)
