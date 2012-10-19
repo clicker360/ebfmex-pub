@@ -32,17 +32,9 @@ type FormDataOf struct {
 	ErrOferta		string
 	Descripcion		string
 	ErrDescripcion	string
-	Codigo			string
-	ErrCodigo		string
-	Precio			string
-	ErrPrecio		string
-	Descuento		string
-	ErrDescuento	string
 	Enlinea			bool
 	Url				string
 	ErrUrl			string
-	Tarjetas		[]byte // json
-	ErrTarjetas		string
 	Meses			string
 	ErrMeses		string
 	FechaHoraPub    time.Time
@@ -75,7 +67,6 @@ func serveError(c appengine.Context, w http.ResponseWriter, err error) {
 func OfShowList(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
-		//usuario, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
 		if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
@@ -240,8 +231,6 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 						ofsuc.Oferta = ofertamod.Oferta
 						ofsuc.Descripcion = ofertamod.Descripcion
 						ofsuc.Promocion = ofertamod.Promocion
-						ofsuc.Precio = ofertamod.Precio
-						ofsuc.Descuento = ofertamod.Descuento
 						ofsuc.Url = ofertamod.Url
 						ofsuc.StatusPub = ofertamod.StatusPub
 						ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
@@ -308,23 +297,13 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		IdEmp:			strings.TrimSpace(r.FormValue("IdEmp")),
 		IdCat:			ic,
 		Oferta:			strings.TrimSpace(r.FormValue("Oferta")),
-		ErrOferta: "",
+		ErrOferta:		"",
 		Descripcion:	strings.TrimSpace(r.FormValue("Descripcion")),
 		ErrDescripcion: "",
-		Codigo:			strings.TrimSpace(r.FormValue("Codigo")),
-		ErrCodigo: "",
-		//Precio:			strings.TrimSpace(r.FormValue("Precio")),
-		//ErrPrecio: "",
-		//Descuento:		strings.TrimSpace(r.FormValue("Descuento")),
-		ErrDescuento: "",
 		Enlinea:		el,
 		Url:			strings.TrimSpace(r.FormValue("Url")),
-		ErrUrl: "",
-		//Tarjetas:		strings.TrimSpace(r.FormValue("Tarjetas")),
-		//ErrTarjetas: "",
-		//Meses:			strings.TrimSpace(r.FormValue("Meses")),
-		//Promocion:		strings.TrimSpace(r.FormValue("Promocion")),
-		ErrMeses:	"",
+		ErrUrl:			"",
+		ErrMeses:		"",
 		FechaHoraPub:	fh,
 		ErrFechaHoraPub: strings.TrimSpace(fh.Format("_2 Jan")),
 		StatusPub:		st,
@@ -360,14 +339,8 @@ func ofToForm(e model.Oferta) FormDataOf {
 		IdCat:			e.IdCat,
 		Oferta:			e.Oferta,
 		Descripcion:	e.Descripcion,
-		//Codigo:			e.Codigo,
-		//Precio:			e.Precio,
-		//Descuento:		e.Descuento,
-		//Promocion:		e.Promocion,
 		Enlinea:		e.Enlinea,
 		Url:			e.Url,
-		//Tarjetas:		e.Tarjetas,
-		//Meses:			e.Meses,
 		FechaHoraPub:	e.FechaHoraPub,
 		ErrFechaHoraPub:	strings.TrimSpace(e.FechaHoraPub.Format("_2 Jan")),
 		StatusPub:		e.StatusPub,
