@@ -33,6 +33,8 @@
 $(document).ready(function(){
 	getcarrousel();
 	scrolea();
+        search();
+        
 });
 function scrolea(){
 	$('#logos').animate({
@@ -48,6 +50,21 @@ function getcarrousel() {
 	$.get("/carr", "", function(response){
 		$('#logo1').html(response);
 	});
+}
+function search(){
+    $("#buscarOferta").click(function(){
+        var keywords = $("input[name=word]").val();
+        var categoria = $("select[name=catMenu]").val();
+        var estado = $("select[name=estadoMenu]").val();
+        var tipo = $("select[name=tipoMenu]").val();
+        $.get("http://movil.ebfmex-pub.appspot.com/search",{keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
+            var oferta = JSON.parse(data);
+            for(var i in oferta[0]){
+            console.log(i + ': ' + oferta[0][i] );
+            }
+        });
+        return false;
+    });
 }
 
 </script>
@@ -95,7 +112,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
       <input name="word" type="text" class="searchform2" value="¿Qué buscas?" size="18" />
       <div class="selectCont2 marg-L20px">
       <select name="catMenu" id="catMenu"  class="searchform2 ">
-        <option selected="selected">Categoria</option>
+        <option value="" selected="selected">Categoria</option>
         <option value="1" >Abarrotes</option>
          
         <option value="2" >Automóviles y transportes</option>
@@ -154,8 +171,8 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
       </select>
     </div>
     <div class="selectCont2 marg-L20px">
-      <select name="catMenu" id="catMenu"  class="searchform2">
-        <option selected="selected">Estado</option>
+      <select name="estadoMenu" id="catMenu"  class="searchform2">
+        <option value="" selected="selected">Estado</option>
         <option value="01" >Aguascalientes</option>
         
         <option value="02" >Baja California</option>
@@ -223,8 +240,8 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
       </select>
       </div>
       <div class="selectCont2 marg-L20px" >
-      <select name="catMenu" id="catMenu"  class="searchform2">
-        <option selected="selected">tipo de oferta</option>
+      <select name="tipoMenu" id="catMenu"  class="searchform2">
+        <option value="" selected="selected">tipo de oferta</option>
           <option>compra en líena</option>
           <option>compra en piso</option>
           <option>Ambos</option>
@@ -232,7 +249,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
       </div>
 
     </form>
-        <a href="#null" class="button marg-L20px">BUSCAR &raquo;</a>
+        <a href="#null" class="button marg-L20px" id="buscarOferta">BUSCAR &raquo;</a>
   </div>
   </div>
   <div class="ofertCont" >
