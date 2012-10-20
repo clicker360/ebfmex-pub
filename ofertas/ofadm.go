@@ -9,16 +9,17 @@ import (
 	"appengine"
 	"appengine/datastore"
 	"appengine/blobstore"
+	"appengine/urlfetch"
 	"sortutil"
 	"strings"
 	"strconv"
-	_ "image/png" // import so we can read PNG files.
 	"net/http"
 	"net/url"
 	"html/template"
 	"sess"
 	"model"
 	"time"
+	"fmt"
 	"io"
 )
 
@@ -212,8 +213,12 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					err = model.DelOfertaSucursales(c, oferta.IdOft)
 					model.Check(err)
 
+					// Se crea un mapa de Estados para agregar a OfertaEstado
+					edomap := make(map[string]string,32)
+
 					// Se reconstruyen las Relaciones oferta-sucursal con las solicitadas
 					idsucs := strings.Fields(r.FormValue("schain"))
+
 					for _, idsuc := range idsucs {
 						suc := model.GetSuc(c, idsuc)
 
@@ -235,10 +240,23 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 						ofsuc.StatusPub = ofertamod.StatusPub
 						ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 
-						err := ofertamod.PutOfertaSucursal(c, &ofsuc)
-						model.Check(err)
+						// Se añade el estado de la sucursal al mapa de estados
+						edomap[suc.DirEnt] = oferta.IdOft
+
+						errOs := ofertamod.PutOfertaSucursal(c, &ofsuc)
+						model.Check(errOs)
 
 					}
+					// Se limpia la relación OfertaEstado
+					_ = ofertamod.DelOfertaEstado(c)
+
+					// Se guarda la relación OfertaEstado
+					errOe := ofertamod.PutOfertaEstado(c, edomap)
+					model.Check(errOe)
+
+					// Se despacha la generación de diccionario de palabras
+					_ = generatesearch(c, oferta.IdOft, ofertamod.Descripcion, ofertamod.Enlinea)
+
 					fd = ofToForm(ofertamod)
 					fd.Ackn = "Ok";
 				}
@@ -347,6 +365,16 @@ func ofToForm(e model.Oferta) FormDataOf {
 		BlobKey:		e.BlobKey,
 	}
 	return fd
+}
+
+func generatesearch(c appengine.Context, idoft string, description string, enlinea bool) error {
+	client := urlfetch.Client(c)
+	descurl := fmt.Sprintf("http://movil.ebfmex-pub.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&enlinea=%t", idoft, description, enlinea)
+	_, err := client.Get(descurl)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 var ofadmTpl = template.Must(template.ParseFiles("templates/ofadm.html"))
