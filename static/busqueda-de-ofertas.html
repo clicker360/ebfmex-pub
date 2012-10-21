@@ -88,15 +88,15 @@ function search(){
             if(ofertas.length >= 1){
                 cargaOfertas = true;
                 for(var i in ofertas){
-                        addOferta = '<div class="oferta bgWh"><a href="#null" class="lighter"> <span class="imgcont"><img src="http://home.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" /></span><h3>'+ofertas[i].Oferta+'</h3></a><div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>';
-                        $(".ofertCont").append(addOferta);
+                        addOferta = '<div class="oferta bgWh"><a href="#" class="lighter"> <span class="imgcont"><img src="http://home.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" /></span><h3>'+ofertas[i].Oferta+'</h3></a><div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>';
+                        $(".ofertCont").append(addOferta);                        
+                        lighterAjax();
                         //console.log(i + "_" + j + ': ' + ofertas[i][j] );
                 }    
             }else{
                 cargaOfertas = false;
             }
         });
-        lighterAjax();
 }
 </script>
 <script>
