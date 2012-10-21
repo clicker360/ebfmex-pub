@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/avisos", Avisos)
+    http.HandleFunc("/r/avisos", Avisos)
 }
 
 func Avisos(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +18,7 @@ func Avisos(w http.ResponseWriter, r *http.Request) {
 		tc["Sess"] = s
 		avisoTpl.Execute(w, tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 

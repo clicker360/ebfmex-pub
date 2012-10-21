@@ -7,19 +7,13 @@ package micrositio
 
 import (
 	"appengine"
-	//"appengine/datastore"
-	//"crypto/sha1"
 	"resize"
 	"bytes"
-	//"strings"
 	"strconv"
-	//"fmt"
 	"image"
 	"image/jpeg"
 	_ "image/png" // import so we can read PNG files.
-	//"io"
 	"net/http"
-	//"sess"
 	"model"
 )
 

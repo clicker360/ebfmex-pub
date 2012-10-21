@@ -33,16 +33,16 @@ const MailServer = "gmail"
 //const MailServer = "clicker"
 
 func init() {
-    http.HandleFunc("/registrar", Registrar)
+    http.HandleFunc("/r/registrar", Registrar)
     //http.HandleFunc("/registrar", pendienteVerifica)
-    http.HandleFunc("/c", ConfirmaCodigo)
+    http.HandleFunc("/r/c", ConfirmaCodigo)
 }
 
 func Registrar(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 	s, ok := sess.IsSess(w, r, c)
 	if ok {
-		http.Redirect(w, r, "/cta", http.StatusFound)
+		http.Redirect(w, r, "/r/cta", http.StatusFound)
 		return
 	}
 	fd, valid := ctaForm(w, r, s, true, registroTpl)
@@ -150,7 +150,7 @@ func pendienteVerifica(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	s, ok := sess.IsSess(w, r, c)
 	if ok {
-		http.Redirect(w, r, "/cta", http.StatusFound)
+		http.Redirect(w, r, "/r/cta", http.StatusFound)
 		return
 	}
 	fd, valid := ctaForm(w, r, s, true, registroTpl)

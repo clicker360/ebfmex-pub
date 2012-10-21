@@ -138,7 +138,7 @@ $(document).ready(function() {
 		var token = $(this);
 		if($(this).attr("value") == "0") {
 			if($("#unpickpcve a").length < 5) {
-				$.get("/addword", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
+				$.get("/r/addword", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
 					if(resp.status=="ok") {
 						token.attr("class", "wordselected");	
 						token.attr("value", resp.id);	
@@ -156,13 +156,13 @@ $(document).ready(function() {
 				alert("Máximo 5 palabras");
 			}
 		} else if($(this).attr("value") == "E") {
-			$.get("/rmword", { id: ""+idemp+"", token: ""+token.text()+"" }, function(resp) {
+			$.get("/r/rmword", { id: ""+idemp+"", token: ""+token.text()+"" }, function(resp) {
 				if(resp.status=="ok") {
 					token.remove();
 				}
 			}, "json");
 		} else {
-			$.get("/delword", { id: ""+token.attr('value')+"", token: ""+token.text()+"" }, function(resp) {
+			$.get("/r/delword", { id: ""+token.attr('value')+"", token: ""+token.text()+"" }, function(resp) {
 				if(resp.status=="ok") {
 					token.attr("class", "sugestWord");	
 					token.attr('value','0');
@@ -178,7 +178,7 @@ $(document).ready(function() {
 		var token = $("#tokenpcve");
 		if(token.val().length >= 3) {
 			if($("#unpickpcve a").length < 5) {
-				$.get("/addword", { token: ""+token.val()+"", id: ""+idoft+"" }, function(resp) {
+				$.get("/r/addword", { token: ""+token.val()+"", id: ""+idoft+"" }, function(resp) {
 					if(resp.status=="ok") {
 						clearpcve();
 						fillpcve(idoft,idemp);
@@ -282,7 +282,7 @@ function updateimg(idblob) {
  * Llena palabras clave por oferta y empresa
  */
 function fillpcve(idoft, idemp) {
-	$.get("/wordsxo", { id: "" + idoft + ""})
+	$.get("/r/wordsxo", { id: "" + idoft + ""})
 	.success(function(data) {
 		if($.isArray(data)) {
 			$.each(data, function(i,item){
@@ -294,7 +294,7 @@ function fillpcve(idoft, idemp) {
 	.error(function(){alert('Hay problemas de conexión, espere un momento y recargue la página');})
 	.complete(function(){});
 
-	$.get("/wordsxe", { id: "" + idemp + ""})
+	$.get("/r/wordsxe", { id: "" + idemp + ""})
 	.success(function(data) {
 		if($.isArray(data)) {
 			$.each(data, function(i,item){
@@ -319,7 +319,7 @@ function clearpcve() {
  * Llena las sucursales
  */
 function fillsucursales(idoft, idemp) {
-	$.get("/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""})
+	$.get("/r/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""})
 	.success(function(data) {
 		$.each(data, function(i,item){
 			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-5px\" id=\""+item.idsuc+"\"/></div>";
@@ -341,11 +341,11 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 /*
 $("#"+item.idsuc).change(function() { 
 	if($(this).is(':checked')) {
-		$.get("/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+		$.get("/r/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + item.idsuc + ""}, function(data) { })
 		.success(function(){})
 		.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	} else {
-		$.get("/delofsuc", { idoft: "" + idoft + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+		$.get("/r/delofsuc", { idoft: "" + idoft + "", idsuc: "" + item.idsuc + ""}, function(data) { })
 		.success(function(){})
 		.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	}

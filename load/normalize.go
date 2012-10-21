@@ -1,4 +1,4 @@
-package site
+package load
 
 import (
 	"appengine"
@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/normalize-mail", nmail)
+    //http.HandleFunc("/r/normalize-mail", nmail)
 }
 
 func nmail(w http.ResponseWriter, r *http.Request) {

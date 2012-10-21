@@ -21,41 +21,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#acceso").validationEngine({promptPosition : "topRight", scroll: true});
-	tgle1();
 });
- function tgle1(){
-	$( "#toggler1" ).delay(800).animate({
-	   height: 284, opacity: 1
-	}, 1000, "linear", function() {
-		 tgle2();
-	});
- }
- function tgle2(){
-	 $( "#toggler2" ).animate({
- 		  height: 284, opacity: 1
-	}, 800, "linear", function() {
- tgle3();
-	});
-	 }
- function tgle3(){
-	 $( "#toggler3" ).animate({
- 		  height: 284, opacity: 1
-	}, 600, "linear", function() {
- tgle3();
-	});
-	/*funcion crea la alerta*/
-	 }
-	 function addAlrt(elm,par){
-		 $(elm).addClass("invalid")
-	$("<div class='Alrt'>"+ par +"<span></span></div>").prependTo($(elm).parent());
-	}
-	  function rmvAlrt(este){
-		 elemnto = $(este)
-		 if ($(elemnto).children(".Alrt").length !== 0) {
-		$(elemnto).children(".Alrt").remove();
-		 }
-	}
-
 function activeLghtbx(){
 	$('#light').removeClass("hidden")
 	$('#box').removeClass("hidden")
@@ -77,7 +43,7 @@ function deactiveLghtbx(){
   <div class="col-7 pullup-10">
   <h2>Accede a El Buen Fin</h2>
   <div class="hr-line"></div>
-  <form id="acceso" action="/acceso" method="post">
+  <form id="acceso" action="/r/acceso" method="post">
 	<div class="col-7">
 	<label class="col-2">Usuario</label>
 	<input type="text" class="validate[required,custom[email]] small first" name="u" value="" />

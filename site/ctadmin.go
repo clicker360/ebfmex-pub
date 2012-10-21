@@ -40,12 +40,17 @@ type FormDataCta struct {
 }
 
 func init() {
-    http.HandleFunc("/registro", registro)
-    //http.HandleFunc("/registro", mantenimiento)
-    http.HandleFunc("/dash", dash)
-    http.HandleFunc("/cta", CtaShow)
-    http.HandleFunc("/ctamod", CtaMod)
-    http.HandleFunc("/ctadel", CtaDel)
+    http.HandleFunc("/registro", redir)
+    http.HandleFunc("/r/registro", registro)
+    //http.HandleFunc("/r/registro", mantenimiento)
+    http.HandleFunc("/r/dash", dash)
+    http.HandleFunc("/r/cta", CtaShow)
+    http.HandleFunc("/r/ctamod", CtaMod)
+    http.HandleFunc("/r/ctadel", CtaDel)
+}
+
+func redir(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/r/registro", http.StatusFound)
 }
 
 func mantenimiento(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +67,7 @@ func registro(w http.ResponseWriter, r *http.Request) {
 		registroTpl.ExecuteTemplate(w, "cta", tc)
 		return
 	} else {
-		http.Redirect(w, r, "/dash", http.StatusFound)
+		http.Redirect(w, r, "/r/dash", http.StatusFound)
 	}
 }
 
@@ -178,7 +183,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 					// TERMINA ENVIO DE MOTIVOS
 					return
 				}
-				http.Redirect(w, r, "/cta", http.StatusFound)
+				http.Redirect(w, r, "/r/cta", http.StatusFound)
 			} else {
 				// Debe borrar empresas antes o Transferir sus empresas a otro usuario
 				errmsg := struct {
@@ -190,7 +195,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 

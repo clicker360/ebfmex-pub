@@ -42,7 +42,7 @@ type Localidad struct {
 }
 
 func init() {
-	//http.HandleFunc("/loadmun", municipios)
+	//http.HandleFunc("/r/loadmun", municipios)
 }
 
 func (e *Entidad) Key(c appengine.Context) *datastore.Key {

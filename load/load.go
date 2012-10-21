@@ -10,8 +10,8 @@ import (
 )
 
 func init() {
-	//http.HandleFunc("/loado", loadOrg)
-	//http.HandleFunc("/loadcat", loadCat)
+	//http.HandleFunc("/r/loado", loadOrg)
+	//http.HandleFunc("/r/loadcat", loadCat)
 }
 
 func loadOrg(w http.ResponseWriter, r *http.Request) {

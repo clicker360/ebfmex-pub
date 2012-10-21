@@ -3,6 +3,8 @@ package model
 import (
     "appengine"
     "appengine/datastore"
+	"appengine/memcache"
+	"encoding/json"
 	//"strconv"
 	"net/http"
 	"time"
@@ -491,6 +493,36 @@ func GetImg(c appengine.Context, id string) (*Image, error) {
 		return i, err
 	}
 	return i, err
+}
+
+// Lista entidades
+func ListEnt(c appengine.Context, ent string) *[]Entidad {
+	estados := make([]Entidad, 0, 32)
+	if item, err := memcache.Get(c, "estados"); err == memcache.ErrCacheMiss {
+		q := datastore.NewQuery("Entidad")
+		if _, err := q.GetAll(c, &estados); err != nil {
+			return nil
+		}
+		b, _ := json.Marshal(estados)
+		item := &memcache.Item{
+			Key:   "estados",
+			Value: b,
+		}
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			c.Errorf("Error memcache.Add Entidad : %v", err)
+		}
+	} else {
+		c.Infof("Memcache activo: %v", item.Key)
+		if err := json.Unmarshal(item.Value, &estados); err != nil {
+			c.Errorf("error adding item: %v", err)
+		}
+	}
+	for i, _ := range estados {
+		if(ent == estados[i].CveEnt) {
+			estados[i].Selected = `selected`
+		}
+	}
+	return &estados
 }
 
 

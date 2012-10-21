@@ -130,6 +130,15 @@
                     <textarea class="validate[optional] medium last {{.ErrDesc}}" name="Desc" rows="3" cols="10" onchange="activateCancel()">{{.Desc}}</textarea>
                   </div>
                   <div class="line ">
+                    <h3>Redes sociales</h3>
+                    <label>Sitio de Facebook:</label>
+                    <input type="text" class="validate[optional,custom[url]] medium {{.ErrFacebook}}" name="Facebook" value="{{.Facebook}}"  onchange="activateCancel()"/>
+                  </div>
+                  <div class="line ">
+                    <label>Twitter:</label>
+                    <input type="text" class="validate[optional] medium {{.ErrTwitter}}" name="Twitter" value="{{.Twitter}}"  onchange="activateCancel()"/>
+                  </div>
+                  <div class="line ">
                     <button  name="Upload"  id="Uploadmidata" type="submit" class="red medium last" value="Upload"  ><span>Guardar</span></button>
                   </div>
                 </div>

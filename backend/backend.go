@@ -12,10 +12,10 @@ import (
 )
 
 func init() {
-    //http.HandleFunc("/backend", GaeLogin)
-    //http.HandleFunc("/listausuarios", ListaUsuarios)
-    //http.HandleFunc("/listasesiones", ListaSesiones)
-    //http.HandleFunc("/test", test)
+    //http.HandleFunc("/r/backend", GaeLogin)
+    //http.HandleFunc("/r/listausuarios", ListaUsuarios)
+    //http.HandleFunc("/r/listasesiones", ListaSesiones)
+    //http.HandleFunc("/r/test", test)
 }
 
 func test(w http.ResponseWriter, r *http.Request) {

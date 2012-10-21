@@ -23,7 +23,7 @@ $(document).ready(function() {
 	//$(".customDialog").easyconfirm({locale: $.easyconfirm.locales.esMX});
 });
 function getmsp() {
-	$.get("msp", {
+	$.get("/r/msp", {
 		CveEnt: $('#CveEnt').val(),
 		CveMun: $('#CveMun').val(),
 	}, function(response){

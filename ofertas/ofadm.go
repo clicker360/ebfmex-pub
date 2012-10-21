@@ -52,10 +52,10 @@ type FormDataOf struct {
 // we do our setup during initialization.
 
 func init() {
-	http.HandleFunc("/of", model.ErrorHandler(OfShow))
-	http.HandleFunc("/ofs", model.ErrorHandler(OfShowList))
-	http.HandleFunc("/ofmod", model.ErrorHandler(OfMod))
-	http.HandleFunc("/ofdel", model.ErrorHandler(OfDel))
+	http.HandleFunc("/r/of", model.ErrorHandler(OfShow))
+	http.HandleFunc("/r/ofs", model.ErrorHandler(OfShowList))
+	http.HandleFunc("/r/ofmod", model.ErrorHandler(OfMod))
+	http.HandleFunc("/r/ofdel", model.ErrorHandler(OfDel))
 }
 
 func serveError(c appengine.Context, w http.ResponseWriter, err error) {
@@ -76,7 +76,7 @@ func OfShowList(w http.ResponseWriter, r *http.Request) {
 		}
 		ofadmTpl.ExecuteTemplate(w, "ofertas", tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -140,7 +140,7 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -172,7 +172,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			fd.Ackn = "Ok";
 			} else {
 				// redireccionar
-				http.Redirect(w, r, "/le?d=o", http.StatusFound)
+				http.Redirect(w, r, "/r/le?d=o", http.StatusFound)
 			}
 		} else {
 			/* 
@@ -282,7 +282,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -296,7 +296,7 @@ func OfDel(w http.ResponseWriter, r *http.Request) {
 		OfShowList(w, r)
 		return
 	}
-	http.Redirect(w, r, "/ofertas", http.StatusFound)
+	http.Redirect(w, r, "/r/ofertas", http.StatusFound)
 }
 
 func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bool){

@@ -1,4 +1,4 @@
-package site
+package sucursales
 
 import (
 	"html/template"
@@ -40,10 +40,10 @@ type FormDataSuc struct {
 }
 
 func init() {
-    http.HandleFunc("/sucursales", ShowListSuc)
-    http.HandleFunc("/sucursal", SucShow)
-    http.HandleFunc("/sucmod", SucMod)
-    http.HandleFunc("/sucdel", SucDel)
+    http.HandleFunc("/r/sucursales", ShowListSuc)
+    http.HandleFunc("/r/sucursal", SucShow)
+    http.HandleFunc("/r/sucmod", SucMod)
+    http.HandleFunc("/r/sucdel", SucDel)
 }
 
 func ShowListSuc(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +58,7 @@ func ShowListSuc(w http.ResponseWriter, r *http.Request) {
 		}
 		sucadmTpl.ExecuteTemplate(w, "sucursales", tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -88,12 +88,12 @@ func SucShow(w http.ResponseWriter, r *http.Request) {
 		if empresa := model.GetEmpresa(c, id); empresa != nil {
 			tc["Empresa"] = empresa
 			fd := sucToForm(*sucursal)
-			fd.Entidades = ListEnt(c, sucursal.DirEnt)
+			fd.Entidades = model.ListEnt(c, sucursal.DirEnt)
 			tc["FormDataSuc"] = fd
 		}
 		sucadmTpl.ExecuteTemplate(w, "sucursal", tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -119,12 +119,12 @@ func SucMod(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-		fd.Entidades = ListEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))
+		fd.Entidades = model.ListEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))
 		tc["Empresa"] = empresa
 		tc["FormDataSuc"] = fd
 		sucadmTpl.ExecuteTemplate(w, "sucursal", tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -138,7 +138,7 @@ func SucDel(w http.ResponseWriter, r *http.Request) {
 		ShowListSuc(w, r)
 		return
 	}
-	http.Redirect(w, r, "/sucursales", http.StatusFound)
+	http.Redirect(w, r, "/r/sucursales", http.StatusFound)
 }
 
 func sucForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataSuc, bool){

@@ -17,9 +17,9 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/acceso", Acceso)
-    http.HandleFunc("/recupera", Recover)
-    http.HandleFunc("/salir", Salir)
+    http.HandleFunc("/r/acceso", Acceso)
+    http.HandleFunc("/r/recupera", Recover)
+    http.HandleFunc("/r/salir", Salir)
 }
 
 func Acceso(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +48,7 @@ func Acceso(w http.ResponseWriter, r *http.Request) {
 						}
 
 						// Redireccion
-						http.Redirect(w, r, "/dash", http.StatusFound)
+						http.Redirect(w, r, "/r/dash", http.StatusFound)
 						return
 					}
 				}
@@ -63,7 +63,7 @@ func Acceso(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// hay sesión
-		http.Redirect(w, r, "/dash", http.StatusFound)
+		http.Redirect(w, r, "/r/dash", http.StatusFound)
 		return
 	}
 	tc := make(map[string]interface{})
@@ -83,7 +83,7 @@ func Salir(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sesscontrol-ua=%s; expires=%s; path=/;", "", "Thu, 18 Oct 2012 01:01:23 GMT;"))
 	w.Header().Add("Set-Cookie", fmt.Sprintf("ebfmex-pub-sessid-ua=%s; expires=%s; path=/;", "", "Thu, 18 Oct 2012 01:01:23 GMT;"))
-	http.Redirect(w, r, "/registro", http.StatusFound)
+	http.Redirect(w, r, "/r/registro", http.StatusFound)
 }
 
 func Recover(w http.ResponseWriter, r *http.Request) {
@@ -154,7 +154,7 @@ func Recover(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/nocta.html", http.StatusFound)
 		return
 	} else {
-		http.Redirect(w, r, "/dash", http.StatusFound)
+		http.Redirect(w, r, "/r/dash", http.StatusFound)
 	}
 }
 

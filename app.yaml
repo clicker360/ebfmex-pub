@@ -10,7 +10,15 @@ handlers:
   static_files: css/\1
   upload: css/(.*\.(css))
 
+- url: /r/css/(.*\.(css))
+  static_files: css/\1
+  upload: css/(.*\.(css))
+
 - url: /scripts/(.*\.(js))
+  static_files: scripts/\1
+  upload: scripts/(.*\.(js))
+
+- url: /r/scripts/(.*\.(js))
   static_files: scripts/\1
   upload: scripts/(.*\.(js))
 
@@ -19,10 +27,20 @@ handlers:
   upload: imgs/(.*\.(gif|png|jpg))
   expiration: "1h"
 
+- url: /r/imgs/(.*\.(gif|png|jpg))
+  static_files: imgs/\1
+  upload: imgs/(.*\.(gif|png|jpg))
+#  expiration: "1h"
+
 - url: /gfx/(.*\.(gif|png|jpg))
   static_files: gfx/\1
   upload: gfx/(.*\.(gif|png|jpg))
   expiration: "1h"
+
+- url: /r/gfx/(.*\.(gif|png|jpg))
+  static_files: gfx/\1
+  upload: gfx/(.*\.(gif|png|jpg))
+#  expiration: "1h"
 
 - url: /(.*\.html)
   mime_type: text/html

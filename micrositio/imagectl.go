@@ -39,6 +39,10 @@ type FormDataImage struct {
 	ErrName	string
 	Desc	string
 	ErrDesc	string
+	Facebook string
+	ErrFacebook string
+	Twitter string
+	ErrTwitter string
 	Sizepx	int
 	Sizepy	int
 	Url		string
@@ -56,9 +60,10 @@ type FormDataImage struct {
 // Because App Engine owns main and starts the HTTP service,
 // we do our setup during initialization.
 func init() {
-	http.HandleFunc("/mi", model.ErrorHandler(micrositio))
-	http.HandleFunc("/logoup", model.ErrorHandler(upload))
-	http.HandleFunc("/midata", model.ErrorHandler(modData))
+	http.HandleFunc("/r/mi", model.ErrorHandler(micrositio))
+	http.HandleFunc("/r/logoup", model.ErrorHandler(upload))
+	http.HandleFunc("/r/midata", model.ErrorHandler(modData))
+	// simg queda fuera de la ruta segura /r
 	http.HandleFunc("/simg", model.ErrorHandler(img))
 }
 
@@ -82,7 +87,7 @@ func micrositio(w http.ResponseWriter, r *http.Request) {
 			micrositioTpl.Execute(w, tc)
 		}
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -212,7 +217,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -260,7 +265,7 @@ func modData(w http.ResponseWriter, r *http.Request) {
 
 		micrositio(w, r)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 

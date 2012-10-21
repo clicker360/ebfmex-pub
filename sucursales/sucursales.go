@@ -1,4 +1,4 @@
-package site
+package sucursales
 
 import (
     "appengine"
@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/suc", sucursales)
+    http.HandleFunc("/r/suc", sucursales)
 }
 
 func sucursales(w http.ResponseWriter, r *http.Request) {

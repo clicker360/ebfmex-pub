@@ -24,9 +24,11 @@ type OfImg struct{
 // Because App Engine owns main and starts the HTTP service,
 // we do our setup during initialization.
 func init() {
-	http.HandleFunc("/ofimgup", handleUpload)
+	http.HandleFunc("/r/ofimgup", handleUpload)
+	// ofimg queda fuera del url seguro /r
 	http.HandleFunc("/ofimg", handleServe)
-	//http.HandleFunc("/ofimgform", handleRoot)
+
+	//http.HandleFunc("/r/ofimgform", handleRoot)
 }
 
 func handleServe(w http.ResponseWriter, r *http.Request) {

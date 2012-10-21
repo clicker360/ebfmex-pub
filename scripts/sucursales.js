@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 });
 function getmsp() {
-	$.get("msp", {
+	$.get("/r/msp", {
 		CveEnt: $('#estado').val(),
 		CveMun: $('#municipio').val(),
 	}, function(response){

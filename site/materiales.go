@@ -8,8 +8,8 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/mg", materiales)
-    http.HandleFunc("/dmg", descargamg)
+    http.HandleFunc("/r/mg", materiales)
+    http.HandleFunc("/r/dmg", descargamg)
 }
 
 func materiales(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +19,7 @@ func materiales(w http.ResponseWriter, r *http.Request) {
 		tc["Sess"] = s
 		materialesTpl.Execute(w, tc)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -33,7 +33,7 @@ func descargamg(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/ElBuenFin_Materiales.zip", http.StatusFound)
 
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 

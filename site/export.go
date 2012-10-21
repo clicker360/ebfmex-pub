@@ -12,7 +12,7 @@ import (
 
 
 func init() {
-    http.HandleFunc("/registros.csv", registroCsv)
+    http.HandleFunc("/r/registros.csv", registroCsv)
 
 }
 

@@ -15,7 +15,7 @@
   <div class="col-7 pullup-10">
   <h2>Accede a el buen fin</h2>
   <div class="hr-line"></div>
-    <form id="acceso" action="/acceso" method="post" id="entrence">
+    <form id="acceso" action="/r/acceso" method="post" id="entrence">
       <div class="col-7">
  <label>Usuario</label>
  <input type="text" class="validate[required,custom[email]] small first" name="u" value="{{with .Sess}}{{.User}}{{end}}" />
@@ -62,7 +62,7 @@
     	</div>
         
 		{{with .FormDataCta}}
-       <form method="post" class="frmE" id="enviar" name="enviar" action="/registrar">
+       <form method="post" class="frmE" id="enviar" name="enviar" action="/r/registrar">
 		  <input type="hidden" name="t" value="r"/>
     
         <div class="box3 pullup-50">

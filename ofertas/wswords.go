@@ -16,11 +16,11 @@ type Word struct{
 }
 
 func init() {
-    http.HandleFunc("/addword", AddWord)
-    http.HandleFunc("/delword", DelWord)
-    http.HandleFunc("/rmword", RmWord)
-    http.HandleFunc("/wordsxo", ShowOfWords)
-    http.HandleFunc("/wordsxe", ShowEmpWords)
+    http.HandleFunc("/r/addword", AddWord)
+    http.HandleFunc("/r/delword", DelWord)
+    http.HandleFunc("/r/rmword", RmWord)
+    http.HandleFunc("/r/wordsxo", ShowOfWords)
+    http.HandleFunc("/r/wordsxe", ShowEmpWords)
 }
 
 func AddWord(w http.ResponseWriter, r *http.Request) {

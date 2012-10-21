@@ -52,11 +52,11 @@ type FormDataEmp struct {
 
 
 func init() {
-    http.HandleFunc("/se", GetEmp)
-    http.HandleFunc("/ne", NewEmp)
-    http.HandleFunc("/me", ModEmp)
-    http.HandleFunc("/de", DelEmp)
-    http.HandleFunc("/le", ShowListEmp)
+    http.HandleFunc("/r/se", GetEmp)
+    http.HandleFunc("/r/ne", NewEmp)
+    http.HandleFunc("/r/me", ModEmp)
+    http.HandleFunc("/r/de", DelEmp)
+    http.HandleFunc("/r/le", ShowListEmp)
 }
 
 func ShowListEmp(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +77,7 @@ func ShowListEmp(w http.ResponseWriter, r *http.Request) {
 			empadmTpl.ExecuteTemplate(w, "vistaoferta", tc)
 		}
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -92,7 +92,7 @@ func GetEmp(w http.ResponseWriter, r *http.Request) {
 		}
 		formEmp(c, w, &s, e)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -112,7 +112,7 @@ func ModEmp(w http.ResponseWriter, r *http.Request) {
 		}
 		ShowListEmp(w, r)
 	} else {
-		defer http.Redirect(w, r, "/registro", http.StatusFound)
+		defer http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -135,7 +135,7 @@ func NewEmp(w http.ResponseWriter, r *http.Request) {
 		//formEmp(c, w, &s, e)
 		ShowListEmp(w, r)
 	} else {
-		http.Redirect(w, r, "/registro", http.StatusFound)
+		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
@@ -150,12 +150,12 @@ func DelEmp(w http.ResponseWriter, r *http.Request) {
 		ShowListEmp(w, r)
 		return
 	}
-	http.Redirect(w, r, "/registro", http.StatusFound)
+	http.Redirect(w, r, "/r/registro", http.StatusFound)
 }
 
 func formEmp(c appengine.Context, w http.ResponseWriter, s *sess.Sess, e *model.Empresa) {
 	fd := empresaToForm(*e)
-	fd.Entidades = ListEnt(c, e.DirEnt)
+	fd.Entidades = model.ListEnt(c, e.DirEnt)
 	fd.Organismos = ListOrg(c, e.OrgEmp)
 	tc := make(map[string]interface{})
 	tc["Sess"] = s
@@ -173,20 +173,6 @@ func listEmp(c appengine.Context, u *model.Cta) *[]model.Empresa {
 	}
 	sortutil.AscByField(empresas, "Nombre")
 	return &empresas
-}
-
-func ListEnt(c appengine.Context, ent string) *[]model.Entidad {
-	q := datastore.NewQuery("Entidad")
-	estados := make([]model.Entidad, 0, 32)
-	if _, err := q.GetAll(c, &estados); err != nil {
-		return nil
-	}
-	for i, _ := range estados {
-		if(ent == estados[i].CveEnt) {
-			estados[i].Selected = `selected`
-		}
-	}
-	return &estados
 }
 
 func ListOrg(c appengine.Context, siglas string) *[]model.Organismo {
@@ -302,7 +288,7 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool
 		*/
 
 		if ef {
-			fd.Entidades = ListEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))
+			fd.Entidades = model.ListEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))
 			fd.Organismos = ListOrg(c, fd.OrgEmp)
 			tc := make(map[string]interface{})
 			tc["Sess"] = s
