@@ -33,7 +33,27 @@
 
 $(document).ready(function(){       
 	getcarrousel();
-        pagina = 0;        
+        pagina = 0;
+        var queryVars = getVars();
+        var hasVars = false;
+        //if(queryVars.hasOwnProperty('word') || queryVars.hasOwnProperty('catMenu') || queryVars.hasOwnProperty('estadoMenu') || queryVars.hasOwnProperty('tipoMenu') )
+        if(queryVars.hasOwnProperty('word')){
+            hasVars = true;
+            $("input[name=word]").val(queryVars.word);
+        }
+        if(queryVars.hasOwnProperty('catMenu')){
+            hasVars = true;
+            $("select[name=catMenu]").val(queryVars.catMenu);
+        }
+        if(queryVars.hasOwnProperty('estadoMenu')){
+            hasVars = true;
+            $("select[name=estadoMenu]").val(queryVars.estadoMenu);
+        }
+        if(queryVars.hasOwnProperty('tipoMenu')){
+            hasVars = true;
+            $("select[name=tipoMenu]").val(queryVars.tipoMenu);
+        }        
+        search();
         $("#buscarOferta").click(function(){                
             pagina = 0;    
             search();
@@ -52,15 +72,35 @@ $(document).ready(function(){
 		$('#cuerpo').removeClass('noscroll');
 		$('#lightback').addClass("hide"); 
 		$('#lightfront').addClass("hide"); 
+                return false;
 	});
 	
 	$(".lighter").click(function() {
 		$('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
 		$('#lightback').removeClass("hide"); 
 		$('#lightfront').removeClass("hide"); 
+                return false;
 	});
         
 });
+ function getVars() {
+		var delimiter = "?"; // using '#' here is great for AJAX apps.
+		var separator = "&";
+		var url = location.href;
+		var get_exists = (url.indexOf(delimiter) > -1) ? true : false;
+		if (get_exists) {
+			var url_get = {};
+			var params = url.substring(url.indexOf(delimiter)+1);
+			var params_array = params.split(separator);
+			for (var i=0; i < params_array.length; i++) {
+				var param_name = params_array[i].substring(0,params_array[i].indexOf('='));
+				var param_value = params_array[i].substring(params_array[i].indexOf('=')+1);
+				url_get[param_name] = param_value;
+			}
+                        return url_get;
+		}
+		return false;
+}
 function lighterAjax(){
     $(".lighter").click(function() {
 		$('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
@@ -75,7 +115,7 @@ function getcarrousel() {
 	});
 }
 function search(){  
-        var keywords = $("input[name=word]").val();
+        var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
         var categoria = $("select[name=catMenu]").val();
         var estado = $("select[name=estadoMenu]").val();
         var tipo = $("select[name=tipoMenu]").val();       
@@ -367,8 +407,8 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
               <div class="selectCont2 marg-L20px" >
                 <select name="tipoMenu" id="catMenu"  class="searchform2">
                   <option value="" selected="selected">tipo de oferta</option>
-                  <option>compra en líena</option>
-                  <option>compra en piso</option>
+                  <option value="1">compra en líena</option>
+                  <option value="2">compra en piso</option>
                   <option>Ambos</option>
                 </select>
               </div>
