@@ -1,5 +1,5 @@
-application: ebfmxorg
-version: pruebas
+application: ebfmex-pub
+version: home
 runtime: go
 api_version: go1
 
@@ -17,20 +17,29 @@ handlers:
 - url: /imgs/(.*\.(gif|png|jpg))
   static_files: imgs/\1
   upload: imgs/(.*\.(gif|png|jpg))
+  expiration: "1h"
 
 - url: /gfx/(.*\.(gif|png|jpg))
   static_files: gfx/\1
   upload: gfx/(.*\.(gif|png|jpg))
+  expiration: "1h"
 
 - url: /(.*\.html)
   mime_type: text/html
   static_files: static/\1
   upload: static/(.*\.html)
-#  expiration: "1h"
+  expiration: "1h"
+
+- url: /app
+  mime_type: text/html
+  static_files: static/iphone-app.html
+  upload: static/iphone-app.html
+  expiration: "1h"
 
 - url: /favicon.ico
   static_files: imgs/favicon.ico
   upload: imgs/favicon.ico
+  expiration: "5d"
 
 - url: /(.*\.css)
   mime_type: text/css
@@ -52,13 +61,13 @@ handlers:
 - url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|zip))
   static_files: static/\1
   upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png|zip))
-#  expiration: "1h"
+  expiration: "1h"
 
 # index files
 - url: /(.+)/
   static_files: static/\1/index.html
   upload: static/(.+)/index.html
-#  expiration: "1h"
+  expiration: "1h"
 
 #- url: /(.+)
 #  static_files: static/\1/index.html
@@ -69,7 +78,7 @@ handlers:
 - url: /
   static_files: static/index.html
   upload: static/index.html
-#  expiration: "1h"
+  expiration: "1h"
 
 - url: /.*
   script: _go_app

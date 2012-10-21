@@ -60,13 +60,14 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	/*
 		Loop para recorrer todas las empresas 
 	*/
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	prefixu := strings.ToUpper(r.FormValue("prefix"))
 	ultimos := r.FormValue("ultimos")
     q := datastore.NewQuery("Empresa")
 	if ultimos != "1" {
 		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd")
 	} else {
-		q = q.Filter("FechaHora >=", time.Now().AddDate(0,0,-2)).Limit(200)
+		q = q.Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(200)
 	}
 	em, _ := q.Count(c)
 	empresas := make([]model.Empresa, 0, em)
