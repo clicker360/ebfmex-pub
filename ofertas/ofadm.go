@@ -370,7 +370,6 @@ func ofToForm(e model.Oferta) FormDataOf {
 
 func generatesearch(c appengine.Context, oftKey *datastore.Key, description string, idcat int) error {
 	client := urlfetch.Client(c)
-	var el string
 	descurl := fmt.Sprintf(
 	"http://movil.ebfmex-pub.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
 	oftKey.Encode(), description, strconv.Itoa(idcat))
