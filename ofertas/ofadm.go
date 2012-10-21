@@ -129,7 +129,7 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 		/*
 		 * Se crea el form para el upload del blob
 		 */
-		uploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+		uploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", nil)
 		if err != nil {
 			serveError(c, w, err)
 			return
@@ -271,7 +271,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		/*
 		 * Se crea el form para el upload del blob
 		 */
-		uploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+		uploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", nil)
 		if err != nil {
 			serveError(c, w, err)
 			return

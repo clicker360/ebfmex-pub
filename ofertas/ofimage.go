@@ -101,7 +101,7 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 					*/
 					if oldblobkey != "none" {
 						blobstore.Delete(c, oldblobkey)
-						UploadURL, err := blobstore.UploadURL(c, "/ofimgup", nil)
+						UploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", nil)
 						out.UploadURL = UploadURL.String()
 						if err != nil {
 							out.Status = "uploadSessionError"
