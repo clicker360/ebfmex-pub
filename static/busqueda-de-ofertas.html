@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>El buen fin</title>
-<meta name="Title" content="El Buen Fin" /> 
-<meta name="keywords" content="descuentos, tiendas departamentales, electrodomesticos, comercio en line, compra en line, buen fin, el buen fin" /> 
+<meta name="Title" content="El Buen Fin" />
+<meta name="keywords" content="descuentos, tiendas departamentales, electrodomesticos, comercio en line, compra en line, buen fin, el buen fin" />
 <meta name="Author" content="Clicker360" />
 <meta name="Copyright" content="El Buen Fin" />
 <meta name="Revisit" content="1 days" />
@@ -12,11 +12,11 @@
 <meta name="ROBOTS" content="INDEX, All"/>
 <meta name="ROBOTS" content="INDEX, FOLLOW">
 <meta name="description" content="El Buen Fin" />
-
 <link href="../css/OrigamiRev.css" rel="stylesheet" type="text/css" />
 <link href="../css/HomelbuenfinSkin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
+
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-26907178-1']);
@@ -30,20 +30,43 @@
 
 </script>
 <script type="text/javascript">
-$(document).ready(function(){
+
+$(document).ready(function(){       
 	getcarrousel();
-	scrolea();
-        search();
+        pagina = 0;        
+        $("#buscarOferta").click(function(){                
+            pagina = 0;    
+            search();
+            return false;
+        });
+        cargaOfertas = false;
+        $(document).scroll(function(){
+            if(cargaOfertas){
+                if(($(document).scrollTop() + $(window).height()) >= ($(document).height() - 10)){
+                    search();
+                }
+            }
+        })
+	
+	$("#CloserLight").click(function() {
+		$('#cuerpo').removeClass('noscroll');
+		$('#lightback').addClass("hide"); 
+		$('#lightfront').addClass("hide"); 
+	});
+	
+	$(".lighter").click(function() {
+		$('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
+		$('#lightback').removeClass("hide"); 
+		$('#lightfront').removeClass("hide"); 
+	});
         
 });
-function scrolea(){
-	$('#logos').animate({
-		top: -825,
-	}, 45000, 'linear', function() {
-		$('#logos').append($('#logos').children("div:first").clone());
-		$('#logos').children("div:first").remove();
-		$('#logos').css('top',20);
-		scrolea();
+function lighterAjax(){
+    $(".lighter").click(function() {
+		$('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
+		$('#lightback').removeClass("hide"); 
+		$('#lightfront').removeClass("hide"); 
+                return false;
 	});
 }
 function getcarrousel() {
@@ -51,22 +74,30 @@ function getcarrousel() {
 		$('#logo1').html(response);
 	});
 }
-function search(){
-    $("#buscarOferta").click(function(){
+function search(){  
         var keywords = $("input[name=word]").val();
         var categoria = $("select[name=catMenu]").val();
         var estado = $("select[name=estadoMenu]").val();
-        var tipo = $("select[name=tipoMenu]").val();
-        $.get("http://movil.ebfmex-pub.appspot.com/search",{keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
-            var oferta = JSON.parse(data);
-            for(var i in oferta[0]){
-            console.log(i + ': ' + oferta[0][i] );
+        var tipo = $("select[name=tipoMenu]").val();       
+        pagina ++;
+        $.get("http://movil.ebfmex-pub.appspot.com/search",{ pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
+            console.log(pagina);
+            if(pagina == '1')
+                $(".ofertCont").html('')
+            var ofertas = JSON.parse(data);
+            if(ofertas.length >= 1){
+                cargaOfertas = true;
+                for(var i in ofertas){
+                        addOferta = '<div class="oferta bgWh"><a href="#null" class="lighter"> <span class="imgcont"><img src="http://home.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" /></span><h3>'+ofertas[i].Oferta+'</h3></a><div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>';
+                        $(".ofertCont").append(addOferta);
+                        //console.log(i + "_" + j + ': ' + ofertas[i][j] );
+                }    
+            }else{
+                cargaOfertas = false;
             }
         });
-        return false;
-    });
+        lighterAjax();
 }
-
 </script>
 <script>
 (function(d, s, id) {
@@ -83,276 +114,328 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 </script>
 </head>
 
-<body class="bg-main">
+<body class="bg-main" id="cuerpo">
+<!--Comineza lightbox-->
+<div class="lghtbox hide" id="lightback">
+<div class="lightcenterdiv hide" id="lightfront">
+  <div class="col-cent">
+    <div class="col-24 Bg-Wh padd-B30px"> <a href="#null" id="CloserLight"><img src="../gfx/cerrar2.jpg" width="970" height="30" alt="cerrar ventana" /> </a>
+      <!--Columna Izquierda-->
+      <div class="col-13 marg-T10px">
+        <div class="logoOferta"> 
+          <!--logo de la empresa ancho maximo 175px alto maximo 80 px--> 
+          <img src="../imgs/ofrtTemp/logo-temporal.jpg" width="134" height="50" alt="logo de la empresa" class="first" /> </div>
+        <div class="col-6 last padd-10px height80px lineLeft">
+          <h4 class="alineRigth">El Palacio de Hierro</h4>
+        </div>
+        <div class="col-12 padd-10px marg-T10px lineTop marg-L10px">
+        <h3 class=" typ-Pr">Titulo de la oferta en 55 caractereres completos va aquí</h3>
+        </div>
+         <div class=" col-95PR first padd-10px marg-T5px lineTop marg-L10px">
+        <p >"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."        </p>
+        <img src="../imgs/ofrtTemp/share2.jpg" width="218" height="60" alt="share"  class="first"/> 
+        <a href="#null" class="button last marg-T30px"> Otras ofertas de esta empresa</a>
+        <div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px">
+          <h4 class=" typ-Wh"> El Buen Fin en líena</h4>
+          </div>
+          <a href="#null" >http://www.palaciodehierro.com/la-oferta-la-semana-en-palacio-de-hierro</a>
+        </div>
+      </div>
+      <!--Columna Derecha-->
+      <div class="col-11 marg-L10px marg-T10px"> 
+        <!--esta imagen tiene como ancho 430px pero su alto puede variar--> 
+        <img src="../imgs/ofrtTemp/imgOfert.jpg" width="430" height="430" />
+        <div class="col-11 bgRd marg-B10px marg-T10px">
+          <h4 class=" typ-Wh"> Sucursales con esta oferta</h4>
+          </div>
+          <div class="col-11 marg-B10px marg-T10px" style="max-height:160px; overflow-y:auto; overflow-x:hidden;">
+          <ul class="sucList">
+          <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+                     <li><a href="#">Polanco</a></li>
+           <li><a href="#">Lomas verdes</a></li>
+            <li><a href="#">Galerias Metepec</a></li>
+             <li><a href="#">Perisur</a></li>
+              <li><a href="#">Pabellon Polanco</a></li>
+               <li><a href="#">Monterrey</a></li>
+                <li><a href="#">Cuernavaca</a></li>
+                 <li><a href="#">Azcapozalco</a></li>
+                  <li><a href="#">Queretaro</a></li>
+                   <li><a href="#">San Juanico</a></li>
+          </ul>
+          </div>
+         </div>
+    </div>
+  </div>
+</div>
+</div>
+  <!--termina Lightbox-->
 <div id="fb-root"></div>
-<div class="logosPat">
-<img src="../imgs/logos/ABM.jpg" width="65" height="65" alt="abm" /> <img src="../imgs/logos/antad.jpg" width="65" height="65"  alt="Antad"/><img src="../imgs/logos/Amicsi.jpg" width="65" height="65" alt="Amicii" /><img src="../imgs/logos/CCC.jpg" width="65" height="65" alt="CCE" /> <img src="../imgs/logos/coparmex.jpg" width="65" height="65" alt="coparmex" /> <img src="../imgs/logos/concamin.jpg" width="65" height="65" alt="coparmex" /><img src="../imgs/logos/concanaco.jpg" width="65" height="65" /><img src="../imgs/logos/gobierno-Federal.jpg" width="65" height="65" alt="gob federal" /> <img src="../imgs/logos/Imx.jpg" width="65" height="65" alt="Iniciativa mexico" /> </div>
+<div class="logosPat"> <img src="../imgs/logos/ABM.jpg" width="65" height="65" alt="abm" /> <img src="../imgs/logos/antad.jpg" width="65" height="65"  alt="Antad"/><img src="../imgs/logos/Amicsi.jpg" width="65" height="65" alt="Amicii" /><img src="../imgs/logos/CCC.jpg" width="65" height="65" alt="CCE" /> <img src="../imgs/logos/coparmex.jpg" width="65" height="65" alt="coparmex" /> <img src="../imgs/logos/concamin.jpg" width="65" height="65" alt="coparmex" /><img src="../imgs/logos/concanaco.jpg" width="65" height="65" /><img src="../imgs/logos/gobierno-Federal.jpg" width="65" height="65" alt="gob federal" /> <img src="../imgs/logos/Imx.jpg" width="65" height="65" alt="Iniciativa mexico" /> </div>
 <div class="col-cent">
-  <div class="col-24 Bg-Wh padd-10px padd-B40px">
-  <!--Comienza Contenido-->
-  <div class="col-24">
-  <!--Comienza header-->
- 
-  <div class="M-menu"> <a href="/"><img src="../gfx/front/el-buen-fin.png" width="145" height="142"  class="logo"/></a>
-    <ul>
-      <li><a href="elbuenfin-que-es.html">¿Qué es El Buen Fin?</a></li>
-      <li> <a href="elbuenfin-organizadores.html">Organizadores</a></li>
-      <li> <a href="directorio.html">Empresas participantes</a></li>
-	<li><a href="elbuenfin-comercio-en-linea.html">El Buen Fin en Línea</a></li>
-    </ul>
-    </div>
-  <!--termina header-->
-  <div class="col-24">
-  <!--Columna Izquierda-->
-    <!--busqueda y rescate-->
-  <div class="col-100PR first Bg-Drk">
-  <div class="col-95PR  first padd-T10px padd-B20px padd-L20px">
-    <h3 class="typ-Wh">Encuentra las ofertas de el fin de semana mas barato del año</h3>
-      <form name="buscar" id="buscar">
-      <input name="word" type="text" class="searchform2" value="¿Qué buscas?" size="18" />
-      <div class="selectCont2 marg-L20px">
-      <select name="catMenu" id="catMenu"  class="searchform2 ">
-        <option value="" selected="selected">Categoria</option>
-        <option value="1" >Abarrotes</option>
-         
-        <option value="2" >Automóviles y transportes</option>
-         
-        <option value="3" >Bancos y seguros</option>
-         
-        <option value="4" >Blancos</option>
-         
-        <option value="5" >Calzado</option>
-         
-        <option value="6" >Cuidado e higiene personal</option>
-         
-        <option value="7" >Deportes</option>
-         
-        <option value="8" >Electrónica y video</option>
-         
-        <option value="9" >Electrodomésticos</option>
-         
-        <option value="10" >Farmacias</option>
-         
-        <option value="11" >Ferretería</option>
-         
-        <option value="12" >Fotografía y cómputo</option>
-         
-        <option value="13" >Hogar y decoración</option>
-         
-        <option value="14" >Jardinería</option>
-         
-        <option value="15" >Joyería</option>
-         
-        <option value="16" >Jugetería</option>
-         
-        <option value="17" >Línea blanca</option>
-         
-        <option value="18" >Muebles</option>
-         
-        <option value="19" >Oficina y papelería</option>
-         
-        <option value="20" >Oportunidades</option>
-         
-        <option value="21" >Óptica</option>
-         
-        <option value="22" >Perecederos</option>
-         
-        <option value="23" >Regalos</option>
-         
-        <option value="24" >Restaurantes</option>
-         
-        <option value="25" >Ropa</option>
-         
-        <option value="26" >Servicios</option>
-         
-        <option value="27" >Varios</option>
-         
-        <option value="28" >Viajes</option>
-      </select>
-    </div>
-    <div class="selectCont2 marg-L20px">
-      <select name="estadoMenu" id="catMenu"  class="searchform2">
-        <option value="" selected="selected">Estado</option>
-        <option value="01" >Aguascalientes</option>
-        
-        <option value="02" >Baja California</option>
-        
-        <option value="03" >Baja California Sur</option>
-        
-        <option value="04" >Campeche</option>
-        
-        <option value="05" >Coahuila de Zaragoza</option>
-        
-        <option value="06" >Colima</option>
-        
-        <option value="07" >Chiapas</option>
-        
-        <option value="08" >Chihuahua</option>
-        
-        <option value="09" >Distrito Federal</option>
-        
-        <option value="10" >Durango</option>
-        
-        <option value="11" >Guanajuato</option>
-        
-        <option value="12" >Guerrero</option>
-        
-        <option value="13" >Hidalgo</option>
-        
-        <option value="14" >Jalisco</option>
-        
-        <option value="15" >México</option>
-        
-        <option value="16" >Michoacán de Ocampo</option>
-        
-        <option value="17" >Morelos</option>
-        
-        <option value="18" >Nayarit</option>
-        
-        <option value="19" >Nuevo León</option>
-        
-        <option value="20" >Oaxaca</option>
-        
-        <option value="21" >Puebla</option>
-        
-        <option value="22" >Querétaro</option>
-        
-        <option value="23" >Quintana Roo</option>
-        
-        <option value="24" >San Luis Potosí</option>
-        
-        <option value="25" >Sinaloa</option>
-        
-        <option value="26" >Sonora</option>
-        
-        <option value="27" >Tabasco</option>
-        
-        <option value="28" >Tamaulipas</option>
-        
-        <option value="29" >Tlaxcala</option>
-        
-        <option value="30" >Veracruz de Ignacio de la Llave</option>
-        
-        <option value="31" >Yucatán</option>
-        
-        <option value="32" >Zacatecas</option>
-  
-      </select>
+  <div class="col-24 Bg-Wh padd-10px padd-B40px"> 
+    <!--Comienza Contenido-->
+    <div class="col-24"> 
+      <!--Comienza header-->
+      <div class="M-menu"> <a href="/"><img src="../gfx/front/el-buen-fin.png" width="145" height="142"  class="logo"/></a>
+        <ul>
+          <li><a href="elbuenfin-que-es.html">¿Qué es El Buen Fin?</a></li>
+          <li> <a href="elbuenfin-organizadores.html">Organizadores</a></li>
+          <li> <a href="directorio.html">Empresas participantes</a></li>
+          <li><a href="elbuenfin-comercio-en-linea.html">El Buen Fin en Línea</a></li>
+        </ul>
       </div>
-      <div class="selectCont2 marg-L20px" >
-      <select name="tipoMenu" id="catMenu"  class="searchform2">
-        <option value="" selected="selected">tipo de oferta</option>
-          <option>compra en líena</option>
-          <option>compra en piso</option>
-          <option>Ambos</option>
-      </select>
-      </div>
-
-    </form>
-        <a href="#null" class="button marg-L20px" id="buscarOferta">BUSCAR &raquo;</a>
-  </div>
-  </div>
-  <div class="ofertCont" >
- <div class="oferta bgWh">
-<a href="#null">
- <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
- <h3>30% de descuento en articulos escolares y de papeleria</h3>
- </a>
- <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
-</div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
-   <h3>50% de descuento toda la linea deep love</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div> </div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
-   <h3>Samsung Galaxy tab a tan solo $5399</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>
-  <div class="oferta bgWh">
-<a href="#null">
- <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
- <h3>30% de descuento en articulos escolares y de papeleria</h3>
- </a>
- <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
-</div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
-   <h3>50% de descuento toda la linea deep love</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div> </div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
-   <h3>Samsung Galaxy tab a tan solo $5399</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>
-  <div class="oferta bgWh">
-<a href="#null">
- <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
- <h3>30% de descuento en articulos escolares y de papeleria</h3>
- </a>
- <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
-</div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
-   <h3>50% de descuento toda la linea deep love</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div> </div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
-   <h3>Samsung Galaxy tab a tan solo $5399</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>
-  <div class="oferta bgWh">
-<a href="#null">
- <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
- <h3>30% de descuento en articulos escolares y de papeleria</h3>
- </a>
- <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
-</div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
-   <h3>50% de descuento toda la linea deep love</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div> </div>
- <div class="oferta bgWh"> <a href="#null"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
-   <h3>Samsung Galaxy tab a tan solo $5399</h3>
- </a>
-  <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div></div>
-  </div>
-
-
-  <!--Columna derecha-->
-  <div class=" col-7 last marg-T10px" >
-    <div class="col-7 Bg-Drk ">
-      
-      <h4 class="alineCenter typ-Wh">Empresas participantes</h4>
-    </div>
-    <div class="col-7 imgpad3px" style="overflow:hidden; height:400px; position:relative;" id="scrolllog">
-      <div id="logos2">
-        <div id="logo1" class="first marg-L10px">
-        </div> 
-        <div id="logo2" class="first marg-L10px">
-        </div> 
-      </div>
-    </div>
-    <div class="col-100PR first">
-  <div class="box1 Bg-bluFb">
-    <h4 class="typ-Wh alineCenter lightText">Facebook</h4>
-  </div>
-    <div class=" col-100PR first">
-      <div class="fb-like-box Bg-Wh" data-href="http://www.facebook.com/ElBuenFin" data-width="260" data-height="260" data-show-faces="true" data-stream="false" data-header="false"></div>
-      
-      
-    </div>
-  </div>
-  <div class="col-100PR first Bg-bluTw marg-T5px">
-  <h4 class="alineCenter typ-Wh  lightText">Twitter</h4>
-    </div>
-    <div class="twitter col-100PR first">
-    
-	<script src="http://widgets.twimg.com/j/2/widget.js"></script>						<script>
+      <!--termina header-->
+      <div class="col-24"> 
+        <!--Columna Izquierda--> 
+        <!--busqueda y rescate-->
+        <div class="col-100PR first Bg-Drk">
+          <div class="col-98PR  first padd-T10px padd-B20px padd-L20px">
+            <h3 class="typ-Wh">Encuentra las ofertas de el fin de semana mas barato del año</h3>
+            <form name="buscar" id="buscar">
+              <input name="word" type="text" class="searchform2" value="¿Qué buscas?" size="18" />
+              <div class="selectCont2 marg-L20px">
+                <select name="catMenu" id="catMenu"  class="searchform2 ">
+                  <option value="" selected="selected">Categoria</option>
+                  <option value="1" >Abarrotes</option>
+                  <option value="2" >Automóviles y transportes</option>
+                  <option value="3" >Bancos y seguros</option>
+                  <option value="4" >Blancos</option>
+                  <option value="5" >Calzado</option>
+                  <option value="6" >Cuidado e higiene personal</option>
+                  <option value="7" >Deportes</option>
+                  <option value="8" >Electrónica y video</option>
+                  <option value="9" >Electrodomésticos</option>
+                  <option value="10" >Farmacias</option>
+                  <option value="11" >Ferretería</option>
+                  <option value="12" >Fotografía y cómputo</option>
+                  <option value="13" >Hogar y decoración</option>
+                  <option value="14" >Jardinería</option>
+                  <option value="15" >Joyería</option>
+                  <option value="16" >Jugetería</option>
+                  <option value="17" >Línea blanca</option>
+                  <option value="18" >Muebles</option>
+                  <option value="19" >Oficina y papelería</option>
+                  <option value="20" >Oportunidades</option>
+                  <option value="21" >Óptica</option>
+                  <option value="22" >Perecederos</option>
+                  <option value="23" >Regalos</option>
+                  <option value="24" >Restaurantes</option>
+                  <option value="25" >Ropa</option>
+                  <option value="26" >Servicios</option>
+                  <option value="27" >Varios</option>
+                  <option value="28" >Viajes</option>
+                </select>
+              </div>
+              <div class="selectCont2 marg-L20px">
+                <select name="estadoMenu" id="catMenu"  class="searchform2">
+                  <option value="" selected="selected">Estado</option>
+                  <option value="01" >Aguascalientes</option>
+                  <option value="02" >Baja California</option>
+                  <option value="03" >Baja California Sur</option>
+                  <option value="04" >Campeche</option>
+                  <option value="05" >Coahuila de Zaragoza</option>
+                  <option value="06" >Colima</option>
+                  <option value="07" >Chiapas</option>
+                  <option value="08" >Chihuahua</option>
+                  <option value="09" >Distrito Federal</option>
+                  <option value="10" >Durango</option>
+                  <option value="11" >Guanajuato</option>
+                  <option value="12" >Guerrero</option>
+                  <option value="13" >Hidalgo</option>
+                  <option value="14" >Jalisco</option>
+                  <option value="15" >México</option>
+                  <option value="16" >Michoacán de Ocampo</option>
+                  <option value="17" >Morelos</option>
+                  <option value="18" >Nayarit</option>
+                  <option value="19" >Nuevo León</option>
+                  <option value="20" >Oaxaca</option>
+                  <option value="21" >Puebla</option>
+                  <option value="22" >Querétaro</option>
+                  <option value="23" >Quintana Roo</option>
+                  <option value="24" >San Luis Potosí</option>
+                  <option value="25" >Sinaloa</option>
+                  <option value="26" >Sonora</option>
+                  <option value="27" >Tabasco</option>
+                  <option value="28" >Tamaulipas</option>
+                  <option value="29" >Tlaxcala</option>
+                  <option value="30" >Veracruz de Ignacio de la Llave</option>
+                  <option value="31" >Yucatán</option>
+                  <option value="32" >Zacatecas</option>
+                </select>
+              </div>
+              <div class="selectCont2 marg-L20px" >
+                <select name="tipoMenu" id="catMenu"  class="searchform2">
+                  <option value="" selected="selected">tipo de oferta</option>
+                  <option>compra en líena</option>
+                  <option>compra en piso</option>
+                  <option>Ambos</option>
+                </select>
+              </div>
+            </form>
+            <a href="#null" class="button marg-L20px" id="buscarOferta" >BUSCAR &raquo;</a> </div>
+        </div>
+        <div class="ofertCont" >
+          <!--<div class="oferta bgWh"> <a href="#null"class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
+            <h3>30% de descuento en articulos escolares y de papeleria</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
+            <h3>50% de descuento toda la linea deep love</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
+            <h3>Samsung Galaxy tab a tan solo $5399</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert4.jpg" width="213" height="220" alt="ofice max" title="oficeMAx" /></span>
+            <h3>30% de descuento en articulos escolares y de papeleria</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
+            <h3>50% de descuento toda la linea deep love</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
+            <h3>Samsung Galaxy tab a tan solo $5399</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
+            <h3>30% de descuento en articulos escolares y de papeleria</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
+            <h3>50% de descuento toda la linea deep love</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
+            <h3>Samsung Galaxy tab a tan solo $5399</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert1.jpg" width="212" height="218" alt="ofice max" title="oficeMAx" /></span>
+            <h3>30% de descuento en articulos escolares y de papeleria</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert2.jpg" width="213" height="218" alt="ofice max" /></span>
+            <h3>50% de descuento toda la linea deep love</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>
+          <div class="oferta bgWh"> <a href="#null" class="lighter"> <span class="imgcont"><img src="../imgs/ofrtTemp/ofert3.jpg" width="212" height="217" alt="ofice max" /></span>
+            <h3>Samsung Galaxy tab a tan solo $5399</h3>
+            </a>
+            <div class="col-100PR first"><img src="../imgs/ofrtTemp/tempShare.jpg" width="212" height="27" alt="ofertas temp" /></div>
+          </div>-->
+        </div>
+        
+        <!--Columna derecha-->
+        <div class=" col-7 last marg-T10px" >
+          <div class="col-7 Bg-Drk ">
+            <h4 class="alineCenter typ-Wh">Empresas participantes</h4>
+          </div>
+          <div class="col-7 imgpad3px" style="overflow:hidden; height:400px; position:relative;" id="scrolllog">
+            <div id="logos2">
+              <div id="logo1" class="first marg-L10px"> </div>
+            </div>
+          </div>
+          <div class="col-100PR first">
+            <div class="box1 Bg-bluFb">
+              <h4 class="typ-Wh alineCenter lightText">Facebook</h4>
+            </div>
+            <div class=" col-100PR first">
+              <div class="fb-like-box Bg-Wh marg-L5px" data-href="http://www.facebook.com/ElBuenFin" data-width="260" data-height="360" data-show-faces="true" data-stream="false" data-header="false"></div>
+            </div>
+          </div>
+          <div class="col-100PR first Bg-bluTw marg-T20px">
+            <h4 class="alineCenter typ-Wh  lightText">Twitter</h4>
+          </div>
+          <div class="twitter col-100PR first"> 
+            <script src="http://widgets.twimg.com/j/2/widget.js"></script> <script>
 						new TWTR.Widget({
 						  version: 2,
 						  type: 'profile',
-						  rpp: 2,
+						  rpp: 5,
 						  interval: 2000,
 						  width: 280,
-						  height: 240,
+						  height: 380,
 						  theme: {
 							shell: {
 							  background: '#ffffff',
@@ -374,17 +457,17 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 							behavior: 'default'
 						  }
 						}).render().setUser('ElBuenFin').start();
-						</script>
+						</script> 
+          </div>
+        </div>
+      </div>
+      <!--Termina Contenido--> 
+    </div>
+  </div>
 </div>
-  </div>
-  
-  </div>
-  <!--Termina Contenido-->
-  </div>
+<!--Footer-->
+<div class="col-100PR first Bg-Prm fixedbottom alineCenter">
+  <p class="typeMin typ-Wh">El Buen Fin 2012 © Todos los derechos reservados   |   Avisos de privacidad   |   Políticas</p>
 </div>
-</div>
-  <!--Footer-->
-  <div class="col-100PR first Bg-Prm fixedbottom alineCenter"><p class="typeMin typ-Wh">El Buen Fin 2012 © Todos los derechos reservados   |   Avisos de privacidad   |   Políticas</p>
-  </div>
 </body>
 </html>
