@@ -52,8 +52,8 @@ $(document).ready(function() {
 		 * Manejo de sucursales
 		 */
 		var sucs = $("#listasuc").find("input");
-		var chain = "";
-		var sep = "";
+		var pcves = $("#unpickpcve").find("a");
+		var chain = ""; var sep = "";
 		sucs.each(function() {
 			if($(this).is(':checked')) {
 				if($(this).attr('id') != "todassuc") {
@@ -64,6 +64,11 @@ $(document).ready(function() {
 			}
 		});
 		$("#schain").val(chain);
+		var chain = ""; var sep = "";
+		pcves.each(function() { 
+			chain += sep+$(this).text(); sep = " "; 
+		});
+		$("#pchain").val(chain);
 
 		/* 
 		 * Validaciones

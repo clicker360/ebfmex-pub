@@ -72,9 +72,10 @@ func Acceso(w http.ResponseWriter, r *http.Request) {
 }
 
 func Salir(w http.ResponseWriter, r *http.Request) {
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
-		s.Expiration = time.Now().AddDate(-1,0,0)
+		s.Expiration = now.AddDate(-1,0,0)
 		_, err := datastore.Put(c, datastore.NewKey(c, "Sess", s.User, 0, nil), &s)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

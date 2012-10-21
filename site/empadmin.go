@@ -50,6 +50,7 @@ type FormDataEmp struct {
 	ErrDesc			string
 }
 
+
 func init() {
     http.HandleFunc("/se", GetEmp)
     http.HandleFunc("/ne", NewEmp)
@@ -334,7 +335,7 @@ func fillEmpresa(r *http.Request) model.Empresa {
 		PartLinea:  partlinea,
 		ExpComer:	expcomer,
 		Desc:		strings.TrimSpace(r.FormValue("Desc")),
-		FechaHora:	time.Now(),
+		FechaHora:	time.Now().Add(time.Duration(-18000)*time.Second),
 		Status:		true,
 	}
 	return e

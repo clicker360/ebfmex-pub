@@ -31,7 +31,7 @@ func AddOfSuc(w http.ResponseWriter, r *http.Request) {
 	out.IdSuc = r.FormValue("idsuc")
 	out.IdOft = r.FormValue("idoft")
 	out.IdEmp = r.FormValue("idemp")
-	oferta := model.GetOferta(c, out.IdOft)
+	oferta,_ := model.GetOferta(c, out.IdOft)
 	suc := model.GetSuc(c, out.IdSuc)
 	if oferta.IdEmp != "none" && suc.IdEmp != "none" {
 		lat, _ := strconv.ParseFloat(suc.Geo1, 64)
@@ -52,7 +52,7 @@ func AddOfSuc(w http.ResponseWriter, r *http.Request) {
 		ofsuc.Descuento = oferta.Descuento
 		ofsuc.Url = oferta.Url
 		ofsuc.StatusPub = oferta.StatusPub
-		ofsuc.FechaHora = time.Now()
+		ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 		out.FechaHora = ofsuc.FechaHora
 
 		err := oferta.PutOfertaSucursal(c, &ofsuc)

@@ -10,14 +10,14 @@ import (
 	"appengine/datastore"
 	"appengine/blobstore"
 	"appengine/urlfetch"
+	"html/template"
+	"net/http"
 	"sortutil"
 	"strings"
 	"strconv"
-	"net/http"
 	"net/url"
-	"html/template"
-	"sess"
 	"model"
+	"sess"
 	"time"
 	"fmt"
 	"io"
@@ -111,7 +111,7 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 	if s, ok := sess.IsSess(w, r, c); ok {
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		oferta := model.GetOferta(c, r.FormValue("IdOft"))
+		oferta, _ := model.GetOferta(c, r.FormValue("IdOft"))
 		var id string
 		if oferta.IdEmp != "none" {
 			id = oferta.IdEmp
@@ -193,7 +193,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			//ofertamod.BlobKey = fd.BlobKey
 			ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 
-			oferta := model.GetOferta(c, ofertamod.IdOft)
+			oferta, keyOferta := model.GetOferta(c, ofertamod.IdOft)
 			if oferta.IdOft != "none" {
 				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
 					tc["Empresa"] = empresa
@@ -255,7 +255,8 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					model.Check(errOe)
 
 					// Se despacha la generación de diccionario de palabras
-					_ = generatesearch(c, oferta.IdOft, ofertamod.Descripcion, ofertamod.Enlinea)
+					// Se agrega pcves a la descripción
+					_ = generatesearch(c, keyOferta, ofertamod.Descripcion+" "+r.FormValue("pchain"), ofertamod.IdCat)
 
 					fd = ofToForm(ofertamod)
 					fd.Ackn = "Ok";
@@ -367,9 +368,12 @@ func ofToForm(e model.Oferta) FormDataOf {
 	return fd
 }
 
-func generatesearch(c appengine.Context, idoft string, description string, enlinea bool) error {
+func generatesearch(c appengine.Context, oftKey *datastore.Key, description string, idcat int) error {
 	client := urlfetch.Client(c)
-	descurl := fmt.Sprintf("http://movil.ebfmex-pub.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&enlinea=%t", idoft, description, enlinea)
+	var el string
+	descurl := fmt.Sprintf(
+	"http://movil.ebfmex-pub.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
+	oftKey.Encode(), description, strconv.Itoa(idcat))
 	_, err := client.Get(descurl)
 	if err != nil {
 		return err

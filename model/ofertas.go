@@ -6,7 +6,6 @@ import (
 	"appengine/blobstore"
 	"time"
 )
-
 type Oferta struct {
 	IdOft       string
 	IdEmp       string
@@ -61,6 +60,11 @@ type OfertaPalabra struct {
 	FechaHora	time.Time
 }
 
+type OfertaEstado struct {
+	IdOft      string
+	IdEnt      string
+}
+
 func (r *Oferta) Key(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Oferta", r.IdOft, 0, nil)
 }
@@ -75,16 +79,16 @@ func (r *Oferta) DelOferta(c appengine.Context) error {
 	return nil
 }
 
-func GetOferta(c appengine.Context, id string) *Oferta {
+func GetOferta(c appengine.Context, id string) (*Oferta, *datastore.Key) {
 	q := datastore.NewQuery("Oferta").Filter("IdOft =", id)
 	for i := q.Run(c); ; {
 		var e Oferta
-		_, err := i.Next(&e)
+		key, err := i.Next(&e)
 		if err == datastore.Done {
 			break
 		}
 		// Regresa la oferta
-		return &e
+		return &e, key
 	}
 	// Regresa un cascarón
 	var e Oferta
@@ -92,7 +96,7 @@ func GetOferta(c appengine.Context, id string) *Oferta {
 	e.IdOft = "none";
 	e.IdCat = 0;
 	e.BlobKey = "none";
-	return &e
+	return &e, nil
 }
 
 func PutOferta(c appengine.Context, oferta *Oferta) error {
@@ -121,7 +125,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 		ofsuc.Enlinea = oferta.Enlinea
 		ofsuc.Url = oferta.Url
 		ofsuc.StatusPub = oferta.StatusPub
-		ofsuc.FechaHora = time.Now()
+		ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 		oferta.PutOfertaSucursal(c, &ofsuc)
 		TouchSuc(c, os.IdSuc)
 	}
@@ -388,6 +392,38 @@ func DelOfertaPalabra(c appengine.Context, id string, palabra string) error {
 	}
 	return nil
 }
+
+/*
+ Métodos de OfertaEstado
+*/
+func (r *Oferta) PutOfertaEstado(c appengine.Context, edomap map[string]string) error {
+	for k, v := range edomap {
+		var e OfertaEstado
+		e.IdOft = v
+		e.IdEnt = k
+		_, err := datastore.Put(c, datastore.NewKey(c, "OfertaEstado", v+k, 0, r.Key(c)), &e)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (r *Oferta) DelOfertaEstado(c appengine.Context) error {
+	q := datastore.NewQuery("OfertaEstado").Filter("IdOft =", r.IdOft)
+	for i := q.Run(c); ; {
+		var e OfertaEstado
+		key, err := i.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		if err := datastore.Delete(c, key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 
 
 

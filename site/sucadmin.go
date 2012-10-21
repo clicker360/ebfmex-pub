@@ -222,7 +222,7 @@ func sucFill(r *http.Request) model.Sucursal {
 		Geo2:		strings.TrimSpace(r.FormValue("Geo2")),
 		Geo3:		strings.TrimSpace(r.FormValue("Geo3")),
 		Geo4:		strings.TrimSpace(r.FormValue("Geo4")),
-		FechaHora: 		time.Now(),
+		FechaHora:	time.Now().Add(time.Duration(-18000)*time.Second),
 	}
 	return s;
 }

@@ -21,11 +21,12 @@ type Sess struct {
 }
 const Expiracion = 15 // dias
 func SetSess(w http.ResponseWriter, c appengine.Context, key *datastore.Key, email string, name string) (string, *datastore.Key, error) {
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	h := md5.New()
 	io.WriteString(h, key.Encode())
-	io.WriteString(h, fmt.Sprintf("%s", time.Now()))
+	io.WriteString(h, fmt.Sprintf("%s", now))
 	md5 := fmt.Sprintf("%x", h.Sum(nil))
-	ex := time.Now().AddDate(0,0,Expiracion)
+	ex := now.AddDate(0,0,Expiracion)
 	s := Sess{
 		Md5:		md5,
 		Id:			key.Encode(),
@@ -51,6 +52,7 @@ func SetSess(w http.ResponseWriter, c appengine.Context, key *datastore.Key, ema
 
 func IsSess(w http.ResponseWriter, r *http.Request, c appengine.Context) (Sess, bool) {
 	var s Sess
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	if ck, err := r.Cookie("ebfmex-pub-sessid-ua"); err == nil {
 		key, _ := datastore.DecodeKey(ck.Value)
 		if err := datastore.Get(c, key, &s); err != nil {
@@ -62,7 +64,7 @@ func IsSess(w http.ResponseWriter, r *http.Request, c appengine.Context) (Sess, 
 				if s.Md5 != cr.Value {
 					// Md5 no coincide, intenta entrar con otra cookie
 					return s, false
-				} else if time.Now().After(s.Expiration) {
+				} else if now.After(s.Expiration) {
 					// Sesión expirada
 					return s, false
 				}

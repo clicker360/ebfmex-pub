@@ -145,7 +145,7 @@ func PutChangeControl(c appengine.Context, id string, kind string, status string
 	cc.Id = id
 	cc.Kind = kind
 	cc.Status = status
-	cc.FechaHora = time.Now()
+	cc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 	_, err := datastore.Put(c, datastore.NewKey(c, "ChangeControl", kind+"_"+id, 0, nil), &cc)
 	if err != nil {
 		return err
@@ -280,7 +280,7 @@ func TouchSuc(c appengine.Context, id string) error {
 			break
 		}
 		// Regresa la sucursal
-		e.FechaHora = time.Now()
+		e.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 		if _, err := datastore.Put(c, key, &e); err != nil {
 			return err
 		}
@@ -322,7 +322,7 @@ func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
 		ofsuc.Enlinea = os.Enlinea
 		ofsuc.Url = os.Url
 		ofsuc.StatusPub = os.StatusPub
-		ofsuc.FechaHora = time.Now()
+		ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 		oferta := GetOferta(c, os.IdOft)
 		_ = oferta.PutOfertaSucursal(c, &ofsuc)
 	}

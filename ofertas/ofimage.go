@@ -68,7 +68,7 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 			berr := blobstore.Delete(c, file[0].BlobKey)
 			model.Check(berr)
 		} else {
-			oferta := model.GetOferta(c, out.IdOft)
+			oferta,_ := model.GetOferta(c, out.IdOft)
 			if oferta.IdEmp == "none" {
 				out.Status = "invalidUpload"
 				berr := blobstore.Delete(c, file[0].BlobKey)

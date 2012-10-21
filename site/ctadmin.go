@@ -127,6 +127,7 @@ func CtaMod(w http.ResponseWriter, r *http.Request) {
 }
 
 func CtaDel(w http.ResponseWriter, r *http.Request) {
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	if r.Method != "POST" {
 		return
 	}
@@ -141,7 +142,7 @@ func CtaDel(w http.ResponseWriter, r *http.Request) {
 			if len(*e) == 0 {
 				// Desactiva Status
 				if(r.FormValue("desactiva")=="1") {
-					s.Expiration = time.Now().AddDate(-1,0,0)
+					s.Expiration = now.AddDate(-1,0,0)
 					_, err := datastore.Put(c, datastore.NewKey(c, "Sess", s.User, 0, nil), &s)
 					if err != nil {
 						http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -30,7 +30,7 @@ func AddWord(w http.ResponseWriter, r *http.Request) {
 	out.Id = r.FormValue("id")
 	if model.ValidSimpleText.MatchString(out.Token) {
 		tokens := strings.Fields(r.FormValue("token"))
-		oferta := model.GetOferta(c, out.Id)
+		oferta,_ := model.GetOferta(c, out.Id)
 		if(len(tokens) > 0) {
 			for _,v:= range tokens {
 				if oferta.IdEmp != "none" {
@@ -38,7 +38,7 @@ func AddWord(w http.ResponseWriter, r *http.Request) {
 					palabra.IdOft = out.Id
 					palabra.IdEmp = oferta.IdEmp
 					palabra.Palabra = strings.ToLower(v)
-					palabra.FechaHora = time.Now()
+					palabra.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 					err := oferta.PutOfertaPalabra(c, &palabra)
 					if err != nil {
 						out.Status = "writeErr"
@@ -69,7 +69,7 @@ func DelWord(w http.ResponseWriter, r *http.Request) {
 	var out Word
 	out.Token = strings.ToLower(r.FormValue("token"))
 	out.Id = r.FormValue("id")
-	oferta := model.GetOferta(c, out.Id)
+	oferta,_ := model.GetOferta(c, out.Id)
 	if oferta.IdEmp != "none" {
 		err := model.DelOfertaPalabra(c, out.Id, out.Token)
 		if err != nil {
