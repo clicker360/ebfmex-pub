@@ -160,7 +160,7 @@
   }
 </script>
 
-<script>
+<!--script>
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -172,12 +172,12 @@
     eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
     if (restore) selObj.selectedIndex=0;
   }
-</script>
+</script-->
 
 </head>
   <body class="bg-main" id="cuerpo">
     <div id="fb-root"></div>
-    <script>
+    <!--script>
       (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
@@ -185,7 +185,7 @@
       js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
       fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
-    </script>
+    </script-->
 
     <!--Comineza lightbox-->
     <div class="lghtbox hide" id="lightback">
@@ -371,36 +371,37 @@
                 <h4 class="alineCenter typ-Wh  lightText">Twitter</h4>
               </div>
               <div class="twitter col-100PR first"> 
-                <script src="http://widgets.twimg.com/j/2/widget.js"></script> <script>
-    						new TWTR.Widget({
-    						  version: 2,
-    						  type: 'profile',
-    						  rpp: 5,
-    						  interval: 2000,
-    						  width: 280,
-    						  height: 380,
-    						  theme: {
-    							shell: {
-    							  background: '#ffffff',
-    							  color: '#111'
-    							},
-    							tweets: {
-    							  background: '#ffffff',
-    							  color: '#000000',
-    							  links: '#111'
-    							}
-    						  },
-    						  features: {
-    							scrollbar: true,
-    							loop: true,
-    							live: false,
-    							hashtags: true,
-    							timestamp: true,
-    							avatars: true,
-    							behavior: 'default'
-    						  }
-    						}).render().setUser('ElBuenFin').start();
-    						</script> 
+			  	<!--script src="http://widgets.twimg.com/j/2/widget.js"></script>
+			  	<script>
+					new TWTR.Widget({
+					  version: 2,
+					  type: 'profile',
+					  rpp: 5,
+					  interval: 2000,
+					  width: 280,
+					  height: 380,
+					  theme: {
+						shell: {
+						  background: '#ffffff',
+						  color: '#111'
+						},
+						tweets: {
+						  background: '#ffffff',
+						  color: '#000000',
+						  links: '#111'
+						}
+					  },
+					  features: {
+						scrollbar: true,
+						loop: true,
+						live: false,
+						hashtags: true,
+						timestamp: true,
+						avatars: true,
+						behavior: 'default'
+					  }
+					}).render().setUser('ElBuenFin').start();
+    			</script--> 
               </div>
             </div>
           </div>
