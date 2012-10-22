@@ -113,9 +113,9 @@
   }
   function search(){  
     var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
-    var categoria = $("select[name=catMenu]").val();
-    var estado = $("select[name=estadoMenu]").val();
-    var tipo = $("select[name=tipoMenu]").val();       
+    var categoria = $("select[name=catMenu]").attr("value");
+    var estado = $("select[name=estadoMenu]").attr("value");
+    var tipo = $("select[name=tipoMenu]").attr("value");     
     pagina ++;
     $.get("http://movil.ebfmex-pub.appspot.com/search",{ pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
         console.log(pagina);
@@ -334,7 +334,7 @@
                   </div>
                   <div class="selectCont2 marg-L20px" >
                     <select name="tipoMenu" id="tipoMenu"  class="searchform2">
-                      <option value="" selected="selected">tipo de oferta</option>
+                      <option value="3" selected="selected">tipo de oferta</option>
                       <option value="1">compra en línea</option>
                       <option value="2">compra en piso</option>
                     </select>
