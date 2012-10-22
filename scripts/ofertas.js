@@ -29,6 +29,7 @@ $(document).ready(function() {
 	}
 	$('#loader').hide();
 	$('#urlreq').hide();
+	$('#placereq').hide();
 	$('#enlinea').live('change', function() { 
 		if($('#enlinea').attr('checked')) {
 			$('#muestraurl').show();
@@ -73,7 +74,18 @@ $(document).ready(function() {
 		/* 
 		 * Validaciones
 		 */
-		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); return false; } else {$('#urlreq').hide(); return true;}
+		var ok = false;
+		var sucs = $("#listasuc").find("input");
+		if($("#enlinea").is(':checked')) {
+			ok = true;
+		} else {
+			sucs.each(function() { if($(this).is(':checked')) { ok = true; } });
+		}
+		if(!ok) { $('#placereq').show(); return false; } 
+		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); return false; } 
+		$('#placereq').hide(); 
+		$('#urlreq').hide(); 
+		return true;
 	});
 	$("#enviar").validationEngine({promptPosition : "topRight", scroll: false});
 	$("#enviardata").validationEngine({promptPosition : "topRight", scroll: false});

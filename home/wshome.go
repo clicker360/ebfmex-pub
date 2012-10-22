@@ -3,12 +3,14 @@ package home
 import (
     "appengine"
     "appengine/datastore"
+    "appengine/memcache"
 	"html/template"
 	"encoding/json"
 	"math/rand"
     "net/http"
 	"sortutil"
 	"strings"
+	"strconv"
     "model"
 	"time"
 )
@@ -27,20 +29,54 @@ func init() {
     rand.Seed(time.Now().UnixNano())
 }
 
+/*
+ * La idea es hacer 60 cachés al azar con un tiempo de vida de 30 min
+ * Cada que se muere un memcache se genera otro carrousel al azar de logos
+ */
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	offset := rand.Intn(950)
-    q := datastore.NewQuery("ShortLogo").Offset(offset).Limit(50)
-	n, _ := q.Count(c)
-	logos := make([]model.Image, 0, n)
-	if _, err := q.GetAll(c, &logos); err != nil {
-		if err == datastore.ErrNoSuchEntity {
-			return
+	var timetolive = 1800 //seconds
+	var b []byte
+	var nn int = 50 // tamaño del carrousel
+	logos := make([]model.Image, 0, nn)
+	hit := rand.Intn(60)
+	if item, err := memcache.Get(c, "carr_"+strconv.Itoa(hit)); err == memcache.ErrCacheMiss {
+		q := datastore.NewQuery("ShortLogo")
+		n, _ := q.Count(c)
+		offset := 0;
+		if(n > nn) {
+			offset = rand.Intn(n-nn)
+		} else {
+			nn = n
 		}
+		q = q.Offset(offset).Limit(nn)
+		if _, err := q.GetAll(c, &logos); err != nil {
+			if err == datastore.ErrNoSuchEntity {
+				return
+			}
+		}
+
+		b, _ = json.Marshal(logos)
+		item := &memcache.Item{
+			Key:   "carr_"+strconv.Itoa(hit),
+			Value: b,
+			Expiration: time.Duration(timetolive)*time.Second,
+		}
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			c.Errorf("Memcache.Add carr_idoft : %v", err)
+		}
+		//c.Infof("memcache add carr_page : %v", strconv.Itoa(hit))
+	} else {
+		//c.Infof("memcache retrieve carr_page : %v", strconv.Itoa(hit))
+		if err := json.Unmarshal(item.Value, &logos); err != nil {
+			c.Errorf("Unmarshaling ShortLogo item: %v", err)
+		}
+		nn = len(logos)
 	}
+
 	tpl, _ := template.New("Carr").Parse(cajaTpl)
-	tn := rand.Perm(n)
+	tn := rand.Perm(nn)
 	var ti response
 	for i, _ := range tn {
 		ti.IdEmp = logos[tn[i]].IdEmp
@@ -48,7 +84,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 		//b, _ := json.Marshal(ti)
 		//w.Write(b)
 		tpl.Execute(w, ti)
-		if i > 49  {
+		if i >= nn  {
 			break
 		}
 	}
@@ -65,9 +101,9 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	ultimos := r.FormValue("ultimos")
     q := datastore.NewQuery("Empresa")
 	if ultimos != "1" {
-		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd")
+		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Limit(400)
 	} else {
-		q = q.Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(200)
+		q = q.Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(400)
 	}
 	em, _ := q.Count(c)
 	empresas := make([]model.Empresa, 0, em)

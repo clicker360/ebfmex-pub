@@ -254,37 +254,33 @@
 										</div>
 										<!-- termina datepicker -->
                                         <!--SUCURSALES-->
-									<div class="col-10 padd-LR15px marg-L5pix Bg-Drks padd-D10px ">
-                                    <!--EL BUEN FIN EN LINEA-->
-                                    <p class="marg-5px"><strong><span class="typ-Sc">*</span>¿Dónde estará disponible esta oferta?</strong></p>
-		  							 <div class="first marg-L6pix bg-Gry3 col-10" >
-											<label class="col-8 ">El Buen Fin en línea (Comercio electrónico) </label>
-											<input type="checkbox" class="last marg-U5pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} />
-                                      </div>
-                                            
-											<div id="muestraurl">
-                                            <div class="first marg-L6pix bg-Gry2 col-10" > 
-												<label class="col-8"> Sitio de internet de la oferta</label>
-												<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
-												<input type="text" class="validate[optional,custom[url]] medium  last {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
-                                              </div>
+										<div class="col-10 padd-LR15px marg-L5pix Bg-Drks padd-D10px ">
+											<!--EL BUEN FIN EN LINEA-->
+											<p class="marg-5px"><strong><span class="typ-Sc">*</span>¿Dónde estará disponible esta oferta?</strong></p>
+											<div class="formErrorContent" id="placereq" onclick="$('#placereq').hide()"> Obligatorio indicar algún lugar donde su oferta participa </div>
+											<div class="first marg-L6pix bg-Gry3 col-10" >
+												<label class="col-8 ">El Buen Fin en línea (Comercio electrónico) </label>
+												<input type="checkbox" class="last marg-U5pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} />
 											</div>
-										
-
-										<div class="col-10" id="sucursales">
-										  <div class="first marg-L6pix col-10" id="listasuc" style="max-height:150px; overflow:auto;"> 
-										    <div class="gridsubRow bg-Gry3"><label class="col-6 marg-L10pix">Seleccionar todas/ninguna</label><input name="todassuc" type="checkbox" class="last marg-U5pix marg-R10pix" id="todassuc"/>
-                                            </div>
-												<!-- relleno ajax -->
-										  </div>
-									  </div>
-									</div>
+											<div id="muestraurl">
+												<div class="first marg-L6pix bg-Gry2 col-10" > 
+													<label class="col-8"> Sitio de internet de la oferta</label>
+													<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
+													<input type="text" class="validate[optional,custom[url]] medium  last {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
+												</div>
+											</div>
+											<div class="col-10" id="sucursales">
+												<div class="first marg-L6pix col-10" id="listasuc" style="max-height:150px; overflow:auto;"> 
+													<div class="gridsubRow bg-Gry3"><label class="col-6 marg-L10pix">Seleccionar todas/ninguna</label><input name="todassuc" type="checkbox" class="last marg-U5pix marg-R10pix" id="todassuc"/>
+													</div>
+													<!-- relleno ajax -->
+												</div>
+											</div>
+										</div>
 						
 										<!--SELECTOR DE PALABRAS CLAVE-->
 										<div class="col-10 padd-LR15px marg-L5pix Bg-Drks marg-U5pix">
 											<p class="Dsblock first">Palabras relacionadas con la oferta</p>
-	                                      
-	                                       	
 											<div class="col-100PR first  Bg-Wh padd-UD10px">
 											  <input type="text" class="validate[optional, onlyLetterSp, minSize[3], maxSize[25]] selectWord  marg-L20pix marg-R10pix marg-U5pix" maxlength="25" name="textopcve" value="" id="tokenpcve" />
 												<div class=" first marg-U5pix" id="btnaddWords">

@@ -482,8 +482,6 @@ func GetShortLogo(c appengine.Context, idemp string) (*Image, error) {
 	return i, err
 }
 
-
-
 // Obtiene una imagen
 func GetImg(c appengine.Context, id string) (*Image, error) {
 	i := &Image{ IdImg: id }
@@ -509,12 +507,12 @@ func ListEnt(c appengine.Context, ent string) *[]Entidad {
 			Value: b,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Error memcache.Add Entidad : %v", err)
+			c.Errorf("memcache.Add Entidad : %v", err)
 		}
 	} else {
-		c.Infof("Memcache activo: %v", item.Key)
+		//c.Infof("Memcache activo: %v", item.Key)
 		if err := json.Unmarshal(item.Value, &estados); err != nil {
-			c.Errorf("error adding item: %v", err)
+			c.Errorf("Memcache Unmarchalling item: %v", err)
 		}
 	}
 	for i, _ := range estados {

@@ -37,7 +37,7 @@ func municipios(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else {
-			c.Infof("Memcache activo: %v", item.Key)
+			//c.Infof("Memcache activo: %v", item.Key)
 			var municipios []model.Municipio
 			if err := json.Unmarshal(item.Value, &municipios); err != nil {
 				c.Errorf("error adding item: %v", err)
