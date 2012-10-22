@@ -10,18 +10,25 @@
 	<script type="text/javascript" src="../scripts/jquery.form.js" charset="utf-8"></script>
 	<script type="text/javascript">
 
-				<!--google code-->
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-26907178-1']);
 		_gaq.push(['_trackPageview']);
+
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-	var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
+
 	</script>
-     	<script type="text/javascript" src="../scripts/micrositios.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
+		$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
+		$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
+		function activateCancel(){ $("#cancelbtn").addClass("show") }
+		function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
+	</script>
+   	<script type="text/javascript" src="../scripts/micrositios.js" charset="utf-8"></script>
 	<title>Administración de Micrositio</title>
 </head>
 <body class="bgt-main">
@@ -34,7 +41,7 @@
       {{with .Sess}}
         <div class="pestana">
           <p class="first marg-10px">Hola {{.Name}}</p>
-          <div class="last"><a href="/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
+          <div class="last"><a href="/r/salir" class="button blue marg-10pix last"><span>SALIR</span></a></div>
         </div>
         {{end}} 
     </div>
@@ -42,14 +49,14 @@
       <div class="menuAdmin">
         <div class="col-5" style="min-height:600px;"> <img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
           <ul class="menuAdmin">
-            <li><a href="/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
-            <li><a href="/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
-            <li><a href="/le?d=a"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-            <li><a href="/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-            <li><a href="/le?d=o"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
-            <li><a class="selected" href="/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
-			<li><a href="/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-			<li><a href="/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
+            <li><a href="/r/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
+            <li><a href="/r/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
+            <li><a href="/r/le?d=a"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
+            <li><a href="/r/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
+            <li><a href="/r/le?d=o"><span><img src="../gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+            <li><a class="selected" href="/r/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+			<li><a href="/r/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
+			<li><a href="/r/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
           </ul>
 		  <div class="box1 marg-U15pix"><strong>Recuerda:<br />El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
         </div>
@@ -73,7 +80,7 @@
           <div class="first">
              <div class="col-19" id="addCont">
               <div class="col-18 marg-L10pix padd-10px">
-            <form action="/logoup" method="post" id="enviar" enctype="multipart/form-data">
+            <form action="/r/logoup" method="post" id="enviar" enctype="multipart/form-data">
               <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
               <input type="hidden" name="tipo" value="async"/>
               <div class="col-7 last">
@@ -110,7 +117,7 @@
                     </ul>
 				</div>
             </form>
-          <form action="/midata" method="post" id="enviarmidata" enctype="multipart/form-data">
+          <form action="/r/midata" method="post" id="enviarmidata" enctype="multipart/form-data">
             <input type="hidden" name="IdEmp" value="{{.IdEmp}}"/>
             <div class="col-19" id="addCont">
               <div class="col-18 marg-L10pix">
@@ -132,11 +139,11 @@
                   <div class="line ">
                     <h3>Redes sociales</h3>
                     <label>Sitio de Facebook:</label>
-                    <input type="text" class="validate[optional,custom[url]] medium {{.ErrFacebook}}" name="Facebook" value="{{.Facebook}}"  onchange="activateCancel()"/>
+                    <input type="text" class="validate[optional,custom[url]] medium {{.ErrSp1}}" name="Sp1" value="{{.Sp1}}"  onchange="activateCancel()"/>
                   </div>
                   <div class="line ">
                     <label>Twitter:</label>
-                    <input type="text" class="validate[optional] medium {{.ErrTwitter}}" name="Twitter" value="{{.Twitter}}"  onchange="activateCancel()"/>
+                    <input type="text" class="validate[optional] medium {{.ErrSp2}}" name="Sp2" value="{{.Sp2}}"  onchange="activateCancel()"/>
                   </div>
                   <div class="line ">
                     <button  name="Upload"  id="Uploadmidata" type="submit" class="red medium last" value="Upload"  ><span>Guardar</span></button>

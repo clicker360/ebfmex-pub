@@ -49,7 +49,9 @@ type FormDataImage struct {
 	ErrUrl	string
 	Type	string
 	Sp1		string
+	ErrSp1	string
 	Sp2		string
+	ErrSp2	string
 	Sp3		string
 	Sp4		string
 	Np1		int
@@ -113,6 +115,8 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		}
 
 		idemp := r.FormValue("IdEmp")
+		sp1 := r.FormValue("Sp1")
+		sp2 := r.FormValue("Sp2")
 		f, _, err := r.FormFile("image")
 		model.Check(err)
 		defer f.Close()
@@ -185,7 +189,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 			Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(12), 
 			Kind: "EmpLogo", Name: imgo.Name, Desc: imgo.Desc, 
 			Sizepx: 0, Sizepy: 0, Url: imgo.Url, Type: "",
-			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
+			Sp1: sp1, Sp2: sp2, Sp3: "", Sp4: "",
 			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 		}
 
@@ -245,6 +249,8 @@ func modData(w http.ResponseWriter, r *http.Request) {
 		name := r.FormValue("Name")
 		desc := r.FormValue("Desc")
 		url := r.FormValue("Url")
+		sp1 := r.FormValue("Sp1")
+		sp2 := r.FormValue("Sp2")
 
 	//	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 	//	im := new(model.Image)
@@ -253,7 +259,7 @@ func modData(w http.ResponseWriter, r *http.Request) {
 			Data: imgo.Data, IdEmp: idemp, IdImg: imgo.IdImg,
 			Kind: "EmpLogo", Name: name, Desc: desc,
 			Sizepx: 0, Sizepy: 0, Url: url, Type: "",
-			Sp1: "", Sp2: "", Sp3: "", Sp4: "",
+			Sp1: sp1, Sp2: sp2, Sp3: "", Sp4: "",
 			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 		}
 		_, err := model.PutLogo(c, imgo)
@@ -310,6 +316,10 @@ func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, t
 		ErrName: "",
 		Url: strings.TrimSpace(r.FormValue("Url")),
 		ErrUrl: "",
+		Sp1: strings.TrimSpace(r.FormValue("Sp1")),
+		ErrSp1: "",
+		Sp2: strings.TrimSpace(r.FormValue("Sp2")),
+		ErrSp2: "",
 		Desc: strings.TrimSpace(r.FormValue("Desc")),
 		ErrDesc: "",
 	}
@@ -322,6 +332,14 @@ func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, t
 		}
 		if fd.Url != "" && !model.ValidUrl.MatchString(fd.Url) {
 			fd.ErrUrl = "invalid"
+			ef = true
+		}
+		if fd.Sp1 != "" && !model.ValidUrl.MatchString(fd.Sp1) {
+			fd.ErrSp1 = "invalid"
+			ef = true
+		}
+		if fd.Sp2 != "" && !model.ValidUrl.MatchString(fd.Sp2) {
+			fd.ErrSp2 = "invalid"
 			ef = true
 		}
 		if fd.Desc != "" && !model.ValidSimpleText.MatchString(fd.Desc) {
@@ -343,6 +361,8 @@ func imgFill(r *http.Request, img *model.Image) {
 	img.Name=		strings.TrimSpace(r.FormValue("Name"))
 	img.Desc=		strings.TrimSpace(r.FormValue("Desc"))
 	img.Url=		strings.TrimSpace(r.FormValue("Url"))
+	img.Sp1=		strings.TrimSpace(r.FormValue("Sp1"))
+	img.Sp2=		strings.TrimSpace(r.FormValue("Sp2"))
 }
 
 func imgToForm(e model.Image) FormDataImage {
