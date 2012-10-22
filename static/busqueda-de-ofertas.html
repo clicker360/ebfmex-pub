@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>El buen fin</title>
-<meta name="Title" content="El Buen Fin" />
-<meta name="keywords" content="descuentos, tiendas departamentales, electrodomesticos, comercio en line, compra en line, buen fin, el buen fin" />
-<meta name="Author" content="Clicker360" />
-<meta name="Copyright" content="El Buen Fin" />
-<meta name="Revisit" content="1 days" />
-<meta name="UI Designer" content="Carlos Zavala czavala@clicker360.com" />
-<meta name="ROBOTS" content="INDEX, All"/>
-<meta name="ROBOTS" content="INDEX, FOLLOW">
-<meta name="description" content="El Buen Fin" />
-<link href="../css/OrigamiRev.css" rel="stylesheet" type="text/css" />
-<link href="../css/HomelbuenfinSkin.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
-<script type="text/javascript">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>El buen fin</title>
+  <meta name="Title" content="El Buen Fin" />
+  <meta name="keywords" content="descuentos, tiendas departamentales, electrodomesticos, comercio en line, compra en line, buen fin, el buen fin" />
+  <meta name="Author" content="Clicker360" />
+  <meta name="Copyright" content="El Buen Fin" />
+  <meta name="Revisit" content="1 days" />
+  <meta name="UI Designer" content="Carlos Zavala czavala@clicker360.com" />
+  <meta name="ROBOTS" content="INDEX, All"/>
+  <meta name="ROBOTS" content="INDEX, FOLLOW">
+  <meta name="description" content="El Buen Fin" />
+  <link href="../css/OrigamiRev.css" rel="stylesheet" type="text/css" />
+  <link href="../css/HomelbuenfinSkin.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+  <script type="text/javascript">
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-26907178-1']);
@@ -27,8 +27,8 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 
-</script>
-<script type="text/javascript">
+  </script>
+  <script type="text/javascript">
   $(document).ready(function(){       
   	getcarrousel();
     pagina = 0;
@@ -81,22 +81,22 @@
   	});
   });
   function getVars() {
-		var delimiter = "?"; // using '#' here is great for AJAX apps.
-		var separator = "&";
-		var url = location.href;
-		var get_exists = (url.indexOf(delimiter) > -1) ? true : false;
-		if (get_exists) {
-			var url_get = {};
-			var params = url.substring(url.indexOf(delimiter)+1);
-			var params_array = params.split(separator);
-			for (var i=0; i < params_array.length; i++) {
-				var param_name = params_array[i].substring(0,params_array[i].indexOf('='));
-				var param_value = params_array[i].substring(params_array[i].indexOf('=')+1);
-				url_get[param_name] = param_value;
-			}
+  	var delimiter = "?"; // using '#' here is great for AJAX apps.
+  	var separator = "&";
+  	var url = location.href;
+  	var get_exists = (url.indexOf(delimiter) > -1) ? true : false;
+  	if (get_exists) {
+  		var url_get = {};
+  		var params = url.substring(url.indexOf(delimiter)+1);
+  		var params_array = params.split(separator);
+  		for (var i=0; i < params_array.length; i++) {
+  			var param_name = params_array[i].substring(0,params_array[i].indexOf('='));
+  			var param_value = params_array[i].substring(params_array[i].indexOf('=')+1);
+  			url_get[param_name] = param_value;
+  		}
       return url_get;
-		}
-		return false;
+  	}
+  	return false;
   }
   function lighterAjax(){
     $(".lighter").click(function() {
@@ -158,9 +158,9 @@
         }
     });
   }
-</script>
+  </script>
 
-<!--script>
+  <!--script>
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -172,9 +172,9 @@
     eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
     if (restore) selObj.selectedIndex=0;
   }
-</script-->
+  </script-->
 
-</head>
+  </head>
   <body class="bg-main" id="cuerpo">
     <div id="fb-root"></div>
     <!--script>
@@ -337,7 +337,6 @@
                       <option value="" selected="selected">tipo de oferta</option>
                       <option value="1">compra en línea</option>
                       <option value="2">compra en piso</option>
-                      <option>Ambos</option>
                     </select>
                   </div>
                 </form>
@@ -371,37 +370,37 @@
                 <h4 class="alineCenter typ-Wh  lightText">Twitter</h4>
               </div>
               <div class="twitter col-100PR first"> 
-			  	<!--script src="http://widgets.twimg.com/j/2/widget.js"></script>
-			  	<script>
-					new TWTR.Widget({
-					  version: 2,
-					  type: 'profile',
-					  rpp: 5,
-					  interval: 2000,
-					  width: 280,
-					  height: 380,
-					  theme: {
-						shell: {
-						  background: '#ffffff',
-						  color: '#111'
-						},
-						tweets: {
-						  background: '#ffffff',
-						  color: '#000000',
-						  links: '#111'
-						}
-					  },
-					  features: {
-						scrollbar: true,
-						loop: true,
-						live: false,
-						hashtags: true,
-						timestamp: true,
-						avatars: true,
-						behavior: 'default'
-					  }
-					}).render().setUser('ElBuenFin').start();
-    			</script--> 
+									<!--script src="http://widgets.twimg.com/j/2/widget.js"></script>
+									<script>
+									new TWTR.Widget({
+										version: 2,
+										type: 'profile',
+										rpp: 5,
+										interval: 2000,
+										width: 280,
+										height: 380,
+										theme: {
+										shell: {
+											background: '#ffffff',
+											color: '#111'
+										},
+										tweets: {
+											background: '#ffffff',
+											color: '#000000',
+											links: '#111'
+										}
+										},
+										features: {
+										scrollbar: true,
+										loop: true,
+										live: false,
+										hashtags: true,
+										timestamp: true,
+										avatars: true,
+										behavior: 'default'
+										}
+									}).render().setUser('ElBuenFin').start();
+									</script--> 
               </div>
             </div>
           </div>
@@ -414,5 +413,5 @@
     <div class="col-100PR first Bg-Prm fixedbottom alineCenter">
       <p class="typeMin typ-Wh">El Buen Fin 2012 © Todos los derechos reservados   |   Avisos de privacidad   |   Políticas</p>
     </div>
-</body>
+  </body>
 </html>
