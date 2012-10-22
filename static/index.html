@@ -98,7 +98,7 @@
               <div class="col-18  padd-T10px padd-B30px padd-L10px">
                 <h3 class="typ-Wh">Encuentra las ofertas del fin de semana mas barato del año</h3>
                 <form name="buscar" id="buscar" method="get" action="busqueda-de-ofertas.html">
-                  <input name="word" type="text" class="searchform" value="¿Qué buscas?" size="16" />
+                  	<input name="word" type="text" class="searchform" value="¿Qué buscas?" size="16" onfocus="if($(this).val() == '¿Qué buscas?'){ $(this).val('') }" onblur="if($(this).val() == ''){ $(this).val('¿Qué buscas?') }"/>
                   <div class="selectCont marg-L10px">
                     <select name="catMenu" id="catMenu"  class="searchform">
                       <option selected="selected">Categoría</option>
