@@ -86,7 +86,7 @@ $(document).ready(function(){
 	var estado = $("select[name=estadoMenu]").attr("value");
 	var tipo = $("select[name=tipoMenu]").attr("value");     
 	pagina ++;
-	$.get("http://movil.ebfmex-pub.appspot.com/search",{ pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
+	$.get("http://movil.ebfmxorg.appspot.com/search",{ pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
 		console.log(pagina);
 		if(pagina == '1')
 		  $(".ofertCont").html('')
@@ -94,16 +94,16 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
-			urlOferta = 'http://home.ebfmex-pub.appspot.com/busqueda-de-ofertas.html';
+			urlOferta = 'http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html';
 			addOferta = '<div class="oferta bgWh">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="http://home.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
+			addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'
 			addOferta += '<div class="col-30PR first" style="">'
-			addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer/sharer.php?u=http://localhost/ebfmex/static/busqueda-de-ofertas.html">'
+			addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer/sharer.php?u=http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html">'
 			addOferta += '<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Compartir en Facebook" />'
 			addOferta += '</a>'
 			addOferta += '</div>'

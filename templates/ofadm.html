@@ -237,7 +237,7 @@
 													<li><a href="#null" onClick="getTheDate(this)" id="17">17</a></li>
 													<li><a href="#null" onClick="getTheDate(this)" id="18">18</a></li>
 													<li><a href="#null" onClick="getTheDate(this)" id="19">19</a></li>
-													<li><a href="#null" onClick="getTheDate(this)" id="20">20</a></li>
+													<li>20</li>
 													<li>21</li>
 													<li>22</li>
 													<li>23</li>
@@ -259,19 +259,19 @@
 											<p class="marg-5px"><strong><span class="typ-Sc">*</span>¿Dónde estará disponible esta oferta?</strong></p>
 											<div class="formErrorContent" id="placereq" onclick="$('#placereq').hide()"> Obligatorio indicar algún lugar donde su oferta participa </div>
 											<div class="first marg-L6pix bg-Gry3 col-10" >
-												<label class="col-8 ">El Buen Fin en línea (Comercio electrónico) </label>
+												<label class="col-8 marg-L10pix typ-BK">El Buen Fin en línea (Comercio electrónico) </label>
 												<input type="checkbox" class="last marg-U5pix marg-R10pix" name="Enlinea" value="1" id="enlinea" {{if .Enlinea}}checked="{{.Enlinea}}"{{end}} />
 											</div>
 											<div id="muestraurl">
 												<div class="first marg-L6pix bg-Gry2 col-10" > 
-													<label class="col-8"> Sitio de internet de la oferta</label>
+													<label class="col-8 marg-L10pix "> Sitio de internet de la oferta</label>
 													<div class="formErrorContent" id="urlreq" onclick="$('#urlreq').hide()"> Obligatorio indicar enlace si participa en El Buen Fin en línea </div>
 													<input type="text" class="validate[optional,custom[url]] medium  last {{.ErrUrl}}" name="Url" value="{{.Url}}" id="url" onchange="/*javascript:$('#urlimg').attr('href', $('#url').val());*/ activateCancel();" />
 												</div>
 											</div>
 											<div class="col-10" id="sucursales">
-												<div class="first marg-L6pix col-10" id="listasuc" style="max-height:150px; overflow:auto;"> 
-													<div class="gridsubRow bg-Gry3"><label class="col-6 marg-L10pix">Seleccionar todas/ninguna</label><input name="todassuc" type="checkbox" class="last marg-U5pix marg-R10pix" id="todassuc"/>
+												<div class="first col-10" id="listasuc" style="max-height:150px; overflow:auto;"> 
+													<div class="gridsubRow bg-Gry3"><label class="col-5 marg-L10pix typ-BK">En sucursales</label><div class="col-2 last"><input name="todassuc" type="checkbox" class="last marg-U5pix marg-R10pix" id="todassuc"/><span class="Dsblock typ-BK" style="margin-top: 3px">(todas)</span></div>
 													</div>
 													<!-- relleno ajax -->
 												</div>

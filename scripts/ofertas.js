@@ -334,7 +334,7 @@ function fillsucursales(idoft, idemp) {
 	$.get("/r/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""})
 	.success(function(data) {
 		$.each(data, function(i,item){
-			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-5px\" id=\""+item.idsuc+"\"/></div>";
+			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-U5pix marg-R10pix\" id=\""+item.idsuc+"\"/></div>";
 			$('#listasuc').append(div);
 			if(item.idoft!="") {
 				$("#"+item.idsuc).attr('checked', true);
