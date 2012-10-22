@@ -7,6 +7,7 @@ import (
     "net/http"
     "model"
 	"strings"
+	"strconv"
     "fmt"
 )
 
@@ -22,7 +23,11 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-    q := datastore.NewQuery("Cta").Order("FechaHora")
+	var lote = 500
+	pagina,_ := strconv.Atoi(r.FormValue("pg"));
+
+
+    q := datastore.NewQuery("Cta").Order("FechaHora").Offset(pagina*lote).Limit(lote)
 	n, _ := q.Count(c)
     regdata := make([]model.Cta,0,n)
 

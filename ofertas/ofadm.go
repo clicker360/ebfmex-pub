@@ -256,6 +256,8 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 
 					// Se despacha la generación de diccionario de palabras
 					// Se agrega pcves a la descripción
+					//fmt.Fprintf(w,"http://movil.%s.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
+					//appengine.AppID(c), keyOferta.Encode(), ofertamod.Descripcion+" "+r.FormValue("pchain"), strconv.Itoa(ofertamod.IdCat))
 					_ = generatesearch(c, keyOferta, ofertamod.Descripcion+" "+r.FormValue("pchain"), ofertamod.IdCat)
 
 					fd = ofToForm(ofertamod)
@@ -371,8 +373,8 @@ func ofToForm(e model.Oferta) FormDataOf {
 func generatesearch(c appengine.Context, oftKey *datastore.Key, description string, idcat int) error {
 	client := urlfetch.Client(c)
 	descurl := fmt.Sprintf(
-	"http://movil.ebfmxorg.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
-	oftKey.Encode(), description, strconv.Itoa(idcat))
+	"http://movil.%s.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
+	appengine.AppID(c), oftKey.Encode(), description, strconv.Itoa(idcat))
 	_, err := client.Get(descurl)
 	if err != nil {
 		return err
