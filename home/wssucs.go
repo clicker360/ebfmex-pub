@@ -56,5 +56,6 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 		b = item.Value
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(b)
 }
