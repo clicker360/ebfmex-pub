@@ -85,13 +85,13 @@ $(document).ready(function(){
                         }
                         var urlOferta = imgurl;
                         var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
-			mtOft += '<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
+			mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
 			mtOft += '</a>'
                         var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +'">';
-			fbOft += '<img src="../imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
+			fbOft += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
 			fbOft += '</a>';
                         var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
-			twOft += '<img src="../imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />';
+			twOft += '<img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />';
 			twOft += '</a>';
                         $(".sucList").html('');
                         if(idEmp){
@@ -136,8 +136,7 @@ $(document).ready(function(){
             var categoria = $("select[name=catMenu]").attr("value");
             var estado = $("select[name=estadoMenu]").attr("value");
             var tipo = $("select[name=tipoMenu]").attr("value");
-            $.get("http://movil.ebfmex-pub.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
-		
+            $.get("http://movil.ebfmex-pub.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){		
 		var ofertas = JSON.parse(data);
                 $(".cargando").remove();
 		if(ofertas.length >= 1){
@@ -153,17 +152,17 @@ $(document).ready(function(){
 			addOferta += '</a>'
 			addOferta += '<div class="col-30PR first" style="">'
 			addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer/sharer.php?u=http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html">'
-			addOferta += '<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
+			addOferta += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-			addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + ofertas[i].Logo + '&p[title]= ' + ofertas[i].Oferta +'">'
-			addOferta += '<img src="../imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
+			addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://home.ebfmex-pub.appspot.com' + ofertas[i].Logo + '&p[title]= ' + ofertas[i].Oferta +'">'
+			addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '<div class="col-30PR first">'
 			addOferta += '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">'
-			addOferta += '<img src="../imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />'
+			addOferta += '<img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />'
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '</div>';
