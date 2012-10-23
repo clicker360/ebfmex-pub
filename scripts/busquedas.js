@@ -19,7 +19,8 @@ $(document).ready(function(){
 	if(queryVars.hasOwnProperty('tipoMenu')){
 		hasVars = true;
 		$("select[name=tipoMenu]").val(queryVars.tipoMenu);
-	}        
+	}
+	$(".cargando").show();
 	search();
 	$("#buscarOferta").click(function(){                
 		pagina = 0;    
@@ -27,8 +28,9 @@ $(document).ready(function(){
 		return false;
 	});
 	cargaOfertas = false;
+        inSearch = false;
 	$(document).scroll(function(){
-		if(cargaOfertas){
+		if(cargaOfertas && !inSearch){
 			if(($(document).scrollTop() + $(window).height()) >= ($(document).height() - 10)){
 				search();
 			}
@@ -42,12 +44,12 @@ $(document).ready(function(){
 				  return false;
 	});
 
-	$(".lighter").click(function() {
+	/*$(".lighter").click(function() {
 		$('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
 		$('#lightback').removeClass("hide"); 
 		$('#lightfront').removeClass("hide"); 
 				  return false;
-	});
+	});*/
 	});
 	function getVars() {
 	var delimiter = "?"; // using '#' here is great for AJAX apps.
@@ -68,37 +70,46 @@ $(document).ready(function(){
 	return false;
 	}
 	function lighterAjax(){
-	$(".lighter").click(function() {
-		$('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
-		$('#lightback').removeClass("hide"); 
-		$('#lightfront').removeClass("hide"); 
-	  return false;
-	});
+            $(".lighter").click(function() {
+                    var id = $(this).parent().attr('id');
+                    $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{id:id},function(data){
+                        var empresa = JSON.parse(data);
+                        console.log(empresa);
+                    })
+                    $('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
+                    $('#lightback').removeClass("hide");
+                    $('#lightfront').removeClass("hide");
+              return false;
+            });
 	}
 	function getcarrousel() {
 	$.get("/carr", "", function(response){
 		$('#logo1').html(response);
 	});
 	}
-	function search(){  
-	var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
-	var categoria = $("select[name=catMenu]").attr("value");
-	var estado = $("select[name=estadoMenu]").attr("value");
-	var tipo = $("select[name=tipoMenu]").attr("value");     
-	pagina ++;
-	$.get("http://movil.ebfmxorg.appspot.com/search",{ pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
-		console.log(pagina);
-		if(pagina == '1')
+	function search(){
+            pagina ++;
+            if(pagina == '1')
 		  $(".ofertCont").html('')
+            $(".ofertCont").append('<div class="cargando">Cargando...</div>');
+            inSearch = true;
+            $(".cargando").show();
+            var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
+            var categoria = $("select[name=catMenu]").attr("value");
+            var estado = $("select[name=estadoMenu]").attr("value");
+            var tipo = $("select[name=tipoMenu]").attr("value");
+            $.get("http://movil.ebfmxorg.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
+		console.log(pagina);		
 		var ofertas = JSON.parse(data);
+                $(".cargando").remove();
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
-			urlOferta = 'http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html';
-			addOferta = '<div class="oferta bgWh">'
+			urlOferta = 'http://movil.ebfmex-pub.appspot.com/busqueda-de-ofertas.html';
+			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
+			addOferta += '<img src="http://pruebas.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'
@@ -118,13 +129,17 @@ $(document).ready(function(){
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '</div>';
-			$(".ofertCont").append(addOferta);                        
+			$(".ofertCont").append(addOferta);
 			lighterAjax();
 			//console.log(i + "_" + j + ': ' + ofertas[i][j] );
 		  }    
 		}else{
 			cargaOfertas = false;
+                        $(".ofertCont").append('No hay mas ofertas para esta busqueda');
 		}
+        $(".cargando").remove();
+        inSearch = false;
+
 	});
 }
 
