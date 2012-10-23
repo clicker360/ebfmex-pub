@@ -207,20 +207,6 @@ $(document).ready(function() {
 	});
 
 	/*
-	 * Se actualiza el motor de búsqueda con la descripción (Se incluyen las palabras clave)
-	 * Añadir palabras clave a descripción
-	$("#descripcion").change(function(e) {
-		var pcves = $("#unpickpcve").find("a");
-		var chain = ""; var sep = ""; var enlinea = false;
-		pcves.each(function(ii, obj) { chain += sep+$(this).text(); sep = " "; });
-		if(chain=="") { chain=chain+" "+$("#descripcion").val(); }
-		if($("#enlinea").is(':checked')) { enlinea = true; }
-		$.get("http://movil.ebfmex-pub.appspot.com/backend/generatesearch", { kind: "Oferta", field: "Descripcion", value: ""+$("#descripcion").val()+"", id: ""+idoft+"", enlinea: ""+enlinea+"" }, function(resp) {
-		}, "json");
-	});
-	 */
-
-	/*
 	 * Selecciona todas las sucursales
 	 */
 	$("#todassuc").click(function(e) {

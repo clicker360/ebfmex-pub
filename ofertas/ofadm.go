@@ -12,7 +12,6 @@ import (
 	"appengine/urlfetch"
 	"html/template"
 	"net/http"
-	"sortutil"
 	"strings"
 	"strconv"
 	"net/url"
@@ -72,7 +71,7 @@ func OfShowList(w http.ResponseWriter, r *http.Request) {
 		tc["Sess"] = s
 		if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
 			tc["Empresa"] = empresa
-			tc["Oferta"] = listOf(c, empresa.IdEmp)
+			tc["Oferta"] = model.ListOf(c, empresa.IdEmp)
 		}
 		ofadmTpl.ExecuteTemplate(w, "ofertas", tc)
 	} else {
@@ -80,6 +79,8 @@ func OfShowList(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ * se pasa eso a model/ofertas.go
 func listOf(c appengine.Context, IdEmp string) *[]model.Oferta {
 	q := datastore.NewQuery("Oferta").Filter("IdEmp =", IdEmp).Limit(500)
 	n, _ := q.Count(c)
@@ -90,6 +91,7 @@ func listOf(c appengine.Context, IdEmp string) *[]model.Oferta {
 	sortutil.AscByField(ofertas, "Oferta")
 	return &ofertas
 }
+*/
 
 func listCat(c appengine.Context, IdCat int) *[]model.Categoria {
 	q := datastore.NewQuery("Categoria")
@@ -193,7 +195,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			//ofertamod.BlobKey = fd.BlobKey
 			ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
 
-			oferta, keyOferta := model.GetOferta(c, ofertamod.IdOft)
+			oferta, _ := model.GetOferta(c, ofertamod.IdOft)
 			if oferta.IdOft != "none" {
 				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
 					tc["Empresa"] = empresa
@@ -258,7 +260,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					// Se agrega pcves a la descripción
 					//fmt.Fprintf(w,"http://movil.%s.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
 					//appengine.AppID(c), keyOferta.Encode(), ofertamod.Descripcion+" "+r.FormValue("pchain"), strconv.Itoa(ofertamod.IdCat))
-					_ = generatesearch(c, keyOferta, ofertamod.Descripcion+" "+r.FormValue("pchain"), ofertamod.IdCat)
+					//_ = generatesearch(c, keyOferta, ofertamod.Descripcion+" "+r.FormValue("pchain"), ofertamod.IdCat)
 
 					fd = ofToForm(ofertamod)
 					fd.Ackn = "Ok";

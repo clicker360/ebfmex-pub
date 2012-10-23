@@ -4,6 +4,7 @@ import (
     "appengine"
     "appengine/datastore"
 	"appengine/blobstore"
+	"sortutil"
 	"time"
 )
 type Oferta struct {
@@ -424,6 +425,15 @@ func (r *Oferta) DelOfertaEstado(c appengine.Context) error {
 	return nil
 }
 
-
+func ListOf(c appengine.Context, IdEmp string) *[]Oferta {
+	q := datastore.NewQuery("Oferta").Filter("IdEmp =", IdEmp).Limit(500)
+	n, _ := q.Count(c)
+	ofertas := make([]Oferta, 0, n)
+	if _, err := q.GetAll(c, &ofertas); err != nil {
+		return nil
+	}
+	sortutil.AscByField(ofertas, "Oferta")
+	return &ofertas
+}
 
 
