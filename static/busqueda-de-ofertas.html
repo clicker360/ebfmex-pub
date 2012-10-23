@@ -59,45 +59,32 @@
                 <!--logo de la empresa ancho maximo 175px alto maximo 80 px--> 
                 <img src="../imgs/ofrtTemp/logo-temporal.jpg" width="134" height="50" alt="logo de la empresa" class="first" />
               </div>
-              <div class="col-6 last padd-10px height80px lineLeft">
-                <h4 class="alineRigth">El Palacio de Hierro</h4>
+              <div class="col-6 last padd-10px height80px lineLeft" id="nomEmp">
+                <h4 class="alineRigth"></h4>
               </div>
-              <div class="col-12 padd-10px marg-T10px lineTop marg-L10px">
-                <h3 class=" typ-Pr">Titulo de la oferta en 55 caractereres completos va aquí</h3>
+              <div class="col-12 padd-10px marg-T10px lineTop marg-L10px" id="titOft">
+                <h3 class=" typ-Pr"></h3>
               </div>
-              <div class=" col-95PR first padd-10px marg-T5px lineTop marg-L10px">
-                <p >"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."        </p>
-               <div class="col-7 marg-T10px">
+              <div class=" col-95PR first padd-10px marg-T5px lineTop marg-L10px" id="desOft">
+                  <p></p>
+                  <div class="col-7 marg-T10px">
 
 
 	
-			<div class="col-2">
-			<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer/sharer.php?u=http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html">
-			<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Compartir en Facebook" />
-			</a>
-			</div>
-			<div class="col-3 marg-T5px">
-			<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + ofertas[i].Logo + '&p[title]= ' + ofertas[i].Oferta +'">
-			<img src="../imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />
-			</a>
-			</div>
-			<div class="col-2">
-			<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">
-			<img src="../imgs/ofrtTemp/twShare.jpg" alt="Compartir en Facebook" />
-			</a>
-			</div>
+			<div class="col-2" id="mtOft"></div>
+			<div class="col-3 marg-T5px" id="fbOft"></div>
+			<div class="col-2" id="twOft"></div>
 
                </div>
                <div class="last"> <a href="#null" class="button last marg-T10px"> Otras ofertas de esta empresa</a></div>
                 
-                <div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px">
-                  <h4 class=" typ-Wh"> El Buen Fin en línea</h4>
-                </div>
-                <a href="#null" class="first" >http://www.palaciodehierro.com/la-oferta-la-semana-en-palacio-de-hierro</a>
+               <div id="enLinea">
+                
+               </div>
               </div>
             </div>
             <!--Columna Derecha-->
-            <div class="col-11 marg-L10px marg-T10px"> 
+            <div class="col-11 marg-L10px marg-T10px" id="imgOft">
               <!--esta imagen tiene como ancho 430px pero su alto puede variar--> 
               <img src="../imgs/ofrtTemp/imgOfert.jpg" width="430" height="430" />
               <div class="col-11 bgRd marg-B10px marg-T10px">
@@ -105,7 +92,7 @@
               </div>
               <div class="col-11 marg-B10px marg-T10px" style="max-height:160px; overflow-y:auto; overflow-x:hidden;">
                 <ul class="sucList">
-                  <li><a href="#null">Polanco</a></li>
+                  
                 </ul>
               </div>
             </div>

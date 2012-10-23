@@ -73,12 +73,50 @@ $(document).ready(function(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
                     $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{id:id},function(data){
-                        var empresa = JSON.parse(data);
-                        console.log(empresa);
-                    })
-                    $('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
-                    $('#lightback').removeClass("hide");
-                    $('#lightfront').removeClass("hide");
+                        console.log(data);
+                        var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
+                        var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
+                        var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
+                        var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
+                        var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
+                        var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
+                        if(enLinea){
+                            $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class=" typ-Wh"> El Buen Fin en línea</h4></div><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a>')
+                        }
+                        var urlOferta = imgurl;
+                        var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
+			mtOft += '<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
+			mtOft += '</a>'
+                        var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +'">';
+			fbOft += '<img src="../imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
+			fbOft += '</a>';
+                        var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
+			twOft += '<img src="../imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />';
+			twOft += '</a>';
+                        $(".sucList").html('');
+                        if(idEmp){
+                            var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+idEmp;
+                            $(".logoOferta img").attr('src',imgEmp);
+                            $.get('http://home.ebfmex-pub.appspot.com/wssucs',{id:idEmp},function(sucursales){
+                                if(sucursales.length >= 1){
+                                    for(var i in sucursales){
+                                        $(".sucList").append('<li><a href="#null">'+sucursales[i].sucursal+'</a></li>')
+                                        console.log(sucursales[i]);
+                                    }
+                                }
+                            });
+                        }
+                        $("#imgOft img").attr('src', imgurl);
+                        $("#titOft h3").html(titOft);
+                        $("#desOft p").html(desOft);
+                        $("#nomEmp h4").html(nomEmp);
+                        $("#mtOft").html(mtOft);
+                        $("#fbOft").html(fbOft);
+                        $("#twOft").html(twOft);
+                        $('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
+                        $('#lightback').removeClass("hide");
+                        $('#lightfront').removeClass("hide");
+                    });
               return false;
             });
 	}
@@ -98,24 +136,24 @@ $(document).ready(function(){
             var categoria = $("select[name=catMenu]").attr("value");
             var estado = $("select[name=estadoMenu]").attr("value");
             var tipo = $("select[name=tipoMenu]").attr("value");
-            $.get("http://movil.ebfmxorg.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
-		console.log(pagina);		
+            $.get("http://movil.ebfmex-pub.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
+		
 		var ofertas = JSON.parse(data);
                 $(".cargando").remove();
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
-			urlOferta = 'http://movil.ebfmex-pub.appspot.com/busqueda-de-ofertas.html';
+			urlOferta = 'http://home.ebfmex-pub.appspot.com/busqueda-de-ofertas.html';
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="http://pruebas.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
+			addOferta += '<img src="http://home.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'
 			addOferta += '<div class="col-30PR first" style="">'
 			addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer/sharer.php?u=http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html">'
-			addOferta += '<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Compartir en Facebook" />'
+			addOferta += '<img src="../imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
@@ -125,14 +163,14 @@ $(document).ready(function(){
 			addOferta += '</div>'
 			addOferta += '<div class="col-30PR first">'
 			addOferta += '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">'
-			addOferta += '<img src="../imgs/ofrtTemp/twShare.jpg" alt="Compartir en Facebook" />'
+			addOferta += '<img src="../imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />'
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '</div>';
 			$(".ofertCont").append(addOferta);
-			lighterAjax();
 			//console.log(i + "_" + j + ': ' + ofertas[i][j] );
-		  }    
+		  }
+		lighterAjax();
 		}else{
 			cargaOfertas = false;
                         $(".ofertCont").append('No hay mas ofertas para esta busqueda');
