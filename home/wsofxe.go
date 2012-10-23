@@ -65,7 +65,11 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 		if(offset <= len(*emofs)-batch) {
 			b, _ = json.Marshal(wsofs[offset:offset+batch])
 		} else {
-			b, _ = json.Marshal(wsofs[offset:])
+			if len(wsofs) > offset {
+				b, _ = json.Marshal(wsofs[offset:])
+			} else {
+				b,_ = json.Marshal(make([]wsoferta, 0, batch))
+			}
 		}
 	} else {
 		//c.Infof("memcache retrieve sucs_idemp : %v", r.FormValue("id"))
@@ -77,7 +81,11 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 		if(offset <= len(wsbatch)-batch) {
 			b, _ = json.Marshal(wsbatch[offset:offset+batch])
 		} else {
-			b, _ = json.Marshal(wsbatch[offset:])
+			if len(wsbatch) > offset {
+				b, _ = json.Marshal(wsbatch[offset:])
+			} else {
+				b,_ = json.Marshal(make([]wsoferta, 0, batch))
+			}
 		}
 	}
 	w.Header().Set("Content-Type", "application/json")
