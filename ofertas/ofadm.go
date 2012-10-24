@@ -91,7 +91,6 @@ func listOf(c appengine.Context, IdEmp string) *[]model.Oferta {
 	sortutil.AscByField(ofertas, "Oferta")
 	return &ofertas
 }
-*/
 
 func listCat(c appengine.Context, IdCat int) *[]model.Categoria {
 	q := datastore.NewQuery("Categoria")
@@ -107,6 +106,7 @@ func listCat(c appengine.Context, IdCat int) *[]model.Categoria {
 	}
 	return &categorias
 }
+*/
 
 func OfShow(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -126,7 +126,7 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 			fd.IdEmp = empresa.IdEmp
 			oferta.Empresa = empresa.Nombre
 		}
-		fd.Categorias = listCat(c, oferta.IdCat);
+		fd.Categorias = model.ListCat(c, oferta.IdCat);
 
 		/*
 		 * Se crea el form para el upload del blob
@@ -270,7 +270,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		fd.Categorias = listCat(c, ofertamod.IdCat);
+		fd.Categorias = model.ListCat(c, ofertamod.IdCat);
 
 		/*
 		 * Se crea el form para el upload del blob
@@ -347,7 +347,7 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 			ef = true
 		}
 
-		fd.Categorias = listCat(c, ic);
+		fd.Categorias = model.ListCat(c, ic);
 		if ef {
 			return fd, false
 		}
