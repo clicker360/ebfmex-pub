@@ -194,13 +194,11 @@ function showMap(lat, lng, div){
 function sucMap(lat, lng, div){
     var zoom = 17;
     var marker = false;
-	/*var lat = $('#lat').val();
-	var lng = $('#lng').val();
-	if(lat == '') {
+	if(lat == '0') {
 		lat = 22.770856;
 		lng = -102.583243;
 		zoom = 4;
-	}*/
+	}
 	var center = new google.maps.LatLng(lat,lng);
 	var options = {
 		zoom: zoom,
