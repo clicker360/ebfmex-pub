@@ -21,7 +21,6 @@ $(document).ready(function(){
         }
     }
     id = (posA) ? id.substring(0,posA) : id;
-    console.log(id);
     if(!id)
         window.location.href = '/';
     getEmpresa(id);
@@ -45,7 +44,6 @@ function lighterAjax(){
         $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{
             id:id
         },function(data){
-            console.log(data);
             var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
@@ -74,8 +72,7 @@ function lighterAjax(){
                 },function(sucursales){
                     if(sucursales.length >= 1){
                         for(var i in sucursales){
-                            $(".sucList").append('<li><a href="#null">'+sucursales[i].sucursal+'</a></li>')
-                            console.log(sucursales[i]);
+                            $(".sucList").append('<li><a href="#null">'+sucursales[i].sucursal+'</a></li>');
                         }
                     }
                 });
