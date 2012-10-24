@@ -104,5 +104,9 @@ handlers:
   upload: static/index.html
 #  expiration: "1h"
 
+- url: /backend/.*
+  script: _go_app
+  login: admin
+
 - url: /.*
   script: _go_app
