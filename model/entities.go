@@ -209,7 +209,7 @@ func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 		OJO:
 		Agregar consulta del random antes de crear entity
 	*/
-	e.IdEmp = RandId(12)
+	e.IdEmp = RandId(14)
     _, err := datastore.Put(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
 	if err != nil {
 		return nil, err
