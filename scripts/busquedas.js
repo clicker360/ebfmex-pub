@@ -184,12 +184,12 @@ $(document).ready(function(){
 	});
 }
 function showMap(lat, lng, div){
-    if(lat != '0' && lng != '0'){
+   // if(lat != '0' && lng != '0'){
         if($("#mapCont").is(":visible"))
             $('#mapCont').slideToggle('slow', function() {});
         sucMap(lat , lng , div);
         $('#mapCont').slideToggle('slow', function() {});
-    }
+    //}
 }
 function sucMap(lat, lng, div){
     var zoom = 17;
