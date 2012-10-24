@@ -15,16 +15,24 @@ func init() {
 func fetchUpdateSearch(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	client := urlfetch.Client(c)
-	var minutes int
-	minutes, _ = strconv.Atoi(r.FormValue("minutes"))
-	if minutes < 30 {
-		minutes = 30
+	/* 
+	 * En lo que encontramos una manera digna de ejecutar el cron, se
+	 * podría meter una llave en el memcaché y crearla en el administrador
+	 * O bien en el datastore.
+	 */
+	var m int
+	m, _ = strconv.Atoi(r.FormValue("m"))
+	if m < 30 {
+		m = 30
 	}
-	descurl := fmt.Sprintf( "http://movil.%s.appspot.com/backend/updatesearch?minutes=%d", appengine.AppID(c), minutes)
-	_, err := client.Get(descurl)
-	if err != nil {
-		c.Errorf("updatesearch urlfetch client: %v", err)
+	if r.FormValue("c") == "ZWJmbWV4LXB1YnIeCxISX0FoQWRtaW5Yc3JmVG9rZW5fIgZfWFNSRl8M" {
+		descurl := fmt.Sprintf( "http://movil.%s.appspot.com/backend/updatesearch?minutes=%d", appengine.AppID(c), m)
+		//descurl := fmt.Sprintf("http://clicker360.com")
+		_, err := client.Get(descurl)
+		if err != nil {
+			c.Errorf("updatesearch urlfetch %v client: %v", appengine.AppID(c), err)
+		}
+		c.Infof("updatesearch urlfetch client %v minutes=%d", appengine.AppID(c), m)
 	}
-	c.Errorf("updatesearch urlfetch client minutes=%d", minutes)
-	return nil
+	return
 }

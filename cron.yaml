@@ -5,5 +5,5 @@
 
 cron:
 - description: Agregar modificaciones de ofertar al motor de busquedas
-  url: /backend/updatesearch
+  url: /backend/updatesearch?m=40&c=ZWJmbWV4LXB1YnIeCxISX0FoQWRtaW5Yc3JmVG9rZW5fIgZfWFNSRl8M
   schedule: every 30 minutes synchronized
