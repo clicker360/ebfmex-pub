@@ -247,10 +247,29 @@ func DelOferta(c appengine.Context, id string) error {
 		if err := DelOfertaPalabras(c, id); err != nil {
 			return err
 		}
+		if err := DelOfertaSearchData(c, key); err != nil {
+			return err
+		}
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
 		_ = PutChangeControl(c, e.IdOft, "Oferta", "B")
+	}
+	return nil
+}
+
+/*
+	Método para borrar todas las palabras de SearchData
+*/
+func DelOfertaSearchData(c appengine.Context, key *datastore.Key) error {
+	q := datastore.NewQuery("SearchData").Filter("Sid =", key.Encode()).KeysOnly()
+	n, _ := q.Count(c)
+	sd := make([]*datastore.Key, 0, n)
+	if _, err := q.GetAll(c, &sd); err != nil {
+		return nil
+	}
+	if err := datastore.DeleteMulti(c, sd); err != nil {
+		return err
 	}
 	return nil
 }
