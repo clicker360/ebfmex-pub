@@ -4,12 +4,7 @@ $(document).ready(function(){
 		$('#lightback').addClass("hide");
 		$('#lightfront').addClass("hide");
                 return false;
-	});       
-
-
-	$('#sucList li').click(function() {
- 	 $('#mapCont').slideToggle('slow', function() {});
-	});
+	});    
     var queryVars = getVars();
     id = (queryVars.hasOwnProperty('id')) ? queryVars.id : false;
     hasA = false
@@ -35,8 +30,7 @@ $(document).ready(function(){
                 getOfertas(id);
             }
         }
-    })
-        
+    });
 });
 function lighterAjax(){
     $(".lighter").click(function() {
@@ -53,7 +47,7 @@ function lighterAjax(){
             if(enLinea){
                 $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class=" typ-Wh"> El Buen Fin en línea</h4></div><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a>')
             }
-            var urlOferta = imgurl;
+            var urlOferta = 'http://localhost:8080/detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
             mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
             mtOft += '</a>'
@@ -63,7 +57,7 @@ function lighterAjax(){
             var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
             twOft += '<img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />';
             twOft += '</a>';
-            $(".sucList").html('');
+            $("#sucList").html('');
             if(idEmp){
                 var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+idEmp;
                 $(".logoOferta img").attr('src',imgEmp);
@@ -72,13 +66,15 @@ function lighterAjax(){
                 },function(sucursales){
                     if(sucursales.length >= 1){
                         for(var i in sucursales){
-                            $(".sucList").append('<li><a href="#null">'+sucursales[i].sucursal+'</a></li>');
+                            $("#sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\',\'mapCont\'); return false;">'+sucursales[i].sucursal+'</a></li>');
                         }
                     }
+                    //showMap();
                 });
             }
+            //$("#divCloseMap").html('<span class="col-9 Dsblock alineCenter marg-L20px" id="closeMap">CERRAR MAPA [X]</span>')
             $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
-            $("#imgOft img").attr('src', imgurl);
+            $("#imgOft img.img").attr('src', imgurl);
             $("#titOft h3").html(titOft);
             $("#desOft p").html(desOft);
             $("#nomEmp h4").html(nomEmp);
@@ -113,6 +109,7 @@ function getVars() {
 }
 function getEmpresa(id){
     $.get('http://home.ebfmex-pub.appspot.com/wsmicrositio',{id:id},function(empresa){
+        var urlEmpresa = 'http://localhost:8080/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+empresa.idemp;
@@ -120,16 +117,20 @@ function getEmpresa(id){
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);
         (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
+        $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El buen fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
+        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmp+'&p[title]= ' + empresa.name +'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
+        $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
     })
 }
 function getSucursales(id){
-    $(".sucList").html('');
+    $("#sucListM").html('');
     $.get('http://home.ebfmex-pub.appspot.com/wssucs',{id:id},function(sucursales){
         if(sucursales.length >= 1){
             for(var i in sucursales){
-                $(".sucList").append('<li><a href="#null">'+sucursales[i].sucursal+'</a></li>')
+                $("#sucListM").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'mapM\',\'mapContM\'); return false;">'+sucursales[i].sucursal+'</a></li>')
             }
         }
+        //showMapM();
     })
 }
 function getOfertas(id){
@@ -143,16 +144,16 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
-                urlOferta = 'http://home.ebfmex-pub.appspot.com/busqueda-de-ofertas.html';
+                var urlOferta = 'http://localhost:8080/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
-                addOferta += '<a href="#" class="lighter">'
+                addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
                 addOferta += '<img src="http://home.ebfmex-pub.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" height="218" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
                 addOferta += '<div class="col-30PR first" style="">'
-                addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer/sharer.php?u=http://pruebas.ebfmxorg.appspot.com/busqueda-de-ofertas.html">'
+                addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
                 addOferta += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
@@ -177,4 +178,47 @@ function getOfertas(id){
         $(".cargando").remove();
         inSearch = false;
     })
+}
+function showMap(lat, lng, div, divCont){
+    //if(lat != '0' && lng != '0'){
+        if($("#"+divCont).is(":visible"))
+            $("#"+divCont).slideToggle('slow', function() {});
+        sucMap(lat , lng , div);
+        $("#"+divCont).slideToggle('slow', function() {});
+    //}
+}
+function sucMap(lat, lng, div){
+    var zoom = 17;
+    var marker = false;
+	/*var lat = $('#lat').val();
+	var lng = $('#lng').val();
+	if(lat == '') {
+		lat = 22.770856;
+		lng = -102.583243;
+		zoom = 4;
+	}*/
+	var center = new google.maps.LatLng(lat,lng);
+	var options = {
+		zoom: zoom,
+		center: center,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		streetViewControl: false
+	};
+	map = new google.maps.Map(document.getElementById(div), options);
+	if (!marker) {
+		// Creating a new marker and adding it to the map
+		marker = new google.maps.Marker({
+			map: map,
+			draggable: true
+		});
+		marker.setPosition(center);
+	}
+	google.maps.event.addListener(marker, 'dragend', function() {
+		var tmppos = ''+this.getPosition();
+		var latlng = tmppos.split(',');
+		lat = latlng[0].replace('(','');
+		lng = latlng[1].replace(')','')
+		map.setCenter(this.getPosition());
+	});
+        // Creating a new map
 }
