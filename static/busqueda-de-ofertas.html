@@ -15,7 +15,7 @@
   <link href="../css/OrigamiRev.css" rel="stylesheet" type="text/css" />
   <link href="../css/HomelbuenfinSkin.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
-  <script type="text/javascript" src="scripts/busquedas.js" charset="utf-8"></script>
+  <script type="text/javascript" src="../scripts/busquedas.js" charset="utf-8"></script>
   <script type="text/javascript">
 
     var _gaq = _gaq || [];
@@ -68,9 +68,6 @@
               <div class=" col-95PR first padd-10px marg-T5px lineTop marg-L10px" id="desOft">
                   <p></p>
                   <div class="col-7 marg-T10px">
-
-
-	
 			<div class="col-2" id="mtOft"></div>
 			<div class="col-3 marg-T5px" id="fbOft"></div>
 			<div class="col-2" id="twOft"></div>
@@ -131,7 +128,7 @@
                   <h3 class="typ-Wh">Encuentra las ofertas de el fin de semana mas barato del año</h3>
                 <form name="buscar" id="buscar">
                   <input name="word" type="text" class="searchform2" value="¿Qué buscas?" size="18" onfocus="if($(this).val() == '¿Qué buscas?'){ $(this).val('') }" onblur="if($(this).val() == ''){ $(this).val('¿Qué buscas?') }"/>
-                  <div class="selectCont2 marg-L20px">
+                  <div class="selectCont2 marg-L25px">
                     <select name="catMenu" id="catMenu"  class="searchform2 ">
                       <option value="" selected="selected">Categoria</option>
                       <option value="1" >Abarrotes</option>
@@ -164,7 +161,7 @@
                       <option value="28" >Viajes</option>
                     </select>
                   </div>
-                  <div class="selectCont2 marg-L20px">
+                  <div class="selectCont2 marg-L25px">
                     <select name="estadoMenu" id="estadoMenu"  class="searchform2">
                       <option value="" selected="selected">Estado</option>
                       <option value="01" >Aguascalientes</option>
@@ -201,15 +198,16 @@
                       <option value="32" >Zacatecas</option>
                     </select>
                   </div>
-                  <div class="selectCont2 marg-L20px" >
+                  <div class="selectCont2 marg-L25px" >
                     <select name="tipoMenu" id="tipoMenu"  class="searchform2">
                       <option value="3" selected="selected">tipo de oferta</option>
                       <option value="1">compra en línea</option>
                       <option value="2">compra en piso</option>
                     </select>
                   </div>
+                     <a href="#null" class="button marg-L20px" id="buscarOferta" >BUSCAR &raquo;</a> 
                 </form>
-                <a href="#null" class="button marg-L20px" id="buscarOferta" >BUSCAR &raquo;</a> </div>
+    </div>
             </div>
             <div class="ofertCont marg-T10px">
                         <!-- Despliegue de Ofertas -->
