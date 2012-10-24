@@ -4,6 +4,8 @@ import (
     "appengine"
     "appengine/datastore"
 	"appengine/blobstore"
+	"appengine/memcache"
+	"encoding/json"
 	"sortutil"
 	"time"
 )
@@ -247,10 +249,29 @@ func DelOferta(c appengine.Context, id string) error {
 		if err := DelOfertaPalabras(c, id); err != nil {
 			return err
 		}
+		if err := DelOfertaSearchData(c, key); err != nil {
+			return err
+		}
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
 		_ = PutChangeControl(c, e.IdOft, "Oferta", "B")
+	}
+	return nil
+}
+
+/*
+	Método para borrar todas las palabras de SearchData
+*/
+func DelOfertaSearchData(c appengine.Context, key *datastore.Key) error {
+	q := datastore.NewQuery("SearchData").Filter("Sid =", key.Encode()).KeysOnly()
+	n, _ := q.Count(c)
+	sd := make([]*datastore.Key, 0, n)
+	if _, err := q.GetAll(c, &sd); err != nil {
+		return nil
+	}
+	if err := datastore.DeleteMulti(c, sd); err != nil {
+		return err
 	}
 	return nil
 }
@@ -436,4 +457,33 @@ func ListOf(c appengine.Context, IdEmp string) *[]Oferta {
 	return &ofertas
 }
 
-
+func ListCat(c appengine.Context, IdCat int) *[]Categoria {
+	var categorias []Categoria
+	if item, err := memcache.Get(c, "categorias"); err == memcache.ErrCacheMiss {
+		q := datastore.NewQuery("Categoria")
+		//n, _ := q.Count(c)
+		//cats := make([]Categoria, 0, n)
+		if _, err := q.GetAll(c, &categorias); err != nil {
+			return nil
+		}
+		b, _ := json.Marshal(categorias)
+		item := &memcache.Item{
+			Key:   "categorias",
+			Value: b,
+		}
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			c.Errorf("memcache.Add Categoria : %v", err)
+		}
+	} else {
+		c.Infof("Memcache activo: %v", item.Key)
+		if err := json.Unmarshal(item.Value, &categorias); err != nil {
+			c.Errorf("Memcache Unmarchalling item: %v", err)
+		}
+	}
+	for i, _ := range categorias {
+		if(IdCat == categorias[i].IdCat) {
+			categorias[i].Selected = `selected`
+		}
+	}
+	return &categorias
+}

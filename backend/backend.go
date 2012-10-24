@@ -1,4 +1,4 @@
-package site
+package backend
 
 import (
     "appengine"

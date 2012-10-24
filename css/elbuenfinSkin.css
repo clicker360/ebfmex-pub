@@ -146,11 +146,6 @@ a.btnInicio:hover{
 .bgt-Sec{
 	background-image: url(../imgs/fondo_bg.png);
 }
-.bgt-BK-TR-80pr{
-	background-image: url(../imgs2/Blk80pr.png);
-}
-.bgt-Wh-TR-80pr{background-image: url(../imgs2/WH80pr.png);}
-.bgt-Rd-TR-80pr{background-image: url(../imgs2/red1px.png);}
 .bg-form{
 	background-attachment: fixed;
 	background-image: url(../gfx/fondoReg.jpg);

@@ -1,5 +1,5 @@
-application: ebfmxorg
-version: pruebas
+application: ebfmex-pub
+version: home
 runtime: go
 api_version: go1
 
@@ -103,6 +103,10 @@ handlers:
   static_files: static/index.html
   upload: static/index.html
 #  expiration: "1h"
+
+- url: /backend/.*
+  script: _go_app
+  login: admin
 
 - url: /.*
   script: _go_app
