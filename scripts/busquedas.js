@@ -20,7 +20,6 @@ $(document).ready(function(){
 		hasVars = true;
 		$("select[name=tipoMenu]").val(queryVars.tipoMenu);
 	}
-	$(".cargando").show();
 	search();
 	$("#buscarOferta").click(function(){                
 		pagina = 0;    
@@ -106,6 +105,7 @@ $(document).ready(function(){
                                 }
                             });
                         }
+                        $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
                         $("#imgOft img").attr('src', imgurl);
                         $("#titOft h3").html(titOft);
                         $("#desOft p").html(desOft);
@@ -129,9 +129,8 @@ $(document).ready(function(){
             pagina ++;
             if(pagina == '1')
 		  $(".ofertCont").html('')
-            $(".ofertCont").append('<div class="cargando">Cargando...</div>');
+            $(".ofertCont").append('<div class="cargando"><h4 style="float:left; width:100%; text-align:center;">Cargando...</h4></div>');
             inSearch = true;
-            $(".cargando").show();
             var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
             var categoria = $("select[name=catMenu]").attr("value");
             var estado = $("select[name=estadoMenu]").attr("value");
@@ -172,7 +171,7 @@ $(document).ready(function(){
 		lighterAjax();
 		}else{
 			cargaOfertas = false;
-                        $(".ofertCont").append('No hay mas ofertas para esta busqueda');
+                        $(".ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay mas ofertas para esta búsqueda.</h4>');
 		}
         $(".cargando").remove();
         inSearch = false;
