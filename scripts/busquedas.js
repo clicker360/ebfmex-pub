@@ -71,9 +71,9 @@ $(document).ready(function(){
 	function lighterAjax(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
-                    $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{id:id},function(data){
+                    $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{id:id},function(data){
                         console.log(data);
-                        var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
+                        var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://pruebas.ebfmxorg.appspot.com/ofimg?id='+data.imgurl : '';
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
                         var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -94,9 +94,9 @@ $(document).ready(function(){
 			twOft += '</a>';
                         $(".sucList").html('');
                         if(idEmp){
-                            var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+idEmp;
+                            var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+idEmp;
                             $(".logoOferta img").attr('src',imgEmp);
-                            $.get('http://home.ebfmex-pub.appspot.com/wssucs',{id:idEmp},function(sucursales){
+                            $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:idEmp},function(sucursales){
                                 if(sucursales.length >= 1){
                                     for(var i in sucursales){
                                         $(".sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\'); return false;">'+sucursales[i].sucursal+'</a></li>')
@@ -140,7 +140,7 @@ $(document).ready(function(){
             var categoria = $("select[name=catMenu]").attr("value");
             var estado = $("select[name=estadoMenu]").attr("value");
             var tipo = $("select[name=tipoMenu]").attr("value");
-            $.get("http://movil.ebfmex-pub.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){		
+            $.get("http://movil.ebfmxorg.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){		
 		var ofertas = JSON.parse(data);
                 $(".cargando").remove();
 		if(ofertas.length >= 1){
@@ -150,7 +150,7 @@ $(document).ready(function(){
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="http://home.ebfmex-pub.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
+			addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'
@@ -160,7 +160,7 @@ $(document).ready(function(){
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-			addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://home.ebfmex-pub.appspot.com' + ofertas[i].Logo + '&p[title]= ' + ofertas[i].Oferta +'">'
+			addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com' + ofertas[i].Logo + '&p[title]= ' + ofertas[i].Oferta +'">'
 			addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
 			addOferta += '</a>'
 			addOferta += '</div>'

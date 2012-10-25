@@ -35,10 +35,10 @@ $(document).ready(function(){
 function lighterAjax(){
     $(".lighter").click(function() {
         var id = $(this).parent().attr('id');
-        $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{
+        $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{
             id:id
         },function(data){
-            var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
+            var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://pruebas.ebfmxorg.appspot.com/ofimg?id='+data.imgurl : '';
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
             var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -59,9 +59,9 @@ function lighterAjax(){
             twOft += '</a>';
             $("#sucList").html('');
             if(idEmp){
-                var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+idEmp;
+                var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+idEmp;
                 $(".logoOferta img").attr('src',imgEmp);
-                $.get('http://home.ebfmex-pub.appspot.com/wssucs',{
+                $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{
                     id:idEmp
                 },function(sucursales){
                     if(sucursales.length >= 1){
@@ -108,11 +108,11 @@ function getVars() {
     return false;
 }
 function getEmpresa(id){
-    $.get('http://home.ebfmex-pub.appspot.com/wsmicrositio',{id:id},function(empresa){
+    $.get('http://pruebas.ebfmxorg.appspot.com/wsmicrositio',{id:id},function(empresa){
         var urlEmpresa = 'http://localhost:8080/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
-        var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+empresa.idemp;
+        var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);
@@ -124,7 +124,7 @@ function getEmpresa(id){
 }
 function getSucursales(id){
     $("#sucListM").html('');
-    $.get('http://home.ebfmex-pub.appspot.com/wssucs',{id:id},function(sucursales){
+    $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:id},function(sucursales){
         if(sucursales.length >= 1){
             for(var i in sucursales){
                 $("#sucListM").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'mapM\',\'mapContM\'); return false;">'+sucursales[i].sucursal+'</a></li>')
@@ -139,7 +139,7 @@ function getOfertas(id){
         $("#ofertCont").html('')
     $("#ofertCont").append('<div class="cargando"><h4 style="float:left; width:100%; text-align:center;" >Cargando...</h4></div>');
     inSearch = true;
-    $.get("http://home.ebfmex-pub.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
+    $.get("http://pruebas.ebfmxorg.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
         console.log(pagina);
         if(ofertas.length >= 1){
             cargaOfertas = true;
@@ -148,7 +148,7 @@ function getOfertas(id){
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
-                addOferta += '<img src="http://home.ebfmex-pub.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" height="218" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" height="218" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
@@ -158,7 +158,7 @@ function getOfertas(id){
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://home.ebfmex-pub.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'">'
+                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'">'
                 addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
