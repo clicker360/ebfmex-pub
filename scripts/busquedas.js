@@ -83,7 +83,7 @@ $(document).ready(function(){
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
                         console.log(data);
-                        var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
+                        var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://prueba.ebfmxorg.appspot.com/ofimg?id='+data.imgurl : '';
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
                         var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
