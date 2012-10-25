@@ -162,6 +162,15 @@ a.btnInicio:hover{
 	background-repeat: repeat-x;
 	background-position: bottom;
 }
+.bg-Cursor{
+	background-image:url(../imgs/cursor.png);
+	background-repeat:no-repeat;
+}
+
+.bg-GreyWord{
+	background-image:url(../gfx/BGwords.png);
+	background-repeat:no-repeat;
+}
 
 
 
