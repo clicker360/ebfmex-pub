@@ -3,7 +3,7 @@ $(document).ready(function(){
 		$('#cuerpo').removeClass('noscroll');
 		$('#lightback').addClass("hide");
 		$('#lightfront').addClass("hide");
-                return false;
+        return false;
 	});    
     var queryVars = getVars();
     id = (queryVars.hasOwnProperty('id')) ? queryVars.id : false;

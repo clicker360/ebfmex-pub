@@ -98,8 +98,8 @@
               <div class="col-18  padd-T10px padd-B30px padd-L10px">
                 <h3 class="typ-Wh">Encuentra las ofertas del fin de semana mas barato del año</h3>
                 <form name="buscar" id="buscar" method="get" action="busqueda-de-ofertas.html" onsubmit="if($('#word').val() == '¿Qué buscas?'){ $('#word').val('') }">
-                  	<input name="word" type="text" class="searchform" value="¿Qué buscas?" size="16" id="word" onfocus="if($(this).val() == '¿Qué buscas?'){ $(this).val('') }" onblur="if($(this).val() == ''){ $(this).val('¿Qué buscas?') }"/>
-                  <div class="selectCont marg-L1	px">
+                  <input name="word" type="text" class="searchform" value="¿Qué buscas?" style="margin-top:0px; width:130px;" id="word" onfocus="if($(this).val() == '¿Qué buscas?'){ $(this).val('') }" onblur="if($(this).val() == ''){ $(this).val('¿Qué buscas?') }"/>
+                  <div class="selectCont marg-L10px" style="width:130px;">
                     <select name="catMenu" id="catMenu"  class="searchform">
                       <option selected="selected">Categoría</option>
                       <option value="1" >Abarrotes</option>
@@ -132,7 +132,7 @@
                       <option value="28" >Viajes</option>
                     </select>
                   </div>
-                  <div class="selectCont marg-L10px">
+                  <div class="selectCont marg-L10px" style="width:130px;">
                     <select name="estadoMenu" id="estadoMenu"  class="searchform">
                       <option selected="selected">Estado</option>
                       <option value="01" >Aguascalientes</option>
@@ -169,14 +169,14 @@
                       <option value="32" >Zacatecas</option>
                     </select>
                   </div>
-                  <div class="selectCont marg-L10px" >
+                  <div class="selectCont marg-L10px" style="width:130px;">
                     <select name="tipoMenu" id="tipoMenu" class="searchform">
                       <option value="3" selected="selected">tipo de oferta</option>
                       <option value="1">compra en línea</option>
                       <option value="2">compra en piso</option>
                     </select>
                   </div>
-                  <button type="submit" class="button last marg-R10px">BUSCAR &raquo;</button>
+                  <button type="submit" class="button last" style="margin-top:0px;margin-right:8px;height:30px;width:125px;">BUSCAR &raquo;</button>
                 </form>
               </div>
             </div>
