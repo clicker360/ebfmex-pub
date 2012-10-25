@@ -31,6 +31,11 @@ $(document).ready(function(){
             }
         }
     });
+    $("#buscar").submit(function(){
+        if($("input[name=word]").val() == '¿Qué buscas?'){
+            $("input[name=word]").val('')
+        }
+    })
 });
 function lighterAjax(){
     $(".lighter").click(function() {
@@ -49,14 +54,14 @@ function lighterAjax(){
             if(enLinea){
                 $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
-            var urlOferta = 'http://localhost:8080/detalleoferta.html?id='+data.idoft;
+            var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
             mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
             mtOft += '</a>'
-            var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +'">';
+            var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +'&p[summary] = '+desOft+'">';
             fbOft += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
             fbOft += '</a>';
-            var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
+            var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+nomEmp+ ' ' + titOft +' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
             twOft += '<img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />';
             twOft += '</a>';
             $("#sucList").html('');
@@ -120,7 +125,7 @@ function getEmpresa(id){
     $.get('http://pruebas.ebfmxorg.appspot.com/wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
-        var urlEmpresa = 'http://localhost:8080/micrositio.html?id='+empresa.idemp;
+        var urlEmpresa = 'http:www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+empresa.idemp;
@@ -129,8 +134,8 @@ function getEmpresa(id){
         $("#urlEmp").attr('href',urlEmp);
         (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
         $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
-        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmp+'&p[title]= ' + empresa.name +'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
-        $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
+        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmp+'&p[title]= ' + empresa.name +']&p[summary]='+empresa.desc+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
+        $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+empresa.name+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
     })
 }
 function getSucursales(id){
@@ -158,7 +163,8 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
-                var urlOferta = 'http://localhost:8080/detalleoferta.html?id='+ofertas[i].idoft;
+                console.log(ofertas[i]);
+                var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
@@ -172,12 +178,12 @@ function getOfertas(id){
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'">'
+                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
                 addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-30PR first">'
-                addOferta += '<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">'
+                addOferta += '<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+ ofertas[i].oferta+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">'
                 addOferta += '<img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" />'
                 addOferta += '</a>'
                 addOferta += '</div>'

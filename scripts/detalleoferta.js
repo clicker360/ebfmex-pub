@@ -15,6 +15,12 @@ $(document).ready(function(){
     getOferta(id);
     // Creating a new map
 
+    $("#buscar").submit(function(){
+        if($("input[name=word]").val() == '¿Qué buscas?'){
+            $("input[name=word]").val('')
+        }
+    })
+
 	
 });
 function sucMap(lat, lng, div){
@@ -74,7 +80,8 @@ function getOferta(id){
     },function(oferta){
         if(typeof(oferta) != 'object')
             oferta = JSON.parse(oferta);
-        var urlOferta = 'http://localhost:8080/detalleoferta.html?id='+oferta.idoft;
+        console.log(oferta);
+        var urlOferta = 'http://www.elbuenfin./detalleoferta.html?id='+oferta.idoft;
         $("#logoOft img").attr('src','http://pruebas.ebfmxorg.appspot.com/simg?id='+oferta.idemp);
         $("#nomEmp h4").html(oferta.empresa);
         $("#titOft h3").html(oferta.oferta);
@@ -82,8 +89,8 @@ function getOferta(id){
         $("#msEmp").attr('href','/micrositio.html?id='+oferta.idemp);
         $("#imgOft img").attr('src','http://pruebas.ebfmxorg.appspot.com/ofimg?id='+oferta.imgurl);
         $("#mtShare").html('<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
-        $("#fbShare").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+oferta.imgurl+'&p[title]= ' + oferta.oferta +'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
-        $("#twShare").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
+        $("#fbShare").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+oferta.imgurl+'&p[title]= ' + oferta.oferta +'&p[summary]='+oferta.descripcion+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
+        $("#twShare").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+oferta.empresa+ ' '+ oferta.oferta+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
 
 		$("img").error(function() {
 			console.log("img=none");
