@@ -205,12 +205,16 @@ function getOfertas(id){
     })
 }
 function showMap(lat, lng, div, divCont){
-    //if(lat != '0' && lng != '0'){
-        if($("#"+divCont).is(":visible"))
-            $("#"+divCont).slideToggle('slow', function() {});
-        sucMap(lat , lng , div);
-        $("#"+divCont).slideToggle('slow', function() {});
-    //}
+        if($("#"+divCont).is(":visible")){
+            $("#"+divCont).slideToggle('slow', function() {
+                $("#"+div).html('');
+            });
+        }else
+            $("#"+div).html('');
+        $("#"+divCont).slideToggle('slow', function() {
+            sucMap(lat, lng, div);
+        });
+        //setTimeout('sucMap("'+lat+'" , "'+lng+'" , "'+div+'")',1000);
 }
 function sucMap(lat, lng, div){
     var zoom = 17;

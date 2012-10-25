@@ -117,10 +117,13 @@ function getSucursales(id){
     })
 }
 function showMap(lat, lng, div){
-    //if(lat != '0' && lng != '0'){
-        if($("#mapCont").is(":visible"))
-            $('#mapCont').slideToggle('slow', function() {});        
-        sucMap(lat , lng , div);
-        $('#mapCont').slideToggle('slow', function() {});
-    //}
+        if($("#mapCont").is(":visible")){
+            $('#mapCont').slideToggle('slow', function() {
+                $('#'+div).html('');
+            });
+        }else
+            $('#map').html('');
+        $('#mapCont').slideToggle('slow', function() {
+            sucMap(lat, lng, div);
+        });
 }
