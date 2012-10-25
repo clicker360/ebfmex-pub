@@ -10,6 +10,7 @@ import (
 
 func init() {
     http.HandleFunc("/backend/updatesearch", fetchUpdateSearch)
+    //http.HandleFunc("/backend/updatesearch", RedirUpdateSearch)
 }
 
 func fetchUpdateSearch(w http.ResponseWriter, r *http.Request) {
@@ -26,13 +27,33 @@ func fetchUpdateSearch(w http.ResponseWriter, r *http.Request) {
 		m = 30
 	}
 	if r.FormValue("c") == "ZWJmbWV4LXB1YnIeCxISX0FoQWRtaW5Yc3JmVG9rZW5fIgZfWFNSRl8M" {
-		descurl := fmt.Sprintf( "http://movil.%s.appspot.com/backend/updatesearch?minutes=%d", appengine.AppID(c), m)
-		//descurl := fmt.Sprintf("http://clicker360.com")
-		_, err := client.Get(descurl)
+		url := fmt.Sprintf( "http://movil.%s.appspot.com/backend/updatesearch?minutes=%d&token=%v", appengine.AppID(c), m, r.FormValue("c"))
+		ret, err := client.Get(url)
 		if err != nil {
-			c.Errorf("updatesearch urlfetch %v client: %v", appengine.AppID(c), err)
+			c.Errorf("updatesearch in %v, %v %v, %v", appengine.AppID(c), url, ret.Status, err)
+		} else {
+			c.Infof("updatesearch in %v, %v %v, minutes=%v", appengine.AppID(c), url, ret.Status, m)
 		}
-		c.Infof("updatesearch urlfetch client %v minutes=%d", appengine.AppID(c), m)
+	}
+	return
+}
+
+func RedirUpdateSearch(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	/* 
+	 * En lo que encontramos una manera digna de ejecutar el cron, se
+	 * podría meter una llave en el memcaché y crearla en el administrador
+	 * O bien en el datastore.
+	 */
+	var m int
+	m, _ = strconv.Atoi(r.FormValue("m"))
+	if m < 30 {
+		m = 30
+	}
+	if r.FormValue("c") == "ZWJmbWV4LXB1YnIeCxISX0FoQWRtaW5Yc3JmVG9rZW5fIgZfWFNSRl8M" {
+		url := fmt.Sprintf( "http://movil.%s.appspot.com/backend/updatesearch?minutes=%d&token=%v", appengine.AppID(c), m, r.FormValue("c"))
+		c.Infof("updatesearch in %v, %v, minutes=%v", appengine.AppID(c), url, m)
+		http.Redirect(w, r, url, http.StatusFound)
 	}
 	return
 }
