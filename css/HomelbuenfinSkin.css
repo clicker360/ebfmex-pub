@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(http://fonts.googleapis.com/css?family=Muli);
 /* Fonts */
 
 /* main font 
@@ -28,7 +29,7 @@
 
 /*All the site have this font*/
 body{
-	font-family: "CenturyGothic", "Century Gothic", Verdana,Tahoma, sans-serif;
+	font-family: "Muli", "CenturyGothic", "Century Gothic", Verdana,Tahoma, sans-serif;
 	color: #444444;
 	font-size: 13px;
 }
@@ -137,7 +138,7 @@ a.lnk-sec {
 .SHW-div-D5px{box-shadow:0px 2px 5px #000; -webkit-box-shadow:0px 2px 5px #000; -moz-box-shadow: 0px2px 5px #000;}
 .SHW-div-D3px{box-shadow:0px 2px 3px #666; -webkit-box-shadow:0px 2px 3px #666; -moz-box-shadow: 0px 2px 3px #666;}
 /***Butons**/
-.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; float:left; width:auto; padding-left:3.6%; padding-right:3.6%; padding-top:6px; padding-bottom:8px; color:#FFF; font-weight:600; border:none;}
+.button, a.button{ background-image:url(../gfx/front/mainbtn.jpg); background-position:top; float:left; width:auto; padding-left:3.6%; padding-right:3.6%; padding-top:6px; padding-bottom:8px; color:#FFF; font-weight:500; border:none;}
 .button:hover, a.button:hover{ background-position:bottom;}
 
 .button-2, a.button-2{
@@ -416,10 +417,8 @@ font-variant:small-caps;}
 }
 .logoOferta{
 	float: left;
-	height: 80px;
-	width: 180px;
-	padding-top: 10px;
-	padding-left: 10px;
+	width: 215px;
+	padding-left: 20px;
 
 }
 .dsplRow{ display:table-row}

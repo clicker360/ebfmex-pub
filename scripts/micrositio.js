@@ -3,7 +3,7 @@ $(document).ready(function(){
 		$('#cuerpo').removeClass('noscroll');
 		$('#lightback').addClass("hide");
 		$('#lightfront').addClass("hide");
-                return false;
+        return false;
 	});    
     var queryVars = getVars();
     id = (queryVars.hasOwnProperty('id')) ? queryVars.id : false;
@@ -35,20 +35,20 @@ $(document).ready(function(){
 function lighterAjax(){
     $(".lighter").click(function() {
         var id = $(this).parent().attr('id');
-        $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{
+        $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{
             id:id
         },function(data){
-            var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
+            var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://pruebas.ebfmxorg.appspot.com/ofimg?id='+data.imgurl : '';
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
             var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
             var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
             var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
             if(enLinea){
-                $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class=" typ-Wh"> El Buen Fin en línea</h4></div><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a>')
+                $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
             var urlOferta = 'http://localhost:8080/detalleoferta.html?id='+data.idoft;
-            var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
+            var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
             mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
             mtOft += '</a>'
             var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +'">';
@@ -59,9 +59,9 @@ function lighterAjax(){
             twOft += '</a>';
             $("#sucList").html('');
             if(idEmp){
-                var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+idEmp;
+                var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+idEmp;
                 $(".logoOferta img").attr('src',imgEmp);
-                $.get('http://home.ebfmex-pub.appspot.com/wssucs',{
+                $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{
                     id:idEmp
                 },function(sucursales){
                     if(sucursales.length >= 1){
@@ -85,6 +85,11 @@ function lighterAjax(){
             $('#lightback').removeClass("hide");
             $('#lightfront').removeClass("hide");
         });
+		$("img").error(function() {
+			console.log("img=none");
+			img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+			$(this).replaceWith(img);
+		});
         return false;
     });
 }
@@ -108,23 +113,23 @@ function getVars() {
     return false;
 }
 function getEmpresa(id){
-    $.get('http://home.ebfmex-pub.appspot.com/wsmicrositio',{id:id},function(empresa){
+    $.get('http://pruebas.ebfmxorg.appspot.com/wsmicrositio',{id:id},function(empresa){
         var urlEmpresa = 'http://localhost:8080/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
-        var imgEmp = 'http://home.ebfmex-pub.appspot.com/simg?id='+empresa.idemp;
+        var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);
         (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
-        $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El buen fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
+        $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
         $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmp+'&p[title]= ' + empresa.name +'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
         $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text=Viendo \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
     })
 }
 function getSucursales(id){
     $("#sucListM").html('');
-    $.get('http://home.ebfmex-pub.appspot.com/wssucs',{id:id},function(sucursales){
+    $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:id},function(sucursales){
         if(sucursales.length >= 1){
             for(var i in sucursales){
                 $("#sucListM").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'mapM\',\'mapContM\'); return false;">'+sucursales[i].sucursal+'</a></li>')
@@ -139,7 +144,7 @@ function getOfertas(id){
         $("#ofertCont").html('')
     $("#ofertCont").append('<div class="cargando"><h4 style="float:left; width:100%; text-align:center;" >Cargando...</h4></div>');
     inSearch = true;
-    $.get("http://home.ebfmex-pub.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
+    $.get("http://pruebas.ebfmxorg.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
         console.log(pagina);
         if(ofertas.length >= 1){
             cargaOfertas = true;
@@ -148,17 +153,17 @@ function getOfertas(id){
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
-                addOferta += '<img src="http://home.ebfmex-pub.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" height="218" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
                 addOferta += '<div class="col-30PR first" style="">'
-                addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El buen fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
+                addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
                 addOferta += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://home.ebfmex-pub.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'">'
+                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'">'
                 addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
@@ -169,11 +174,16 @@ function getOfertas(id){
                 addOferta += '</div>'
                 addOferta += '</div>';
                 $("#ofertCont").append(addOferta);
+				$("img").error(function() {
+					console.log("img=none");
+					img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+					$(this).replaceWith(img);
+				});
             }
             lighterAjax();
         }else{
             cargaOfertas = false;
-            $("#ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay mas ofertas de esta empresa.</h4>');
+            $("#ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay más ofertas de esta empresa.</h4>');
         }
         $(".cargando").remove();
         inSearch = false;

@@ -5,13 +5,13 @@ $(document).ready(function() {
 			var img;
 			function putDefault() {
 				$('#pic').remove();
-				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='256px' />" 
+				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='256px' />";
 				$('#theImage').append(img);
 			}
 			function update() {
 				$('#pic').remove();
 				var query = "id="+id + "&Avc=" + avoidCache();
-				img = "<img  src = '/simg?"+ query +"' id='pic' width='256px' />" 
+				img = "<img  src = '/simg?"+ query +"' id='pic' width='256px' />";
 				$('#theImage').append(img);
 			}
 			update();	
