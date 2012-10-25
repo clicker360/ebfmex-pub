@@ -23,7 +23,7 @@ $(document).ready(function(){
 
 	$("img").error(function() {
 		console.log("img=none");
-		img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='256px' />";
+		img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='215px' />";
 		$(this).replaceWith(img);
 	});
 
@@ -80,8 +80,9 @@ $(document).ready(function(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
                     $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{id:id},function(data){
-                        data = JSON.parse(data);
-                        alert(data);
+                        if(typeof(data) != 'object')
+                            data = JSON.parse(data);
+                        console.log(data);
                         var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
@@ -106,6 +107,8 @@ $(document).ready(function(){
                             var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+idEmp;
                             $(".logoOferta img").attr('src',imgEmp);
                             $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:idEmp},function(sucursales){
+                                if(typeof(sucursales) != 'object')
+                                    sucursales = JSON.parse(sucursales);
                                 if(sucursales.length >= 1){
                                     for(var i in sucursales){
                                         $(".sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\'); return false;">'+sucursales[i].sucursal+'</a></li>')

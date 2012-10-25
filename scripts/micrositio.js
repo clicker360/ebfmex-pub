@@ -38,6 +38,8 @@ function lighterAjax(){
         $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{
             id:id
         },function(data){
+            if(typeof(data) != 'object')
+                data = JSON.parse(data);
             var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://pruebas.ebfmxorg.appspot.com/ofimg?id='+data.imgurl : '';
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
@@ -64,6 +66,8 @@ function lighterAjax(){
                 $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{
                     id:idEmp
                 },function(sucursales){
+                    if(typeof(sucursales) != 'object')
+                        sucursales = JSON.parse(sucursales);
                     if(sucursales.length >= 1){
                         for(var i in sucursales){
                             $("#sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\',\'mapCont\'); return false;">'+sucursales[i].sucursal+'</a></li>');
@@ -114,6 +118,8 @@ function getVars() {
 }
 function getEmpresa(id){
     $.get('http://pruebas.ebfmxorg.appspot.com/wsmicrositio',{id:id},function(empresa){
+        if(typeof(empresa) != 'object')
+            empresa = JSON.parse(empresa);
         var urlEmpresa = 'http://localhost:8080/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
@@ -130,6 +136,8 @@ function getEmpresa(id){
 function getSucursales(id){
     $("#sucListM").html('');
     $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:id},function(sucursales){
+        if(typeof(sucursales) != 'object')
+            sucursales = JSON.parse(sucursales);
         if(sucursales.length >= 1){
             for(var i in sucursales){
                 $("#sucListM").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'mapM\',\'mapContM\'); return false;">'+sucursales[i].sucursal+'</a></li>')
@@ -145,7 +153,8 @@ function getOfertas(id){
     $("#ofertCont").append('<div class="cargando"><h4 style="float:left; width:100%; text-align:center;" >Cargando...</h4></div>');
     inSearch = true;
     $.get("http://pruebas.ebfmxorg.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
-        console.log(pagina);
+        if(typeof(ofertas) != 'object')
+            ofertas = JSON.parse(ofertas);
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
