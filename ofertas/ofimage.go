@@ -8,6 +8,7 @@ package oferta
 import (
 	"appengine"
 	"appengine/blobstore"
+	"appengine/image"
 	"encoding/json"
 	"net/http"
 	"sess"
@@ -26,13 +27,27 @@ type OfImg struct{
 func init() {
 	http.HandleFunc("/r/ofimgup", handleUpload)
 	// ofimg queda fuera del url seguro /r
-	http.HandleFunc("/ofimg", handleServe)
+	//http.HandleFunc("/ofimg", handleServe)
+	http.HandleFunc("/ofimg", handleServeImg)
 
 	//http.HandleFunc("/r/ofimgform", handleRoot)
 }
 
 func handleServe(w http.ResponseWriter, r *http.Request) {
 	blobstore.Send(w, appengine.BlobKey(r.FormValue("id")))
+}
+
+func handleServeImg(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("id") != "none" {
+		c := appengine.NewContext(r)
+		var imgprops image.ServingURLOptions
+		imgprops.Secure = false
+		imgprops.Size = 400
+		imgprops.Crop = false
+		url, _ := image.ServingURL(c, appengine.BlobKey(r.FormValue("id")), &imgprops)
+		http.Redirect(w, r, url.String(), http.StatusFound)
+	}
+	return
 }
 
 /* 

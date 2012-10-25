@@ -159,7 +159,7 @@ $(document).ready(function(){
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com'+ofertas[i].Logo+'" width="212" height="218" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
+			addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com'+ofertas[i].Logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'

@@ -153,7 +153,7 @@ function getOfertas(id){
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
-                addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" height="218" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
