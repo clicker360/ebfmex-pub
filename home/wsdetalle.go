@@ -27,21 +27,24 @@ func init() {
 }
 
 func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	var timetolive = 900 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	var d detalle
 	if item, err := memcache.Get(c, "d_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
 		oferta, _ := model.GetOferta(c, r.FormValue("id"))
-		d.IdEmp = oferta.IdEmp
-		d.IdOft = oferta.IdOft
-		d.IdCat = oferta.IdCat
-		d.Oferta = oferta.Oferta
-		d.Empresa = oferta.Empresa
-		d.Descripcion = oferta.Descripcion
-		d.Enlinea = oferta.Enlinea
-		d.Url = oferta.Url
-		d.BlobKey = oferta.BlobKey
+		if now.After(oferta.FechaHoraPub) {
+			d.IdEmp = oferta.IdEmp
+			d.IdOft = oferta.IdOft
+			d.IdCat = oferta.IdCat
+			d.Oferta = oferta.Oferta
+			d.Empresa = oferta.Empresa
+			d.Descripcion = oferta.Descripcion
+			d.Enlinea = oferta.Enlinea
+			d.Url = oferta.Url
+			d.BlobKey = oferta.BlobKey
+		}
 
 		b, _ = json.Marshal(d)
 		item := &memcache.Item{

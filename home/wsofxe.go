@@ -26,6 +26,7 @@ func init() {
 }
 
 func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
+	now := time.Now().Add(time.Duration(-18000)*time.Second)
 	var timetolive = 1800 //seconds
 	var batch = 12 // tamaño de pagina
 	c := appengine.NewContext(r)
@@ -42,13 +43,15 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 		emofs := model.ListOf(c, r.FormValue("id"))
 		wsofs := make([]wsoferta, len(*emofs), cap(*emofs))
 		for i,v:= range *emofs {
-			wsofs[i].IdEmp = v.IdEmp
-			wsofs[i].IdOft = v.IdOft
-			wsofs[i].Oferta = v.Oferta
-			wsofs[i].Descripcion = v.Descripcion
-			wsofs[i].Enlinea = v.Enlinea
-			wsofs[i].Url = v.Url
-			wsofs[i].BlobKey = v.BlobKey
+			if now.After(v.FechaHoraPub) {
+				wsofs[i].IdEmp = v.IdEmp
+				wsofs[i].IdOft = v.IdOft
+				wsofs[i].Oferta = v.Oferta
+				wsofs[i].Descripcion = v.Descripcion
+				wsofs[i].Enlinea = v.Enlinea
+				wsofs[i].Url = v.Url
+				wsofs[i].BlobKey = v.BlobKey
+			}
 		}
 		sortutil.AscByField(wsofs, "Oferta")
 		jb, _ := json.Marshal(wsofs)
