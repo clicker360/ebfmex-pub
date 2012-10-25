@@ -85,6 +85,11 @@ function lighterAjax(){
             $('#lightback').removeClass("hide");
             $('#lightfront').removeClass("hide");
         });
+		$("img").error(function() {
+			console.log("img=none");
+			img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+			$(this).replaceWith(img);
+		});
         return false;
     });
 }
@@ -169,6 +174,11 @@ function getOfertas(id){
                 addOferta += '</div>'
                 addOferta += '</div>';
                 $("#ofertCont").append(addOferta);
+				$("img").error(function() {
+					console.log("img=none");
+					img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+					$(this).replaceWith(img);
+				});
             }
             lighterAjax();
         }else{

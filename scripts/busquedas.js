@@ -20,6 +20,14 @@ $(document).ready(function(){
 		hasVars = true;
 		$("select[name=tipoMenu]").val(queryVars.tipoMenu);
 	}
+
+	$("img").error(function() {
+		console.log("img=none");
+		img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='256px' />";
+		$(this).replaceWith(img);
+	});
+
+
 	search();
 	$("#buscarOferta").click(function(){                
 		pagina = 0;    
@@ -131,6 +139,7 @@ $(document).ready(function(){
 	});
 	}
 	function search(){
+
             pagina ++;
             if(pagina == '1')
 		  $(".ofertCont").html('')
@@ -171,6 +180,12 @@ $(document).ready(function(){
 			addOferta += '</div>'
 			addOferta += '</div>';
 			$(".ofertCont").append(addOferta);
+			$("img").error(function() {
+				console.log("img=none");
+				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+				$(this).replaceWith(img);
+			});
+
 			//console.log(i + "_" + j + ': ' + ofertas[i][j] );
 		  }
 		lighterAjax();
