@@ -132,11 +132,6 @@ $(document).ready(function(){
               return false;
             });
 	}
-        function showMap(){
-            $('#sucList li').click(function() {
-                $('#mapCont').slideToggle('slow', function() {});
-            });
-        }
 	function getcarrousel() {
 	$.get("/carr", "", function(response){
 		$('#logo1').html(response);
