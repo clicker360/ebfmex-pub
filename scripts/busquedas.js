@@ -72,10 +72,11 @@ $(document).ready(function(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
                     $.get('http://home.ebfmex-pub.appspot.com/wsdetalle',{id:id},function(data){
-                        console.log(data);
+                        data = JSON.parse(data);
+                        alert(data);
                         var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://home.ebfmex-pub.appspot.com/ofimg?id='+data.imgurl : '';
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
-                        var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
+                        var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
                         var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
                         var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
                         var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
