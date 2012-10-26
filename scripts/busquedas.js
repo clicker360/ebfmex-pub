@@ -28,10 +28,10 @@ $(document).ready(function(){
 	});
 
 
-	search();
+	searchOfertas();
 	$("#buscarOferta").click(function(){                
 		pagina = 0;    
-		search();
+		searchOfertas();
 		return false;
 	});
 	cargaOfertas = false;
@@ -39,7 +39,7 @@ $(document).ready(function(){
 	$(document).scroll(function(){
 		if(cargaOfertas && !inSearch){
 			if(($(document).scrollTop() + $(window).height()) >= ($(document).height() - 10)){
-				search();
+				searchOfertas();
 			}
 		}
 	})
@@ -137,7 +137,7 @@ $(document).ready(function(){
 		$('#logo1').html(response);
 	});
 	}
-	function search(){
+	function searchOfertas(){
 
             pagina ++;
             if(pagina == '1')
