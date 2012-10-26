@@ -142,7 +142,7 @@ $(document).ready(function(){
             pagina ++;
             if(pagina == '1')
 		  $(".ofertCont").html('')
-            $(".ofertCont").append('<div class="cargando"><h4 style="float:left; width:100%; text-align:center;">Cargando...</h4></div>');
+                 $(".ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
             inSearch = true;
             var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
             var categoria = $("select[name=catMenu]").attr("value");
@@ -194,6 +194,7 @@ $(document).ready(function(){
                         $(".ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay más ofertas para esta búsqueda.</h4>');
 		}
         $(".cargando").remove();
+		$("#cargador").remove();
         inSearch = false;
 
 	});

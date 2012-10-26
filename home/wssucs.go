@@ -6,6 +6,7 @@ import (
 	"encoding/json"
     "net/http"
 	"sortutil"
+	"strconv"
     "model"
     "time"
 )
@@ -38,8 +39,8 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 			wssucs[i].DirCalle = v.DirCalle
 			wssucs[i].DirCol = v.DirCol
 			wssucs[i].DirEnt = v.DirEnt
-			wssucs[i].Latitud = v.Latitud
-			wssucs[i].Longitud = v.Longitud
+			wssucs[i].Latitud,_ = strconv.ParseFloat(v.Geo1,64)
+			wssucs[i].Longitud,_ = strconv.ParseFloat(v.Geo2,64)
 		}
 		sortutil.AscByField(wssucs, "Sucursal")
 		b, _ = json.Marshal(wssucs)
