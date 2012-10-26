@@ -218,7 +218,7 @@ width:145px;
 .pagination-H ul{
     padding:0px;
     display:block;
-    width:98.8%;
+    width:230px;
     float:left;
     list-style-type: none;
 	margin:10px;	
@@ -251,9 +251,49 @@ width:145px;
 	font-weight: bold;
 	text-decoration: none;
 }
+
+/*Paginacio ofertas*/
+.pageOfers{
+	float:left;
+	width:700px;
+	/*position:fixed;*/
+}
     
-.pagination-H ul li a.border-none{
-    border:none 0px;}
+.pageOfers ul{
+    padding:0px;
+    display:block;
+    width:auto;
+    list-style-type: none;	
+}
+.pageOfers ul li{
+    display: block;
+    float: left;    
+    }
+
+.pageOfers ul li a{
+	color: #00230b;
+	font-size: 13px;
+	padding: 4px 6px 5px 6px;
+	margin:1px 5px;
+	height: 16px;
+	display: block;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	background-color: #D3D5D5;
+	border: 1px solid #FFF;
+}
+    
+.pageOfers ul li a:hover,  .pageOfers a.selected{
+	color: #FF0000;
+	font-size: 15px;
+	padding: 5px;
+	display: block;
+	font-weight: bold;
+	text-decoration: none;
+}
+    
+
 	
 .cajaBlanca {
 	background-image: url(../gfx/cajablanca.png);
@@ -372,7 +412,7 @@ select.searchform2{
 .oferta .imgcont{ width:212px; height:200px; overflow:hidden; float:left; display:block;}
 
 .ofertCont{ float:left; width:695px;}
-
+.col-695px{float:left; width:695px; }
 /*Ligth box Oferta*/
 ul.sucList{ padding:0px; margin:0px; list-style:none;}
 ul.sucList li a{
@@ -433,7 +473,8 @@ font-variant:small-caps;}
 
 .col-24 .ofertas .oferta{ margin-left:7px; margin-right:7px; margin-top:5px;}
 
-
+.cargando{ float:left; background-image:url(../gfx/ajax-loader.gif); background-position:10px center; background-repeat:no-repeat;  height:60px; width:150px; padding-left:30px; padding-right:20px; margin-left:240px; background-color:#FFF;}
+.cargando h4{ display:block; background-color:#FFF; font-size:18px; float:right;; margin-top:20px;}
 
 /*last part*/
 .first {float:left;}
