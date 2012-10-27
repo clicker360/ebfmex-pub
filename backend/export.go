@@ -1,4 +1,4 @@
-package site
+package backend
 
 import (
     "appengine"
@@ -13,7 +13,7 @@ import (
 
 
 func init() {
-    http.HandleFunc("/r/registros.csv", registroCsv)
+    http.HandleFunc("/backend/registros.csv", registroCsv)
 
 }
 
