@@ -94,13 +94,13 @@ function getOferta(id){
 
 		$("img").error(function() {
 			console.log("img=none");
-			img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+			img = "<img  src = 'imgs/imageDefault.jpg' id='pic'/>";
 			$(this).replaceWith(img);
 		});
 
 
         if(oferta.url)
-            $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T70px padd-R10px marg-L5px"><h4 class=" typ-Wh"> El Buen Fin en Línea</h4></div><div><a target="_blank" href="'+oferta.url+'" id="urlOft" >'+oferta.url+'</a></div>');
+            $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T70px padd-R10px marg-L5px"><h4 class=" typ-Wh"> El Buen Fin en Línea</h4></div><div class="first padd-L10px"><a target="_blank" href="'+oferta.url+'" id="urlOft" >'+oferta.url+'</a></div>');
         getSucursales(oferta.idemp);
     })
 }

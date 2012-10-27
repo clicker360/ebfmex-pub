@@ -165,6 +165,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
       <div class="logoOferta" id="logoOft">
         <!--logo de la empresa ancho maximo 175px alto maximo 80 px-->
 		<!--<img src="../imgs/ofrtTemp/logo-temporal.jpg" width="215" alt="logo de la empresa" class="first" />-->
+        </div>
       <div class="col-6 last padd-10px height80px lineLeft" id="nomEmp">
         <h4 class="alineRigth"></h4>
       </div>
@@ -173,19 +174,22 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
       </div>
       <div class=" col-95PR first padd-10px marg-T5px lineTop marg-L10px" id="desOft">
         <p> </p>
-        <div class="col-20PR first" style="" id="mtShare"></div>
-        <div class="col-20PR first" style="margin-top:5px;" id="fbShare"></div>
-        <div class="col-20PR first" id="twShare"></div>
-        <a id="msEmp" target="_blank" href="#" class="button last marg-T30px alineCenter"> Otras ofertas <br/>de esta empresa</a>
-        <div id="enLinea" style="width:300px; float: left;"></div>
-
+        <div class=" col-8 marg-T15px">
+  <div class="col-2" style="" id="mtShare"></div>
+          <div class="col-3" style="margin-top:5px;" id="fbShare"></div>
+          <div class="col-2" id="twShare"></div>
+        </div>
+        
+        <a id="msEmp" target="_blank" href="#" class="button last marg-T10px alineCenter"> Otras ofertas <br/>de esta empresa</a>
+        <div id="enLinea" style="width:300px; float: left; padding-left:10px;"></div>
       </div>
+      
     </div>
     <!--Columna Derecha-->
     <div class="col-11 marg-L10px marg-T10px">
       <!--esta imagen tiene como ancho 430px pero su alto puede variar-->
-      <div id="imgOft" class="imgOfrCont" style="float:left;">
-      <img src="" width="430" />
+      <div id="imgOft" class="imgOfrCont">
+      <img src="" />
       </div>
       <div class="col-11 bgRd marg-B10px marg-T10px marg-L10px">
         <h4 class=" typ-Wh"> Sucursales con esta oferta</h4>
@@ -194,7 +198,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
         <ul class="sucList" id="sucList">         
         </ul>
       </div>
-    <div class="mapCont hide" id="mapCont" style="float:left; margin-top: 10px;">
+    <div class="mapCont hide" id="mapCont" style="float:left;">
       <a href="#null" class="button-2 marg-R20px"><span class="col-9 Dsblock alineCenter marg-L20px" onClick="$('#mapCont').slideToggle('slow', function() {})">CERRAR MAPA [X]</span></a>
       <div id="map" style="width:412px; height: 369px; background-color: #EFEBE2"><!--<img src="../imgs/ofrtTemp/mapaShoot.jpg" width="412" height="369" alt="mapa" />--></div>
       </div>
