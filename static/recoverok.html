@@ -23,39 +23,6 @@ $(document).ready(function(){
 	$("#acceso").validationEngine({promptPosition : "topRight", scroll: true});
 	tgle1();
 });
- function tgle1(){
-	$( "#toggler1" ).delay(800).animate({
-	   height: 284, opacity: 1
-	}, 1000, "linear", function() {
-		 tgle2();
-	});
- }
- function tgle2(){
-	 $( "#toggler2" ).animate({
- 		  height: 284, opacity: 1
-	}, 800, "linear", function() {
- tgle3();
-	});
-	 }
- function tgle3(){
-	 $( "#toggler3" ).animate({
- 		  height: 284, opacity: 1
-	}, 600, "linear", function() {
- tgle3();
-	});
-	/*funcion crea la alerta*/
-	 }
-	 function addAlrt(elm,par){
-		 $(elm).addClass("invalid")
-	$("<div class='Alrt'>"+ par +"<span></span></div>").prependTo($(elm).parent());
-	}
-	  function rmvAlrt(este){
-		 elemnto = $(este)
-		 if ($(elemnto).children(".Alrt").length !== 0) {
-		$(elemnto).children(".Alrt").remove();
-		 }
-	}
-
 function activeLghtbx(){
 	$('#light').removeClass("hidden")
 	$('#box').removeClass("hidden")
@@ -87,7 +54,7 @@ function deactiveLghtbx(){
 	<input type="password" class="validate[required] small first" name="p" />
 	</div>
 	<div class="col-7 last">
-	<a href="/recupera.html" class="Dsblock first">¿Olvidaste tu contraseña?</a>
+	<a href="recupera.html" class="Dsblock first">¿Olvidaste tu contraseña?</a>
 	<button type="submit" class="medium red last marg-U3pix "><span>acceder</span></button></div>
 	</form>
   </div>

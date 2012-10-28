@@ -6,30 +6,35 @@ api_version: go1
 #default_expiration: "30d"
 
 handlers:
+- url: /r/css/(.*\.(css))
+  static_files: css/\1
+  upload: css/(.*\.(css))
+
 - url: /css/(.*\.(css))
   static_files: css/\1
   upload: css/(.*\.(css))
 
-- url: /r/css/(.*\.(css))
-  static_files: css/\1
-  upload: css/(.*\.(css))
+- url: /r/scripts/(.*\.(js))
+  static_files: scripts/\1
+  upload: scripts/(.*\.(js))
 
 - url: /scripts/(.*\.(js))
   static_files: scripts/\1
   upload: scripts/(.*\.(js))
 
-- url: /r/scripts/(.*\.(js))
-  static_files: scripts/\1
-  upload: scripts/(.*\.(js))
+- url: /r/imgs/(.*\.(gif|png|jpg))
+  static_files: imgs/\1
+  upload: imgs/(.*\.(gif|png|jpg))
+#  expiration: "1h"
 
 - url: /imgs/(.*\.(gif|png|jpg))
   static_files: imgs/\1
   upload: imgs/(.*\.(gif|png|jpg))
 #  expiration: "1h"
 
-- url: /r/imgs/(.*\.(gif|png|jpg))
-  static_files: imgs/\1
-  upload: imgs/(.*\.(gif|png|jpg))
+- url: /r/gfx/(.*\.(gif|png|jpg))
+  static_files: gfx/\1
+  upload: gfx/(.*\.(gif|png|jpg))
 #  expiration: "1h"
 
 - url: /gfx/(.*\.(gif|png|jpg))
@@ -37,9 +42,10 @@ handlers:
   upload: gfx/(.*\.(gif|png|jpg))
 #  expiration: "1h"
 
-- url: /r/gfx/(.*\.(gif|png|jpg))
-  static_files: gfx/\1
-  upload: gfx/(.*\.(gif|png|jpg))
+- url: /r/(.*\.html)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.html)
 #  expiration: "1h"
 
 - url: /(.*\.html)
@@ -58,7 +64,7 @@ handlers:
   mime_type: text/html
   static_files: static/busqueda-de-ofertas.html
   upload: static/busqueda-de-ofertas.html
-#  expiration: "1h"
+  expiration: "1h"
 
 - url: /favicon.ico
   static_files: imgs/favicon.ico
@@ -81,28 +87,10 @@ handlers:
   upload: static/(.*\.json)
 #  expiration: "1h"
 
-# image files
 - url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|zip))
   static_files: static/\1
   upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png|zip))
   expiration: "1h"
-
-# index files
-- url: /(.+)/
-  static_files: static/\1/index.html
-  upload: static/(.+)/index.html
-#  expiration: "1h"
-
-#- url: /(.+)
-#  static_files: static/\1/index.html
-#  upload: static/(.+)/index.html
-#  expiration: "15m"
-
-# site root
-- url: /
-  static_files: static/index.html
-  upload: static/index.html
-#  expiration: "1h"
 
 - url: /backend/.*
   script: _go_app

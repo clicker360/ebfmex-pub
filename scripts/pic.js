@@ -9,8 +9,8 @@ $(document).ready(function() {
 			var query = "id="+id+"&x="+x+"&y="+y+
 				"&s="+$("#size").val()+
 				"&d="+$("#droop").val();
-			$pic.attr("src", "/simg?"+query);
-			$url.text("/simg?"+query);
+			$pic.attr("src", "simg?"+query);
+			$url.text("simg?"+query);
 			$share.attr("href", "/share?"+query);
 		}
 		$pic.click(function(e) {

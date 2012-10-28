@@ -40,12 +40,12 @@ $(document).ready(function(){
 function lighterAjax(){
     $(".lighter").click(function() {
         var id = $(this).parent().attr('id');
-        $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{
+        $.get('wsdetalle',{
             id:id
         },function(data){
             if(typeof(data) != 'object')
                 data = JSON.parse(data);
-            var imgurl = (data.hasOwnProperty('imgurl')) ? 'http://pruebas.ebfmxorg.appspot.com/ofimg?id='+data.imgurl : '';
+            var imgurl = (data.hasOwnProperty('imgurl')) ? 'ofimg?id='+data.imgurl : '';
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
             var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -54,7 +54,7 @@ function lighterAjax(){
             if(enLinea){
                 $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
-            var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
+            var urlOferta = 'detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
             mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
             mtOft += '</a>'
@@ -66,9 +66,9 @@ function lighterAjax(){
             twOft += '</a>';
             $("#sucList").html('');
             if(idEmp){
-                var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+idEmp;
+                var imgEmp = 'simg?id='+idEmp;
                 $(".logoOferta img").attr('src',imgEmp);
-                $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{
+                $.get('wssucs',{
                     id:idEmp
                 },function(sucursales){
                     if(typeof(sucursales) != 'object')
@@ -122,13 +122,13 @@ function getVars() {
     return false;
 }
 function getEmpresa(id){
-    $.get('http://pruebas.ebfmxorg.appspot.com/wsmicrositio',{id:id},function(empresa){
+    $.get('wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
-        var urlEmpresa = 'http:www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
+        var urlEmpresa = 'micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
-        var imgEmp = 'http://pruebas.ebfmxorg.appspot.com/simg?id='+empresa.idemp;
+        var imgEmp = 'simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);
@@ -140,7 +140,7 @@ function getEmpresa(id){
 }
 function getSucursales(id){
     $("#sucListM").html('');
-    $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:id},function(sucursales){
+    $.get('wssucs',{id:id},function(sucursales){
         if(typeof(sucursales) != 'object')
             sucursales = JSON.parse(sucursales);
         if(sucursales.length >= 1){
@@ -157,18 +157,18 @@ function getOfertas(id){
         $("#ofertCont").html('')
     $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
     inSearch = true;
-    $.get("http://pruebas.ebfmxorg.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
+    $.get("wsofxe",{id:id,pagina:pagina},function(ofertas){
         if(typeof(ofertas) != 'object')
             ofertas = JSON.parse(ofertas);
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
                 console.log(ofertas[i]);
-                var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
+                var urlOferta = 'detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
-                addOferta += '<img src="http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                addOferta += '<img src="ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
@@ -178,7 +178,7 @@ function getOfertas(id){
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://pruebas.ebfmxorg.appspot.com/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
+                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
                 addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
