@@ -10,6 +10,9 @@ import (
     "io"
 )
 
+const GMT = 6
+var GMTADJ = -1*3600*GMT
+
 type Sess struct {
 	Md5			string
 	Id			string
@@ -21,7 +24,7 @@ type Sess struct {
 }
 const Expiracion = 15 // dias
 func SetSess(w http.ResponseWriter, c appengine.Context, key *datastore.Key, email string, name string) (string, *datastore.Key, error) {
-	now := time.Now().Add(time.Duration(-18000)*time.Second)
+	now := time.Now().Add(time.Duration(GMTADJ)*time.Second)
 	h := md5.New()
 	io.WriteString(h, key.Encode())
 	io.WriteString(h, fmt.Sprintf("%s", now))
@@ -52,7 +55,7 @@ func SetSess(w http.ResponseWriter, c appengine.Context, key *datastore.Key, ema
 
 func IsSess(w http.ResponseWriter, r *http.Request, c appengine.Context) (Sess, bool) {
 	var s Sess
-	now := time.Now().Add(time.Duration(-18000)*time.Second)
+	now := time.Now().Add(time.Duration(GMTADJ)*time.Second)
 	if ck, err := r.Cookie("ebfmex-pub-sessid-ua"); err == nil {
 		key, _ := datastore.DecodeKey(ck.Value)
 		if err := datastore.Get(c, key, &s); err != nil {

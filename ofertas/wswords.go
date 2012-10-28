@@ -38,7 +38,7 @@ func AddWord(w http.ResponseWriter, r *http.Request) {
 					palabra.IdOft = out.Id
 					palabra.IdEmp = oferta.IdEmp
 					palabra.Palabra = strings.ToLower(v)
-					palabra.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+					palabra.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 					err := oferta.PutOfertaPalabra(c, &palabra)
 					if err != nil {
 						out.Status = "writeErr"

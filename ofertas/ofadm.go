@@ -164,8 +164,8 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 				fd.Empresa = empresa.Nombre
 				ofertamod.IdEmp = empresa.IdEmp
 				ofertamod.Oferta = "Nueva oferta"
-				ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
-				ofertamod.FechaHoraPub = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
+				ofertamod.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second) // 5 horas menos
+				ofertamod.FechaHoraPub = time.Now().Add(time.Duration(model.GMTADJ)*time.Second) // 5 horas menos
 				ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
 				ofertamod.BlobKey = "none"
 				o, err := model.NewOferta(c, &ofertamod)
@@ -193,7 +193,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			ofertamod.FechaHoraPub = fd.FechaHoraPub
 			ofertamod.StatusPub = fd.StatusPub
 			//ofertamod.BlobKey = fd.BlobKey
-			ofertamod.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+			ofertamod.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 
 			oferta, _ := model.GetOferta(c, ofertamod.IdOft)
 			if oferta.IdOft != "none" {
@@ -240,7 +240,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 						ofsuc.Promocion = ofertamod.Promocion
 						ofsuc.Url = ofertamod.Url
 						ofsuc.StatusPub = ofertamod.StatusPub
-						ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+						ofsuc.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 
 						// Se añade el estado de la sucursal al mapa de estados
 						edomap[suc.DirEnt] = oferta.IdOft
@@ -310,7 +310,7 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		fh, _ = time.Parse("_2 Jan 15:04:05", strings.TrimSpace(r.FormValue("FechaHoraPub"))+" 00:00:00")
 		fh = fh.AddDate(2012,0,0)
 	} else {
-		fh = time.Now().Add(time.Duration(-18000)*time.Second) // 5 horas menos
+		fh = time.Now().Add(time.Duration(model.GMTADJ)*time.Second) // 5 horas menos
 	}
 	el, _ := strconv.ParseBool(strings.TrimSpace(r.FormValue("Enlinea")))
 	st, _ := strconv.ParseBool(strings.TrimSpace(r.FormValue("StatusPub")))

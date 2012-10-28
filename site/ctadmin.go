@@ -132,7 +132,7 @@ func CtaMod(w http.ResponseWriter, r *http.Request) {
 }
 
 func CtaDel(w http.ResponseWriter, r *http.Request) {
-	now := time.Now().Add(time.Duration(-18000)*time.Second)
+	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 	if r.Method != "POST" {
 		return
 	}

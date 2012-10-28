@@ -72,7 +72,7 @@ func Acceso(w http.ResponseWriter, r *http.Request) {
 }
 
 func Salir(w http.ResponseWriter, r *http.Request) {
-	now := time.Now().Add(time.Duration(-18000)*time.Second)
+	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
 		s.Expiration = now.AddDate(-1,0,0)

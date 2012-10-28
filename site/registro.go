@@ -51,12 +51,12 @@ func Registrar(w http.ResponseWriter, r *http.Request) {
 		ctaFill(r, u)
 		if err != nil {
 			// No hay Cuenta registrada
-			u.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+			u.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 			u.Status = false
 
 			// Generar código de confirmación distindo cada vez. Md5 del email + fecha-hora
 			h := md5.New()
-			io.WriteString(h, fmt.Sprintf("%s%s%s%s", time.Now().Add(time.Duration(-18000)*time.Second), u.Email, u.Pass, model.RandId(12)))
+			io.WriteString(h, fmt.Sprintf("%s%s%s%s", time.Now().Add(time.Duration(model.GMTADJ)*time.Second), u.Email, u.Pass, model.RandId(12)))
 			u.CodigoCfm = fmt.Sprintf("%x", h.Sum(nil))
 		}
 
@@ -74,7 +74,7 @@ func Registrar(w http.ResponseWriter, r *http.Request) {
 				Md5:		u.CodigoCfm,
 				Nombre:		u.Nombre,
 				Email:		u.Email,
-				FechaHora:	time.Now().Add(time.Duration(-18000)*time.Second),
+				FechaHora:	time.Now().Add(time.Duration(model.GMTADJ)*time.Second),
 				Llave:		u.Key(c).Encode(),
 				AppId:		appengine.AppID(c),
 			}
@@ -159,17 +159,17 @@ func pendienteVerifica(w http.ResponseWriter, r *http.Request) {
 		ctaFill(r, u)
 		if err != nil {
 			// No hay Cuenta registrada
-			u.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+			u.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 			u.Status = false
 			u.CodigoCfm = "Verificar"
 
 			// Generar código de confirmación distindo cada vez. Md5 del email + fecha-hora
 			h := md5.New()
-			io.WriteString(h, fmt.Sprintf("%s%s%s%s", time.Now().Add(time.Duration(-18000)*time.Second), u.Email, u.Pass, model.RandId(12)))
+			io.WriteString(h, fmt.Sprintf("%s%s%s%s", time.Now().Add(time.Duration(model.GMTADJ)*time.Second), u.Email, u.Pass, model.RandId(12)))
 			u.CodigoCfm = fmt.Sprintf("%x", h.Sum(nil))
 		}
 
-		u.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+		u.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 		u.Status = true
 		u.CodigoCfm = "Verificar"
 		// Se agrega la cuenta sin activar para realizar el proceso de código de confirmación

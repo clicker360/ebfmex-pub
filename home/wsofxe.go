@@ -26,7 +26,7 @@ func init() {
 }
 
 func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
-	now := time.Now().Add(time.Duration(-18000)*time.Second)
+	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 	var timetolive = 1800 //seconds
 	var batch = 12 // tamaño de pagina
 	c := appengine.NewContext(r)

@@ -9,6 +9,7 @@ import (
 	"sortutil"
 	"time"
 )
+
 type Oferta struct {
 	IdOft       string
 	IdEmp       string
@@ -128,7 +129,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 		ofsuc.Enlinea = oferta.Enlinea
 		ofsuc.Url = oferta.Url
 		ofsuc.StatusPub = oferta.StatusPub
-		ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+		ofsuc.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
 		oferta.PutOfertaSucursal(c, &ofsuc)
 		TouchSuc(c, os.IdSuc)
 	}

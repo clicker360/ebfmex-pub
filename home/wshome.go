@@ -96,7 +96,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	/*
 		Loop para recorrer todas las empresas 
 	*/
-	now := time.Now().Add(time.Duration(-18000)*time.Second)
+	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 	prefixu := strings.ToUpper(r.FormValue("prefix"))
 	ultimos := r.FormValue("ultimos")
     q := datastore.NewQuery("Empresa")

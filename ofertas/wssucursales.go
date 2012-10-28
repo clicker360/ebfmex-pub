@@ -52,7 +52,7 @@ func AddOfSuc(w http.ResponseWriter, r *http.Request) {
 		ofsuc.Descuento = oferta.Descuento
 		ofsuc.Url = oferta.Url
 		ofsuc.StatusPub = oferta.StatusPub
-		ofsuc.FechaHora = time.Now().Add(time.Duration(-18000)*time.Second)
+		ofsuc.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 		out.FechaHora = ofsuc.FechaHora
 
 		err := oferta.PutOfertaSucursal(c, &ofsuc)
