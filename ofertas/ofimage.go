@@ -41,7 +41,7 @@ func handleServeImg(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("id") != "none" {
 		c := appengine.NewContext(r)
 		var imgprops image.ServingURLOptions
-		imgprops.Secure = false
+		imgprops.Secure = true
 		imgprops.Size = 400
 		imgprops.Crop = false
 		url, _ := image.ServingURL(c, appengine.BlobKey(r.FormValue("id")), &imgprops)

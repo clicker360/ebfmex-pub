@@ -94,61 +94,57 @@ func Recover(w http.ResponseWriter, r *http.Request) {
 		if email != "" && model.ValidEmail.MatchString(email) { // && rfc != "" && model.ValidRfc.MatchString(rfc) {
 			// intenta buscar en la base un usuario con email y empresa
 			if cta, err := model.GetCta(c, email); err == nil {
-				//q := datastore.NewQuery("Empresa").Filter("RFC =", rfc).Ancestor(cta.Key(c)).Limit(3)
-				//if count, _ := q.Count(c); count != 0 {
-					//for t := q.Run(c); ; {
-					//	_, err := t.Next(&cta)
-					//	if err == datastore.Done {
-					//		break
-					//	}
-						if (MailServer=="gmail") {
-							var hbody bytes.Buffer
-							var sender string
-							if (appengine.AppID(c) == "ebfmxorg") {
-								sender =  "El Buen Fin <contacto@elbuenfin.org>"
-							} else {
-								sender =  "El Buen Fin <ahuezo@clicker360.com>"
-							}
-							if err := mailRecoverTpl.Execute(&hbody, cta); err != nil {
-								http.Error(w, err.Error(), http.StatusInternalServerError)
-							}
-							// Coincide email y RFC, se manda correo con contraseña
-							msg := &mail.Message{
-								Sender:		sender,
-								To:			[]string{cta.Email},
-								Subject:	"Recuperación de contraseña / El Buen Fin",
-								HTMLBody:	hbody.String(),
-							}
-							if err := mail.Send(c, msg); err != nil {
-								http.Error(w, err.Error(), http.StatusInternalServerError)
-							} else {
-								http.Redirect(w, r, "/recoverok.html", http.StatusFound)
-								return
-							}
-							//fmt.Fprintf(w, mailRecover, cta.Email, cta.Pass)
-							return
+				if cta.Status {
+					if (MailServer=="gmail") {
+						var hbody bytes.Buffer
+						var sender string
+						if (appengine.AppID(c) == "ebfmxorg") {
+							sender =  "El Buen Fin <contacto@elbuenfin.org>"
 						} else {
-							client := urlfetch.Client(c)
-							url := fmt.Sprintf("http://envia-m.mekate.com.mx/?Sender=%s&Tipo=Recupera&Email=%s&Nombre=%s&Pass=%s&AppId=ebfmxorg",
-							"registro@elbuenfin.org",
-							cta.Email,
-							url.QueryEscape(cta.Nombre),
-							url.QueryEscape(cta.Pass))
-							r1, err := client.Get(url)
-							if err != nil {
-								http.Error(w, err.Error(), http.StatusInternalServerError)
-								return
-							}
-
-							if r1.StatusCode != 200 {
-								http.Error(w, "Error de Transporte de Mail", http.StatusInternalServerError)
-							}
-							defer r1.Body.Close()
+							sender =  "El Buen Fin <ahuezo@clicker360.com>"
+						}
+						if err := mailRecoverTpl.Execute(&hbody, cta); err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+						}
+						// Coincide email y RFC, se manda correo con contraseña
+						msg := &mail.Message{
+							Sender:		sender,
+							To:			[]string{cta.Email},
+							Subject:	"Recuperación de contraseña / El Buen Fin",
+							HTMLBody:	hbody.String(),
+						}
+						if err := mail.Send(c, msg); err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+						} else {
 							http.Redirect(w, r, "/recoverok.html", http.StatusFound)
 							return
 						}
-					//}
-				//}
+						//fmt.Fprintf(w, mailRecover, cta.Email, cta.Pass)
+						return
+					} else {
+						client := urlfetch.Client(c)
+						url := fmt.Sprintf("http://envia-m.mekate.com.mx/?Sender=%s&Tipo=Recupera&Email=%s&Nombre=%s&Pass=%s&AppId=ebfmxorg",
+						"registro@elbuenfin.org",
+						cta.Email,
+						url.QueryEscape(cta.Nombre),
+						url.QueryEscape(cta.Pass))
+						r1, err := client.Get(url)
+						if err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+							return
+						}
+
+						if r1.StatusCode != 200 {
+							http.Error(w, "Error de Transporte de Mail", http.StatusInternalServerError)
+						}
+						defer r1.Body.Close()
+						http.Redirect(w, r, "/recoverok.html", http.StatusFound)
+						return
+					}
+				} else {
+					http.Redirect(w, r, "/nocta.html", http.StatusFound)
+					return
+				}
 			}
 		}
 		http.Redirect(w, r, "/nocta.html", http.StatusFound)
