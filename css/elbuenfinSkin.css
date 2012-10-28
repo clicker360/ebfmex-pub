@@ -1,8 +1,8 @@
 @charset "UTF-8";
 /* Fonts */
-@import url(http://fonts.googleapis.com/css?family=Montserrat);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
-@import url(http://fonts.googleapis.com/css?family=Josefin+Slab:400,700,600);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+@import url(https://fonts.googleapis.com/css?family=Josefin+Slab:400,700,600);
 /* main font */
 /*All the site have this font*/
 body{
@@ -51,7 +51,7 @@ b, strong{ font-family:"Open Sans", "Century", "Palatino Linotype", sans-serif; 
 /**hr dividers**/
 
 .hr-line{
-	background-image: url(../gfx/hr.jpg);
+	background-image: url(gfx/hr.jpg);
 	background-repeat: repeat-x;
 	background-position: center top;
 	float: left;
@@ -77,7 +77,7 @@ a.lnk-sec {
 }
 /**btnInicio**/
 a.btnInicio{
-	background-image: url(../gfx/btn-sesion.png);
+	background-image: url(gfx/btn-sesion.png);
 	background-repeat: no-repeat;
 	background-position: top;
 	display: block;
@@ -136,39 +136,39 @@ a.btnInicio:hover{
 
 /***Backs-Patrons***/
 .bgt-main{
-	background-image: url(../imgs/fondo_bg.gif);
+	background-image: url(gfx/fondo_bg.gif);
 	background-color: #FFF;
 }
 .bgt-red-top{
-	background-image: url(../gfx/backtopRed.jpg);
+	background-image: url(gfx/backtopRed.jpg);
 	background-repeat: repeat-x;
 }
 .bgt-Sec{
-	background-image: url(../imgs/fondo_bg.png);
+	background-image: url(gfx/fondo_bg.png);
 }
 .bg-form{
 	background-attachment: fixed;
-	background-image: url(../gfx/fondoReg.jpg);
+	background-image: url(gfx/fondoReg.jpg);
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size:cover;
 	background-color:#ae2021;
 }
-.bg-top{ background-image:url(../gfx/backTop.jpg); background-repeat:repeat-x; background-position:top;}
-.bg-Gry1{ background-image:url(../gfx/greys.jpg); background-repeat:repeat-x; background-position:top;}
-.bg-Gry2{background-image:url(../gfx/greys.jpg); background-repeat:repeat-x; background-position:bottom;}
+.bg-top{ background-image:url(gfx/backTop.jpg); background-repeat:repeat-x; background-position:top;}
+.bg-Gry1{ background-image:url(gfx/greys.jpg); background-repeat:repeat-x; background-position:top;}
+.bg-Gry2{background-image:url(gfx/greys.jpg); background-repeat:repeat-x; background-position:bottom;}
 .bg-Gry3{
-	background-image: url(../gfx/grey3.jpg);
+	background-image: url(gfx/grey3.jpg);
 	background-repeat: repeat-x;
 	background-position: bottom;
 }
 .bg-Cursor{
-	background-image:url(../imgs/cursor.png);
+	background-image:url(gfx/cursor.png);
 	background-repeat:no-repeat;
 }
 
 .bg-GreyWord{
-	background-image:url(../gfx/BGwords.png);
+	background-image:url(gfx/BGwords.png);
 	background-repeat:no-repeat;
 }
 
@@ -243,130 +243,130 @@ button.big span{
 }
 
 button.green{
-	background : url(../gfx/link-button.png) no-repeat left top transparent;
+	background : url(gfx/link-button.png) no-repeat left top transparent;
 }
 
 button.green span{
-	background : url(../gfx/link-button.png) no-repeat right top transparent;
+	background : url(gfx/link-button.png) no-repeat right top transparent;
 }
 
 button.blue{
-	background : url(../gfx/link-button.png) no-repeat left -23px transparent;
+	background : url(gfx/link-button.png) no-repeat left -23px transparent;
 }
 
 button.blue span{
-	background : url(../gfx/link-button.png) no-repeat right -23px transparent;
+	background : url(gfx/link-button.png) no-repeat right -23px transparent;
 }
 
 button.orange{
-	background : url(../gfx/link-button.png) no-repeat left -46px transparent;
+	background : url(gfx/link-button.png) no-repeat left -46px transparent;
 	color:#333;
 }
 
 button.orange span{
-	background : url(../gfx/link-button.png) no-repeat right -46px transparent;
+	background : url(gfx/link-button.png) no-repeat right -46px transparent;
 	color:#333;
 }
 
 button.red{
-	background : url(../gfx/link-button.png) no-repeat left -69px transparent;
+	background : url(gfx/link-button.png) no-repeat left -69px transparent;
 }
 
 button.red span{
-	background : url(../gfx/link-button.png) no-repeat right -69px transparent;
+	background : url(gfx/link-button.png) no-repeat right -69px transparent;
 }
 
 button.grey{
-	background : url(../gfx/link-button.png) no-repeat left -92px transparent;
+	background : url(gfx/link-button.png) no-repeat left -92px transparent;
 }
 
 button.grey span{
-	background : url(../gfx/link-button.png) no-repeat right -92px transparent;
+	background : url(gfx/link-button.png) no-repeat right -92px transparent;
 }
 
 /* MEDIUM SIZE LINK BUTTONS */
 
 button.medium.green{
-	background : url(../gfx/link-button-medium.png) no-repeat left top transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left top transparent;
 }
 
 button.medium.green span{
-	background : url(../gfx/link-button-medium.png) no-repeat right top transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right top transparent;
 }
 
 button.medium.blue{
-	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -28px transparent;
 	color:#56585f;
 }
 
 button.medium.blue span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -28px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -28px transparent;
 }
 
 button.medium.orange{
-	background : url(../gfx/link-button-medium.png) no-repeat left -56px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -56px transparent;
 }
 
 button.medium.orange span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -56px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -56px transparent;
 }
 
 button.medium.red{
-	background : url(../gfx/link-button-medium.png) no-repeat left -84px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -84px transparent;
 }
 
 button.medium.red span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -84px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -84px transparent;
 }
 
 button.medium.grey{
-	background : url(../gfx/link-button-medium.png) no-repeat left -112px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -112px transparent;
 }
 
 button.medium.grey span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -112px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -112px transparent;
 }
 
 /* BIG SIZE LINK BUTTONS */
 
 button.big.green{
-	background : url(../gfx/link-button-big.png) no-repeat left top transparent;
+	background : url(gfx/link-button-big.png) no-repeat left top transparent;
 }
 
 button.big.green span{
-	background : url(../gfx/link-button-big.png) no-repeat right top transparent;
+	background : url(gfx/link-button-big.png) no-repeat right top transparent;
 }
 
 button.big.blue{
-	background : url(../gfx/link-button-big.png) no-repeat left -31px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -31px transparent;
 }
 
 button.big.blue span{
-	background : url(../gfx/link-button-big.png) no-repeat right -31px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -31px transparent;
 }
 
 button.big.orange{
-	background : url(../gfx/link-button-big.png) no-repeat left -62px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -62px transparent;
 }
 
 button.big.orange span{
-	background : url(../gfx/link-button-big.png) no-repeat right -62px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -62px transparent;
 }
 
 button.big.red{
-	background : url(../gfx/link-button-big.png) no-repeat left -93px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -93px transparent;
 }
 
 button.big.red span{
-	background : url(../gfx/link-button-big.png) no-repeat right -93px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -93px transparent;
 }
 
 button.big.grey{
-	background : url(../gfx/link-button-big.png) no-repeat left -124px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -124px transparent;
 }
 
 button.big.grey span{
-	background : url(../gfx/link-button-big.png) no-repeat right -124px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -124px transparent;
 }
 
 
@@ -458,170 +458,170 @@ a.button.big span, a.button.big:link span, a.button.big:active span, a.button.bi
 /* SMALL SIZE LINK BUTTONS */
 
 a.button.green, a.button.green:link, a.button.green:active, a.button.green:visited {
-	background : url(../gfx/link-button.png) no-repeat left top transparent;
+	background : url(gfx/link-button.png) no-repeat left top transparent;
 }
 
 a.button.green span, a.button.green:link span, a.button.green:active span, a.button.green:visited span {
-	background : url(../gfx/link-button.png) no-repeat right top transparent;
+	background : url(gfx/link-button.png) no-repeat right top transparent;
 }
 
 a.button.blue, a.button.blue:link, a.button.blue:active, a.button.blue:visited {
-	background : url(../gfx/link-button.png) no-repeat left -23px transparent;
+	background : url(gfx/link-button.png) no-repeat left -23px transparent;
 }
 
 a.button.blue span, a.button.blue:link span, a.button.blue:active span, a.button.blue:visited span {
-	background : url(../gfx/link-button.png) no-repeat right -23px transparent;
+	background : url(gfx/link-button.png) no-repeat right -23px transparent;
 }
 
 a.button.orange, a.button.orange:link, a.button.orange:active, a.button.orange:visited {
-	background : url(../gfx/link-button.png) no-repeat left -46px transparent;
+	background : url(gfx/link-button.png) no-repeat left -46px transparent;
 	color:#333;
 }
 
 a.button.orange span, a.button.orange:link span, a.button.orange:active span, a.button.orange:visited span {
-	background : url(../gfx/link-button.png) no-repeat right -46px transparent;
+	background : url(gfx/link-button.png) no-repeat right -46px transparent;
 }
 
 a.button.red, a.button.red:link, a.button.red:active, a.button.red:visited {
-	background : url(../gfx/link-button.png) no-repeat left -69px transparent;
+	background : url(gfx/link-button.png) no-repeat left -69px transparent;
 }
 
 a.button.red span, a.button.red:link span, a.button.red:active span, a.button.red:visited span {
-	background : url(../gfx/link-button.png) no-repeat right -69px transparent;
+	background : url(gfx/link-button.png) no-repeat right -69px transparent;
 }
 
 a.button.grey, a.button.grey:link, a.button.grey:active, a.button.grey:visited {
-	background : url(../gfx/link-button.png) no-repeat left -92px transparent;
+	background : url(gfx/link-button.png) no-repeat left -92px transparent;
 }
 
 a.button.grey span, a.button.grey:link span, a.button.grey:active span, a.button.grey:visited span {
-	background : url(../gfx/link-button.png) no-repeat right -92px transparent;
+	background : url(gfx/link-button.png) no-repeat right -92px transparent;
 }
 
 /* MEDIUM SIZE LINK BUTTONS */
 
 a.button.green.medium, a.button.green.medium:link, a.button.green.medium:active, a.button.green.medium:visited {
-	background : url(../gfx/link-button-medium.png) no-repeat left top transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left top transparent;
 }
 
 a.button.green.medium span, a.button.green.medium:link span, a.button.green.medium:active span, a.button.green.medium:visited span {
-	background : url(../gfx/link-button-medium.png) no-repeat right top transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right top transparent;
 }
 
 a.button.blue.medium, a.button.blue.medium:link, a.button.blue.medium:active, a.button.blue.medium:visited {
-	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -28px transparent;
 	color:#56585f;
 }
 
 a.button.blue.medium span, a.button.blue.medium:link span, a.button.blue.medium:active span, a.button.blue.medium:visited span {
-	background : url(../gfx/link-button-medium.png) no-repeat right -28px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -28px transparent;
 }
 
 a.button.orange.medium, a.button.orange.medium:link, a.button.orange.medium:active, a.button.orange.medium:visited {
-	background : url(../gfx/link-button-medium.png) no-repeat left -56px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -56px transparent;
 }
 
 a.button.orange.medium span, a.button.orange.medium:link span, a.button.orange.medium:active span, a.button.orange.medium:visited span {
-	background : url(../gfx/link-button-medium.png) no-repeat right -56px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -56px transparent;
 }
 
 a.button.red.medium, a.button.red.medium:link, a.button.red.medium:active, a.button.red.medium:visited {
-	background : url(../gfx/link-button-medium.png) no-repeat left -84px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -84px transparent;
 }
 
 a.button.red.medium span, a.button.red.medium:link span, a.button.red.medium:active span, a.button.red.medium:visited span {
-	background : url(../gfx/link-button-medium.png) no-repeat right -84px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -84px transparent;
 }
 
 a.button.grey.medium, a.button.grey.medium:link, a.button.grey.medium:active, a.button.grey.medium:visited {
-	background : url(../gfx/link-button-medium.png) no-repeat left -112px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -112px transparent;
 }
 
 a.button.grey.medium span, a.button.grey.medium:link span, a.button.grey.medium:active span, a.button.grey.medium:visited span {
-	background : url(../gfx/link-button-medium.png) no-repeat right -112px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -112px transparent;
 }
 
 /* BIG SIZE LINK BUTTONS */
 
 a.button.green.big, a.button.green.big:link, a.button.green.big:active, a.button.green.big:visited {
-	background : url(../gfx/link-button-big.png) no-repeat left top transparent;
+	background : url(gfx/link-button-big.png) no-repeat left top transparent;
 }
 
 a.button.green.big span, a.button.green.big:link span, a.button.green.big:active span, a.button.green.big:visited span {
-	background : url(../gfx/link-button-big.png) no-repeat right top transparent;
+	background : url(gfx/link-button-big.png) no-repeat right top transparent;
 }
 
 a.button.blue.big, a.button.blue.big:link, a.button.blue.big:active, a.button.blue.big:visited {
-	background : url(../gfx/link-button-big.png) no-repeat left -31px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -31px transparent;
 }
 
 a.button.blue.big span, a.button.blue.big:link span, a.button.blue.big:active span, a.button.blue.big:visited span {
-	background : url(../gfx/link-button-big.png) no-repeat right -31px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -31px transparent;
 }
 
 a.button.orange.big, a.button.orange.big:link, a.button.orange.big:active, a.button.orange.big:visited {
-	background : url(../gfx/link-button-big.png) no-repeat left -62px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -62px transparent;
 }
 
 a.button.orange.big span, a.button.orange.big:link span, a.button.orange.big:active span, a.button.orange.big:visited span {
-	background : url(../gfx/link-button-big.png) no-repeat right -62px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -62px transparent;
 }
 
 a.button.red.big, a.button.red.big:link, a.button.red.big:active, a.button.red.big:visited {
-	background : url(../gfx/link-button-big.png) no-repeat left -93px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -93px transparent;
 }
 
 a.button.red.big span, a.button.red.big:link span, a.button.red.big:active span, a.button.red.big:visited span {
-	background : url(../gfx/link-button-big.png) no-repeat right -93px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -93px transparent;
 }
 
 a.button.grey.big, a.button.grey.big:link, a.button.grey.big:active, a.button.grey.big:visited {
-	background : url(../gfx/link-button-big.png) no-repeat left -124px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -124px transparent;
 }
 
 a.button.grey.big span, a.button.grey.big:link span, a.button.grey.big:active span, a.button.grey.big:visited span {
-	background : url(../gfx/link-button-big.png) no-repeat right -124px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -124px transparent;
 }
 /* LITTLE SIZE LINK BUTTONS */
 
 a.button.green.little, a.button.green.little:link, a.button.green.little:active, a.button.green.little:visited {
-	background : url(../gfx/link-button-little.png) no-repeat left top transparent;
+	background : url(gfx/link-button-little.png) no-repeat left top transparent;
 }
 
 a.button.green.little span, a.button.green.little:link span, a.button.green.little:active span, a.button.green.little:visited span {
-	background : url(../gfx/link-button-little.png) no-repeat right top transparent;
+	background : url(gfx/link-button-little.png) no-repeat right top transparent;
 }
 
 a.button.blue.little, a.button.blue.little:link, a.button.blue.little:active, a.button.blue.little:visited {
-	background : url(../gfx/link-button-little.png) no-repeat left -16px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -16px transparent;
 }
 
 a.button.blue.little span, a.button.blue.little:link span, a.button.blue.little:active span, a.button.blue.little:visited span {
-	background : url(../gfx/link-button-little.png) no-repeat right -16px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -16px transparent;
 }
 
 a.button.orange.little, a.button.orange.little:link, a.button.orange.little:active, a.button.orange.little:visited {
-	background : url(../gfx/link-button-little.png) no-repeat left -32px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -32px transparent;
 }
 
 a.button.orange.little span, a.button.orange.little:link span, a.button.orange.little:active span, a.button.orange.little:visited span {
-	background : url(../gfx/link-button-little.png) no-repeat right -32px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -32px transparent;
 }
 
 a.button.red.little, a.button.red.little:link, a.button.red.little:active, a.button.red.little:visited {
-	background : url(../gfx/link-button-little.png) no-repeat left -48px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -48px transparent;
 }
 
 a.button.red.little span, a.button.red.little:link span, a.button.red.little:active span, a.button.red.little:visited span {
-	background : url(../gfx/link-button-little.png) no-repeat right -48px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -48px transparent;
 }
 
 a.button.grey.little, a.button.grey.little:link, a.button.grey.little:active, a.button.grey.little:visited {
-	background : url(../gfx/link-button-little.png) no-repeat left -64px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -64px transparent;
 }
 
 a.button.grey.little span, a.button.grey.little:link span, a.button.grey.little:active span, a.button.grey.little:visited span {
-	background : url(../gfx/link-button-little.png) no-repeat right -64px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -64px transparent;
 }
 button::-moz-focus-inner {border:0;padding:0;margin:0;}
 
@@ -686,172 +686,172 @@ button.big span{
 }
 
 button.green{
-	background : url(../gfx/link-button.png) no-repeat left top transparent;
+	background : url(gfx/link-button.png) no-repeat left top transparent;
 }
 
 button.green span{
-	background : url(../gfx/link-button.png) no-repeat right top transparent;
+	background : url(gfx/link-button.png) no-repeat right top transparent;
 }
 
 button.blue{
-	background : url(../gfx/link-button.png) no-repeat left -23px transparent;
+	background : url(gfx/link-button.png) no-repeat left -23px transparent;
 }
 
 button.blue span{
-	background : url(../gfx/link-button.png) no-repeat right -23px transparent;
+	background : url(gfx/link-button.png) no-repeat right -23px transparent;
 }
 
 button.orange{
-	background : url(../gfx/link-button.png) no-repeat left -46px transparent;
+	background : url(gfx/link-button.png) no-repeat left -46px transparent;
 }
 
 button.orange span{
-	background : url(../gfx/link-button.png) no-repeat right -46px transparent;
+	background : url(gfx/link-button.png) no-repeat right -46px transparent;
 }
 
 button.red{
-	background : url(../gfx/link-button.png) no-repeat left -69px transparent;
+	background : url(gfx/link-button.png) no-repeat left -69px transparent;
 }
 
 button.red span{
-	background : url(../gfx/link-button.png) no-repeat right -69px transparent;
+	background : url(gfx/link-button.png) no-repeat right -69px transparent;
 }
 
 button.grey{
-	background : url(../gfx/link-button.png) no-repeat left -92px transparent;
+	background : url(gfx/link-button.png) no-repeat left -92px transparent;
 }
 
 button.grey span{
-	background : url(../gfx/link-button.png) no-repeat right -92px transparent;
+	background : url(gfx/link-button.png) no-repeat right -92px transparent;
 }
 
 /* MEDIUM SIZE LINK BUTTONS */
 
 button.medium.green{
-	background : url(../gfx/link-button-medium.png) no-repeat left top transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left top transparent;
 }
 
 button.medium.green span{
-	background : url(../gfx/link-button-medium.png) no-repeat right top transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right top transparent;
 }
 
 button.medium.blue{
-	background : url(../gfx/link-button-medium.png) no-repeat left -28px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -28px transparent;
 }
 
 button.medium.blue span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -28px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -28px transparent;
 }
 
 button.medium.orange{
-	background : url(../gfx/link-button-medium.png) no-repeat left -56px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -56px transparent;
 }
 
 button.medium.orange span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -56px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -56px transparent;
 }
 
 button.medium.red{
-	background : url(../gfx/link-button-medium.png) no-repeat left -84px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -84px transparent;
 }
 
 button.medium.red span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -84px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -84px transparent;
 }
 
 button.medium.grey{
-	background : url(../gfx/link-button-medium.png) no-repeat left -112px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat left -112px transparent;
 }
 
 button.medium.grey span{
-	background : url(../gfx/link-button-medium.png) no-repeat right -112px transparent;
+	background : url(gfx/link-button-medium.png) no-repeat right -112px transparent;
 }
 /*Little*/
 
 button.little.green{
-	background : url(../gfx/link-button-little.png) no-repeat left top transparent;
+	background : url(gfx/link-button-little.png) no-repeat left top transparent;
 }
 
 button.little.green span{
-	background : url(../gfx/link-button-little.png) no-repeat right top transparent;
+	background : url(gfx/link-button-little.png) no-repeat right top transparent;
 }
 
 button.little.blue{
-	background : url(../gfx/link-button-little.png) no-repeat left -16px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -16px transparent;
 }
 
 button.little.blue span{
-	background : url(../gfx/link-button-little.png) no-repeat right -16px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -16px transparent;
 }
 
 button.little.orange{
-	background : url(../gfx/link-button-little.png) no-repeat left -31px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -31px transparent;
 }
 
 button.little.orange span{
-	background : url(../gfx/link-button-little.png) no-repeat right -31px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -31px transparent;
 }
 
 button.little.red{
-	background : url(../gfx/link-button-little.png) no-repeat left -48px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -48px transparent;
 }
 
 button.little.red span{
-	background : url(../gfx/link-button-little.png) no-repeat right -48px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -48px transparent;
 }
 
 button.little.grey{
-	background : url(../gfx/link-button-little.png) no-repeat left -63px transparent;
+	background : url(gfx/link-button-little.png) no-repeat left -63px transparent;
 }
 
 button.little.grey span{
-	background : url(../gfx/link-button-little.png) no-repeat right -63px transparent;
+	background : url(gfx/link-button-little.png) no-repeat right -63px transparent;
 }
 
 /* BIG SIZE LINK BUTTONS */
 
 button.big.green{
-	background : url(../gfx/link-button-big.png) no-repeat left top transparent;
+	background : url(gfx/link-button-big.png) no-repeat left top transparent;
 }
 
 button.big.green span{
-	background : url(../gfx/link-button-big.png) no-repeat right top transparent;
+	background : url(gfx/link-button-big.png) no-repeat right top transparent;
 }
 
 button.big.blue{
-	background : url(../gfx/link-button-big.png) no-repeat left -31px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -31px transparent;
 }
 
 button.big.blue span{
-	background : url(../gfx/link-button-big.png) no-repeat right -31px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -31px transparent;
 }
 
 button.big.orange{
-	background : url(../gfx/link-button-big.png) no-repeat left -62px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -62px transparent;
 }
 
 button.big.orange span{
-	background : url(../gfx/link-button-big.png) no-repeat right -62px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -62px transparent;
 }
 
 button.big.red{
-	background : url(../gfx/link-button-big.png) no-repeat left -93px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -93px transparent;
 }
 
 button.big.red span{
-	background : url(../gfx/link-button-big.png) no-repeat right -93px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -93px transparent;
 }
 
 button.big.grey{
-	background : url(../gfx/link-button-big.png) no-repeat left -124px transparent;
+	background : url(gfx/link-button-big.png) no-repeat left -124px transparent;
 }
 
 button.big.grey span{
-	background : url(../gfx/link-button-big.png) no-repeat right -124px transparent;
+	background : url(gfx/link-button-big.png) no-repeat right -124px transparent;
 }
 .hedliner{
 	display : block;
-	background : url(../gfx/box-title.gif) repeat-x left top transparent;
+	background : url(gfx/box-title.gif) repeat-x left top transparent;
 	border-bottom : 1px solid #e2e5e8;
 	border-left : 1px solid #FFFFFF;
 	border-right : 1px solid #FFFFFF;
@@ -969,7 +969,7 @@ a.wordselected{
 	margin: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	background-image: url(../gfx/closeword.png);
+	background-image: url(gfx/closeword.png);
 	padding-right: 23px;
 	background-repeat: no-repeat;
 	background-position: right 1px;
@@ -987,7 +987,7 @@ a.sugestWord{
 	margin: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	background-image: url(../gfx/upArrow.png);
+	background-image: url(gfx/upArrow.png);
 	padding-right: 23px;
 	background-repeat: no-repeat;
 	background-position: right 1px;
@@ -996,7 +996,7 @@ a.sugestWord{
 a.sugestWord:hover{ background-position:right -18px;}
 
 input.small {
-	background : url(../gfx/forms/forms-input-small.png) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-small.png) no-repeat left top transparent;
 	*background:transparent;
 	*background-color:#FFF;
 	width : 166px;
@@ -1004,7 +1004,7 @@ input.small {
 }
 
 input.medium {
-	background : url(../gfx/forms/forms-input-medium.png) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-medium.png) no-repeat left top transparent;
 	*background : transparent;
 	width : 297px;
 	float:right;
@@ -1012,7 +1012,7 @@ input.medium {
 }
 
 input.big {
-	background : url(../gfx/forms/forms-input-big.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-big.gif) no-repeat left top transparent;
 	*background : transparent;
 	width : 552px;
 	float:right;
@@ -1020,7 +1020,7 @@ input.big {
 input.invalid{ background-position:0px -54px; color:#900;}
 
 input.xl {
-	background : url(../gfx/forms/forms-input-xl.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-xl.gif) no-repeat left top transparent;
 	*background : transparent;
 	width : 802px;
 	float:right;
@@ -1033,7 +1033,7 @@ input:hover, input:focus {
 
 div.input-small {
 	display : inline;
-	background : url(../gfx/forms/forms-input-small.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-small.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 167px;
 	height : 28px;
@@ -1041,7 +1041,7 @@ div.input-small {
 
 div.input-medium {
 	display : inline;
-	background : url(../gfx/forms/forms-input-medium.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-medium.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 297px;
 	height : 28px;
@@ -1049,7 +1049,7 @@ div.input-medium {
 
 div.input-big {
 	display : inline;
-	background : url(../gfx/forms/forms-input-big.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-big.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 552px;
 	height : 28px;
@@ -1057,7 +1057,7 @@ div.input-big {
 
 div.input-xl {
 	display : inline;
-	background : url(../gfx/forms/forms-input-xl.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-xl.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 802px;
 	height : 28px;
@@ -1068,7 +1068,7 @@ div.input-xl {
 .ui-selectmenu {
 	display : inline-block;
 	position : relative;
-	background : url(../gfx/forms/forms-selectbox.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-selectbox.gif) no-repeat left top transparent;
 	padding : 5px 7px 6px 7px;
 	margin : 0 3px 0 0;
 	text-decoration : none;
@@ -1079,7 +1079,7 @@ div.input-xl {
 }
 
 .ui-selectmenu.small {
-	background : url(../gfx/forms/forms-selectbox-small.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-selectbox-small.gif) no-repeat left top transparent;
 	width : 67px;
 }
 
@@ -1147,7 +1147,7 @@ select.multi {
 
 input.file {
 	float : left;
-	background : url(../gfx/forms/forms-input-small.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-input-small.gif) no-repeat left top transparent;
 	margin : 0 2px 0 0;
 	z-index : 99;
 	height : 15px;
@@ -1156,7 +1156,7 @@ input.file {
 div.btn-upload {
 	display : inline-block;
 	*display : inline;
-	background : url(../gfx/forms/forms-file.gif) no-repeat right top transparent;
+	background : url(gfx/forms/forms-file.gif) no-repeat right top transparent;
 }
 
 div.btn-upload:hover {
@@ -1186,25 +1186,25 @@ textarea {
 }
 
 textarea.small {
-	background : url(../gfx/forms/forms-textarea-small.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-small.gif) no-repeat left top transparent;
 	*background : transparent;
 	width : 166px;
 }
 
 textarea.medium {
-	background : url(../gfx/forms/forms-textarea-medium.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-medium.gif) no-repeat left top transparent;
 	*background : transparent;
 	width : 297px;
 }
 
 textarea.big {
-	background : url(../gfx/forms/forms-textarea-big.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-big.gif) no-repeat left top transparent;
 	*background : transparent;
 	width : 552px;
 }
 
 textarea.xl {
-	background : url(../gfx/forms/forms-textarea-xl.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-xl.gif) no-repeat left top transparent;
 	*background : transparent;
 	width : 802px;
 }
@@ -1215,7 +1215,7 @@ textarea:hover, textarea:focus {
 
 div.textarea-small {
 	display : inline;
-	background : url(../gfx/forms/forms-textarea-small.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-small.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 166px;
 	height : 80px;
@@ -1223,7 +1223,7 @@ div.textarea-small {
 
 div.textarea-medium {
 	display : inline;
-	background : url(../gfx/forms/forms-textarea-medium.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-medium.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 297px;
 	height : 80px;
@@ -1231,7 +1231,7 @@ div.textarea-medium {
 
 div.textarea-big {
 	display : inline;
-	background : url(../gfx/forms/forms-textarea-big.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-big.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 552px;
 	height : 80px;
@@ -1239,7 +1239,7 @@ div.textarea-big {
 
 div.textarea-xl {
 	display : inline;
-	background : url(../gfx/forms/forms-textarea-xl.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-textarea-xl.gif) no-repeat left top transparent;
 	overflow : hidden;
 	width : 802px;
 	height : 80px;
@@ -1288,11 +1288,11 @@ table input[type=radio] {
 }
 
 .custom-checkbox label {
-	background : url(../gfx/forms/forms-checkbox.gif) no-repeat;
+	background : url(gfx/forms/forms-checkbox.gif) no-repeat;
 }
 
 .custom-radio label {
-	background : url(../gfx/forms/forms-radio.gif) no-repeat;
+	background : url(gfx/forms/forms-radio.gif) no-repeat;
 }
 
 .custom-checkbox label.hover,
@@ -1314,7 +1314,7 @@ table input[type=radio] {
 
 input.datepicker {
 	float : none;
-	background : url(../gfx/forms/forms-date.gif) no-repeat right top transparent;
+	background : url(gfx/forms/forms-date.gif) no-repeat right top transparent;
 	margin : 0 20px 0 5px;
 	padding : 6px 34px 6px 7px;
 	cursor : pointer;
@@ -1323,7 +1323,7 @@ input.datepicker {
 
 input.timepicker {
 	float : none;
-	background : url(../gfx/forms/forms-selectbox.gif) no-repeat left top transparent;
+	background : url(gfx/forms/forms-selectbox.gif) no-repeat left top transparent;
 	margin : 0 20px 0 5px;
 	padding : 5px 7px 6px 7px;
 	cursor : pointer;
@@ -1369,7 +1369,7 @@ input.timepicker {
 
 .slider .ui-slider .ui-slider-handle {
 	position: absolute;
-	background: url(../gfx/slider-button.gif) no-repeat;
+	background: url(gfx/slider-button.gif) no-repeat;
 	top : -3px;
 	z-index: 2;
 	width: 16px;
@@ -1472,7 +1472,7 @@ input.timepicker {
   *margin-right: .3em;
 	line-height: 18px;
 	vertical-align: text-top;
-	background-image: url(../gfx/glyphicons-halflings.png);
+	background-image: url(gfx/glyphicons-halflings.png);
 	background-position: 14px 14px;
 	background-repeat: no-repeat;
 	float: left;
@@ -1481,7 +1481,7 @@ input.timepicker {
 
 
 .icWh {
-  background-image: url("../gfx/glyphicons-halflings-white.png");
+  background-image: url("gfx/glyphicons-halflings-white.png");
 }
 
 .icoglass {
@@ -2076,7 +2076,7 @@ filter:alpha(opacity=100); /* For IE8 and earlier */
 	padding:5px 5px 9px 8px;
 	width:250px;
 	float:left;
-	background-image: url(../gfx/Blk80pr.png);
+	background-image: url(gfx/Blk80pr.png);
 	border: 2px solid #FFF;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -2089,7 +2089,7 @@ filter:alpha(opacity=100); /* For IE8 and earlier */
 	text-align:center;
 }
 .Alrt span{ background:transparent;
-background-image:url(../gfx/trngl.png);
+background-image:url(gfx/trngl.png);
 background-repeat:no-repeat;
 display:block;
 position:relative;
@@ -2105,7 +2105,7 @@ margin-left:100px;
 	padding:3px 3px 5px 5px;
 	width:250px;
 	float:left;
-	background-image: url(../gfx/Blk80pr.png);
+	background-image: url(gfx/Blk80pr.png);
 	border: 2px solid #FFF;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -2129,7 +2129,7 @@ margin-left:100px;}
 /**light box**/
 
 .lghtbox{
-	background-image: url(../gfx/wht80pr.png);
+	background-image: url(gfx/wht80pr.png);
 	float: left;
 	height: 100%;
 	width: 100%;
@@ -2156,7 +2156,7 @@ margin-left:100px;}
 .menuAdmin{
 	width:100%;
 	float:left;
-	background-image: url(../gfx/backMenuDashboard.jpg);
+	background-image: url(gfx/backMenuDashboard.jpg);
 	background-repeat: repeat-y;
 	background-position: left;
 }
@@ -2177,7 +2177,7 @@ ul.menuAdmin li a{
 	font-weight: 600;
 	color:#333;
 	font-size: 17px;
-	background-image: url(../gfx/backBtnadmin.jpg);
+	background-image: url(gfx/backBtnadmin.jpg);
 	background-position: top;
 	display:inline;
 	float:left;
@@ -2192,7 +2192,7 @@ ul.menuAdmin li a{
 ul.menuAdmin li a:hover{ background-position:bottom;}
 ul.menuAdmin li a.selected{
 	color: #FFF;
-	background-image: url(../gfx/seletedMenu.png);
+	background-image: url(gfx/seletedMenu.png);
 	background-position: left top;
 	width: 220px;
 	height: 38px;
@@ -2214,7 +2214,7 @@ ul.menuAdmin li span img{  width:37px; height:35px;}
 /*Dashboard*/
 a.btndash, .btndash{
 	color: #c5c4c4;
-	background-image: url(../gfx/btnDashboard.png);
+	background-image: url(gfx/btnDashboard.png);
 	background-position:top;
 	background-repeat:no-repeat;
 	display: block;
@@ -2237,7 +2237,7 @@ a.btndash:hover{
 
 
 .titlecond{
-	background-image: url(../gfx/degradateTitle.jpg);
+	background-image: url(gfx/degradateTitle.jpg);
 	background-repeat: repeat-x;
 	background-position:top;
 	padding-left:8px;
@@ -2253,7 +2253,7 @@ a.btndash:hover{
 
 .dataGrid{ float:left; width:97.1%; margin-left:1%; display:table; margin-top:3px; margin-bottom:3px;}
 .gridRow, a.gridRow {
-	background-image: url(../gfx/backgrid.jpg);
+	background-image: url(gfx/backgrid.jpg);
 	width: 95.5%;
 	padding-left: 2%;
 	display: table-row;
@@ -2300,7 +2300,7 @@ a.btndash:hover{
 	background-color:#C0C0C0;
 }
 .gridtwo{ background-color:#FAFAFA; 
-background-image:url(../gfx/backGrid2.jpg); 
+background-image:url(gfx/backGrid2.jpg); 
 width:700px; 
 float:left; 
 padding:10px; 
@@ -2320,7 +2320,7 @@ box-shadow: 0px 2px 2px 1px #838282;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	color: #949898;
-	background-image: url(../gfx/warningData.jpg);
+	background-image: url(gfx/warningData.jpg);
 	font-size: 14px;
 	
 	border: 1px solid #FC0;
@@ -2330,7 +2330,7 @@ box-shadow: 0px 2px 2px 1px #838282;
 	background-position: top;
 }
 a.eliminate{
-	background-image: url(../gfx/btnEliminate.png);
+	background-image: url(gfx/btnEliminate.png);
 	background-repeat: no-repeat;
 	background-position: top;
 	display: block;
@@ -2341,8 +2341,8 @@ a.eliminate{
 }
 a.eliminate:hover{ background-position:bottom;}
 
-.pestana{ float:right; background-image:url(../gfx/pestana.png); width:233px; height:40px; padding-left:5px; padding-right:5px; padding-top:15px; margin-right:-1px; margin-top:80px; position:relative;}
-.pestanAcceso{ background-image:url(../gfx/pestanaAcceso.png); background-repeat:no-repeat;}
+.pestana{ float:right; background-image:url(gfx/pestana.png); width:233px; height:40px; padding-left:5px; padding-right:5px; padding-top:15px; margin-right:-1px; margin-top:80px; position:relative;}
+.pestanAcceso{ background-image:url(gfx/pestanaAcceso.png); background-repeat:no-repeat;}
 /*Empresas*/
 .both h4 {
 	font-family: Arial, Helvetica, sans-serif;
@@ -2538,7 +2538,7 @@ a.eliminate:hover{ background-position:bottom;}
 a.imageUpload{
 	display: block;
 	float: left;
-	background-image: url(../gfx/uploadImage.png);
+	background-image: url(gfx/uploadImage.png);
 	width: 250px;
 	height: 250px;
 	position: absolute;
@@ -2658,7 +2658,7 @@ a.eliminateWord{
 	margin: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	background-image: url(../gfx/closeword.png);
+	background-image: url(gfx/closeword.png);
 	padding-right: 23px;
 	background-repeat: no-repeat;
 	background-position: right 1px;
@@ -2668,12 +2668,12 @@ a.eliminateWord:hover{ background-color:#F00;}
 
 
 
-.sugestions{color:#FFF; padding:10px 5px 0px 5px; font-size:11px; position:absolute; background-image:url(../gfx/grey80pr.png); width:280px;}
-#slug1 span{position:relative; top:85px; left:-29px; display:block; width:24px; height:19px; background-image:url(../gfx/cone.png);}
+.sugestions{color:#FFF; padding:10px 5px 0px 5px; font-size:11px; position:absolute; background-image:url(gfx/grey80pr.png); width:280px;}
+#slug1 span{position:relative; top:85px; left:-29px; display:block; width:24px; height:19px; background-image:url(gfx/cone.png);}
 
-#slug2 span{position:relative; top:22px; left:-29px; display:block; width:24px; height:19px; background-image:url(../gfx/cone.png);}
+#slug2 span{position:relative; top:22px; left:-29px; display:block; width:24px; height:19px; background-image:url(gfx/cone.png);}
 
-#slug3 span{position:relative; top:22px; left:-29px; display:block; width:24px; height:19px; background-image:url(../gfx/cone.png);}
+#slug3 span{position:relative; top:22px; left:-29px; display:block; width:24px; height:19px; background-image:url(gfx/cone.png);}
 
 .sugestions p{ font-size:11px;}
 

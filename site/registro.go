@@ -199,7 +199,9 @@ func ConfirmaCodigo(w http.ResponseWriter, r *http.Request) {
     key, _ := datastore.DecodeKey(r.FormValue("c"))
 	var g model.Cta
     if err := datastore.Get(c, key, &g); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
+		if err := activationMessageTpl.ExecuteTemplate(w, "codeerr", nil); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
         return
     }
 
@@ -274,12 +276,16 @@ func ConfirmaCodigo(w http.ResponseWriter, r *http.Request) {
 				}
 			} else {
 				// El Folio no es seguro, se deshecha la operación o se encola
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				if err := activationMessageTpl.ExecuteTemplate(w, "codeerr", nil); err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+				}
 				return
 			}
 		} else {
 			// El Folio no es seguro, se deshecha la operación o se encola 
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			if err := activationMessageTpl.ExecuteTemplate(w, "codeerr", nil); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
 			return
 		}
 	} else {

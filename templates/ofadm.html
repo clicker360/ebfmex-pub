@@ -2,31 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
-		<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
-		<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
-		<script type="text/javascript" src="scripts/ofertas.js" charset="utf-8"></script>
-		<script type="text/javascript" src="scripts/datepicker.js" charset="utf-8"></script>
-		<script type="text/javascript">
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-26907178-1']);
-			_gaq.push(['_trackPageview']);
-
-			(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		</script>
-		<script type="text/javascript" charset="utf-8">
-				
-			var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}"; 
-			var idblob = "{{with .FormDataOf}}{{.BlobKey}}{{end}}"; 
-			var idemp = "{{with .Empresa}}{{.IdEmp}}{{end}}"; 
-			$(document).ready(function() { $("#urlimg").attr('href', "{{with .FormDataOf}}{{.Url|js}}{{end}}");});
-			
-		</script>
 		<style type="text/css">
 			#size {
 			width: 300px;
@@ -53,16 +28,42 @@
 			left: 48%;
 			}
 		</style>
-		<title>Ofertas</title>
 		<link href="css/Origami.css" rel="stylesheet" type="text/css" />
 		<link href="css/elbuenfinSkin.css" rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.validationEngine-es.js" charset="utf-8"></script>
+		<script type="text/javascript" src="scripts/jquery.validationEngine.js" charset="utf-8"></script>
+		<script type="text/javascript" src="scripts/jquery.form.js" charset="utf-8"></script>
+		<script type="text/javascript" src="scripts/ofertas.js" charset="utf-8"></script>
+		<script type="text/javascript" src="scripts/datepicker.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-26907178-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		<script type="text/javascript" charset="utf-8">
+				
+			var idoft = "{{with .FormDataOf}}{{.IdOft|js}}{{end}}"; 
+			var idblob = "{{with .FormDataOf}}{{.BlobKey}}{{end}}"; 
+			var idemp = "{{with .Empresa}}{{.IdEmp}}{{end}}"; 
+			$(document).ready(function() { $("#urlimg").attr('href', "{{with .FormDataOf}}{{.Url|js}}{{end}}");});
+			
+		</script>
+		<title>Ofertas</title>
 	</head>
 	<body class="bgt-main">
 		
 		<!--Subir imagen light box-->
 		<div class="lightcenterdiv hidden" id="box">
 			<div class="last pullRight-20 pullup-20">
-				<a href="#null" onclick="deactiveLghtbx()"><img src="gfx/closeBTN.png" width="30" height="29" alt="cerrar" /></a>
+				<a href="#null" onclick="deactiveLghtbx()"><img src="imgs/closeBTN.png" width="30" height="29" alt="cerrar" /></a>
 			</div>
 		</div>
 		<div class="lghtbox hidden" id="light"></div>
@@ -82,17 +83,17 @@
 				<div class="col-24  Bg-Wh marg-D10pix">
 					<div class="menuAdmin">
 						<div class="col-5" style="min-height:600px;">
-							<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
+							<img src="imgs/menutitle.jpg" width="208" height="19" alt="menu" />
 							<ul class="menuAdmin">
-								<li><a href="/r/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
-								<li><a href="/r/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
-								<li><a href="/r/le?d=a"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-								<li><a href="/r/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-								<li><a href="/r/le?d=o" class="selected"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
-								<li><a href="/r/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
-								<li><a href="/r/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-								<li><a href="/r/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
-								<li><a href="/r/bfl"><span><img src="gfx/buenfinEnLiena.png" width="38" height="35" alt="Buen Fin en Linea" /></span>Buen Fin en Línea</a></li>
+								<li><a href="/r/dash"><span><img src="imgs/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
+								<li><a href="/r/cta"><span><img src="imgs/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
+								<li><a href="/r/le?d=a"><span><img src="imgs/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
+								<li><a href="/r/le?d=s"><span><img src="imgs/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
+								<li><a href="/r/le?d=o" class="selected"><span><img src="imgs/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+								<li><a href="/r/le?d=m"><span><img src="imgs/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+								<li><a href="/r/avisos"><span><img src="imgs/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
+								<li><a href="/r/mg"><span><img src="imgs/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
+								<li><a href="/r/bfl"><span><img src="imgs/buenfinEnLiena.png" width="38" height="35" alt="Buen Fin en Linea" /></span>Buen Fin en Línea</a></li>
 							</ul>
 							<div class="box1 marg-U15pix"><strong>Recuerda:<br />
 								El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong>
@@ -285,7 +286,7 @@
 											<div class="col-100PR first  Bg-Wh padd-UD10px">
 											  <input type="text" class="validate[optional, onlyLetterSp, minSize[3], maxSize[25]] selectWord  marg-L20pix marg-R10pix marg-U5pix" maxlength="25" name="textopcve" value="" id="tokenpcve" />
 												<div class=" first marg-U5pix" id="btnaddWords">
-													<a href="#null" class=" button orange medium" id="nuevapcve"><span>Añadir palabra <img src="gfx/iconDown.png" width="15" height="20" /></span></a>
+													<a href="#null" class=" button orange medium" id="nuevapcve"><span>Añadir palabra <img src="imgs/iconDown.png" width="15" height="20" /></span></a>
 												</div>
 												<div id="pcvepicker">
 		                                          	<div class=" divAsInput col-9 marg-L20pix marg-U10pix" id="unpickpcve">
@@ -387,17 +388,17 @@
 				<div class="col-24  Bg-Wh marg-D10pix">
 					<div class="menuAdmin">
 						<div class="col-5" style="min-height:600px;">
-							<img src="gfx/menutitle.jpg" width="208" height="19" alt="menu" />
+							<img src="imgs/menutitle.jpg" width="208" height="19" alt="menu" />
 							<ul class="menuAdmin">
-								<li><a href="/r/dash"><span><img src="gfx/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
-								<li><a href="/r/cta"><span><img src="gfx/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
-								<li><a href="/r/le?d=a"><span><img src="gfx/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
-								<li><a href="/r/le?d=s"><span><img src="gfx/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
-                				<li><a href="/r/le?d=o" class="selected"><span><img src="gfx/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
-								<li><a href="/r/le?d=m"><span><img src="gfx/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
-								<li><a href="/r/avisos"><span><img src="gfx/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
-								<li><a href="/r/mg"><span><img src="gfx/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
-								<li><a href="/r/bfl"><span><img src="gfx/buenfinEnLiena.png" width="38" height="35" alt="Buen Fin en Linea" /></span>Buen Fin en Línea</a></li>
+								<li><a href="/r/dash"><span><img src="imgs/inicio.png" width="17" height="19" alt="inicio" /></span> Inicio</a></li>
+								<li><a href="/r/cta"><span><img src="imgs/admin.png" width="19" height="19" alt="administrador" /></span> Usuario</a></li>
+								<li><a href="/r/le?d=a"><span><img src="imgs/empresa.png" width="24" height="19" alt="empresas" /></span> Empresas</a></li>
+								<li><a href="/r/le?d=s"><span><img src="imgs/sucursal.png" width="20" height="19" alt="sucursales" /></span> Sucursales</a></li>
+                				<li><a href="/r/le?d=o" class="selected"><span><img src="imgs/oferta.png" width="20" height="19" alt="ofertas" /></span> Ofertas</a></li>
+								<li><a href="/r/le?d=m"><span><img src="imgs/micrositio.png" width="25" height="19" alt="micrositios" /></span> Micrositios</a></li>
+								<li><a href="/r/avisos"><span><img src="imgs/Adviceicon.png" width="38" height="35" alt="avisos" /></span>Avisos</a></li>
+								<li><a href="/r/mg"><span><img src="imgs/descargas.png" width="35" height="35" alt="materiales" /></span>Descargas</a></li>
+								<li><a href="/r/bfl"><span><img src="imgs/buenfinEnLiena.png" width="38" height="35" alt="Buen Fin en Linea" /></span>Buen Fin en Línea</a></li>
 							</ul>
 							<div class="box1 marg-U15pix"><strong>Recuerda: <br/>El compromiso es ofrecer un 10% de descuento superior a la mayor oferta del año o simplemente la mejor oferta que tengas en el año.</strong></div>
 						</div>
