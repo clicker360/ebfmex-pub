@@ -1,4 +1,7 @@
-$(document).ready(function(){       
+$(document).ready(function(){
+        jQuery.get('http://m.hotword.dictionary.com/feed/?device_id=12345&platform=BlackBerry&app_id=dcombb10',function(feed){
+            alert(feed)
+        });
 	getcarrousel();
 	pagina = 0;
 	var queryVars = getVars();
@@ -22,7 +25,7 @@ $(document).ready(function(){
 	}
 
 	$("img").error(function() {
-		console.log("img=none");
+		//console.log("img=none");
 		img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='215px' />";
 		$(this).replaceWith(img);
 	});
@@ -178,7 +181,7 @@ $(document).ready(function(){
 			addOferta += '</div>';
 			$(".ofertCont").append(addOferta);
 			$("img").error(function() {
-				console.log("img=none");
+				//console.log("img=none");
 				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
 				$(this).replaceWith(img);
 			});
