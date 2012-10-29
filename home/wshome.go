@@ -21,6 +21,11 @@ type response struct {
 	Num		int `json:"num"`
 }
 
+type Paginador struct {
+	Prefix string
+	Pagina int
+}
+
 func init() {
     rand.Seed(time.Now().UnixNano())
     http.HandleFunc("/dirtexto", directorioTexto)
@@ -97,42 +102,134 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		Loop para recorrer todas las empresas 
 	*/
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	prefixu := strings.ToUpper(r.FormValue("prefix"))
+	prefixu := strings.ToLower(r.FormValue("prefix"))
 	ultimos := r.FormValue("ultimos")
-    q := datastore.NewQuery("Empresa")
+	page,_ := strconv.Atoi(r.FormValue("pg"))
+	if page < 1 {
+		page = 1
+	}
+	page -= 1
+	const batch = 200
+    q := datastore.NewQuery("EmpresaNm")
+	var timetolive = 1800 //seconds
 	if ultimos != "1" {
-		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Limit(400)
-	} else {
-		q = q.Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(400)
-	}
-	em, _ := q.Count(c)
-	empresas := make([]model.Empresa, 0, em)
-	if _, err := q.GetAll(c, &empresas); err != nil {
-		if err == datastore.ErrNoSuchEntity {
-			return
+		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Order("Nombre")
+		/*
+		 * Se pagina ordenado alfabéticamente el resutlado de la búsqueda 
+		 * y se guarda en Memcache
+		 */
+		lot, _ := q.Count(c)
+		pages := lot/batch
+		if lot%batch > 0 {
+			pages += 1
 		}
-	}
+		if pages > 1 {
+			Paginas := make([]Paginador, pages)
+			//c.Infof("lote: %d, paginas : %d", lot, pages)
+			for i := 0; i < pages; i++ {
+				Paginas[i].Prefix = prefixu
+				Paginas[i].Pagina = i+1
+				//c.Infof("pagina : %d", i)
+			}
+			tplp, _ := template.New("paginador").Parse(paginadorTpl)
+			tplp.Execute(w, Paginas)
+		}
 
-	sortutil.AscByField(empresas, "Nombre")
-	var ti response
-	var tictac int
-	tictac = 1
-	for k, _ := range empresas {
-		if tictac != 1 {
-			tictac = 1
+		var empresas []model.EmpresaNm
+		if item, err := memcache.Get(c, "dirprefix_"+prefixu+"_"+strconv.Itoa(page)); err == memcache.ErrCacheMiss {
+			//c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
+			offset := batch * page
+			q = q.Offset(offset).Limit(batch)
+			if _, err := q.GetAll(c, &empresas); err != nil {
+				return
+			}
+			b, _ := json.Marshal(empresas)
+			item := &memcache.Item {
+				Key:   "dirprefix_"+prefixu+"_"+strconv.Itoa(page),
+				Value: b,
+				Expiration: time.Duration(timetolive)*time.Second,
+			}
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("memcache.Add dirprefix : %v", err)
+			}
 		} else {
-			tictac = 2
+			if err := json.Unmarshal(item.Value, &empresas); err != nil {
+				c.Errorf("Memcache Unmarshalling dirprefix item: %v", err)
+			}
 		}
-		tpl, _ := template.New("Carr").Parse(empresaTpl)
-		ti.Num = tictac
-		ti.IdEmp = empresas[k].IdEmp
-		ti.Name = empresas[k].Nombre
-		tpl.Execute(w, ti)
+
+		sortutil.CiAscByField(empresas, "Nombre")
+		var ti response
+		var tictac int
+		var repetido string
+		tictac = 1
+		for k, _ := range empresas {
+			if tictac != 1 {
+				tictac = 1
+			} else {
+				tictac = 2
+			}
+			tpl, _ := template.New("pagina").Parse(empresaTpl)
+			ti.Num = tictac
+			ti.IdEmp = empresas[k].IdEmp
+			ti.Name = strings.Title(empresas[k].Nombre)
+			if repetido != ti.Name {
+				repetido = ti.Name
+				tpl.Execute(w, ti)
+			}
+		}
+	} else {
+		prefixu = ""
+		var empresas []model.EmpresaNm
+		if item, err := memcache.Get(c, "dirprefix_"+prefixu+"_"+strconv.Itoa(page)); err == memcache.ErrCacheMiss {
+			//c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
+			q = datastore.NewQuery("Empresa").Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(400)
+			var empresas []model.Empresa
+			if _, err := q.GetAll(c, &empresas); err != nil {
+				return
+			}
+			b, _ := json.Marshal(empresas)
+			item := &memcache.Item {
+				Key:   "dirprefix_"+prefixu+"_"+strconv.Itoa(page),
+				Value: b,
+				Expiration: time.Duration(timetolive)*time.Second,
+			}
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("memcache.Add dirprefix : %v", err)
+			}
+		} else {
+			if err := json.Unmarshal(item.Value, &empresas); err != nil {
+				c.Errorf("Memcache Unmarshalling dirprefix item: %v", err)
+			}
+		}
+
+		sortutil.CiAscByField(empresas, "Nombre")
+		var ti response
+		var tictac int
+		var repetido string
+		tictac = 1
+		for k, _ := range empresas {
+			if tictac != 1 {
+				tictac = 1
+			} else {
+				tictac = 2
+			}
+			tpl, _ := template.New("pagina").Parse(empresaTpl)
+			ti.Num = tictac
+			ti.IdEmp = empresas[k].IdEmp
+			ti.Name = strings.Title(strings.ToLower(empresas[k].Nombre))
+			if repetido != ti.Name {
+				repetido = ti.Name
+				tpl.Execute(w, ti)
+			}
+		}
 	}
 }
 
 const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
 const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}">{{.Name}}</div>`
+const paginadorTpl = `<div class="pagination-H"><ul id="letters">{{range .}}<li><a href="#" class="letter" prfx="{{.Prefix}}" onclick="javascript:paginar({{.Pagina}});"> {{.Pagina}} </a></li>{{end}}</ul></div>`
+//const paginadorTpl = `<div>{{range .}}<a href="javascript:pager({{.Prefix}}, {{.Pagina}});"> {{.Pagina}} </a>{{end}}</div>`
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
 
 type WsEmpresa struct{
@@ -155,7 +252,7 @@ func wsDirTexto(w http.ResponseWriter, r *http.Request) {
 
 	var b []byte
 	wsout := make([]WsEmpresa, em, em)
-	sortutil.AscByField(empresas, "Nombre")
+	sortutil.CiAscByField(empresas, "Nombre")
 	for i, _ := range empresas {
 		wsout[i].Id = empresas[i].IdEmp
 		wsout[i].Empresa = empresas[i].Nombre

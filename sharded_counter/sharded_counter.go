@@ -3,7 +3,7 @@ package sharded_counter
 import (
     "appengine"
     "appengine/datastore"
-    "appengine/memcache"
+    //"appengine/memcache"
     "fmt"
     "math/rand"
 )
@@ -30,10 +30,12 @@ func memcacheKey(name string) string {
 // Count retrieves the value of the named counter.
 func Count(c appengine.Context, name string) (int32, error) {
     var total int32 = 0
+	/*
     mkey := memcacheKey(name)
     if _, err := memcache.JSON.Get(c, mkey, &total); err == nil {
         return total, nil
     }
+	*/
     q := datastore.NewQuery(shardKind).Filter("Name =", name)
     for t := q.Run(c); ; {
         var s shard
@@ -46,11 +48,13 @@ func Count(c appengine.Context, name string) (int32, error) {
         }
         total += s.Count
     }
+	/*
     memcache.JSON.Set(c, &memcache.Item{
         Key:        mkey,
         Object:     &total,
         Expiration: 60,
     })
+	*/
     return total, nil
 }
 
@@ -71,7 +75,7 @@ func Increment(c appengine.Context, name string) error {
         return err
     }
     err = datastore.RunInTransaction(c, func(c appengine.Context) error {
-        shardName := fmt.Sprintf("shard%d", rand.Intn(cfg.Shards))
+        shardName := fmt.Sprintf("%v%d", name, rand.Intn(cfg.Shards))
         key := datastore.NewKey(c, shardKind, shardName, 0, nil)
         var s shard
         err := datastore.Get(c, key, &s)
@@ -80,13 +84,14 @@ func Increment(c appengine.Context, name string) error {
             return err
         }
         s.Count++
+		s.Name = name
         _, err = datastore.Put(c, key, &s)
         return err
     }, nil)
     if err != nil {
         return err
     }
-    memcache.Increment(c, memcacheKey(name), 1, 0)
+    //memcache.Increment(c, memcacheKey(name), 1, 0)
     return nil
 }
 

@@ -6,8 +6,10 @@ import (
 	"appengine/memcache"
 	"encoding/json"
 	//"strconv"
+	"strings"
 	"net/http"
 	"time"
+	//"sharded_counter"
 )
 
 const GMT = 6
@@ -60,6 +62,14 @@ type Empresa struct {
 	Desc		string
 	FechaHora	time.Time
 	Status		bool
+}
+
+type EmpresaNm struct {
+	IdEmp		string
+	Folio		int32
+	RFC			string
+	Nombre		string
+	RazonSoc	string
 }
 
 type Sucursal struct {
@@ -193,18 +203,54 @@ func (r *Cta) GetEmpresa(c appengine.Context, id string) (*Empresa, error) {
 	e := &Empresa{ IdEmp: id }
 	err := datastore.Get(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
 	if err == datastore.ErrNoSuchEntity {
-		return e, err
+		return nil, err
 	}
-	return e, err
+	return e, nil
 }
 
 func (r *Cta) PutEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
+	//if e.Folio == 0 {
+	//	if err := sharded_counter.Increment(c, "empresa"); err == nil {
+	//		if olio, err := sharded_counter.Count(c, "empresa"); err == nil {
+	//			e.Folio = folio
+	//		}
+	//	}
+	//}
+
 	_, err := datastore.Put(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
 	if err != nil {
 		return nil, err
 	}
 	_ = PutChangeControl(c, e.IdEmp, "Empresa", "M")
-	return e, err
+
+	/*
+	 * Se consulta la empresa normalizada para actualizar datos
+	 */
+	en := &EmpresaNm{ IdEmp: e.IdEmp }
+	err = datastore.Get(c, datastore.NewKey(c, "EmpresaNm", en.IdEmp, 0, r.Key(c)), en)
+	if err == datastore.ErrNoSuchEntity {
+		// No existe, se crea el registro normalizado
+		// Todo esto se hizo porque no se planeo bien desde un principio y 
+		// se requiere normalizar el nombre de empresa así como un folio
+		// para llevar la cuenta en tiempo real, entre otras cosas :S
+		en.Folio = e.Folio
+		en.RFC = strings.ToUpper(e.RFC)
+		en.Nombre = strings.ToLower(e.Nombre)
+		en.RazonSoc = strings.ToLower(e.RazonSoc)
+		_, err = datastore.Put(c, datastore.NewKey(c, "EmpresaNm", en.IdEmp, 0, r.Key(c)), en)
+		if err != nil {
+			c.Errorf("PutEmpresa() Error al intentar crear EmpresaNm : %v", e.IdEmp)
+		}
+	} else {
+		en.RFC = strings.ToUpper(e.RFC)
+		en.Nombre = strings.ToLower(e.Nombre)
+		en.RazonSoc = strings.ToLower(e.RazonSoc)
+		_, err = datastore.Put(c, datastore.NewKey(c, "EmpresaNm", en.IdEmp, 0, r.Key(c)), en)
+		if err != nil {
+			c.Errorf("PutEmpresa() Error al intentar actualizar EmpresaNm : %v", e.IdEmp)
+		}
+	}
+	return e, nil
 }
 
 func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
@@ -212,13 +258,37 @@ func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 		OJO:
 		Agregar consulta del random antes de crear entity
 	*/
-	e.IdEmp = RandId(14)
-    _, err := datastore.Put(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
-	if err != nil {
-		return nil, err
-	}
-	_ = PutChangeControl(c, e.IdEmp, "Empresa", "A")
-	return e, err
+	//if err := sharded_counter.Increment(c, "empresa"); err == nil {
+	//	if folio, err := sharded_counter.Count(c, "empresa"); err == nil {
+			e.IdEmp = RandId(14)
+			//e.Folio = folio
+			_, err := datastore.Put(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
+			if err != nil {
+				return nil, err
+			}
+			_ = PutChangeControl(c, e.IdEmp, "Empresa", "A")
+			c.Infof("Empresa creada Folio: %d, RandID: %v", e.Folio, e.IdEmp)
+
+			var en EmpresaNm
+			en.IdEmp = e.IdEmp
+			en.Folio = e.Folio
+			en.RFC = strings.ToUpper(e.RFC)
+			en.Nombre = strings.ToLower(e.Nombre)
+			en.RazonSoc = strings.ToLower(e.RazonSoc)
+			_, err = datastore.Put(c, datastore.NewKey(c, "EmpresaNm", en.IdEmp, 0, r.Key(c)), &en)
+			if err != nil {
+				c.Errorf("Error al intentar crear EmpresaNm : %v", e.IdEmp)
+				return nil, err
+			}
+	//	} else {
+	//		c.Errorf("Folio inseguro al intentar crear Empresa : %v", e.IdEmp)
+	//		return e, err
+	//	}
+	//} else {
+//		c.Errorf("Folio inseguro al intentar crear Empresa : %v", e.IdEmp)
+//		return e, err
+//	}
+	return e, nil
 }
 
 func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
@@ -232,6 +302,9 @@ func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
 		return err
 	}
     if err := datastore.Delete(c, datastore.NewKey(c, "Empresa", id, 0, r.Key(c))); err != nil {
+		return err
+	}
+    if err := datastore.Delete(c, datastore.NewKey(c, "EmpresaNm", id, 0, r.Key(c))); err != nil {
 		return err
 	}
 	_ = PutChangeControl(c, id, "Empresa", "B")
@@ -515,7 +588,7 @@ func ListEnt(c appengine.Context, ent string) *[]Entidad {
 	} else {
 		//c.Infof("Memcache activo: %v", item.Key)
 		if err := json.Unmarshal(item.Value, &estados); err != nil {
-			c.Errorf("Memcache Unmarchalling item: %v", err)
+			c.Errorf("Memcache Unmarshalling item: %v", err)
 		}
 	}
 	for i, _ := range estados {

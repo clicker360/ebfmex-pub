@@ -86,9 +86,9 @@ func GetEmp(w http.ResponseWriter, r *http.Request) {
 	if s, ok := sess.IsSess(w, r, c); ok {
 		u, _ := model.GetCta(c, s.User)
 		e, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
-		if err == datastore.ErrNoSuchEntity {
-			//http.Error(w, err.Error(), http.StatusInternalServerError)
-			//Se trata de una empresa nueva
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 		formEmp(c, w, &s, e)
 	} else {
@@ -104,11 +104,27 @@ func ModEmp(w http.ResponseWriter, r *http.Request) {
 		_, valid := formatoEmp(w, r, s, true)
 		if !valid {return}
 
+		/*
+		 * Se carga un struct con los datos de la forma
+		 */
 		fe := fillEmpresa(r)
-		_, err := u.PutEmpresa(c, &fe)
-		if err == datastore.ErrNoSuchEntity {
-			// Aviso NO EXISTE EMPRESA
-			//http.Error(w, err.Error(), http.StatusInternalServerError)
+
+		/*
+		 * Se requiere leer la estructura para insertar el folio y el status
+		 * y otros campos que se deben conservar 
+		 */
+		e, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			c.Errorf("ModEmp() GetEmpresa() Error al intentar actualizar Empresa : %v", e.IdEmp)
+		} else {
+			fe.Folio = e.Folio
+			fe.Status = e.Status
+			fe.Benef = e.Benef
+
+			_, err := u.PutEmpresa(c, &fe)
+			if err == datastore.ErrNoSuchEntity {
+				c.Errorf("ModEmp() PutEmpresa() Error al intentar actualizar Empresa : %v", e.IdEmp)
+			}
 		}
 		ShowListEmp(w, r)
 	} else {

@@ -21,22 +21,28 @@
 
 </script>
 <script type="text/javascript">
+var letter;
 $(document).ready(function(){
 	getultimos();
 	$('.letter').click(function(e){
 		$('.letter').removeClass('selected');
 		$(this).addClass('selected');
-		var letter = $(this).attr('id');
+		letter = $(this).attr('id');
 		$('#theletter').text( $(this).text());
 		if(letter == "ultimos") {
 			getultimos();
 		} else {
-			getletter(letter);
+			getletter(letter, 1);
 		}
 	});
 });
-function getletter(letter) {
-	$.get("/dirtexto", { prefix:""+letter+"" }, function(response){
+function paginar(page) {
+	$('.letter').removeClass('selected');
+	$(this).addClass('selected');
+	getletter(letter, page);
+}
+function getletter(letter, page) {
+	$.get("/dirtexto", { prefix:""+letter+"", pg:""+page+"" }, function(response){
 		$('#contenedor').html(response);
 	});
 }
@@ -71,7 +77,7 @@ function getultimos() {
           <h1 class="typeTle">Directorio de empresas participantes</h1>
           <div class="pagination-H">
             <ul id="letters">
-              <li><a class="letter " href="#" id="A">A </a></li>
+              <li><a class="letter" href="#" id="A">A </a></li>
               <li><a class="letter" href="#" id="B">B</a></li>
               <li><a class="letter" href="#" id="C">C</a></li>
               <li><a class="letter" href="#" id="D">D</a></li>
