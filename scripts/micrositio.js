@@ -200,6 +200,10 @@ function getOfertas(id){
             cargaOfertas = false;
             $("#ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay más ofertas de esta empresa.</h4>');
         }
+        if(ofertas.length < 12){
+            cargaOfertas = false;
+            $(".ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay más ofertas para esta búsqueda.</h4>');
+        }
         $(".cargando").remove();
 		  $("#cargador").remove();
         inSearch = false;

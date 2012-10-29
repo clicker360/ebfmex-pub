@@ -82,7 +82,6 @@ $(document).ready(function(){
                     $.get('wsdetalle',{id:id},function(data){
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
-                        console.log(data);
                         var imgurl = (data.hasOwnProperty('imgurl')) ? 'ofimg?id='+data.imgurl : '';
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
@@ -112,7 +111,6 @@ $(document).ready(function(){
                                 if(sucursales.length >= 1){
                                     for(var i in sucursales){
                                         $(".sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\'); return false;">'+sucursales[i].sucursal+'</a></li>')
-                                        console.log(sucursales[i]);
                                     }
                                 }
                             });
@@ -154,7 +152,6 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
-                        console.log(ofertas[i]);
 			urlOferta = 'detalleoferta.html?id='+ofertas[i].IdOft;
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
@@ -185,16 +182,18 @@ $(document).ready(function(){
 				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
 				$(this).replaceWith(img);
 			});
-
-			//console.log(i + "_" + j + ': ' + ofertas[i][j] );
 		  }
 		lighterAjax();
 		}else{
 			cargaOfertas = false;
                         $(".ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay más ofertas para esta búsqueda.</h4>');
 		}
+                if(ofertas.length < 12){
+                    cargaOfertas = false;
+                    $(".ofertCont").append('<h4 style="float:left; width:100%; text-align:center;">No hay más ofertas para esta búsqueda.</h4>');
+                }
         $(".cargando").remove();
-		$("#cargador").remove();
+        $("#cargador").remove();
         inSearch = false;
 
 	});
