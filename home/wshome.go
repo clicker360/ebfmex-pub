@@ -164,16 +164,16 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		var repetido string
 		tictac = 1
 		for k, _ := range empresas {
-			if tictac != 1 {
-				tictac = 1
-			} else {
-				tictac = 2
-			}
 			tpl, _ := template.New("pagina").Parse(empresaTpl)
 			ti.Num = tictac
 			ti.IdEmp = empresas[k].IdEmp
 			ti.Name = strings.Title(empresas[k].Nombre)
 			if repetido != ti.Name {
+				if tictac != 1 {
+					tictac = 1
+				} else {
+					tictac = 2
+				}
 				repetido = ti.Name
 				tpl.Execute(w, ti)
 			}
@@ -209,16 +209,16 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		var repetido string
 		tictac = 1
 		for k, _ := range empresas {
-			if tictac != 1 {
-				tictac = 1
-			} else {
-				tictac = 2
-			}
 			tpl, _ := template.New("pagina").Parse(empresaTpl)
 			ti.Num = tictac
 			ti.IdEmp = empresas[k].IdEmp
 			ti.Name = strings.Title(strings.ToLower(empresas[k].Nombre))
 			if repetido != ti.Name {
+				if tictac != 1 {
+					tictac = 1
+				} else {
+					tictac = 2
+				}
 				repetido = ti.Name
 				tpl.Execute(w, ti)
 			}
