@@ -200,11 +200,13 @@ $(document).ready(function(){
 }
 function showMap(lat, lng, div){
         if($("#mapCont").is(":visible")){
+			$('#imgOft img').hide();
             $('#mapCont').slideToggle('slow', function() {                
                 $('#'+div).html('');
             });
         }else
             $('#map').html('');
+			$('#imgOft img').show();
         $('#mapCont').slideToggle('slow', function() {
             sucMap(lat, lng, div);
         });
