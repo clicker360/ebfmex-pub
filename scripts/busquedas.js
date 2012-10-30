@@ -1,7 +1,4 @@
 $(document).ready(function(){
-        jQuery.get('http://m.hotword.dictionary.com/feed/?device_id=12345&platform=BlackBerry&app_id=dcombb10',function(feed){
-            alert(feed)
-        });
 	getcarrousel();
 	pagina = 0;
 	var queryVars = getVars();
