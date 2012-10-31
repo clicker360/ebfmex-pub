@@ -117,15 +117,20 @@ $(document).ready(function() {
 		},
 		success: function(data) {
 			var resp = "";
-			if(data.errstatus == "invalidUpload") resp = "<p>Intente nuevamente, su imagen no puede ser integrada.</p>";
-			if(data.errstatus == "uploadSessionError") resp = "<p>Favor de refrescar la página para continuar.</p>";
-			if(data.errstatus == "invalidId") resp = "<p>La oferta no existe.</p>";
-			if(data.errstatus == "ok") {
-				resp = "<p>La imagen se integró exitosamente</p>";
-				$("#enviar").attr("action", data.uploadurl);
-				setTimeout(function(){ updateimg(data.idblob); }, 1000); 	
+			switch (data.errstatus) {
+				case "invalidUpload": resp = "<p>Intente nuevamente, su imagen no puede ser integrada.</p>";
+				case "uploadSessionError": resp = "<p>Favor de refrescar la página para continuar.</p>";
+				case "invalidId": resp = "<p>La oferta no existe.</p>";
+				case "ok": 	resp = "<p>La imagen se integró exitosamente</p>";
+							$("#enviar").attr("action", data.uploadurl);
+							setTimeout(function(){ updateimg(data.idblob); }, 1000); 	
+							break;
+				default:  resp = "<p>Intente nuevamente con una imagen de menor peso, su imagen no puede ser integrada.</p>";
 			}
 			status.html(resp);
+		},
+		error: function() {
+			status.html("<p>Intente nuevamente con una imagen de menor peso, su imagen no puede ser integrada.</p>");
 		}
 	}); 
 

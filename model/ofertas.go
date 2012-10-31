@@ -51,6 +51,16 @@ type OfertaSucursal struct {
 	Categoria   string
 }
 
+type SearchData struct {
+	Sid			string
+	Kind		string
+	Field		string
+	Value		string
+	IdCat		int
+	Enlinea		bool
+	FechaHora	time.Time
+}
+
 type Categoria struct {
 	IdCat       int
 	Categoria   string
