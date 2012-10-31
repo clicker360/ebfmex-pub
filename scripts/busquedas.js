@@ -117,7 +117,7 @@ $(document).ready(function(){
                             });
                         }
                         $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
-                        $("#imgOft img").attr('src', imgurl);
+                        $("#imgOft img").attr('src', ''+imgurl);
                         $("#titOft h3").html(titOft);
                         $("#desOft p").html(desOft);
                         $("#nomEmp h4").html(nomEmp);
@@ -200,14 +200,13 @@ $(document).ready(function(){
 	},'jsonp');
 }
 function showMap(lat, lng, div){
+        $('#imgOft img').hide();
         if($("#mapCont").is(":visible")){
-			$('#imgOft img').hide();
             $('#mapCont').slideToggle('slow', function() {                
                 $('#'+div).html('');
             });
         }else
             $('#map').html('');
-			$('#imgOft img').show();
         $('#mapCont').slideToggle('slow', function() {
             sucMap(lat, lng, div);
         });

@@ -211,6 +211,7 @@ function getOfertas(id){
     })
 }
 function showMap(lat, lng, div, divCont){
+        $('#imgOft img').hide();
         if($("#"+divCont).is(":visible")){
             $("#"+divCont).slideToggle('slow', function() {
                 $("#"+div).html('');
