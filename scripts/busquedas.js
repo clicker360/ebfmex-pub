@@ -36,7 +36,7 @@ $(document).ready(function(){
 	});
 	cargaOfertas = false;
         inSearch = false;
-	$(document).scroll(function(){
+	$(window).scroll(function(){
 		if(cargaOfertas && !inSearch){
 			if(($(document).scrollTop() + $(window).height()) >= ($(document).height() - 10)){
 				searchOfertas();
@@ -146,8 +146,8 @@ $(document).ready(function(){
             var categoria = $("select[name=catMenu]").attr("value");
             var estado = $("select[name=estadoMenu]").attr("value");
             var tipo = $("select[name=tipoMenu]").attr("value");
-            $.get("http://movil.ebfmxorg.appspot.com/search",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){		
-		var ofertas = JSON.parse(data);
+            $.get("http://movil.ebfmxorg.appspot.com/search?callback=?",{pagina:pagina, keywords:keywords, categoria:categoria, estado:estado , tipo:tipo, kind: 'Oferta'},function(data){
+		var ofertas = data;
                 $(".cargando").remove();
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
@@ -196,7 +196,7 @@ $(document).ready(function(){
         $("#cargador").remove();
         inSearch = false;
 
-	});
+	},'jsonp');
 }
 function showMap(lat, lng, div){
         if($("#mapCont").is(":visible")){

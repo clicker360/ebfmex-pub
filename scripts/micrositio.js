@@ -24,7 +24,7 @@ $(document).ready(function(){
     getOfertas(id);
     cargaOfertas = false;
     inSearch = false;
-    $(document).scroll(function(){
+    $(window).scroll(function(){
         if(cargaOfertas && !inSearch){
             if(($(document).scrollTop() + $(window).height()) >= ($(document).height())){
                 getOfertas(id);
