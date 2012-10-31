@@ -80,6 +80,7 @@ $(document).ready(function(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
                     $.get('wsdetalle',{id:id},function(data){
+                        //console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
                         var imgurl = (data.hasOwnProperty('imgurl')) ? 'ofimg?id='+data.imgurl : '';
