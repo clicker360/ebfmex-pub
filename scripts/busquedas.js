@@ -92,11 +92,11 @@ $(document).ready(function(){
                         if(enLinea){
                 			$("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
                         }
-                        var urlOferta = 'detalleoferta.html?id='+data.idoft;
+                        var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
                         var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
 			mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
 			mtOft += '</a>'
-                        var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +' &p[summary] = '+desOft+'">';
+                        var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/' + imgurl + '&p[title]= ' + titOft +' &p[summary] = '+desOft+'">';
 			fbOft += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
 			fbOft += '</a>';
                         var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+nomEmp+ ' ' + titOft +'  \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
@@ -153,7 +153,7 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
-			urlOferta = 'detalleoferta.html?id='+ofertas[i].IdOft;
+			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'

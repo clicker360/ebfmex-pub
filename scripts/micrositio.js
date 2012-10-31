@@ -54,11 +54,11 @@ function lighterAjax(){
             if(enLinea){
                 $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
-            var urlOferta = 'detalleoferta.html?id='+data.idoft;
+            var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
             mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
             mtOft += '</a>'
-            var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + imgurl + '&p[title]= ' + titOft +'&p[summary] = '+desOft+'">';
+            var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/'+imgurl+'&p[title]= ' + titOft +'&p[summary] = '+desOft+'">';
             fbOft += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
             fbOft += '</a>';
             var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+nomEmp+ ' ' + titOft +' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
@@ -125,16 +125,17 @@ function getEmpresa(id){
     $.get('wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
-        var urlEmpresa = 'micrositio.html?id='+empresa.idemp;
+        var urlEmpresa = 'http://www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         var imgEmp = 'simg?id='+empresa.idemp;
+        var imgEmpShare = 'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);
         (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
         $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
-        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmp+'&p[title]= ' + empresa.name +']&p[summary]='+empresa.desc+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
+        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmpShare+'&p[title]= ' + empresa.name +']&p[summary]='+empresa.desc+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
         $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+empresa.name+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
     })
 }
@@ -164,7 +165,7 @@ function getOfertas(id){
             cargaOfertas = true;
             for(var i in ofertas){
                 console.log(ofertas[i]);
-                var urlOferta = 'detalleoferta.html?id='+ofertas[i].idoft;
+                var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
