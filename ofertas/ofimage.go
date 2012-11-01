@@ -8,11 +8,13 @@ package oferta
 import (
 	"appengine"
 	"appengine/blobstore"
+    "appengine/memcache"
 	"appengine/image"
 	"encoding/json"
 	"net/http"
 	"sess"
 	"model"
+	"time"
 )
 
 type OfImg struct{
@@ -22,13 +24,27 @@ type OfImg struct{
 	UploadURL	string `json:"uploadurl"`
 }
 
+type detalle struct {
+	IdEmp		string		`json:"idemp"`
+	IdOft		string		`json:"idoft"`
+	IdCat		int			`json:"idcat"`
+	Oferta		string		`json:"oferta"`
+	Empresa		string		`json:"empresa"`
+	Descripcion	string		`json:"descripcion"`
+	Enlinea     bool		`json:"enlinea"`
+	Url         string		`json:"url"`
+	BlobKey		appengine.BlobKey	`json:"imgurl"`
+}
+
+
 // Because App Engine owns main and starts the HTTP service,
 // we do our setup during initialization.
 func init() {
 	http.HandleFunc("/r/ofimgup", handleUpload)
 	// ofimg queda fuera del url seguro /r
 	//http.HandleFunc("/ofimg", handleServe)
-	http.HandleFunc("/ofimg", handleServeImg)
+	//http.HandleFunc("/ofimg", handleServeImg)
+	http.HandleFunc("/ofimg", handleServeImgByIdOrBlob)
 
 	//http.HandleFunc("/r/ofimgform", handleRoot)
 }
@@ -46,6 +62,80 @@ func handleServeImg(w http.ResponseWriter, r *http.Request) {
 		imgprops.Crop = false
 		url, _ := image.ServingURL(c, appengine.BlobKey(r.FormValue("id")), &imgprops)
 		http.Redirect(w, r, url.String(), http.StatusFound)
+	}
+	return
+}
+
+func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("id") != "none" {
+		c := appengine.NewContext(r)
+		if model.ValidID.MatchString(r.FormValue("id")) {
+			/* Cuando es un Id normal */
+			//c.Infof("Blob : %v", r.FormValue("id"))
+			now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
+			var timetolive = 900 //seconds
+			var b []byte
+			var d detalle
+			var imgprops image.ServingURLOptions
+			imgprops.Secure = true
+			imgprops.Size = 400
+			imgprops.Crop = false
+			if item, err := memcache.Get(c, "d_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+				oferta, _ := model.GetOferta(c, r.FormValue("id"))
+				if(oferta.BlobKey != "none") {
+					if now.After(oferta.FechaHoraPub) {
+						d.IdEmp = oferta.IdEmp
+						d.IdOft = oferta.IdOft
+						d.IdCat = oferta.IdCat
+						d.Oferta = oferta.Oferta
+						d.Empresa = oferta.Empresa
+						d.Descripcion = oferta.Descripcion
+						d.Enlinea = oferta.Enlinea
+						d.Url = oferta.Url
+						d.BlobKey = oferta.BlobKey
+					}
+
+					b, _ = json.Marshal(d)
+					item := &memcache.Item{
+						Key:   "d_"+r.FormValue("id"),
+						Value: b,
+						Expiration: time.Duration(timetolive)*time.Second,
+					}
+					if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+						c.Errorf("Memcache.Add d_idoft : %v", err)
+					}
+					url, _ := image.ServingURL(c, d.BlobKey, &imgprops)
+					http.Redirect(w, r, url.String(), http.StatusFound)
+				}
+			} else {
+				//c.Infof("memcache retrieve d_idoft : %v", r.FormValue("id"))
+				if err := json.Unmarshal(item.Value, &d); err != nil {
+					c.Errorf("Unmarshaling ShortLogo item: %v", err)
+				}
+				url, _ := image.ServingURL(c, d.BlobKey, &imgprops)
+				http.Redirect(w, r, url.String(), http.StatusFound)
+			}
+		} else {
+			/* Cuando es un BlobKey */
+			//c.Infof("Blob : %v", r.FormValue("id"))
+			handleServeImg(w, r)
+		}
+	}
+}
+
+func handleServeImgById(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("id") != "none" {
+		c := appengine.NewContext(r)
+		oft, _ := model.GetOferta(c, r.FormValue("id"))
+		if(oft.BlobKey != "none") {
+			var imgprops image.ServingURLOptions
+			imgprops.Secure = true
+			imgprops.Size = 400
+			imgprops.Crop = false
+
+			url, _ := image.ServingURL(c, oft.BlobKey, &imgprops)
+			http.Redirect(w, r, url.String(), http.StatusFound)
+		}
 	}
 	return
 }
@@ -68,7 +158,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	rootTemplate.ExecuteTemplate(w, "ofupform", tc)
 	return
 }
- */
+*/
 
 func handleUpload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
