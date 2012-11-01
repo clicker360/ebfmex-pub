@@ -1,5 +1,7 @@
 $(document).ready(function(){
     $("#CloserLight").click(function() {
+                $('#mapCont').hide();
+                $('#imgOft img').show();
 		$('#cuerpo').removeClass('noscroll');
 		$('#lightback').addClass("hide");
 		$('#lightfront').addClass("hide");

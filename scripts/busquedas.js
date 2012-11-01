@@ -45,9 +45,11 @@ $(document).ready(function(){
 	})
 
 	$("#CloserLight").click(function() {
+                $('#mapCont').hide();
+                $('#imgOft img').show();
 		$('#cuerpo').removeClass('noscroll');
 		$('#lightback').addClass("hide"); 
-		$('#lightfront').addClass("hide"); 
+		$('#lightfront').addClass("hide");
 				  return false;
 	});
 
@@ -79,7 +81,7 @@ $(document).ready(function(){
 	function lighterAjax(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
-                    $.get('wsdetalle',{id:id},function(data){
+                    $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{id:id},function(data){
                         //console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
@@ -106,7 +108,7 @@ $(document).ready(function(){
                         if(idEmp){
                             var imgEmp = 'simg?id='+idEmp;
                             $(".logoOferta img").attr('src',imgEmp);
-                            $.get('wssucs',{id:idEmp},function(sucursales){
+                            $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:idEmp},function(sucursales){
                                 if(typeof(sucursales) != 'object')
                                     sucursales = JSON.parse(sucursales);
                                 if(sucursales.length >= 1){
