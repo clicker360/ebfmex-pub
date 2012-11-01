@@ -42,7 +42,7 @@ $(document).ready(function(){
 function lighterAjax(){
     $(".lighter").click(function() {
         var id = $(this).parent().attr('id');
-        $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{
+        $.get('wsdetalle',{
             id:id
         },function(data){
             if(typeof(data) != 'object')
@@ -70,7 +70,7 @@ function lighterAjax(){
             if(idEmp){
                 var imgEmp = 'simg?id='+idEmp;
                 $(".logoOferta img").attr('src',imgEmp);
-                $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{
+                $.get('wssucs',{
                     id:idEmp
                 },function(sucursales){
                     if(typeof(sucursales) != 'object')
@@ -127,7 +127,7 @@ function getVars() {
     return false;
 }
 function getEmpresa(id){
-    $.get('http://pruebas.ebfmxorg.appspot.com/wsmicrositio',{id:id},function(empresa){
+    $.get('wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
         var urlEmpresa = 'http://www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
@@ -147,7 +147,7 @@ function getEmpresa(id){
 }
 function getSucursales(id){
     $("#sucListM").html('');
-    $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:id},function(sucursales){
+    $.get('wssucs',{id:id},function(sucursales){
         if(typeof(sucursales) != 'object')
             sucursales = JSON.parse(sucursales);
         if(sucursales.length >= 1){
@@ -164,7 +164,7 @@ function getOfertas(id){
         $("#ofertCont").html('')
     $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
     inSearch = true;
-    $.get("http://pruebas.ebfmxorg.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
+    $.get("wsofxe",{id:id,pagina:pagina},function(ofertas){
         if(typeof(ofertas) != 'object')
             ofertas = JSON.parse(ofertas);
         if(ofertas.length >= 1){
