@@ -23,7 +23,7 @@ $(document).ready(function(){
     getEmpresa(id);
     getSucursales(id);
     pagina = 0;
-    getOfertas(id);
+    setTimeout('getOfertas("'+id+'")',100);
     cargaOfertas = false;
     inSearch = false;
     $(window).scroll(function(){
@@ -138,8 +138,8 @@ function getEmpresa(id){
         var urlEmpresa = 'http://www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
-        var imgEmp = 'simg?id='+empresa.idemp;
-        var imgEmpShare = 'simg?id='+empresa.idemp;
+        imgEmp = 'simg?id='+empresa.idemp;
+        var imgEmpShare = 'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : false;
         if(urlEmp)
@@ -178,12 +178,16 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
-                //console.log(ofertas[i]);
                 var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
-                addOferta += '<img src="ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                if(ofertas[i].imgurl && ofertas[i].imgurl != 'none')
+                    addOferta += '<img src="ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                else if(typeof(imgEmp) != 'undefined')
+                    addOferta += '<img src="'+imgEmp+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                else
+                    addOferta += '<img src="ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
