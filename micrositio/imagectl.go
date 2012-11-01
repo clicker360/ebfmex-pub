@@ -285,24 +285,29 @@ func keyOf(data []byte) string {
 // img is the HTTP handler for displaying images;
 // it handles "/simg".
 func img(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "image/jpeg")
 	c := appengine.NewContext(r)
 	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 	im := new(model.Image)
-	err := datastore.Get(c, key, im)
-	model.Check(err)
+	if err := datastore.Get(c, key, im); err != nil {
+		c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
+	} else {
+		if m, _, err := image.Decode(bytes.NewBuffer(im.Data)); err != nil {
+			c.Errorf("image.Decode id: %v", r.FormValue("id"))
+		} else {
+			/* 
+			 * Ejemplo de cómo mejorar la conversión de datos 
+			 *
+			get := func(n string) int { // helper closure
+				i, _ := strconv.Atoi(r.FormValue(n))
+				return i
+			}
+			s := get("s")
+			*/
 
-	m, _, err := image.Decode(bytes.NewBuffer(im.Data))
-	model.Check(err)
-
-	// Ejemplo de cómo mejorar la conversión de datos 
-	//get := func(n string) int { // helper closure
-//		i, _ := strconv.Atoi(r.FormValue(n))
-//		return i
-//	}
-//	s := get("s")
-
-	w.Header().Set("Content-type", "image/jpeg")
-	jpeg.Encode(w, m, nil)
+			jpeg.Encode(w, m, nil)
+		}
+	}
 }
 
 

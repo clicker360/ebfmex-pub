@@ -95,6 +95,9 @@ function lighterAjax(){
             $('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
             $('#lightback').removeClass("hide");
             $('#lightfront').removeClass("hide");
+			$("#imgOft img").error(function() {
+				$(this).attr("src", "imgs/imageDefault.jpg");
+			});
         });
 		$("img").error(function() {
 			console.log("img=none");
@@ -135,7 +138,8 @@ function getEmpresa(id){
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);
-        (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
+        //(urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
+        (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").remove();
         $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
         $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmpShare+'&p[title]= ' + empresa.name +']&p[summary]='+empresa.desc+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
         $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+empresa.name+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
@@ -158,7 +162,7 @@ function getOfertas(id){
     pagina++;
     if(pagina == '1')
         $("#ofertCont").html('')
-    $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>BUSCANDO LAS MEJORES OFERTAS</h4></div><div>');
+    $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
     inSearch = true;
     $.get("http://pruebas.ebfmxorg.appspot.com/wsofxe",{id:id,pagina:pagina},function(ofertas){
         if(typeof(ofertas) != 'object')

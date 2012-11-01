@@ -21,13 +21,6 @@ $(document).ready(function(){
 		$("select[name=tipoMenu]").val(queryVars.tipoMenu);
 	}
 
-	$("img").error(function() {
-		//console.log("img=none");
-		img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='215px' />";
-		$(this).replaceWith(img);
-	});
-
-
 	searchOfertas();
 	$("#buscarOferta").click(function(){                
 		pagina = 0;    
@@ -108,6 +101,10 @@ $(document).ready(function(){
                         if(idEmp){
                             var imgEmp = 'simg?id='+idEmp;
                             $(".logoOferta img").attr('src',imgEmp);
+                            $(".logoOferta img").show();
+							$(".logoOferta img").error(function() {
+								$(this).hide();
+							});
                             $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:idEmp},function(sucursales){
                                 if(typeof(sucursales) != 'object')
                                     sucursales = JSON.parse(sucursales);
@@ -129,6 +126,10 @@ $(document).ready(function(){
                         $('#cuerpo').addClass('noscroll');//importante ese impide que el fondo scrolle mientras la oferta si lo hace
                         $('#lightback').removeClass("hide");
                         $('#lightfront').removeClass("hide");
+
+						$("#imgOft img").error(function() {
+							$(this).attr("src", "imgs/imageDefault.jpg");
+						});
                     });
               return false;
             });
@@ -143,7 +144,7 @@ $(document).ready(function(){
             pagina ++;
             if(pagina == '1')
 		  $(".ofertCont").html('')
-                 $(".ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>BUSCANDO LAS MEJORES OFERTAS</h4></div><div>');
+                 $(".ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
             inSearch = true;
             var keywords = ($("input[name=word]").val() == '¿Qué buscas?') ? '' : $("input[name=word]").val();
             var categoria = $("select[name=catMenu]").attr("value");
@@ -155,11 +156,13 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
+			var logo;
+			(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo = "imgs/imageDefault.jpg";
 			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="'+ofertas[i].Logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" />'
+			addOferta += '<img src="'+logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" id="'+ofertas[i].IdOft+'"/>'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'
@@ -169,7 +172,7 @@ $(document).ready(function(){
 			addOferta += '</a>'
 			addOferta += '</div>'
 			addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-			addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org' + ofertas[i].Logo + '&p[title]= ' + ofertas[i].Oferta +'&p[summary] = '+ofertas[i].Descripcion+'">'
+			addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org' + logo + '&p[title]= ' + ofertas[i].Oferta +'&p[summary] = '+ofertas[i].Descripcion+'">'
 			addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
 			addOferta += '</a>'
 			addOferta += '</div>'
@@ -180,9 +183,8 @@ $(document).ready(function(){
 			addOferta += '</div>'
 			addOferta += '</div>';
 			$(".ofertCont").append(addOferta);
-			$("img").error(function() {
-				//console.log("img=none");
-				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212' height='218'/>";
+			$("#"+ofertas[i].IdOft).error(function() {
+				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212'/>";
 				$(this).replaceWith(img);
 			});
 		  }
