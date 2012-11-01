@@ -27,7 +27,7 @@ func init() {
 }
 
 func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	if item, err := memcache.Get(c, "sucs_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
