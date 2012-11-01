@@ -78,7 +78,7 @@ $(document).ready(function(){
                         //console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
-                        var imgurl = (data.hasOwnProperty('imgurl')) ? 'ofimg?id='+data.imgurl : '';
+                        var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
                         var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -118,7 +118,10 @@ $(document).ready(function(){
                             });
                         }
                         $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
-                        $("#imgOft img").attr('src', ''+imgurl);
+                        if(imgurl)
+                            $("#imgOftLb").html('<img class="img" src="'+imgurl+'" width="430"/>');
+                        else
+                            $("#imgOftLb").html('');
                         $("#titOft h3").html(titOft);
                         $("#desOft p").html(desOft);
                         $("#nomEmp h4").html(nomEmp);
@@ -129,7 +132,7 @@ $(document).ready(function(){
                         $('#lightback').removeClass("hide");
                         $('#lightfront').removeClass("hide");
 
-						$("#imgOft img").error(function() {
+						$("#imgOftLb img").error(function() {
 							$(this).attr("src", "imgs/imageDefault.jpg");
 						});
                     });
@@ -159,7 +162,7 @@ $(document).ready(function(){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
 			var logo;
-			(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo = "imgs/imageDefault.jpg";
+			(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
 			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
@@ -185,7 +188,7 @@ $(document).ready(function(){
 			addOferta += '</div>'
 			addOferta += '</div>';
 			$(".ofertCont").append(addOferta);
-			$("#"+ofertas[i].IdOft).error(function() {
+			$("img").error(function() {
 				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212'/>";
 				$(this).replaceWith(img);
 			});
