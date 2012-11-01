@@ -134,7 +134,7 @@ function getEmpresa(id){
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         var imgEmp = 'simg?id='+empresa.idemp;
-        var imgEmpShare = 'http://www.elbuenfin.org/simg?id='+empresa.idemp;
+        var imgEmpShare = 'simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         var urlEmp = (empresa.url) ? empresa.url : '#';
         $("#urlEmp").attr('href',urlEmp);

@@ -74,7 +74,7 @@ $(document).ready(function(){
 	function lighterAjax(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
-                    $.get('http://pruebas.ebfmxorg.appspot.com/wsdetalle',{id:id},function(data){
+                    $.get('wsdetalle',{id:id},function(data){
                         //console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
@@ -85,7 +85,9 @@ $(document).ready(function(){
                         var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
                         var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
                         if(enLinea){
-                			$("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                            $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                        }else{
+                            $("#enLinea").html('')
                         }
                         var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
                         var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
@@ -105,7 +107,7 @@ $(document).ready(function(){
 							$(".logoOferta img").error(function() {
 								$(this).hide();
 							});
-                            $.get('http://pruebas.ebfmxorg.appspot.com/wssucs',{id:idEmp},function(sucursales){
+                            $.get('wssucs',{id:idEmp},function(sucursales){
                                 if(typeof(sucursales) != 'object')
                                     sucursales = JSON.parse(sucursales);
                                 if(sucursales.length >= 1){
