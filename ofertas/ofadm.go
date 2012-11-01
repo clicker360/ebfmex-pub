@@ -264,7 +264,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					if(strings.ToLower(strings.TrimSpace(ofertamod.Oferta)) != "nueva oferta") {
 						tituloOf = ofertamod.Oferta
 					}
-					putSearchData(c, tituloOf+" "+ofertamod.Descripcion+" "+r.FormValue("pchain"), keyOferta, oferta.IdOft, ofertamod.IdCat, ofertamod.Enlinea)
+					putSearchData(c, ofertamod.Empresa+" "+tituloOf+" "+ofertamod.Descripcion+" "+r.FormValue("pchain"), keyOferta, oferta.IdOft, ofertamod.IdCat, ofertamod.Enlinea)
 
 					// Se despacha la generación de diccionario de palabras
 					// Se agrega pcves a la descripción

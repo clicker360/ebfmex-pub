@@ -156,7 +156,7 @@ function getOfertas(id){
     pagina++;
     if(pagina == '1')
         $("#ofertCont").html('')
-    $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
+    $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>BUSCANDO LAS MEJORES OFERTAS</h4></div><div>');
     inSearch = true;
     $.get("wsofxe",{id:id,pagina:pagina},function(ofertas){
         if(typeof(ofertas) != 'object')
