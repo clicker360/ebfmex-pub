@@ -7,9 +7,9 @@ package oferta
 
 import (
 	"appengine"
-	"appengine/datastore"
+	//"appengine/datastore"
 	"appengine/blobstore"
-	"appengine/urlfetch"
+	//"appengine/urlfetch"
 	"html/template"
 	"net/http"
 	"strings"
@@ -18,7 +18,7 @@ import (
 	"model"
 	"sess"
 	"time"
-	"fmt"
+	//"fmt"
 	"io"
 )
 
@@ -131,7 +131,10 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 		/*
 		 * Se crea el form para el upload del blob
 		 */
-		uploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", nil)
+		blobOpts := blobstore.UploadURLOptions{
+			MaxUploadBytesPerBlob: 1048576,
+		}
+		uploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", &blobOpts)
 		if err != nil {
 			serveError(c, w, err)
 			return
@@ -195,7 +198,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			//ofertamod.BlobKey = fd.BlobKey
 			ofertamod.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 
-			oferta, _ := model.GetOferta(c, ofertamod.IdOft)
+			oferta, keyOferta := model.GetOferta(c, ofertamod.IdOft)
 			if oferta.IdOft != "none" {
 				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
 					tc["Empresa"] = empresa
@@ -256,6 +259,13 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					errOe := ofertamod.PutOfertaEstado(c, edomap)
 					model.Check(errOe)
 
+					var tituloOf string
+					tituloOf = ""
+					if(strings.ToLower(strings.TrimSpace(ofertamod.Oferta)) != "nueva oferta") {
+						tituloOf = ofertamod.Oferta
+					}
+					putSearchData(c, tituloOf+" "+ofertamod.Descripcion+" "+r.FormValue("pchain"), keyOferta, oferta.IdOft, ofertamod.IdCat, ofertamod.Enlinea)
+
 					// Se despacha la generación de diccionario de palabras
 					// Se agrega pcves a la descripción
 					//fmt.Fprintf(w,"http://movil.%s.appspot.com/backend/generatesearch?kind=Oferta&field=Descripcion&id=%s&value=%s&categoria=%s",
@@ -275,7 +285,10 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		/*
 		 * Se crea el form para el upload del blob
 		 */
-		uploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", nil)
+		blobOpts := blobstore.UploadURLOptions{
+			MaxUploadBytesPerBlob: 1048576,
+		}
+		uploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", &blobOpts)
 		if err != nil {
 			serveError(c, w, err)
 			return
@@ -372,6 +385,7 @@ func ofToForm(e model.Oferta) FormDataOf {
 	return fd
 }
 
+/*
 func generatesearch(c appengine.Context, oftKey *datastore.Key, description string, idcat int) error {
 	client := urlfetch.Client(c)
 	descurl := fmt.Sprintf(
@@ -383,5 +397,5 @@ func generatesearch(c appengine.Context, oftKey *datastore.Key, description stri
 	}
 	return nil
 }
-
+*/
 var ofadmTpl = template.Must(template.ParseFiles("templates/ofadm.html"))

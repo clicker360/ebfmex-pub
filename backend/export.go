@@ -23,7 +23,7 @@ func registroCsv(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var lote = 1000
+	var lote = 200
 	pagina,_ := strconv.Atoi(r.FormValue("pg"));
 
 	w.Header().Set("Content-Type", "text/csv")

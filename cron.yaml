@@ -1,9 +1,0 @@
-#cron:
-#- description: Lowercase the emails
-#  url: /normalize-mail
-#  schedule: every 30 minutes
-
-cron:
-- description: Agregar modificaciones de ofertar al motor de busquedas
-  url: /backend/updatesearch?m=35&c=ZWJmbWV4LXB1YnIeCxISX0FoQWRtaW5Yc3JmVG9rZW5fIgZfWFNSRl8M
-  schedule: every 30 minutes synchronized

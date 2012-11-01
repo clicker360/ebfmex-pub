@@ -73,6 +73,9 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 func handleUpload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	var out OfImg
+	blobOpts := blobstore.UploadURLOptions {
+		MaxUploadBytesPerBlob: 1048576,
+	}
 	out.Status = "invalidId"
 	out.IdBlob = ""
 	if _, ok := sess.IsSess(w, r, c); ok {
@@ -116,7 +119,7 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 					*/
 					if oldblobkey != "none" {
 						blobstore.Delete(c, oldblobkey)
-						UploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", nil)
+						UploadURL, err := blobstore.UploadURL(c, "/r/ofimgup", &blobOpts)
 						out.UploadURL = UploadURL.String()
 						if err != nil {
 							out.Status = "uploadSessionError"
