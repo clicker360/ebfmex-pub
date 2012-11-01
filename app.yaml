@@ -106,9 +106,9 @@ handlers:
   static_files: static/\1
   upload: static/(.*\.json)
 
-- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|zip))
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|zip|pdf))
   static_files: static/\1
-  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png|zip))
+  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png|zip|pdf))
 
 - url: /backend/.*
   script: _go_app
