@@ -75,7 +75,7 @@ $(document).ready(function(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
                     $.get('wsdetalle',{id:id},function(data){
-                        //console.log(data);
+                        ///console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
                         var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
