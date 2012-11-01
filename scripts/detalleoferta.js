@@ -80,14 +80,20 @@ function getOferta(id){
     },function(oferta){
         if(typeof(oferta) != 'object')
             oferta = JSON.parse(oferta);
-        console.log(oferta);
+        //console.log(oferta);
         var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+oferta.idoft;
-        $("#logoOft img").attr('src','simg?id='+oferta.idemp);
+        if(oferta.idemp && oferta.idemp != 'none')
+            $("#logoOft").html('<img src="simg?id='+oferta.idemp+'" width="215" alt="logo de la empresa" class="first" />');
+        else
+            $("#logoOft").html('');
         $("#nomEmp h4").html(oferta.empresa);
         $("#titOft h3").html(oferta.oferta);
         $("#desOft p").html(oferta.descripcion);
         $("#msEmp").attr('href','/micrositio.html?id='+oferta.idemp);
-        $("#imgOft img").attr('src','ofimg?id='+oferta.imgurl);
+        if(oferta.imgurl && oferta.imgurl != 'none')
+            $("#imgOft").html('<img src="ofimg?id='+oferta.imgurl+'" width="430" alt="logo de la empresa" class="first" />');
+        else
+            $("#imgOft").html('');
         $("#mtShare").html('<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
         $("#fbShare").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/ofimg?id='+oferta.imgurl+'&p[title]= ' + oferta.oferta +'&p[summary]='+oferta.descripcion+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
         $("#twShare").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+oferta.empresa+ ' '+ oferta.oferta+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
@@ -112,7 +118,7 @@ function getSucursales(id){
             sucursales = JSON.parse(sucursales);
         for(var i in sucursales){
             $("#sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\'); return false;">'+sucursales[i].sucursal+'</a></li>');
-            console.log(sucursales[i]);
+            //console.log(sucursales[i]);
         }
     })
 }

@@ -47,7 +47,8 @@ function lighterAjax(){
         },function(data){
             if(typeof(data) != 'object')
                 data = JSON.parse(data);
-            var imgurl = (data.hasOwnProperty('imgurl')) ? 'ofimg?id='+data.imgurl : '';
+            //console.log(data);
+            var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
             var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -85,7 +86,10 @@ function lighterAjax(){
             }
             //$("#divCloseMap").html('<span class="col-9 Dsblock alineCenter marg-L20px" id="closeMap">CERRAR MAPA [X]</span>')
             $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
-            $("#imgOft img.img").attr('src', imgurl);
+            if(imgurl)
+                $("#imgOftLb").html('<img class="img" src="'+imgurl+'" width="430"/>');
+            else
+                $("#imgOftLb").html('');
             $("#titOft h3").html(titOft);
             $("#desOft p").html(desOft);
             $("#nomEmp h4").html(nomEmp);
@@ -130,14 +134,18 @@ function getEmpresa(id){
     $.get('wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
+        //console.log(empresa);
         var urlEmpresa = 'http://www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         var imgEmp = 'simg?id='+empresa.idemp;
         var imgEmpShare = 'simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
-        var urlEmp = (empresa.url) ? empresa.url : '#';
-        $("#urlEmp").attr('href',urlEmp);
+        var urlEmp = (empresa.url) ? empresa.url : false;
+        if(urlEmp)
+            $("#urlEmp").attr('href',urlEmp).html('Tienda en línea').show();
+        else
+            $("#urlEmp").attr('href','').html('').hide();
         //(urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
         (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").remove();
         $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
@@ -170,7 +178,7 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
-                console.log(ofertas[i]);
+                //console.log(ofertas[i]);
                 var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
