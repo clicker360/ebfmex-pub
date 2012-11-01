@@ -60,4 +60,5 @@ var ValidRfc = regexp.MustCompile(`^([A-Z&Ññ]{3}|[A-Z][AEIOU][A-Z]{2})\d{2}((0
 var ValidUrl = regexp.MustCompile(`^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \?=.-]*)*\/?$`)
 var ValidPercent = regexp.MustCompile(`^-?[0-9]{0,2}(\.[0-9]{1,2})?$|^-?(100)(\.[0]{1,2})?$`)
 var ValidPrice = regexp.MustCompile(`^(\d{1,3},(\d{3}')*\d{3}(\.\d{1,3})?|\d{1,3}(\.\d{2})?)$`)
+var ValidSearchData = regexp.MustCompile(`^[a-zA-ZáéíóúAÉÍÓÚÑñäëïöü]+$`)
 
