@@ -51,7 +51,7 @@ b, strong{ sans-serif; font-weight:600;}
 
 /**BACKS**/
 
-.Bg-ky{ background-color:#e3e3e3;}
+.Bg-ky{ background-color:#eeeeee;}
 .Bg-Drk{background-color:#444444;}
 .Bg-Prm{ background-color:#676767;}
 .Bg-Sec{background-color:#767676;}
@@ -119,6 +119,8 @@ a.lnk-sec {
 	background-image: url(/css/gfx/fondo_bg.gif);
 	background-color: #EAF6FF;
 }
+.bg80prWh{background-image: url(/css/gfx/wht80pr.png);}
+.bg80prBl{background-image: url(../imgs/Bl80pr.png);}
 
 
 
@@ -142,7 +144,7 @@ a.lnk-sec {
 .button:hover, a.button:hover{ background-position:bottom;}
 
 .button-2, a.button-2{
-	background-image: url(/css/gfx/btn2.jpg);
+	background-image: url(/css/gfx/front/mainbtn.jpg);
 	background-position: top;
 	float: left;
 	width: auto;
