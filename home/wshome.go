@@ -111,7 +111,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	if ultimos != "1" {
 		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Order("Nombre")
 		/*
