@@ -8,7 +8,8 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/backend/mvblob", MvBlob)
+    //http.HandleFunc("/backend/mvblob", MvBlob)
+    http.HandleFunc("/backend/mvblob", RedirMvBlob)
 }
 
 func MvBlob(w http.ResponseWriter, r *http.Request) {
@@ -21,5 +22,13 @@ func MvBlob(w http.ResponseWriter, r *http.Request) {
 	} else {
 		c.Infof("mvblob in %v, %v %v", appengine.AppID(c), url, ret.Status)
 	}
+	return
+}
+
+func RedirMvBlob(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	url := fmt.Sprintf( "http://movil.%s.appspot.com/mvblob/generate", appengine.AppID(c))
+	c.Infof("redirect to mvblob/generate in %v, %v", appengine.AppID(c), url)
+	http.Redirect(w, r, url, http.StatusFound)
 	return
 }
