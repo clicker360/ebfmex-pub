@@ -44,7 +44,7 @@ func init() {
 	http.HandleFunc("/r/ofimgup", handleUpload)
 	// ofimg queda fuera del url seguro /r
 	http.HandleFunc("/ofimgb", handleServe)
-	http.HandleFunc("/ofimgi", handleServeImgById)
+	http.HandleFunc("/ofimgi", handleServeImg)
 	http.HandleFunc("/ofimg", handleServeImgByIdOrBlob)
 
 	//http.HandleFunc("/r/ofimgform", handleRoot)

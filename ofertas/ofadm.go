@@ -201,12 +201,13 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 
 			oferta, keyOferta := model.GetOferta(c, ofertamod.IdOft)
 			if oferta.IdOft != "none" {
+				ofertamod.BlobKey = oferta.BlobKey
+				ofertamod.Codigo = oferta.Codigo
 				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
 					tc["Empresa"] = empresa
 					fd.IdEmp = empresa.IdEmp
 					fd.Empresa = empresa.Nombre
 					ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
-					ofertamod.BlobKey = oferta.BlobKey
 				}
 				// TODO
 				// es preferible poner un regreso avisando que no existe la empresa

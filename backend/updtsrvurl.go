@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-    //http.HandleFunc("/backend/updtsrvurl", UpdateServingUrl)
+    http.HandleFunc("/backend/updtsrvurl", UpdateServingUrl)
     //http.HandleFunc("/backend/updatesearch", RedirUpdateSearch)
 }
 
@@ -22,7 +22,7 @@ func UpdateServingUrl(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 	offset := batch * (page - 1)
-	q := datastore.NewQuery("Oferta").Offset(offset).Limit(batch)
+	q := datastore.NewQuery("Oferta").Offset(offset).Order("-FechaHora").Limit(batch)
 	n,_ := q.Count(c)
 	for i := q.Run(c); ; {
 		var e model.Oferta
@@ -37,7 +37,7 @@ func UpdateServingUrl(w http.ResponseWriter, r *http.Request) {
 		imgprops.Secure = true
 		imgprops.Size = 400
 		imgprops.Crop = false
-		if e.BlobKey != "none" {
+		if e.BlobKey != "none" && e.Codigo == "" {
 			if url, err := image.ServingURL(c, e.BlobKey, &imgprops); err != nil {
 				c.Errorf("Cannot construct ServingURL : %v", e.IdOft)
 				e.Codigo = ""

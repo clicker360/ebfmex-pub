@@ -1,9 +1,9 @@
 application: ebfmxorg
-version: pruebas
+version: 10
 runtime: go
 api_version: go1
 
-#default_expiration: "1h"
+default_expiration: "1h"
 
 handlers:
 # css
