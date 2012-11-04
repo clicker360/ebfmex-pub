@@ -78,7 +78,7 @@ $(document).ready(function(){
                         ///console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
-						if(data.hasOwnProperty('srvurl') {
+						if(data.hasOwnProperty('srvurl') && data.srvurl != '') {
 							var imgurl = data.srvurl;
 						} else {
 							var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;

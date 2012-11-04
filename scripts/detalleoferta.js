@@ -90,7 +90,7 @@ function getOferta(id){
         $("#titOft h3").html(oferta.oferta);
         $("#desOft p").html(oferta.descripcion);
         $("#msEmp").attr('href','/micrositio.html?id='+oferta.idemp);
-		if(oferta.hasOwnProperty('srvurl') {
+		if(oferta.hasOwnProperty('srvurl') && oferta.srvurl != '') {
 			var imgurl = oferta.srvurl;
 		} else {
 			var imgurl = (oferta.hasOwnProperty('imgurl') && oferta.imgurl != 'none') ? 'ofimg?id='+oferta.imgurl : false;
