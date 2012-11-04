@@ -15,6 +15,7 @@ import (
 	"sess"
 	"model"
 	"time"
+	"io"
 )
 
 type OfImg struct{
@@ -42,8 +43,8 @@ type detalle struct {
 func init() {
 	http.HandleFunc("/r/ofimgup", handleUpload)
 	// ofimg queda fuera del url seguro /r
-	//http.HandleFunc("/ofimg", handleServe)
-	//http.HandleFunc("/ofimg", handleServeImg)
+	http.HandleFunc("/ofimgb", handleServe)
+	http.HandleFunc("/ofimgi", handleServeImgById)
 	http.HandleFunc("/ofimg", handleServeImgByIdOrBlob)
 
 	//http.HandleFunc("/r/ofimgform", handleRoot)
@@ -69,21 +70,21 @@ func handleServeImg(w http.ResponseWriter, r *http.Request) {
 func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("id") != "none" {
 		c := appengine.NewContext(r)
+		var imgprops image.ServingURLOptions
+		imgprops.Secure = true
+		imgprops.Size = 400
+		imgprops.Crop = false
 		if model.ValidID.MatchString(r.FormValue("id")) {
 			/* Cuando es un Id normal */
 			//c.Infof("Blob : %v", r.FormValue("id"))
-			now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
+			//now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
 			var timetolive = 900 //seconds
 			var b []byte
 			var d detalle
-			var imgprops image.ServingURLOptions
-			imgprops.Secure = true
-			imgprops.Size = 400
-			imgprops.Crop = false
 			if item, err := memcache.Get(c, "d_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
 				oferta, _ := model.GetOferta(c, r.FormValue("id"))
 				if(oferta.BlobKey != "none") {
-					if now.After(oferta.FechaHoraPub) {
+					//if now.After(oferta.FechaHoraPub) {
 						d.IdEmp = oferta.IdEmp
 						d.IdOft = oferta.IdOft
 						d.IdCat = oferta.IdCat
@@ -93,7 +94,7 @@ func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
 						d.Enlinea = oferta.Enlinea
 						d.Url = oferta.Url
 						d.BlobKey = oferta.BlobKey
-					}
+					//}
 
 					b, _ = json.Marshal(d)
 					item := &memcache.Item{
@@ -104,21 +105,36 @@ func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
 					if err := memcache.Add(c, item); err == memcache.ErrNotStored {
 						c.Errorf("Memcache.Add d_idoft : %v", err)
 					}
-					url, _ := image.ServingURL(c, d.BlobKey, &imgprops)
-					http.Redirect(w, r, url.String(), http.StatusFound)
+				} else {
+					w.WriteHeader(http.StatusNotFound)
+					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+					io.WriteString(w, "404 - Not Found")
 				}
 			} else {
 				//c.Infof("memcache retrieve d_idoft : %v", r.FormValue("id"))
 				if err := json.Unmarshal(item.Value, &d); err != nil {
 					c.Errorf("Unmarshaling ShortLogo item: %v", err)
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					w.WriteHeader(http.StatusNotFound)
+					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+					io.WriteString(w, "404 - Not Found")
 				}
-				url, _ := image.ServingURL(c, d.BlobKey, &imgprops)
+			}
+			if url, err := image.ServingURL(c, d.BlobKey, &imgprops); err != nil {
+				c.Errorf("Cannot construct ServingURL : %v", r.FormValue("id"))
+				blobstore.Send(w, d.BlobKey)
+			} else {
 				http.Redirect(w, r, url.String(), http.StatusFound)
 			}
 		} else {
 			/* Cuando es un BlobKey */
 			//c.Infof("Blob : %v", r.FormValue("id"))
-			handleServeImg(w, r)
+			if url, err := image.ServingURL(c, appengine.BlobKey(r.FormValue("id")), &imgprops); err != nil {
+				c.Infof("Cannot construct ServingURL : %v", r.FormValue("id"))
+				blobstore.Send(w, appengine.BlobKey(r.FormValue("id")))
+			} else {
+				http.Redirect(w, r, url.String(), http.StatusFound)
+			}
 		}
 	}
 }
@@ -133,8 +149,16 @@ func handleServeImgById(w http.ResponseWriter, r *http.Request) {
 			imgprops.Size = 400
 			imgprops.Crop = false
 
-			url, _ := image.ServingURL(c, oft.BlobKey, &imgprops)
-			http.Redirect(w, r, url.String(), http.StatusFound)
+			if url, err := image.ServingURL(c, oft.BlobKey, &imgprops); err != nil {
+				c.Infof("Cannot construct ServingURL : %v", r.FormValue("id"))
+				blobstore.Send(w, oft.BlobKey)
+			} else {
+				http.Redirect(w, r, url.String(), http.StatusFound)
+			}
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			io.WriteString(w, "404 - Not Found")
 		}
 	}
 	return
