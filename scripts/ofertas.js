@@ -122,7 +122,9 @@ $(document).ready(function() {
 				case "uploadSessionError": resp = "<p>Favor de refrescar la página para continuar.</p>";
 				case "invalidId": resp = "<p>La oferta no existe.</p>";
 				case "ok": 	resp = "<p>La imagen se integró exitosamente</p>";
-							$("#enviar").attr("action", data.uploadurl);
+							var uploadurl;
+							(data.uploadurl.substr(0,5) != "https") ? uploadurl == data.uploadurl.replace("http","https") : uploadurl = data.uploadurl;
+							$("#enviar").attr("action", uploadurl);
 							setTimeout(function(){ updateimg(data.idblob); }, 1000); 	
 							break;
 				default:  resp = "<p>Intente nuevamente con una imagen de menor peso, su imagen no puede ser integrada.</p>";

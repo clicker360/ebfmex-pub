@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"strings"
 	"strconv"
-	"net/url"
+	//"net/url"
 	"model"
 	"sess"
 	"time"
@@ -43,7 +43,8 @@ type FormDataOf struct {
 	FechaHora		time.Time
 	Ackn			string
 	Sucursales		string // cadena de id's de sucursales separadas por espacio
-	UploadURL		*url.URL
+	//UploadURL		*url.URL
+	UploadURL		string
 	BlobKey			appengine.BlobKey
 }
 
@@ -139,10 +140,10 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 			serveError(c, w, err)
 			return
 		}
-		fd.UploadURL = uploadURL
+		fd.UploadURL = strings.Replace(uploadURL.String(), "http", "https", 1)
+		//fd.UploadURL = uploadURL
 
 		tc["FormDataOf"] = fd
-		w.Header().Set("Content-Type", "text/html")
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
 		http.Redirect(w, r, "/r/registro", http.StatusFound)
@@ -293,10 +294,10 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			serveError(c, w, err)
 			return
 		}
-		fd.UploadURL = uploadURL
+		fd.UploadURL = strings.Replace(uploadURL.String(), "http", "https", 1)
+		//fd.UploadURL = uploadURL
 		tc["FormDataOf"] = fd
 
-		w.Header().Set("Content-Type", "text/html")
 		ofadmTpl.ExecuteTemplate(w, "oferta", tc)
 	} else {
 		http.Redirect(w, r, "/r/registro", http.StatusFound)
