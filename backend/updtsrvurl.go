@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/backend/updtsrvurl", UpdateServingUrl)
+    //http.HandleFunc("/backend/updtsrvurl", UpdateServingUrl)
     //http.HandleFunc("/backend/updatesearch", RedirUpdateSearch)
 }
 

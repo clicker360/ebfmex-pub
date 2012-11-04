@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/backend/updatesearch", fetchUpdateSearch)
+    //http.HandleFunc("/backend/updatesearch", fetchUpdateSearch)
     //http.HandleFunc("/backend/updatesearch", RedirUpdateSearch)
 }
 
