@@ -48,7 +48,11 @@ function lighterAjax(){
             if(typeof(data) != 'object')
                 data = JSON.parse(data);
             //console.log(data);
-            var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
+			if(data.hasOwnProperty('srvurl') {
+            	var imgurl = data.srvurl;
+			} else {
+            	var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
+			}
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
             var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -178,16 +182,21 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
+				if(ofertas[i].srvurl!="") {
+					var imgurl = ofertas[i].srvurl;
+				} else {
+					var imgurl = (ofertas[i].imgurl && ofertas[i].imgurl != 'none') ? 'ofimg?id='+ofertas[i].imgurl : false;
+				}
                 var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
                 addOferta += '<span class="imgcont">'
                 if(ofertas[i].imgurl && ofertas[i].imgurl != 'none')
-                    addOferta += '<img src="ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                    addOferta += '<img src="'+imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 else if(typeof(imgEmp) != 'undefined')
                     addOferta += '<img src="'+imgEmp+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 else
-                    addOferta += '<img src="ofimg?id='+ofertas[i].imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
+                    addOferta += '<img src="'+imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
                 addOferta += '</span>'
                 addOferta += '<h3>'+ofertas[i].oferta+'</h3>'
                 addOferta += '</a>'
@@ -197,7 +206,7 @@ function getOfertas(id){
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/ofimg?id='+ofertas[i].imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
+                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/'+imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
                 addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
                 addOferta += '</a>'
                 addOferta += '</div>'

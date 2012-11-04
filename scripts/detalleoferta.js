@@ -90,12 +90,17 @@ function getOferta(id){
         $("#titOft h3").html(oferta.oferta);
         $("#desOft p").html(oferta.descripcion);
         $("#msEmp").attr('href','/micrositio.html?id='+oferta.idemp);
-        if(oferta.imgurl && oferta.imgurl != 'none')
-            $("#imgOft").html('<img src="ofimg?id='+oferta.imgurl+'" width="430" alt="logo de la empresa" class="first" />');
+		if(oferta.hasOwnProperty('srvurl') {
+			var imgurl = oferta.srvurl;
+		} else {
+			var imgurl = (oferta.hasOwnProperty('imgurl') && oferta.imgurl != 'none') ? 'ofimg?id='+oferta.imgurl : false;
+		}
+        if(imgurl)
+            $("#imgOft").html('<img src="'+imgurl+'" width="430" alt="logo de la empresa" class="first" />');
         else
             $("#imgOft").html('');
         $("#mtShare").html('<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
-        $("#fbShare").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/ofimg?id='+oferta.imgurl+'&p[title]= ' + oferta.oferta +'&p[summary]='+oferta.descripcion+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
+        $("#fbShare").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/'+imgurl+'&p[title]= ' + oferta.oferta +'&p[summary]='+oferta.descripcion+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
         $("#twShare").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+oferta.empresa+ ' '+ oferta.oferta+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
 
 		$("img").error(function() {

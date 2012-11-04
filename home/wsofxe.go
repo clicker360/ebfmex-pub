@@ -18,6 +18,7 @@ type wsoferta struct {
 	Descripcion	string	`json:"descripcion"`
 	Enlinea		bool	`json:"enlinea"`
 	Url			string	`json:"url"`
+	SrvUrl		string	`json:"srvurl"`
 	BlobKey	appengine.BlobKey `json:"imgurl"`
 }
 
@@ -50,6 +51,7 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 				wsofs[i].Descripcion = v.Descripcion
 				wsofs[i].Enlinea = v.Enlinea
 				wsofs[i].Url = v.Url
+				wsofs[i].SrvUrl = v.Codigo
 				wsofs[i].BlobKey = v.BlobKey
 			}
 		}

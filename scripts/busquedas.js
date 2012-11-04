@@ -78,7 +78,11 @@ $(document).ready(function(){
                         ///console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
-                        var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
+						if(data.hasOwnProperty('srvurl') {
+							var imgurl = data.srvurl;
+						} else {
+							var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
+						}
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
                         var nomEmp = (data.hasOwnProperty('empresa')) ? data.empresa : '';
@@ -162,7 +166,8 @@ $(document).ready(function(){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
 			var logo;
-			(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
+			//(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
+			(ofertas[i].Logo != "") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
 			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
 			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'

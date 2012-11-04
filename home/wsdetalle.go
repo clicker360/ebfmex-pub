@@ -18,6 +18,7 @@ type detalle struct {
 	Descripcion	string		`json:"descripcion"`
 	Enlinea     bool		`json:"enlinea"`
 	Url         string		`json:"url"`
+	SrvUrl      string		`json:"srvurl"`
 	BlobKey		appengine.BlobKey	`json:"imgurl"`
 }
 
@@ -44,6 +45,7 @@ func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 			d.Enlinea = oferta.Enlinea
 			d.Url = oferta.Url
 			d.BlobKey = oferta.BlobKey
+			d.SrvUrl = oferta.Codigo
 		}
 
 		b, _ = json.Marshal(d)
