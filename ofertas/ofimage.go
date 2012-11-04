@@ -120,21 +120,27 @@ func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
 					io.WriteString(w, "404 - Not Found")
 				}
 			}
+			blobstore.Send(w, d.BlobKey)
+			/*
 			if url, err := image.ServingURL(c, d.BlobKey, &imgprops); err != nil {
 				c.Errorf("Cannot construct ServingURL : %v", r.FormValue("id"))
 				blobstore.Send(w, d.BlobKey)
 			} else {
 				http.Redirect(w, r, url.String(), http.StatusFound)
 			}
+			*/
 		} else {
 			/* Cuando es un BlobKey */
 			//c.Infof("Blob : %v", r.FormValue("id"))
+			blobstore.Send(w, appengine.BlobKey(r.FormValue("id")))
+			/*
 			if url, err := image.ServingURL(c, appengine.BlobKey(r.FormValue("id")), &imgprops); err != nil {
 				c.Infof("Cannot construct ServingURL : %v", r.FormValue("id"))
 				blobstore.Send(w, appengine.BlobKey(r.FormValue("id")))
 			} else {
 				http.Redirect(w, r, url.String(), http.StatusFound)
 			}
+			*/
 		}
 	}
 }
@@ -217,6 +223,19 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 					var oldblobkey = oferta.BlobKey
 					oferta.BlobKey = file[0].BlobKey
 					out.IdOft = oferta.IdOft
+
+					// Se crea la URL para servir la oferta desde el CDN, si no se puede
+					var imgprops image.ServingURLOptions
+					imgprops.Secure = true
+					imgprops.Size = 400
+					imgprops.Crop = false
+					if url, err := image.ServingURL(c, oferta.BlobKey, &imgprops); err != nil {
+						c.Errorf("Cannot construct ServingURL : %v", r.FormValue("id"))
+						oferta.Codigo = ""
+					} else {
+						oferta.Codigo = url.String()
+					}
+
 					err = model.PutOferta(c, oferta)
 					if err != nil {
 						out.Status = "invalidUpload"
