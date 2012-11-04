@@ -230,7 +230,7 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 					imgprops.Size = 400
 					imgprops.Crop = false
 					if url, err := image.ServingURL(c, oferta.BlobKey, &imgprops); err != nil {
-						c.Errorf("Cannot construct ServingURL : %v", r.FormValue("id"))
+						c.Errorf("Cannot construct ServingURL : %v", oferta.IdOft)
 						oferta.Codigo = ""
 					} else {
 						oferta.Codigo = url.String()
