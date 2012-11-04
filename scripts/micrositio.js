@@ -51,7 +51,7 @@ function lighterAjax(){
 			if(data.hasOwnProperty('srvurl') && data.srvurl != '') {
             	var imgurl = data.srvurl;
 			} else {
-            	var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
+            	var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+data.imgurl : false;
 			}
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
@@ -65,7 +65,7 @@ function lighterAjax(){
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
             mtOft += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
             mtOft += '</a>'
-            var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/'+imgurl+'&p[title]= ' + titOft +'&p[summary] = '+desOft+'">';
+            var fbOft = '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]='+imgurl+'&p[title]= ' + titOft +'&p[summary] = '+desOft+'">';
             fbOft += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />';
             fbOft += '</a>';
             var twOft = '<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+nomEmp+ ' ' + titOft +' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlOferta +'" class="btwitter" title="Compartelo en Twitter">';
@@ -185,7 +185,7 @@ function getOfertas(id){
 				if(ofertas[i].srvurl!="") {
 					var imgurl = ofertas[i].srvurl;
 				} else {
-					var imgurl = (ofertas[i].imgurl && ofertas[i].imgurl != 'none') ? 'ofimg?id='+ofertas[i].imgurl : false;
+					var imgurl = (ofertas[i].imgurl && ofertas[i].imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+ofertas[i].imgurl : false;
 				}
                 var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
@@ -206,7 +206,7 @@ function getOfertas(id){
                 addOferta += '</a>'
                 addOferta += '</div>'
                 addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
-                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=http://www.elbuenfin.org/'+imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
+                addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]='+imgurl+'&p[title]= ' + ofertas[i].oferta +'&p[summary]=' +  ofertas[i].descripcion + '">'
                 addOferta += '<img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" />'
                 addOferta += '</a>'
                 addOferta += '</div>'
