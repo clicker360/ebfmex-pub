@@ -153,7 +153,7 @@ function getEmpresa(id){
         //(urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").removeAttr('target');
         (urlEmp != '#') ? $("#urlEmp").attr('target','_blank') : $("#urlEmp").remove();
         $("#mtShareE").html('<a onClick="window.open(\'mailto:?subject=Conoce esta empresa&body=Conoce esta empresa de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlEmpresa+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
-        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmpShare+'&p[title]= ' + empresa.name +']&p[summary]='+empresa.desc+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
+        $("#fbShareE").html('<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlEmpresa + '&p[images][0]='+imgEmpShare+'&p[title]= ' + empresa.name +'&p[summary]='+empresa.desc+'"><img src="/imgs/ofrtTemp/fbShare.jpg" alt="Compartir en Facebook" /></a>')
         $("#twShareE").html('<a onClick="window.open(\'https://twitter.com/intent/tweet?text='+empresa.name+' \' + this.href, this.target, \'width=600,height=400\'); return false" href="' + urlEmpresa +'" class="btwitter" title="Compartelo en Twitter"><img src="/imgs/ofrtTemp/twShare.jpg" alt="Compartir en Twitter" /></a>');
     })
 }
