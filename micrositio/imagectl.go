@@ -8,6 +8,8 @@ package micrositio
 import (
 	"appengine"
 	"appengine/datastore"
+	"appengine/blobstore"
+	appimage "appengine/image"
 	"crypto/sha1"
 	"resize"
 	"bytes"
@@ -96,6 +98,10 @@ func micrositio(w http.ResponseWriter, r *http.Request) {
 // upload is the HTTP handler for uploading images; it handles "/".
 func upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+	var imgprops appimage.ServingURLOptions
+	imgprops.Secure = true
+	imgprops.Size = 180
+	imgprops.Crop = false
 	if s, ok := sess.IsSess(w, r, c); ok {
 		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
 		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
@@ -183,25 +189,45 @@ func upload(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
-
-		// Save the image under a unique key, a hash of the image.
-		img := &model.Image{
-			Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(12), 
-			Kind: "EmpLogo", Name: imgo.Name, Desc: imgo.Desc, 
-			Sizepx: 0, Sizepy: 0, Url: imgo.Url, Type: "",
-			Sp1: sp1, Sp2: sp2, Sp3: "", Sp4: "",
-			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
-		}
-
-		_, err = model.PutLogo(c, img)
+		var blobkey appengine.BlobKey
+		blob, err := blobstore.Create(c, "image/jpeg")
 		if err != nil {
-			if(r.FormValue("tipo")=="async") {
-				fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó el logotipo. Sistema en matenimiento, intente en unos minutos");
-			} else {
-				tc["Error"] = struct { Cantsave string }{ "cantsave" }
-				micrositioTpl.Execute(w, tc)
+			c.Errorf("blobstore Create: %v", idemp)
+		}
+		_, err = blob.Write(buf.Bytes())
+		if err != nil {
+			c.Errorf("blobstore Write: %v", idemp)
+		}
+		err = blob.Close()
+		if err != nil {
+			c.Errorf("blobstore Close: %v", idemp)
+		}
+		blobkey, err = blob.Key()
+		if err != nil {
+			c.Errorf("blobstore Key Gen: %v", idemp)
+		}
+		if url, err := appimage.ServingURL(c, blobkey, &imgprops); err != nil {
+			c.Errorf("Cannot construct EmpLogo ServingURL : %v", idemp)
+		} else {
+			// Save the image under a unique key, a hash of the image.
+			img := &model.Image{
+				Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(12), 
+				Kind: "EmpLogo", Name: imgo.Name, Desc: imgo.Desc, 
+				Sizepx: 0, Sizepy: 0, Url: imgo.Url, Type: "",
+				Sp1: sp1, Sp2: sp2, Sp3: string(blobkey), Sp4: url.String(),
+				Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 			}
-			return
+
+			_, err = model.PutLogo(c, img)
+			if err != nil {
+				if(r.FormValue("tipo")=="async") {
+					fmt.Fprintf(w, "<p>'%s'</p>", "No se actualizó el logotipo. Sistema en matenimiento, intente en unos minutos");
+				} else {
+					tc["Error"] = struct { Cantsave string }{ "cantsave" }
+					micrositioTpl.Execute(w, tc)
+				}
+				return
+			}
 		}
 
 		/* 
@@ -259,7 +285,7 @@ func modData(w http.ResponseWriter, r *http.Request) {
 			Data: imgo.Data, IdEmp: idemp, IdImg: imgo.IdImg,
 			Kind: "EmpLogo", Name: name, Desc: desc,
 			Sizepx: 0, Sizepy: 0, Url: url, Type: "",
-			Sp1: sp1, Sp2: sp2, Sp3: "", Sp4: "",
+			Sp1: sp1, Sp2: sp2, Sp3: imgo.Sp3, Sp4: imgo.Sp4,
 			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 		}
 		_, err := model.PutLogo(c, imgo)
