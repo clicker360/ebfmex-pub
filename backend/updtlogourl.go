@@ -17,7 +17,7 @@ func init() {
 
 func UpdateServingLogoUrl(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	const batch = 100
+	const batch = 50
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
 		page = 1
@@ -38,7 +38,7 @@ func UpdateServingLogoUrl(w http.ResponseWriter, r *http.Request) {
 		imgprops.Secure = true
 		imgprops.Size = 180
 		imgprops.Crop = false
-		if e.Sp4 == "" {
+		if e.Sp4 == "" && e.IdEmp != "" {
 			var blobkey appengine.BlobKey
 			blob, err := blobstore.Create(c, "image/jpeg")
 			if err != nil {
