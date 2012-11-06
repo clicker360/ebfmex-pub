@@ -18,6 +18,7 @@ import (
 type response struct {
 	IdEmp	string `json:"id"`
 	Name	string `json:"name"`
+	Url		string `json:"url"`
 	Num		int `json:"num"`
 }
 
@@ -47,7 +48,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	logos := make([]model.Image, 0, nn)
 	hit := rand.Intn(60)
 	if item, err := memcache.Get(c, "carr_"+strconv.Itoa(hit)); err == memcache.ErrCacheMiss {
-		q := datastore.NewQuery("ShortLogo")
+		q := datastore.NewQuery("EmpLogo")
 		n, _ := q.Count(c)
 		offset := 0;
 		if(n > nn) {
@@ -75,7 +76,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	} else {
 		//c.Infof("memcache retrieve carr_page : %v", strconv.Itoa(hit))
 		if err := json.Unmarshal(item.Value, &logos); err != nil {
-			c.Errorf("Unmarshaling ShortLogo item: %v", err)
+			c.Errorf("Unmarshaling EmpLogo item: %v", err)
 		}
 		nn = len(logos)
 	}
@@ -86,9 +87,12 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	for i, _ := range tn {
 		ti.IdEmp = logos[tn[i]].IdEmp
 		ti.Name = logos[tn[i]].Name
-		//b, _ := json.Marshal(ti)
-		//w.Write(b)
-		tpl.Execute(w, ti)
+		ti.Url = strings.Replace(logos[tn[i]].Sp4, "s180", "s70",1)
+		if ti.Url != "" {
+			//b, _ := json.Marshal(ti)
+			//w.Write(b)
+			tpl.Execute(w, ti)
+		}
 		if i >= nn  {
 			break
 		}
@@ -226,7 +230,8 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
+//const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
+const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('{{.Url}}')"></div></div>`
 const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}">{{.Name}}</div>`
 const paginadorTpl = `<div class="pagination-H"><ul id="letters">{{range .}}<li><a href="#" class="letter" prfx="{{.Prefix}}" onclick="javascript:paginar({{.Pagina}});"> {{.Pagina}} </a></li>{{end}}</ul></div>`
 //const paginadorTpl = `<div>{{range .}}<a href="javascript:pager({{.Prefix}}, {{.Pagina}});"> {{.Pagina}} </a>{{end}}</div>`
