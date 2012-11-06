@@ -16,7 +16,7 @@ func init() {
 
 func UpdateServingUrl(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	const batch = 100
+	const batch = 300
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
 		page = 1

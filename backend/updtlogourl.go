@@ -17,7 +17,7 @@ func init() {
 
 func UpdateServingLogoUrl(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	const batch = 50
+	const batch = 100
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
 		page = 1
