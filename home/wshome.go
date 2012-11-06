@@ -232,7 +232,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
 const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('{{.Url}}')"></div></div>`
-const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}"><a href="http://www.elbuenfin.org/micrositio.html?id={{.IdEmp}}" targe="_blank">{{.Name}}</a></div>`
+const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}"><a href="http://www.elbuenfin.org/micrositio.html?id={{.IdEmp}}" target="_blank">{{.Name}}</a></div>`
 const paginadorTpl = `<div class="pagination-H"><ul id="letters">{{range .}}<li><a href="#" class="letter" prfx="{{.Prefix}}" onclick="javascript:paginar({{.Pagina}});"> {{.Pagina}} </a></li>{{end}}</ul></div>`
 //const paginadorTpl = `<div>{{range .}}<a href="javascript:pager({{.Prefix}}, {{.Pagina}});"> {{.Pagina}} </a>{{end}}</div>`
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
