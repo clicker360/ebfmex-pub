@@ -23,7 +23,7 @@ func UpdateServingLogoUrl(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 	offset := batch * (page - 1)
-	q := datastore.NewQuery("EmpLogo").Offset(offset).Order("IdImg").Limit(batch)
+	q := datastore.NewQuery("EmpLogo").Offset(offset).Order("IdEmp").Limit(batch)
 	n,_ := q.Count(c)
 	for i := q.Run(c); ; {
 		var e model.Image
