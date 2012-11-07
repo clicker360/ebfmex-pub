@@ -75,13 +75,17 @@ $(document).ready(function(){
             $(".lighter").click(function() {
                     var id = $(this).parent().attr('id');
                     $.get('wsdetalle',{id:id},function(data){
-                        ///console.log(data);
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
+                            //console.log(data);
 						if(data.hasOwnProperty('srvurl') && data.srvurl != '') {
 							var imgurl = data.srvurl;
 						} else {
-							var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+data.imgurl : false;
+                                                        var imgAnt = $("#"+data.idoft+" span.imgcont img").attr('src');
+                                                        if(imgAnt.substring(0,8) != 'simg?id=')
+                                                            var imgurl = imgAnt
+                                                        else
+                                                            var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'ofimg?id='+data.imgurl : false;
 						}
                         var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
                         var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion :'';
@@ -109,7 +113,8 @@ $(document).ready(function(){
                             $(".logoOferta img").attr('src',imgEmp);
                             $(".logoOferta img").show();
 							$(".logoOferta img").error(function() {
-								$(this).hide();
+                                                            $(this).attr("src", "imgs/imageDefault.jpg");
+								//$(this).hide();
 							});
                             $.get('wssucs',{id:idEmp},function(sucursales){
                                 if(typeof(sucursales) != 'object')
