@@ -170,6 +170,7 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
+			if(ofertas[i].Oferta == "Nueva oferta") continue;
 			var logo;
 			//(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
 			(ofertas[i].Logo != "") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
