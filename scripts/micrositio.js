@@ -49,9 +49,14 @@ function lighterAjax(){
                 data = JSON.parse(data);
             //console.log(data);
 			if(data.hasOwnProperty('srvurl') && data.srvurl != '') {
-            	var imgurl = data.srvurl;
+                            var imgurl = data.srvurl;
 			} else {
-            	var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+data.imgurl : false;
+                            var imgAnt = ($("#"+data.idoft+" span.imgcont img").attr('src')) ? $("#"+data.idoft+" span.imgcont img").attr('src') : false ;
+                            if(imgAnt){
+                                if(imgAnt.substring(0,8) != 'simg?id=')
+                                    var imgurl = imgAnt
+                            }else
+                                var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+data.imgurl : false;
 			}
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
@@ -182,6 +187,7 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
+                console.log(ofertas[i]);
 				if(ofertas[i].srvurl!="") {
 					var imgurl = ofertas[i].srvurl;
 				} else {
