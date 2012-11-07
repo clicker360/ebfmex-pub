@@ -27,7 +27,7 @@ func init() {
 func ShowMicrositio(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	var m micrositio
