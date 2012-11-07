@@ -150,6 +150,10 @@ function getEmpresa(id){
         imgEmp = 'simg?id='+empresa.idemp;
         var imgEmpShare = 'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
+        $(".logoOferta img").error(function() {
+					img = "<img src='imgs/imageDefault.jpg' width='215' id='pic' alt='logo de la empresa' class='first'>";
+					$(this).replaceWith(img);
+				});
         var urlEmp = (empresa.url) ? empresa.url : false;
         if(urlEmp)
             $("#urlEmp").attr('href',urlEmp).html('Tienda en línea').show();
