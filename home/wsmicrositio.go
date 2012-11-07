@@ -17,6 +17,7 @@ type micrositio struct {
 	Url         string	`json:"url"`
 	Sp1         string	`json:"facebook"`
 	Sp2         string	`json:"twitter"`
+	Sp4         string	`json:"srvurl"`
 }
 
 func init() {
@@ -26,19 +27,22 @@ func init() {
 func ShowMicrositio(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	var m micrositio
 	if item, err := memcache.Get(c, "m_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
-		if imgo := model.GetLogo(c, r.FormValue("id")); imgo != nil {
-			m.IdEmp = imgo.IdEmp
-			m.IdImg = imgo.IdImg
-			m.Name = imgo.Name
-			m.Desc = imgo.Desc
-			m.Url = imgo.Url
-			m.Sp1 = imgo.Sp1
-			m.Sp2 = imgo.Sp2
+		if e := model.GetEmpresa(c, r.FormValue("id")); e != nil {
+			m.IdEmp = e.IdEmp
+			m.Name = e.Nombre
+			m.Desc = e.Desc
+			if imgo := model.GetLogo(c, r.FormValue("id")); imgo != nil {
+				m.IdImg = imgo.IdImg
+				m.Url = imgo.Url
+				m.Sp1 = imgo.Sp1
+				m.Sp2 = imgo.Sp2
+				m.Sp4 = imgo.Sp4
+			}
 		}
 
 		b, _ = json.Marshal(m)
