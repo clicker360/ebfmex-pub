@@ -114,6 +114,9 @@ func GetOferta(c appengine.Context, id string) (*Oferta, *datastore.Key) {
 }
 
 func PutOferta(c appengine.Context, oferta *Oferta) error {
+	if oferta.BlobKey == "" {
+		oferta.BlobKey = "none"
+	}
 	_, err := datastore.Put(c, oferta.Key(c), oferta)
 	if err != nil {
 		return err
