@@ -175,7 +175,7 @@ $(document).ready(function(){
 			//(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
 			(ofertas[i].Logo != "") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
 			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
-			addOferta = '<div class="oferta bgWh" id="'+ofertas[i].IdOft+'">'
+			addOferta = '<div class="oferta bgWh pagina_'+pagina+'" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
 			addOferta += '<img src="'+logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" id="'+ofertas[i].IdOft+'"/>'
