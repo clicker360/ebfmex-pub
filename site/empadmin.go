@@ -148,6 +148,11 @@ func NewEmp(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		err1 := model.PutCtaEmp(c, fe.IdEmp, u.Email, u.EmailAlt)
+		if err1 != nil {
+			http.Error(w, err1.Error(), http.StatusInternalServerError)
+			return
+		}
 		//formEmp(c, w, &s, e)
 		ShowListEmp(w, r)
 	} else {

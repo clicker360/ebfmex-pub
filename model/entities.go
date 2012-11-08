@@ -64,6 +64,12 @@ type Empresa struct {
 	Status		bool
 }
 
+type CtaEmpresa struct {
+	IdEmp		string
+	Email			string
+	EmailAlt		string
+}
+
 type EmpresaNm struct {
 	IdEmp		string
 	Folio		int32
@@ -163,6 +169,27 @@ func PutChangeControl(c appengine.Context, id string, kind string, status string
 	cc.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
 	_, err := datastore.Put(c, datastore.NewKey(c, "ChangeControl", kind+"_"+id, 0, nil), &cc)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func PutCtaEmp(c appengine.Context, idemp string, email string, emailalt string) error {
+	var ce CtaEmpresa
+	ce.IdEmp = idemp
+	ce.Email = email
+	ce.EmailAlt = emailalt
+	_, err := datastore.Put(c, datastore.NewKey(c, "CtaEmpresa", ce.IdEmp, 0, nil), &ce)
+	if err != nil {
+		c.Errorf("PutCtaEmpresa(); Error al intentar crear CtaEmpresa : %v", idemp)
+		return err
+	}
+	return nil
+}
+
+func DelCtaEmp(c appengine.Context, idemp string) error {
+    if err := datastore.Delete(c, datastore.NewKey(c, "CtaEmpresa", idemp, 0, nil)); err != nil {
+		c.Errorf("DelCtaEmpresa(); Error al intentar borrar CtaEmpresa : %v", idemp)
 		return err
 	}
 	return nil
@@ -305,6 +332,10 @@ func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
 		return err
 	}
     if err := datastore.Delete(c, datastore.NewKey(c, "EmpresaNm", id, 0, r.Key(c))); err != nil {
+		return err
+	}
+    if err := datastore.Delete(c, datastore.NewKey(c, "CtaEmpresa", id, 0, nil)); err != nil {
+		c.Errorf("DelCtaEmpresa(); Error al intentar borrar CtaEmpresa : %v", id)
 		return err
 	}
 	_ = PutChangeControl(c, id, "Empresa", "B")

@@ -11,7 +11,6 @@ import (
 
 func init() {
     http.HandleFunc("/backend/updtsrvurl", UpdateServingUrl)
-    //http.HandleFunc("/backend/updatesearch", RedirUpdateSearch)
 }
 
 func UpdateServingUrl(w http.ResponseWriter, r *http.Request) {
