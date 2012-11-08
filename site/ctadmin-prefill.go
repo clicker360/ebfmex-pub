@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-    http.HandleFunc("/regprefill", registroprefill)
+    http.HandleFunc("/r/regprefill", registroprefill)
 }
 
 func registroprefill(w http.ResponseWriter, r *http.Request) {
@@ -17,6 +17,7 @@ func registroprefill(w http.ResponseWriter, r *http.Request) {
 			fd.Nombre = r.FormValue("nombre")
 			fd.Apellidos = r.FormValue("apellidos")
 			fd.Email = r.FormValue("email")
+			fd.Puesto = r.FormValue("puesto")
 			fd.Tel = r.FormValue("tel")
 			fd.Cel = r.FormValue("cel")
 			tc := make(map[string]interface{})
