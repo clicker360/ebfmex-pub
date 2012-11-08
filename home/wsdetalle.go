@@ -46,16 +46,16 @@ func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 			d.Url = oferta.Url
 			d.BlobKey = oferta.BlobKey
 			d.SrvUrl = oferta.Codigo
-		}
 
-		b, _ = json.Marshal(d)
-		item := &memcache.Item{
-			Key:   "d_"+r.FormValue("id"),
-			Value: b,
-			Expiration: time.Duration(timetolive)*time.Second,
-		}
-		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Memcache.Add d_idoft : %v", err)
+			b, _ = json.Marshal(d)
+			item := &memcache.Item{
+				Key:   "d_"+r.FormValue("id"),
+				Value: b,
+				Expiration: time.Duration(timetolive)*time.Second,
+			}
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Add d_idoft : %v", err)
+			}
 		}
 	} else {
 		//c.Infof("memcache retrieve d_idoft : %v", r.FormValue("id"))

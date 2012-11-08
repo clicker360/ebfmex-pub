@@ -45,14 +45,16 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 		wsofs := make([]wsoferta, len(*emofs), cap(*emofs))
 		for i,v:= range *emofs {
 			if now.After(v.FechaHoraPub) {
-				wsofs[i].IdEmp = v.IdEmp
-				wsofs[i].IdOft = v.IdOft
-				wsofs[i].Oferta = v.Oferta
-				wsofs[i].Descripcion = v.Descripcion
-				wsofs[i].Enlinea = v.Enlinea
-				wsofs[i].Url = v.Url
-				wsofs[i].SrvUrl = v.Codigo
-				wsofs[i].BlobKey = v.BlobKey
+				if v.Oferta != "Nueva oferta" {
+					wsofs[i].IdEmp = v.IdEmp
+					wsofs[i].IdOft = v.IdOft
+					wsofs[i].Oferta = v.Oferta
+					wsofs[i].Descripcion = v.Descripcion
+					wsofs[i].Enlinea = v.Enlinea
+					wsofs[i].Url = v.Url
+					wsofs[i].SrvUrl = v.Codigo
+					wsofs[i].BlobKey = v.BlobKey
+				}
 			}
 		}
 		sortutil.AscByField(wsofs, "Oferta")
