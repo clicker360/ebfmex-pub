@@ -117,6 +117,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 	if oferta.BlobKey == "" {
 		oferta.BlobKey = "none"
 	}
+	_ = PutChangeControl(c, oferta.IdOft, "Oferta", "M")
 	_, err := datastore.Put(c, oferta.Key(c), oferta)
 	if err != nil {
 		return err
@@ -146,7 +147,6 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 		oferta.PutOfertaSucursal(c, &ofsuc)
 		TouchSuc(c, os.IdSuc)
 	}
-	_ = PutChangeControl(c, oferta.IdOft, "Oferta", "M")
 
 	return nil
 }

@@ -16,7 +16,7 @@ func init() {
 
 func updateCtaEmpresa(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
-	const batch = 300
+	const batch = 200
 
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
