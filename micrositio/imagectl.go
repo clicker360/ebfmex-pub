@@ -142,10 +142,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Resize if too large, for more efficient moustachioing.
-		// We aim for less than 1200 pixels in any dimension; if the
-		// picture is larger than that, we squeeze it down to 600.
-		const max = 800
+		const max = 600
 		// We aim for less than max pixels in any dimension.
 		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
 			// If it's gigantic, it's more efficient to downsample first
@@ -160,14 +157,6 @@ func upload(w http.ResponseWriter, r *http.Request) {
 				i = resize.Resample(i, i.Bounds(), w, h)
 				b = i.Bounds()
 			}
-			w, h := max, max
-			if b.Dx() > b.Dy() {
-				h = b.Dy() * h / b.Dx()
-			} else {
-				w = b.Dx() * w / b.Dy()
-			}
-			i = resize.Resize(i, i.Bounds(), w, h)
-		} else {
 			w, h := max, max
 			if b.Dx() > b.Dy() {
 				h = b.Dy() * h / b.Dx()
@@ -316,23 +305,18 @@ func img(w http.ResponseWriter, r *http.Request) {
 	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 	im := new(model.Image)
 	if err := datastore.Get(c, key, im); err != nil {
+		w.WriteHeader(http.StatusNotFound)
 		c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
 	} else {
+		w.Header().Set("Content-type", "image/jpeg")
+		w.Write(im.Data)
+		/*
 		if m, _, err := image.Decode(bytes.NewBuffer(im.Data)); err != nil {
 			c.Errorf("image.Decode id: %v", r.FormValue("id"))
 		} else {
-			/* 
-			 * Ejemplo de cómo mejorar la conversión de datos 
-			 *
-			get := func(n string) int { // helper closure
-				i, _ := strconv.Atoi(r.FormValue(n))
-				return i
-			}
-			s := get("s")
-			*/
-
 			jpeg.Encode(w, m, nil)
 		}
+		*/
 	}
 }
 

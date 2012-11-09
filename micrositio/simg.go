@@ -35,6 +35,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		if(r.FormValue("IdEmp")!="") {
 			simg.IdEmp = r.FormValue("IdEmp");
 		} else {
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 		if(force!=1) {
@@ -42,10 +43,16 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 
 			// Stream short logo if already exists
 			if(shortlogo != nil) {
+				w.Header().Set("Content-type", "image/jpeg")
+				w.Write(shortlogo.Data)
+
+				/*
 				m, _, err := image.Decode(bytes.NewBuffer(shortlogo.Data))
 				model.Check(err)
 				w.Header().Set("Content-type", "image/jpeg")
 				jpeg.Encode(w, m, nil)
+				*/
+
 				return
 			}
 		}
@@ -55,12 +62,14 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		biglogo := model.GetLogo(c, r.FormValue("IdEmp"))
 		if biglogo == nil {
 			// No such imageb
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
 		i, _, err := image.Decode(bytes.NewBuffer(biglogo.Data))
 		if err != nil {
 			// ERR_BADFORMAT
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
@@ -117,6 +126,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		err = jpeg.Encode(&buf, i, nil)
 		if err != nil {
 			// ERR_FAIL_ENCODE
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
@@ -143,10 +153,14 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 			// ERR_DATASTORE
 			// Don't return, stream image either way
 		}
+		w.Header().Set("Content-type", "image/jpeg")
+		w.Write(simg.Data)
+		/*
 		m, _, err := image.Decode(bytes.NewBuffer(simg.Data))
 		model.Check(err)
 		w.Header().Set("Content-type", "image/jpeg")
 		jpeg.Encode(w, m, nil)
+		*/
 	}
 }
 

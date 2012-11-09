@@ -15,7 +15,7 @@ import (
 	"sess"
 	"model"
 	"time"
-	"io"
+	//"io"
 )
 
 type OfImg struct{
@@ -107,8 +107,7 @@ func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
 					}
 				} else {
 					w.WriteHeader(http.StatusNotFound)
-					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-					io.WriteString(w, "404 - Not Found")
+					return
 				}
 			} else {
 				//c.Infof("memcache retrieve d_idoft : %v", r.FormValue("id"))
@@ -116,8 +115,7 @@ func handleServeImgByIdOrBlob(w http.ResponseWriter, r *http.Request) {
 					c.Errorf("Unmarshaling ShortLogo item: %v", err)
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					w.WriteHeader(http.StatusNotFound)
-					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-					io.WriteString(w, "404 - Not Found")
+					return
 				}
 			}
 			blobstore.Send(w, d.BlobKey)
@@ -163,8 +161,8 @@ func handleServeImgById(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			w.WriteHeader(http.StatusNotFound)
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			io.WriteString(w, "404 - Not Found")
+			//w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			//io.WriteString(w, "404 - Not Found")
 		}
 	}
 	return
