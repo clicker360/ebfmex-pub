@@ -2169,7 +2169,7 @@ ul.menuAdmin li {
 	padding:0px;
 	margin-left:2px;
 	float:left;
-	height:43px;
+
 	
 }
 ul.menuAdmin li a{
@@ -2199,6 +2199,20 @@ ul.menuAdmin li a.selected{
 	margin-top: 1px;
 	margin-left: 1px;
 	background-repeat: no-repeat;
+}
+ul.menuAdmin li a.resalt{
+	color: #191919;
+	background-image: url(gfx/backBtnadmin2.jpg);
+	background-position: left top;
+	width: 200px;
+	height: 42px;
+	padding-top:2px;
+	margin-top: 1px;
+	margin-left: 1px;
+	background-repeat: no-repeat;
+	text-transform: uppercase;
+	font-size: 14px;
+	
 }
 ul.menuAdmin li span{
 	width: 37px;
