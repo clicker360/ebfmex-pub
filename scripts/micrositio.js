@@ -191,7 +191,7 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
-				if(ofertas[i].Oferta == "") continue;
+				if(ofertas[i].oferta == "") continue;
                 console.log(ofertas[i]);
 				if(ofertas[i].srvurl!="") {
 					var imgurl = ofertas[i].srvurl;
