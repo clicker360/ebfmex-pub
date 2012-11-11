@@ -131,7 +131,7 @@ func rslogo(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Save the image under a unique key, a hash of the image.
-		simg.IdImg = model.RandId(12)
+		simg.IdImg = model.RandId(20)
 		simg.Data = buf.Bytes()
 		simg.Name = biglogo.Name
 		simg.Desc = biglogo.Desc
@@ -241,7 +241,7 @@ func slogores(c appengine.Context, id string, max int, sf int) int {
 	if(shortlogo != nil) {
 		simg.IdImg = shortlogo.IdImg
 	} else {
-		simg.IdImg = model.RandId(12)
+		simg.IdImg = model.RandId(20)
 	}
 	simg.IdEmp = id
 	simg.Data = buf.Bytes()

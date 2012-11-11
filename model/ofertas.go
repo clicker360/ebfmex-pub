@@ -152,7 +152,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 }
 
 func NewOferta(c appengine.Context, oferta *Oferta) (*Oferta, error) {
-	oferta.IdOft = RandId(14)
+	oferta.IdOft = RandId(20)
     _, err := datastore.Put(c, datastore.NewKey(c, "Oferta", oferta.IdOft, 0, nil), oferta)
 	if err != nil {
 		return nil, err

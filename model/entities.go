@@ -287,7 +287,7 @@ func (r *Cta) NewEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 	*/
 	//if err := sharded_counter.Increment(c, "empresa"); err == nil {
 	//	if folio, err := sharded_counter.Count(c, "empresa"); err == nil {
-			e.IdEmp = RandId(14)
+			e.IdEmp = RandId(20)
 			//e.Folio = folio
 			_, err := datastore.Put(c, datastore.NewKey(c, "Empresa", e.IdEmp, 0, r.Key(c)), e)
 			if err != nil {
@@ -399,7 +399,7 @@ func TouchSuc(c appengine.Context, id string) error {
 
 func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
 	if(s.IdSuc == "") {
-		s.IdSuc = RandId(14)
+		s.IdSuc = RandId(20)
 		_ = PutChangeControl(c, s.IdSuc, "Sucursal", "A")
 	} else {
 		_ = PutChangeControl(c, s.IdSuc, "Sucursal", "M")

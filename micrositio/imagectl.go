@@ -9,6 +9,7 @@ import (
 	"appengine"
 	"appengine/datastore"
 	"appengine/blobstore"
+    "appengine/memcache"
 	appimage "appengine/image"
 	"crypto/sha1"
 	"resize"
@@ -200,7 +201,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// Save the image under a unique key, a hash of the image.
 			img := &model.Image{
-				Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(12), 
+				Data: buf.Bytes(), IdEmp: idemp, IdImg: model.RandId(20), 
 				Kind: "EmpLogo", Name: imgo.Name, Desc: imgo.Desc, 
 				Sizepx: 0, Sizepy: 0, Url: imgo.Url, Type: "",
 				Sp1: sp1, Sp2: sp2, Sp3: string(blobkey), Sp4: url.String(),
@@ -305,18 +306,42 @@ func img(w http.ResponseWriter, r *http.Request) {
 	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 	im := new(model.Image)
 	if err := datastore.Get(c, key, im); err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
+		if item, err := memcache.Get(c, "defautlimg"); err == memcache.ErrCacheMiss {
+			/* OJO: Esta es una cochinada, se creo una empresa con el logo por default y es lo que se escupe
+			cuando no hay logo para otra empresa */
+			dkey := datastore.NewKey(c, "EmpLogo", "oygqgtyayzxqbl", 0, nil)
+			if err := datastore.Get(c, dkey, im); err != nil {
+				w.WriteHeader(http.StatusNotFound)
+				c.Errorf("ImgCtrl No existe id: %v", "EmpLogoDefault")
+				return
+			}
+			item := &memcache.Item{
+				Key:   "defaultimg",
+				Value: im.Data,
+			}
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Add defaultimg : %v", err)
+			}
+
+			/*
+			if m, _, err := image.Decode(bytes.NewBuffer(im.Data)); err != nil {
+				c.Errorf("image.Decode id: %v", r.FormValue("id"))
+			} else {
+				jpeg.Encode(w, m, nil)
+			}
+			*/
+			w.Header().Set("Content-type", "image/jpeg")
+			w.Write(im.Data)
+		} else {
+			//c.Infof("memcache retrieve defaultimg : %v", strconv.Itoa(hit))
+			w.Header().Set("Content-type", "image/jpeg")
+			w.Write(item.Value)
+		}
+		//w.WriteHeader(http.StatusNotFound)
+		//c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
 	} else {
 		w.Header().Set("Content-type", "image/jpeg")
 		w.Write(im.Data)
-		/*
-		if m, _, err := image.Decode(bytes.NewBuffer(im.Data)); err != nil {
-			c.Errorf("image.Decode id: %v", r.FormValue("id"))
-		} else {
-			jpeg.Encode(w, m, nil)
-		}
-		*/
 	}
 }
 
