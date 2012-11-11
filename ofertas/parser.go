@@ -118,7 +118,7 @@ func putSearchData(c appengine.Context, value string, key *datastore.Key, idoft 
 				if (MailServer == "gmail") {
 					msg := &mail.Message{
 						Sender:  "contacto@elbuenfin.org",
-						To:      []string{"ahuezo@clicker360.com"},
+						To:      []string{"ahuezo@clicker360.com", "daniela@iniciativamexico.com", "adan@clicker360.com"},
 						Subject: "Alerta de actividad anormal de blacklist / El Buen Fin",
 						HTMLBody: fmt.Sprintf("Se evitó integrar a búsquedas la siguiente Oferta ID: %v, \n Con el siguiente Texto: %v \n Favor de revisar el resto de la actividad relacionada a la oferta.", idoft, value),
 					}
