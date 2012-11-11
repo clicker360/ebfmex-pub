@@ -77,7 +77,7 @@ $(document).ready(function(){
                     $.get('wsdetalle',{id:id},function(data){
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
-                            console.log(data);
+                            //console.log(data);
 						if(data.hasOwnProperty('srvurl') && data.srvurl != '') {
 							var imgurl = data.srvurl;
 						} else {
@@ -93,7 +93,7 @@ $(document).ready(function(){
                         var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
                         var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
                         if(enLinea){
-                            $("#enLinea").html('<div class="col-10 bgRd marg-B10px marg-T10px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                            $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
                         }else{
                             $("#enLinea").html('')
                         }
@@ -110,19 +110,16 @@ $(document).ready(function(){
                         $(".sucList").html('');
                         if(idEmp){
                             var imgEmp = 'simg?id='+idEmp;
-                            $(".logoOferta2 img").attr('src',imgEmp);
-                            $(".logoOferta2 img").show();
-							$(".logoOferta2 img").error(function() {
-                                                            $(this).attr("src", "imgs/ofrtTemp/logo-temporal.jpg");
+                            $(".logoOferta img").attr('src',imgEmp);
+                            $(".logoOferta img").show();
+							$(".logoOferta img").error(function() {
+                                                            $(this).attr("src", "imgs/imageDefault.jpg");
 								//$(this).hide();
 							});
                             $.get('wssucs',{id:idEmp},function(sucursales){
                                 if(typeof(sucursales) != 'object')
                                     sucursales = JSON.parse(sucursales);
-                                console.log(sucursales);                                                                  
-                                $("#sucursales .sucsText").remove();
-                                if(sucursales.length >= 1){  
-                                    $("#sucursales").prepend('<div class="col-10 bgRd marg-T10px sucsText"><h4 class=" typ-Wh"> Sucursales con esta oferta</h4></div>');
+                                if(sucursales.length >= 1){
                                     for(var i in sucursales){
                                         $(".sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\'); return false;">'+sucursales[i].sucursal+'</a></li>')
                                     }
@@ -131,12 +128,12 @@ $(document).ready(function(){
                         }
                         $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
                         if(imgurl)
-                            $("#imgOftLb").html('<img class="img" src="'+imgurl+'" style="max-width: 400px; max-width: 400px;"/>');
+                            $("#imgOftLb").html('<img class="img" src="'+imgurl+'" width="430"/>');
                         else
                             $("#imgOftLb").html('');
                         $("#titOft h3").html(titOft);
                         $("#desOft p").html(desOft);
-                        $("#nomEmp h6").html(nomEmp);
+                        $("#nomEmp h4").html(nomEmp);
                         $("#mtOft").html(mtOft);
                         $("#fbOft").html(fbOft);
                         $("#twOft").html(twOft);
@@ -145,7 +142,7 @@ $(document).ready(function(){
                         $('#lightfront').removeClass("hide");
 
 						$("#imgOftLb img").error(function() {
-                                                    $("#imgOftLb img").remove();
+							$(this).attr("src", "imgs/imageDefault.jpg");
 						});
                     });
               return false;
@@ -206,7 +203,7 @@ $(document).ready(function(){
 			addOferta += '</div>'
 			addOferta += '</div>';
 			$(".ofertCont").append(addOferta);
-			$(".oferta img").error(function() {
+			$("img").error(function() {
 				img = "<img  src = 'imgs/imageDefault.jpg' id='pic' width='212'/>";
 				$(this).replaceWith(img);
 			});
