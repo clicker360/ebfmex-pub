@@ -83,7 +83,7 @@ function getOferta(id){
         //console.log(oferta);
         var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+oferta.idoft;
         if(oferta.idemp && oferta.idemp != 'none')
-            $("#logoOft").html('<img src="simg?id='+oferta.idemp+'" width="215" alt="logo de la empresa" class="first" />');
+            $("#logoOft").html('<img src="simg?id='+oferta.idemp+'" width="113" alt="logo de la empresa" class="first" />');
         else
             $("#logoOft").html('');
         $("#nomEmp h4").html(oferta.empresa);
@@ -128,13 +128,13 @@ function getSucursales(id){
     })
 }
 function showMap(lat, lng, div){
-        if($("#mapCont").is(":visible")){
-            $('#mapCont').slideToggle('slow', function() {
+        if($("#mapCont2").is(":visible")){
+            $('#mapCont2').slideToggle('slow', function() {
                 $('#'+div).html('');
             });
         }else
             $('#map').html('');
-        $('#mapCont').slideToggle('slow', function() {
+        $('#mapCont2').slideToggle('slow', function() {
             sucMap(lat, lng, div);
         });
 }
