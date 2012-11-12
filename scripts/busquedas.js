@@ -109,7 +109,7 @@ $(document).ready(function(){
 			twOft += '</a>';
                         $(".sucList").html('');
                         if(idEmp){
-                            var imgEmp = 'simg?id='+idEmp;
+                            var imgEmp = data.EmpLogo;//'simg?id='+idEmp;
                             $(".logoOferta2 img").attr('src',imgEmp);
                             $(".logoOferta2 img").show();
 							$(".logoOferta2 img").error(function() {
@@ -173,15 +173,16 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
+                      console.log(ofertas[i]);
 			if(ofertas[i].Oferta == "Nueva oferta") continue;
 			var logo;
 			//(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
-			(ofertas[i].Logo != "") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
+			(ofertas[i].Logo != "" ) ? logo = ofertas[i].Logo : logo =  ofertas[i].EmpLogo;
 			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
 			addOferta = '<div class="oferta bgWh pagina_'+pagina+'" id="'+ofertas[i].IdOft+'">'
 			addOferta += '<a href="#" class="lighter">'
 			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="'+logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" id="'+ofertas[i].IdOft+'"/>'
+			addOferta += '<img src="'+logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" id="img_'+ofertas[i].IdOft+'"/>'
 			addOferta += '</span>'
 			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
 			addOferta += '</a>'

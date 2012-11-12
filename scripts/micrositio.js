@@ -56,7 +56,7 @@ function lighterAjax(){
                                 if(imgAnt.substring(0,8) != 'simg?id=')
                                     var imgurl = imgAnt
                             }else
-                                var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+data.imgurl : false;
+                                var imgurl = (data.hasOwnProperty('imgurl') && data.imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+data.imgurl : data.EmpLogo;
 			}
             var titOft = (data.hasOwnProperty('oferta')) ? data.oferta : '';
             var desOft = (data.hasOwnProperty('descripcion')) ? data.descripcion : '';
@@ -78,7 +78,7 @@ function lighterAjax(){
             twOft += '</a>';
             $("#sucList").html('');
             if(idEmp){
-                var imgEmp = 'simg?id='+idEmp;
+                var imgEmp = data.EmpLogo; //'simg?id='+idEmp;
                 $(".logoOferta img").attr('src',imgEmp);
                 $.get('wssucs',{
                     id:idEmp
@@ -147,12 +147,12 @@ function getEmpresa(id){
     $.get('wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
-        //console.log(empresa);
+        console.log(empresa);
         var urlEmpresa = 'http://www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
-        imgEmp = 'simg?id='+empresa.idemp;
-        var imgEmpShare = 'http://www.elbuenfin.org/simg?id='+empresa.idemp;
+        imgEmp = empresa.srvurl;//'simg?id='+empresa.idemp;
+        var imgEmpShare = imgEmp//'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         $(".logoOferta img").error(function() {
 					img = "<img src='imgs/imageDefault.jpg' width='113' id='pic' alt='logo de la empresa' class='first'>";
@@ -204,7 +204,7 @@ function getOfertas(id){
 				if(ofertas[i].srvurl!="") {
 					var imgurl = ofertas[i].srvurl;
 				} else {
-					var imgurl = (ofertas[i].imgurl && ofertas[i].imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+ofertas[i].imgurl : false;
+					var imgurl = (ofertas[i].imgurl && ofertas[i].imgurl != 'none') ? 'http://www.elbuenfin.org/ofimg?id='+ofertas[i].imgurl : ofertas[i].EmpLogo;
 				}
                 var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
