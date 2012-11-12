@@ -226,7 +226,7 @@ $(document).ready(function(){
 function showMap(lat, lng, div){
         $('#imgOft img').hide();
         $('#mapCont #closeMap').remove();
-        $("#mapCont").prepend('<a href="#null" id="closeMap" class="button-2 marg-R20px"><span class="col-9 Dsblock alineCenter marg-L20px" onClick="$(\'#mapCont\').slideToggle(\'slow\'); $(\'#imgOft img\').show();">CERRAR MAPA [X]</span></a>');
+        $("#mapCont").prepend('<a href="#null" id="closeMap" class="button-2"><span class="col-9 Dsblock alineCenter" onClick="$(\'#mapCont\').slideToggle(\'slow\'); $(\'#imgOft img\').show();">CERRAR MAPA [X]</span></a>');
         if($("#mapCont").is(":visible")){
             $('#mapCont').slideToggle('slow', function() {                
                 $('#'+div).html('');
