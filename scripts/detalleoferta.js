@@ -80,7 +80,7 @@ function getOferta(id){
     },function(oferta){
         if(typeof(oferta) != 'object')
             oferta = JSON.parse(oferta);
-        //console.log(oferta);
+        console.log(oferta);
         var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+oferta.idoft;
         if(oferta.idemp && oferta.idemp != 'none')
             $("#logoOft").html('<img src="http://www.elbuenfin.org/simg?id='+oferta.idemp+'" width="113" alt="logo de la empresa" class="first" />');
@@ -93,7 +93,7 @@ function getOferta(id){
 		if(oferta.hasOwnProperty('srvurl') && oferta.srvurl != '') {
 			var imgurl = oferta.srvurl;
 		} else {
-			var imgurl = (oferta.hasOwnProperty('imgurl') && oferta.imgurl != 'none') ? 'ofimg?id='+oferta.imgurl : false;
+			var imgurl = (oferta.hasOwnProperty('imgurl') && oferta.imgurl != 'none') ? 'ofimg?id='+oferta.imgurl : oferta.EmpLogo;
 		}
         if(imgurl)
             $("#imgOft").html('<img src="'+imgurl+'" width="430" alt="logo de la empresa" />');
