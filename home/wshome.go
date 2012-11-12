@@ -185,16 +185,16 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	} else {
 		prefixu = ""
 		var empresas []model.EmpresaNm
-		if item, err := memcache.Get(c, "dirprefix_"+prefixu+"_"+strconv.Itoa(page)); err == memcache.ErrCacheMiss {
+		if item, err := memcache.Get(c, "dirprefix_ultimos"); err == memcache.ErrCacheMiss {
 			//c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
-			q = datastore.NewQuery("Empresa").Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(400)
+			q = datastore.NewQuery("Empresa").Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(300)
 			var empresas []model.Empresa
 			if _, err := q.GetAll(c, &empresas); err != nil {
 				return
 			}
 			b, _ := json.Marshal(empresas)
 			item := &memcache.Item {
-				Key:   "dirprefix_"+prefixu+"_"+strconv.Itoa(page),
+				Key:   "dirprefix_ultimos",
 				Value: b,
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
