@@ -96,7 +96,7 @@ function getOferta(id){
 			var imgurl = (oferta.hasOwnProperty('imgurl') && oferta.imgurl != 'none') ? 'ofimg?id='+oferta.imgurl : false;
 		}
         if(imgurl)
-            $("#imgOft").html('<img src="'+imgurl+'" width="430" alt="logo de la empresa" class="first" />');
+            $("#imgOft").html('<img src="'+imgurl+'" width="430" alt="logo de la empresa" />');
         else
             $("#imgOft").html('');
         $("#mtShare").html('<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin \' + this.href, this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'"><img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" /></a>')
