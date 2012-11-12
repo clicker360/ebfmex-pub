@@ -175,6 +175,7 @@
 										<div class=" col-10 padd-UD5px padd-LR15px marg-D5pix marg-L5pix Bg-Drks">
 											<label class="col-5"><span class="typ-Sc">*</span> Título de la oferta</label>
 											<input type="text" class="validate[required, maxSize[55]] medium {{.ErrOferta}}" name="Oferta" value="{{.Oferta}}" id="oferta" maxlength="55" onchange="javascript:$('#oferTit').text($('#oferta').val()); activateCancel();"/>
+											<div class="formErrorContent" id="tituloreq" onclick="$('#tituloreq').hide()">Obligatorio indicar un título descriptivo de su oferta</div>
 											<div class="col-7 Addvice last"> Máximo 55 caracteres</div>
 										</div>
 								

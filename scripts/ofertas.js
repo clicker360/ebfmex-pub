@@ -30,6 +30,7 @@ $(document).ready(function() {
 	$('#loader').hide();
 	$('#urlreq').hide();
 	$('#placereq').hide();
+	$('#tituloreq').hide();
 	$('#enlinea').live('change', function() { 
 		if($('#enlinea').attr('checked')) {
 			$('#muestraurl').show();
@@ -46,6 +47,24 @@ $(document).ready(function() {
 
 	$("#url").blur(function() {
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); } else {$('#urlreq').hide();}
+	});
+
+	$("#oferta").blur(function() {
+		var t = $('#oferta').val().toLowerCase();
+		var ts = t.split(" ");
+		var hit = 0;
+		for (var i in ts) {
+			console.log(ts[i])
+			if(ts[i].replace(/^\s+|\s+$/g,"").indexOf("nueva") != -1) { hit++; }
+			if(ts[i].replace(/^\s+|\s+$/g,"").indexOf("oferta") != -1) { hit++; }
+			console.log(hit)
+		}
+		if(t == "" || hit > 1) { 
+			$('#tituloreq').show(); console.log("nok");
+			$('#tituloreq').goTo();
+		} else { 
+			$('#tituloreq').hide(); 
+		}
 	});
 
 	$("#enviardata").submit(function() {
@@ -85,6 +104,22 @@ $(document).ready(function() {
 		if($('#enlinea').attr('checked') && $('#url').val()=='') { $('#urlreq').show(); return false; } 
 		$('#placereq').hide(); 
 		$('#urlreq').hide(); 
+
+		/* verifica el titulo de oferta */
+		var t = $('#oferta').val().toLowerCase();
+		var ts = t.split(" ");
+		var hit = 0;
+		for (var i in ts) {
+			if(ts[i].replace(/^\s+|\s+$/g,"").indexOf("nueva") != -1) { hit++; }
+			if(ts[i].replace(/^\s+|\s+$/g,"").indexOf("oferta") != -1) { hit++; }
+		}
+		if(t == "" || hit > 1) { 
+			$('#tituloreq').show(); console.log("nok");
+			$('#tituloreq').goTo();
+			return false;
+		} else { 
+			$('#tituloreq').hide(); 
+		}
 		return true;
 	});
 	$("#enviar").validationEngine({promptPosition : "topRight", scroll: false});
@@ -158,6 +193,7 @@ $(document).ready(function() {
 		if($(this).attr("value") == "0") {
 			if($("#unpickpcve a").length < 5) {
 				$.get("/r/addword", { token: ""+token.text()+"", id: ""+idoft+"" }, function(resp) {
+					if(typeof(resp) != 'object') { resp = JSON.parse(resp); }
 					if(resp.status=="ok") {
 						token.attr("class", "wordselected");	
 						token.attr("value", resp.id);	
@@ -176,12 +212,14 @@ $(document).ready(function() {
 			}
 		} else if($(this).attr("value") == "E") {
 			$.get("/r/rmword", { id: ""+idemp+"", token: ""+token.text()+"" }, function(resp) {
+				if(typeof(resp) != 'object') { resp = JSON.parse(resp); }
 				if(resp.status=="ok") {
 					token.remove();
 				}
 			}, "json");
 		} else {
 			$.get("/r/delword", { id: ""+token.attr('value')+"", token: ""+token.text()+"" }, function(resp) {
+				if(typeof(resp) != 'object') { resp = JSON.parse(resp); }
 				if(resp.status=="ok") {
 					token.attr("class", "sugestWord");	
 					token.attr('value','0');
@@ -198,6 +236,7 @@ $(document).ready(function() {
 		if(token.val().length >= 3) {
 			if($("#unpickpcve a").length < 5) {
 				$.get("/r/addword", { token: ""+token.val()+"", id: ""+idoft+"" }, function(resp) {
+					if(typeof(resp) != 'object') { resp = JSON.parse(resp); }
 					if(resp.status=="ok") {
 						clearpcve();
 						fillpcve(idoft,idemp);
@@ -289,6 +328,7 @@ function updateimg(idblob) {
 function fillpcve(idoft, idemp) {
 	$.get("/r/wordsxo", { id: "" + idoft + ""})
 	.success(function(data) {
+		if(typeof(data) != 'object') { data = JSON.parse(data); }
 		if($.isArray(data)) {
 			$.each(data, function(i,item){
 				var anchor = "<a href=\"#null\" class=\"wordselected\" id=\"pcve_"+item.token+"\" value=\""+item.id+"\">"+item.token+"</a>"
@@ -301,6 +341,7 @@ function fillpcve(idoft, idemp) {
 
 	$.get("/r/wordsxe", { id: "" + idemp + ""})
 	.success(function(data) {
+		if(typeof(data) != 'object') { data = JSON.parse(data); }
 		if($.isArray(data)) {
 			$.each(data, function(i,item){
 				// Si en el ajax anterior no se añadio algo, aquí se añade como no seleccionado
@@ -326,6 +367,7 @@ function clearpcve() {
 function fillsucursales(idoft, idemp) {
 	$.get("/r/ofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + ""})
 	.success(function(data) {
+		if(typeof(data) != 'object') { data = JSON.parse(data); }
 		$.each(data, function(i,item){
 			var div = "<div class=\"gridsubRow bg-Gry2\"><label class=\"col-5 marg-L10pix\">"+item.sucursal+"</label><input name=\""+item.idsuc+"\" type=\"checkbox\" class=\"last marg-U5pix marg-R10pix\" id=\""+item.idsuc+"\"/></div>";
 			$('#listasuc').append(div);
@@ -338,6 +380,16 @@ function fillsucursales(idoft, idemp) {
 	})
 	.error(function(){alert('Hay problemas de conexión, espere un momento y recargue la página');})
 	.complete(function(){});
+
+	/* scroll to */
+	(function($) {
+	    $.fn.goTo = function() {
+			$('html, body').animate({
+				scrollTop: $(this).offset().top + 'px'
+			}, 'fast');
+			return this; 
+		}
+	})(jQuery);
 }
 
 function activateCancel(){ $("#cancelbtn").addClass("show") }
@@ -347,10 +399,12 @@ function deactivateCancel(){ $("#cancelbtn").removeClass("show") }
 $("#"+item.idsuc).change(function() { 
 	if($(this).is(':checked')) {
 		$.get("/r/addofsuc", { idoft: "" + idoft + "", idemp: "" + idemp + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+		if(typeof(data) != 'object') { data = JSON.parse(data); }
 		.success(function(){})
 		.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	} else {
 		$.get("/r/delofsuc", { idoft: "" + idoft + "", idsuc: "" + item.idsuc + ""}, function(data) { })
+		if(typeof(data) != 'object') { data = JSON.parse(data); }
 		.success(function(){})
 		.error(function(){alert('Hay problemas de conexión, espere un momento y refresque la página');})
 	}
