@@ -212,6 +212,7 @@ func ListOrg(c appengine.Context, siglas string) *[]model.Organismo {
 
 func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool) (FormDataEmp, bool){
 	c := appengine.NewContext(r)
+	filter := strings.NewReplacer("\n", " ", "\r", " ", "\t", " ")
 	partlinea, _ := strconv.Atoi(r.FormValue("PartLinea"))
 	expcomer, _ := strconv.Atoi(r.FormValue("ExpComer"))
 	fd := FormDataEmp {
@@ -244,7 +245,7 @@ func formatoEmp(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool
 		ErrUrl:	"",
 		PartLinea: partlinea,
 		ExpComer: expcomer,
-		Desc: strings.TrimSpace(r.FormValue("Desc")),
+		Desc: strings.TrimSpace(filter.Replace(r.FormValue("Desc"))),
 	}
 	if valida {
 		var ef bool

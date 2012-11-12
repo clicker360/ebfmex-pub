@@ -42,7 +42,7 @@ func init() {
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	var timetolive = 1800 //seconds
+	var timetolive = 7200 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
 	logos := make([]model.Image, 0, nn)
@@ -115,7 +115,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 3600 //seconds
+	var timetolive = 14400 //seconds
 	if ultimos != "1" {
 		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Order("Nombre")
 		/*

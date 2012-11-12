@@ -18,6 +18,7 @@ type wsoferta struct {
 	Descripcion	string	`json:"descripcion"`
 	Enlinea		bool	`json:"enlinea"`
 	Url			string	`json:"url"`
+	EmpLogo		string	`json:"EmpLogo"`
 	SrvUrl		string	`json:"srvurl"`
 	BlobKey	appengine.BlobKey `json:"imgurl"`
 }
@@ -28,7 +29,7 @@ func init() {
 
 func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	var batch = 12 // tamaño de pagina
 	c := appengine.NewContext(r)
 	var page int
@@ -52,6 +53,11 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 					wsofs[i].Descripcion = v.Descripcion
 					wsofs[i].Enlinea = v.Enlinea
 					wsofs[i].Url = v.Url
+					if v.Promocion != "" {
+						wsofs[i].EmpLogo = v.Promocion
+					} else {
+						wsofs[i].EmpLogo = "http://www.elbuenfin.org/imgs/imageDefault.png"
+					}
 					wsofs[i].SrvUrl = v.Codigo
 					wsofs[i].BlobKey = v.BlobKey
 				}

@@ -306,7 +306,7 @@ func img(w http.ResponseWriter, r *http.Request) {
 	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 	im := new(model.Image)
 	if err := datastore.Get(c, key, im); err != nil {
-		if item, err := memcache.Get(c, "defautlimg"); err == memcache.ErrCacheMiss {
+		if item, err := memcache.Get(c, "defaultimg"); err == memcache.ErrCacheMiss {
 			/* OJO: Esta es una cochinada, se creo una empresa con el logo por default y es lo que se escupe
 			cuando no hay logo para otra empresa */
 			dkey := datastore.NewKey(c, "EmpLogo", "oygqgtyayzxqbl", 0, nil)
@@ -350,6 +350,7 @@ func delimg(w http.ResponseWriter, r *http.Request) {
 }
 
 func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, tpl *template.Template) (FormDataImage, bool){
+	filter := strings.NewReplacer("\n", " ", "\r", " ", "\t", " ")
 	fd := FormDataImage {
 		IdEmp: strings.TrimSpace(r.FormValue("IdEmp")),
 		Name: strings.TrimSpace(r.FormValue("Name")),
@@ -360,7 +361,7 @@ func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, t
 		ErrSp1: "",
 		Sp2: strings.TrimSpace(r.FormValue("Sp2")),
 		ErrSp2: "",
-		Desc: strings.TrimSpace(r.FormValue("Desc")),
+		Desc: strings.TrimSpace(filter.Replace(r.FormValue("Desc"))),
 		ErrDesc: "",
 	}
 	if valida {
