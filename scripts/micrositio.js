@@ -79,7 +79,7 @@ function lighterAjax(){
             $("#sucList").html('');
             if(idEmp){
                 var imgEmp = data.EmpLogo; //'simg?id='+idEmp;
-                $(".logoOferta img").attr('src',imgEmp);
+                $(".logoOferta2 img").attr('src',imgEmp);
                 $.get('wssucs',{
                     id:idEmp
                 },function(sucursales){
@@ -152,7 +152,7 @@ function getEmpresa(id){
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         imgEmp = empresa.srvurl;//'simg?id='+empresa.idemp;
-        var imgEmpShare = imgEmp//'http://www.elbuenfin.org/simg?id='+empresa.idemp;
+        var imgEmpShare = empresa.srvurl; //'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         $(".logoOferta img").error(function() {
 					img = "<img src='imgs/imageDefault.jpg' width='113' id='pic' alt='logo de la empresa' class='first'>";
