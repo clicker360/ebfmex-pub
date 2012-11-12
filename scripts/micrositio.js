@@ -64,7 +64,7 @@ function lighterAjax(){
             var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
             var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
             if(enLinea){
-                $("#enLinea").html('<div class="col-10 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                $("#enLinea").html('<div class="col-10 bgRd marg-T10px marg-L10px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
             var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
@@ -85,9 +85,13 @@ function lighterAjax(){
                 },function(sucursales){
                     if(typeof(sucursales) != 'object')
                         sucursales = JSON.parse(sucursales);
+                    //console.log(sucursales);
+                    $("#sucursales .sucsText").remove();
                     if(sucursales.length >= 1){
+                        $("#sucursales").prepend('<div class="col-10 bgRd marg-T10px marg-L10px sucsText"><h4 class=" typ-Wh"> Sucursales con esta oferta</h4></div>');
+                        $("#sucListML").html('')
                         for(var i in sucursales){
-                            $("#sucList").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\',\'mapCont\'); return false;">'+sucursales[i].sucursal+'</a></li>');
+                            $("#sucListML").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'map\',\'mapCont\'); return false;">'+sucursales[i].sucursal+'</a></li>');
                         }
                     }
                     //showMap();
@@ -151,7 +155,7 @@ function getEmpresa(id){
         var imgEmpShare = 'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         $(".logoOferta img").error(function() {
-					img = "<img src='imgs/imageDefault.jpg' width='215' id='pic' alt='logo de la empresa' class='first'>";
+					img = "<img src='imgs/imageDefault.jpg' width='113' id='pic' alt='logo de la empresa' class='first'>";
 					$(this).replaceWith(img);
 				});
         var urlEmp = (empresa.url) ? empresa.url : false;
@@ -171,7 +175,11 @@ function getSucursales(id){
     $.get('wssucs',{id:id},function(sucursales){
         if(typeof(sucursales) != 'object')
             sucursales = JSON.parse(sucursales);
+        //console.log(sucursales);
+        $("#sucListM").html('')
+        $("#sucursalesM").html('')
         if(sucursales.length >= 1){
+            $("#sucursalesM").html('<h4 class=" typ-Wh"> Sucursales</h4>')
             for(var i in sucursales){
                 $("#sucListM").append('<li><a href="#null" onClick="showMap(\''+sucursales[i].lat+'\',\''+sucursales[i].lng+'\',\'mapM\',\'mapContM\'); return false;">'+sucursales[i].sucursal+'</a></li>')
             }
