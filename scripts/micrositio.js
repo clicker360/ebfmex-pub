@@ -64,7 +64,7 @@ function lighterAjax(){
             var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
             var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
             if(enLinea){
-                $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                $("#enLinea").html('<div class="col-10 bgRd marg-B10px marg-T10px padd-R10px marg-L5px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
             var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
@@ -94,9 +94,9 @@ function lighterAjax(){
                 });
             }
             //$("#divCloseMap").html('<span class="col-9 Dsblock alineCenter marg-L20px" id="closeMap">CERRAR MAPA [X]</span>')
-            $("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
+            //$("#msEmp a").attr('href','/micrositio.html?id='+idEmp)
             if(imgurl)
-                $("#imgOftLb").html('<img class="img" src="'+imgurl+'" width="430"/>');
+                $("#imgOftLb").html('<img class="img" src="'+imgurl+'" width="400"/>');
             else
                 $("#imgOftLb").html('');
             $("#titOft h3").html(titOft);
