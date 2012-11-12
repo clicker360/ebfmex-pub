@@ -89,7 +89,7 @@ function getOferta(id){
         $("#nomEmp h4").html(oferta.empresa);
         $("#titOft h3").html(oferta.oferta);
         $("#desOft p").html(oferta.descripcion);
-        $("#msEmp").attr('href','/micrositio.html?id='+oferta.idemp);
+        $("#msEmp a").attr('href','/micrositio.html?id='+oferta.idemp);
 		if(oferta.hasOwnProperty('srvurl') && oferta.srvurl != '') {
 			var imgurl = oferta.srvurl;
 		} else {
@@ -111,7 +111,7 @@ function getOferta(id){
 
 
         if(oferta.url)
-            $("#enLinea").html('<div class="col-12 bgRd marg-B10px marg-T70px padd-R10px marg-L5px"><h4 class=" typ-Wh"> El Buen Fin en Línea</h4></div><div class="first padd-L10px"><a target="_blank" href="'+oferta.url+'" id="urlOft" >'+oferta.url+'</a></div>');
+            $("#enLinea").html('<div class="col-12 bgRd marg-T10px marg-L10px"><h4 class=" typ-Wh"> El Buen Fin en Línea</h4></div><div class="first padd-L10px"><a target="_blank" href="'+oferta.url+'" id="urlOft" >'+oferta.url+'</a></div>');
         getSucursales(oferta.idemp);
     })
 }
@@ -128,13 +128,13 @@ function getSucursales(id){
     })
 }
 function showMap(lat, lng, div){
-        if($("#mapCont2").is(":visible")){
-            $('#mapCont2').slideToggle('slow', function() {
+        if($("#mapContDetalle").is(":visible")){
+            $('#mapContDetalle').slideToggle('slow', function() {
                 $('#'+div).html('');
             });
         }else
             $('#map').html('');
-        $('#mapCont2').slideToggle('slow', function() {
+        $('#mapContDetalle').slideToggle('slow', function() {
             sucMap(lat, lng, div);
         });
 }
