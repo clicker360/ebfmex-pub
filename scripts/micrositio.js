@@ -152,7 +152,7 @@ function getEmpresa(id){
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
         imgEmp = empresa.srvurl;//'simg?id='+empresa.idemp;
-        var imgEmpShare = empresa.srvurl; //'http://www.elbuenfin.org/simg?id='+empresa.idemp;
+        var imgEmpShare = empresa.srvurl; //imgEmp//'http://www.elbuenfin.org/simg?id='+empresa.idemp;
         $(".logoOferta img").attr('src',imgEmp);
         $(".logoOferta img").error(function() {
 					img = "<img src='imgs/imageDefault.jpg' width='113' id='pic' alt='logo de la empresa' class='first'>";
@@ -256,12 +256,12 @@ function getOfertas(id){
 function showMap(lat, lng, div, divCont){
         $('#imgOft img').hide();
         if($("#"+divCont).is(":visible")){
-            $("#"+divCont).slideToggle('slow', function() {
+            $("#"+divCont).toggle('slow', function() {
                 $("#"+div).html('');
             });
         }else
             $("#"+div).html('');
-        $("#"+divCont).slideToggle('slow', function() {
+        $("#"+divCont).toggle('slow', function() {
             sucMap(lat, lng, div);
         });
         //setTimeout('sucMap("'+lat+'" , "'+lng+'" , "'+div+'")',1000);
