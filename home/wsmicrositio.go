@@ -35,13 +35,13 @@ func ShowMicrositio(w http.ResponseWriter, r *http.Request) {
 		if e := model.GetEmpresa(c, r.FormValue("id")); e != nil {
 			m.IdEmp = e.IdEmp
 			m.Name = e.Nombre
-			m.Desc = e.Desc
 			if imgo := model.GetLogo(c, r.FormValue("id")); imgo != nil {
 				m.IdImg = imgo.IdImg
 				m.Url = imgo.Url
 				m.Sp1 = imgo.Sp1
 				m.Sp2 = imgo.Sp2
 				m.Sp4 = imgo.Sp4
+				m.Desc = imgo.Desc
 			}
 		}
 

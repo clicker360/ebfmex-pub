@@ -78,7 +78,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 		}
 		//c.Infof("memcache add carr_page : %v", strconv.Itoa(hit))
 	} else {
-		//c.Infof("memcache retrieve carr_page : %v", strconv.Itoa(hit))
+		c.Infof("memcache retrieve carr_page : %v", strconv.Itoa(hit))
 		if err := json.Unmarshal(item.Value, &logos); err != nil {
 			c.Errorf("Unmarshaling EmpLogo item: %v", err)
 		}

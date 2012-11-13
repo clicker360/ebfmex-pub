@@ -44,7 +44,7 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 		}
 		sortutil.AscByField(wssucs, "Sucursal")
 		b, _ = json.Marshal(wssucs)
-		item := &memcache.Item{
+		item := &memcache.Item {
 			Key:   "sucs_"+r.FormValue("id"),
 			Value: b,
 			Expiration: time.Duration(timetolive)*time.Second,
@@ -53,7 +53,7 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 			c.Errorf("Error memcache.Add sucs_idemp : %v", err)
 		}
 	} else {
-		//c.Infof("memcache retrieve sucs_idemp : %v", r.FormValue("id"))
+		c.Infof("memcache retrieve sucs_idemp : %v", r.FormValue("id"))
 		b = item.Value
 	}
 	w.Header().Set("Content-Type", "application/json")

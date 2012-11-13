@@ -30,11 +30,13 @@ func init() {
 
 func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	var timetolive = 3600 //seconds
+	var timetolive = 1800 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	var d detalle
-	if item, err := memcache.Get(c, "d_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+	var cachename = "d_"+r.FormValue("id")
+	c.Infof("cachename %s", cachename)
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		oferta, _ := model.GetOferta(c, r.FormValue("id"))
 		if now.After(oferta.FechaHoraPub) {
 			d.IdEmp = oferta.IdEmp
@@ -54,17 +56,17 @@ func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 			d.SrvUrl = oferta.Codigo
 
 			b, _ = json.Marshal(d)
-			item := &memcache.Item{
+			item := &memcache.Item {
 				Key:   "d_"+r.FormValue("id"),
 				Value: b,
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
-			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
 				c.Errorf("Memcache.Add d_idoft : %v", err)
 			}
 		}
 	} else {
-		//c.Infof("memcache retrieve d_idoft : %v", r.FormValue("id"))
+		c.Infof("memcache retrieve d_idoft : %v", r.FormValue("id"))
 		b = item.Value
 	}
 	w.Header().Set("Content-Type", "application/json")
