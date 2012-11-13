@@ -25,6 +25,7 @@ import (
 	"text/template"
 	"sess"
 	"model"
+	"time"
 )
 
 var (
@@ -142,8 +143,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
-
-		const max = 600
+const max = 600
 		// We aim for less than max pixels in any dimension.
 		if b := i.Bounds(); b.Dx() > max || b.Dy() > max {
 			// If it's gigantic, it's more efficient to downsample first
@@ -303,45 +303,52 @@ func keyOf(data []byte) string {
 func img(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "image/jpeg")
 	c := appengine.NewContext(r)
-	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
-	im := new(model.Image)
-	if err := datastore.Get(c, key, im); err != nil {
-		if item, err := memcache.Get(c, "defautlimg"); err == memcache.ErrCacheMiss {
-			/* OJO: Esta es una cochinada, se creo una empresa con el logo por default y es lo que se escupe
-			cuando no hay logo para otra empresa */
-			dkey := datastore.NewKey(c, "EmpLogo", "oygqgtyayzxqbl", 0, nil)
-			if err := datastore.Get(c, dkey, im); err != nil {
-				w.WriteHeader(http.StatusNotFound)
-				c.Errorf("ImgCtrl No existe id: %v", "EmpLogoDefault")
-				return
-			}
-			item := &memcache.Item{
-				Key:   "defaultimg",
-				Value: im.Data,
-			}
-			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("Memcache.Add defaultimg : %v", err)
-			}
-
-			/*
-			if m, _, err := image.Decode(bytes.NewBuffer(im.Data)); err != nil {
-				c.Errorf("image.Decode id: %v", r.FormValue("id"))
+	var timetolive = 7200 //seconds
+	var data []byte
+	if item, err := memcache.Get(c, "simg_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+		key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
+		im := new(model.Image)
+		if err := datastore.Get(c, key, im); err != nil {
+			if itemdef, err := memcache.Get(c, "defaultimg"); err == memcache.ErrCacheMiss {
+				/* OJO: Esta es una cochinada, se creo una empresa con el logo por default y es lo que se escupe
+				cuando no hay logo para otra empresa */
+				dkey := datastore.NewKey(c, "EmpLogo", "oygqgtyayzxqbl", 0, nil)
+				if err := datastore.Get(c, dkey, im); err != nil {
+					w.WriteHeader(http.StatusNotFound)
+					c.Errorf("ImgCtrl No existe id: %v", "EmpLogoDefault")
+					return
+				}
+				itemdef := &memcache.Item{
+					Key:   "defaultimg",
+					Value: im.Data,
+				}
+				if err := memcache.Add(c, itemdef); err == memcache.ErrNotStored {
+					c.Errorf("Memcache.Add defaultimg : %v", err)
+				}
+				data = im.Data
 			} else {
-				jpeg.Encode(w, m, nil)
+				//c.Infof("memcache retrieve defaultimg : %v", r.FormValue("id"))
+				data = itemdef.Value
 			}
-			*/
-			w.Header().Set("Content-type", "image/jpeg")
-			w.Write(im.Data)
+			//w.WriteHeader(http.StatusNotFound)
+			//c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
 		} else {
-			//c.Infof("memcache retrieve defaultimg : %v", strconv.Itoa(hit))
-			w.Header().Set("Content-type", "image/jpeg")
-			w.Write(item.Value)
+			data = im.Data
 		}
-		//w.WriteHeader(http.StatusNotFound)
-		//c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
-	} else {
+		item := &memcache.Item{
+			Key:   "simg_"+r.FormValue("id"),
+			Value: data,
+			Expiration: time.Duration(timetolive)*time.Second,
+		}
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			c.Errorf("Memcache.Add defaultimg : %v", err)
+		}
 		w.Header().Set("Content-type", "image/jpeg")
-		w.Write(im.Data)
+		w.Write(data)
+	} else {
+		//c.Infof("memcache retrieve simg : %v", r.FormValue("id"))
+		w.Header().Set("Content-type", "image/jpeg")
+		w.Write(item.Value)
 	}
 }
 
@@ -350,6 +357,7 @@ func delimg(w http.ResponseWriter, r *http.Request) {
 }
 
 func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, tpl *template.Template) (FormDataImage, bool){
+	filter := strings.NewReplacer("\n", " ", "\r", " ", "\t", " ")
 	fd := FormDataImage {
 		IdEmp: strings.TrimSpace(r.FormValue("IdEmp")),
 		Name: strings.TrimSpace(r.FormValue("Name")),
@@ -360,7 +368,7 @@ func imgForm(w http.ResponseWriter, r *http.Request, s sess.Sess, valida bool, t
 		ErrSp1: "",
 		Sp2: strings.TrimSpace(r.FormValue("Sp2")),
 		ErrSp2: "",
-		Desc: strings.TrimSpace(r.FormValue("Desc")),
+		Desc: strings.TrimSpace(filter.Replace(r.FormValue("Desc"))),
 		ErrDesc: "",
 	}
 	if valida {

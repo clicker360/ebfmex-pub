@@ -18,6 +18,7 @@ type detalle struct {
 	Descripcion	string		`json:"descripcion"`
 	Enlinea     bool		`json:"enlinea"`
 	Url         string		`json:"url"`
+	EmpLogo     string		`json:"EmpLogo"`
 	SrvUrl      string		`json:"srvurl"`
 	BlobKey		appengine.BlobKey	`json:"imgurl"`
 }
@@ -29,7 +30,7 @@ func init() {
 
 func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	var d detalle
@@ -42,6 +43,11 @@ func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 			d.Oferta = oferta.Oferta
 			d.Empresa = oferta.Empresa
 			d.Descripcion = oferta.Descripcion
+			if oferta.Promocion != "" {
+				d.EmpLogo = oferta.Promocion
+			} else {
+				d.EmpLogo = "http://www.elbuenfin.org/imgs/imageDefault.png"
+			}
 			d.Enlinea = oferta.Enlinea
 			d.Url = oferta.Url
 			d.BlobKey = oferta.BlobKey

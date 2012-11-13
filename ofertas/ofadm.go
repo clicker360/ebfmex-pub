@@ -208,6 +208,14 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					fd.IdEmp = empresa.IdEmp
 					fd.Empresa = empresa.Nombre
 					ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
+					emplogo := model.GetLogo(c, empresa.IdEmp)
+					if emplogo != nil {
+						// Tenga lo que tenga, se pasa Sp4 a Oferta.Promocion
+						if(emplogo.Sp4 != "")  {
+							ofertamod.Promocion = emplogo.Sp4
+							ofertamod.Descuento = strings.Replace(emplogo.Sp4, "s180", "s70",1)
+						}
+					}
 				}
 				// TODO
 				// es preferible poner un regreso avisando que no existe la empresa
@@ -243,6 +251,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 						ofsuc.Oferta = ofertamod.Oferta
 						ofsuc.Descripcion = ofertamod.Descripcion
 						ofsuc.Promocion = ofertamod.Promocion
+						ofsuc.Descuento = ofertamod.Descuento
 						ofsuc.Url = ofertamod.Url
 						ofsuc.StatusPub = ofertamod.StatusPub
 						ofsuc.FechaHora = time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
@@ -320,6 +329,7 @@ func OfDel(w http.ResponseWriter, r *http.Request) {
 
 func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bool){
 	c := appengine.NewContext(r)
+	filter := strings.NewReplacer("\n", " ", "\r", " ", "\t", " ")
 	var fh time.Time
 	if r.FormValue("FechaHoraPub") != "" {
 		fh, _ = time.Parse("_2 Jan 15:04:05", strings.TrimSpace(r.FormValue("FechaHoraPub"))+" 00:00:00")
@@ -334,9 +344,9 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 		IdOft:			strings.TrimSpace(r.FormValue("IdOft")),
 		IdEmp:			strings.TrimSpace(r.FormValue("IdEmp")),
 		IdCat:			ic,
-		Oferta:			strings.TrimSpace(r.FormValue("Oferta")),
+		Oferta:			strings.TrimSpace(filter.Replace(r.FormValue("Oferta"))),
 		ErrOferta:		"",
-		Descripcion:	strings.TrimSpace(r.FormValue("Descripcion")),
+		Descripcion:	strings.TrimSpace(filter.Replace(r.FormValue("Descripcion"))),
 		ErrDescripcion: "",
 		Enlinea:		el,
 		Url:			strings.TrimSpace(r.FormValue("Url")),
