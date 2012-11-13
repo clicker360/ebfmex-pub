@@ -22,6 +22,10 @@ type response struct {
 	Num		int `json:"num"`
 }
 
+type qcount struct {
+	lot	string `json:"count"`
+}
+
 type Paginador struct {
 	Prefix string
 	Pagina int
@@ -115,14 +119,30 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 14400 //seconds
+	var timetolive = 3600 //seconds
 	if ultimos != "1" {
+		var empresas []model.EmpresaNm
+		var lot int
 		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Order("Nombre")
-		/*
-		 * Se pagina ordenado alfabéticamente el resutlado de la búsqueda 
-		 * y se guarda en Memcache
-		 */
-		lot, _ := q.Count(c)
+		if item, err := memcache.Get(c, "dirprefix_count_"+prefixu); err == memcache.ErrCacheMiss {
+			/*
+			 * Se pagina ordenado alfabéticamente el resutlado de la búsqueda 
+			 * y se guarda en Memcache
+			 */
+			lot, _ := q.Count(c)
+			slot := strconv.Itoa(lot)
+			item := &memcache.Item {
+				Key:   "dirprefix_count_"+prefixu,
+				Value: []byte(slot),
+				Expiration: time.Duration(timetolive)*time.Second,
+			}
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("memcache.Add dirprefix_count : %v", err)
+			}
+		} else {
+			lot,_ = strconv.Atoi(string(item.Value))
+		}
+
 		pages := lot/batch
 		if lot%batch > 0 {
 			pages += 1
@@ -138,15 +158,14 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 			tplp, _ := template.New("paginador").Parse(paginadorTpl)
 			tplp.Execute(w, Paginas)
 		}
-
-		var empresas []model.EmpresaNm
 		if item, err := memcache.Get(c, "dirprefix_"+prefixu+"_"+strconv.Itoa(page)); err == memcache.ErrCacheMiss {
-			//c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
+			c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
 			offset := batch * page
 			q = q.Offset(offset).Limit(batch)
 			if _, err := q.GetAll(c, &empresas); err != nil {
 				return
 			}
+
 			b, _ := json.Marshal(empresas)
 			item := &memcache.Item {
 				Key:   "dirprefix_"+prefixu+"_"+strconv.Itoa(page),
