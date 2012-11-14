@@ -176,22 +176,24 @@ $(document).ready(function(){
                       console.log(ofertas[i]);
 			if(ofertas[i].Oferta == "Nueva oferta") continue;
 			var logo;
+                        var empresaNombre = (ofertas[i].hasOwnProperty('Empresa')) ? (ofertas[i].Empresa) ? ofertas[i].Empresa : '' : '';
 			//(ofertas[i].Logo != "/ofimg?id=none") ? logo = ofertas[i].Logo : logo =  'simg?id='+ofertas[i].IdEmp;
 			(ofertas[i].Logo != "" ) ? logo = ofertas[i].Logo : logo =  ofertas[i].EmpLogo;
 			urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].IdOft;
-			addOferta = '<div class="oferta bgWh pagina_'+pagina+'" id="'+ofertas[i].IdOft+'">'
-			addOferta += '<a href="#" class="lighter">'
-			addOferta += '<span class="imgcont">'
-			addOferta += '<img src="'+logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" id="img_'+ofertas[i].IdOft+'"/>'
-			addOferta += '</span>'
-			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>'
-			addOferta += '</a>'
-			addOferta += '<div class="col-30PR first" style="">'
-			addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'
-			addOferta += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />'
-			addOferta += '</a>'
-			addOferta += '</div>'
-			addOferta += '<div class="col-40PR first" style="margin-top:5px;">'
+			addOferta = '<div class="oferta bgWh pagina_'+pagina+'" id="'+ofertas[i].IdOft+'">';
+			addOferta += '<a href="#" class="lighter">';
+			addOferta += '<div class="company">'+empresaNombre+'</div>';
+			addOferta += '<span class="imgcont">';
+			addOferta += '<img src="'+logo+'" width="212" alt="'+ofertas[i].Oferta+'" title="'+ofertas[i].Oferta+'" id="img_'+ofertas[i].IdOft+'"/>';
+			addOferta += '</span>';
+			addOferta += '<h3>'+ofertas[i].Oferta+'</h3>';
+			addOferta += '</a>';
+			addOferta += '<div class="col-30PR first" style="">';
+			addOferta += '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">';
+			addOferta += '<img src="/imgs/ofrtTemp/mtShare.jpg" alt="Enviar por correo electrónico" />';
+			addOferta += '</a>';
+			addOferta += '</div>';
+			addOferta += '<div class="col-40PR first" style="margin-top:5px;">';
 			if(logo.substring(0,4) == 'http') {
 				addOferta += '<a onClick="window.open(this.href, this.target, \'width=600,height=400\'); return false;" href="http://www.facebook.com/sharer.php?s=100&p[url]=' + urlOferta + '&p[images][0]=' + logo + '&p[title]= ' + ofertas[i].Oferta +'&p[summary] = '+ofertas[i].Descripcion+'">'
 			} else {

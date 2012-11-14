@@ -199,6 +199,7 @@ function getOfertas(id){
         if(ofertas.length >= 1){
             cargaOfertas = true;
             for(var i in ofertas){
+                var empresaNombre = (ofertas[i].hasOwnProperty('empresa')) ? (ofertas[i].empresa) ? ofertas[i].empresa : '' : '';
 				if(ofertas[i].oferta == "") continue;
                 console.log(ofertas[i]);
 				if(ofertas[i].srvurl!="") {
@@ -209,6 +210,7 @@ function getOfertas(id){
                 var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+ofertas[i].idoft;
                 addOferta = '<div class="oferta bgWh" id="'+ofertas[i].idoft+'">'
                 addOferta += '<a href="/detalleoferta.html?id='+ofertas[i].idoft+'" class="lighter">'
+                addOferta += '<div class="company">'+empresaNombre+'</div>'
                 addOferta += '<span class="imgcont">'
                 if(ofertas[i].imgurl && ofertas[i].imgurl != 'none')
                     addOferta += '<img src="'+imgurl+'" width="212" alt="'+ofertas[i].oferta+'" title="'+ofertas[i].oferta+'" />'
