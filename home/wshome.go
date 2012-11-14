@@ -15,7 +15,12 @@ import (
 	"time"
 )
 
-type response struct {
+type carrst struct {
+	Name	string `json:"name"`
+	Url		string `json:"url"`
+}
+
+type dirst struct {
 	IdEmp	string `json:"id"`
 	Name	string `json:"name"`
 	Url		string `json:"url"`
@@ -34,7 +39,6 @@ type Paginador struct {
 func init() {
     rand.Seed(time.Now().UnixNano())
     http.HandleFunc("/dirtexto", directorioTexto)
-    http.HandleFunc("/wsdiremp", wsDirTexto)
     http.HandleFunc("/carr", carr)
     rand.Seed(time.Now().UnixNano())
 }
@@ -46,11 +50,11 @@ func init() {
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	var timetolive = 7200 //seconds
+	var timetolive = 28800 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
 	logos := make([]model.Image, 0, nn)
-	hit := rand.Intn(60)
+	hit := rand.Intn(100)
 	if item, err := memcache.Get(c, "carr_"+strconv.Itoa(hit)); err == memcache.ErrCacheMiss {
 		q := datastore.NewQuery("EmpLogo")
 		n, _ := q.Count(c)
@@ -87,9 +91,8 @@ func carr(w http.ResponseWriter, r *http.Request) {
 
 	tpl, _ := template.New("Carr").Parse(cajaTpl)
 	tn := rand.Perm(nn)
-	var ti response
+	var ti carrst
 	for i, _ := range tn {
-		ti.IdEmp = logos[tn[i]].IdEmp
 		ti.Name = logos[tn[i]].Name
 		ti.Url = strings.Replace(logos[tn[i]].Sp4, "s180", "s70",1)
 		if ti.Url != "" {
@@ -182,7 +185,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		}
 
 		sortutil.CiAscByField(empresas, "Nombre")
-		var ti response
+		var ti dirst
 		var tictac int
 		var repetido string
 		tictac = 1
@@ -227,7 +230,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		}
 
 		sortutil.CiAscByField(empresas, "Nombre")
-		var ti response
+		var ti dirst
 		var tictac int
 		var repetido string
 		tictac = 1
@@ -255,36 +258,3 @@ const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}"><a href="http://www.e
 const paginadorTpl = `<div class="pagination-H"><ul id="letters">{{range .}}<li><a href="#" class="letter" prfx="{{.Prefix}}" onclick="javascript:paginar({{.Pagina}});"> {{.Pagina}} </a></li>{{end}}</ul></div>`
 //const paginadorTpl = `<div>{{range .}}<a href="javascript:pager({{.Prefix}}, {{.Pagina}});"> {{.Pagina}} </a>{{end}}</div>`
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`
-
-type WsEmpresa struct{
-	Id		string `json:"id"`
-	Empresa	string `json:"empresa"`
-	Url		string `json:"url"`
-}
-
-func wsDirTexto(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	prefixu := strings.ToUpper(r.FormValue("prefix"))
-    q := datastore.NewQuery("Empresa").Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd") //.Filter("Status =", true)
-	em, _ := q.Count(c)
-	empresas := make([]model.Empresa, em, em)
-	if _, err := q.GetAll(c, empresas); err != nil {
-		if err == datastore.ErrNoSuchEntity {
-			return
-		}
-	}
-
-	var b []byte
-	wsout := make([]WsEmpresa, em, em)
-	sortutil.CiAscByField(empresas, "Nombre")
-	for i, _ := range empresas {
-		wsout[i].Id = empresas[i].IdEmp
-		wsout[i].Empresa = empresas[i].Nombre
-		wsout[i].Url = empresas[i].Url
-	}
-	w.Header().Set("Content-Type", "application/json")
-	b, _ = json.Marshal(wsout)
-	w.Write(b)
-}
-
-

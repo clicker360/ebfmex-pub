@@ -30,7 +30,7 @@ func init() {
 
 func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	var timetolive = 1800 //seconds
+	var timetolive = 3600 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
 	var d detalle

@@ -104,6 +104,9 @@ func putSearchData(c appengine.Context, value string, key *datastore.Key, idoft 
 		"peña nieto",
 		"pena nieto",
 		"secuestr",
+		"condon",
+		"preservativo",
+		"sexo",
 	}
 	if err := model.DelOfertaSearchData(c, key); err != nil {
 		c.Errorf("Datastore Delete Kind:SearchData, key:%s", key)
