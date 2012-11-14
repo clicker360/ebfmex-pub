@@ -64,7 +64,7 @@ function lighterAjax(){
             var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
             var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
             if(enLinea){
-                $("#enLinea").html('<div class="col-10 bgRd marg-T10px marg-L10px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                $("#enLinea").html('<div class="col-10 bgRd marg-T10px marg-L10px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-10 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
             }
             var urlOferta = 'http://www.elbuenfin.org/detalleoferta.html?id='+data.idoft;
             var mtOft = '<a onClick="window.open(\'mailto:?subject=Conoce esta oferta&body=Conoce esta oferta de El Buen Fin ' + urlOferta +'\', this.target, \'width=600,height=400\'); return false;" href="'+urlOferta+'">'

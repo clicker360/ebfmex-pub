@@ -187,22 +187,22 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		sortutil.CiAscByField(empresas, "Nombre")
 		var ti dirst
 		var tictac int
-		var repetido string
+		//var repetido string
 		tictac = 1
 		for k, _ := range empresas {
 			tpl, _ := template.New("pagina").Parse(empresaTpl)
 			ti.Num = tictac
 			ti.IdEmp = empresas[k].IdEmp
 			ti.Name = strings.Title(empresas[k].Nombre)
-			if repetido != ti.Name {
+			//if repetido != ti.Name {
 				if tictac != 1 {
 					tictac = 1
 				} else {
 					tictac = 2
 				}
-				repetido = ti.Name
+				//repetido = ti.Name
 				tpl.Execute(w, ti)
-			}
+			//}
 		}
 	} else {
 		prefixu = ""
@@ -232,22 +232,22 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 		sortutil.CiAscByField(empresas, "Nombre")
 		var ti dirst
 		var tictac int
-		var repetido string
+		//var repetido string
 		tictac = 1
 		for k, _ := range empresas {
 			tpl, _ := template.New("pagina").Parse(empresaTpl)
 			ti.Num = tictac
 			ti.IdEmp = empresas[k].IdEmp
 			ti.Name = strings.Title(strings.ToLower(empresas[k].Nombre))
-			if repetido != ti.Name {
+			//if repetido != ti.Name {
 				if tictac != 1 {
 					tictac = 1
 				} else {
 					tictac = 2
 				}
-				repetido = ti.Name
+				//repetido = ti.Name
 				tpl.Execute(w, ti)
-			}
+			//}
 		}
 	}
 }

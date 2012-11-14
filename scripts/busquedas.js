@@ -93,7 +93,7 @@ $(document).ready(function(){
                         var idEmp = (data.hasOwnProperty('idemp')) ? data.idemp : '';
                         var enLinea = (data.hasOwnProperty('enlinea')) ? (data.enlinea) ? data.url : false : false;
                         if(enLinea){
-                            $("#enLinea").html('<div class="col-10 bgRd marg-B10px marg-T10px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-13 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
+                            $("#enLinea").html('<div class="col-10 bgRd marg-B10px marg-T10px" ><h4 class="typ-Wh"> El Buen Fin en Línea</h4></div><div class="col-10 marg-B10px marg-T10px padd-R10px marg-L10px"><a target="_blank" href="'+enLinea+'" class="first" >'+enLinea+'</a></div>')
                         }else{
                             $("#enLinea").html('')
                         }
