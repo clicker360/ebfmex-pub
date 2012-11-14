@@ -30,7 +30,8 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 	var timetolive = 7200 //seconds
 	c := appengine.NewContext(r)
 	var b []byte
-	if item, err := memcache.Get(c, "sucs_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+	cachename := "sucs_"+r.FormValue("id")
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		emsucs := model.GetEmpSucursales(c, r.FormValue("id"))
 		wssucs := make([]wssucursal, len(*emsucs), cap(*emsucs))
 		for i,v:= range *emsucs {
@@ -45,12 +46,19 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 		sortutil.AscByField(wssucs, "Sucursal")
 		b, _ = json.Marshal(wssucs)
 		item := &memcache.Item {
-			Key:   "sucs_"+r.FormValue("id"),
+			Key:   cachename,
 			Value: b,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Error memcache.Add sucs_idemp : %v", err)
+			c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Set %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
 		}
 	} else {
 		c.Infof("memcache retrieve sucs_idemp : %v", r.FormValue("id"))
