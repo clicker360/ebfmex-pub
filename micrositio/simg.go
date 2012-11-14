@@ -18,7 +18,7 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/spic", rslogo)
+	//http.HandleFunc("/spic", rslogo)
 }
 
 // Resize only if picture from EmpLogo is more than 80 pix width
