@@ -31,7 +31,8 @@ func ShowMicrositio(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	var b []byte
 	var m micrositio
-	if item, err := memcache.Get(c, "m_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+	cachename := "m_"+r.FormValue("id")
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		if e := model.GetEmpresa(c, r.FormValue("id")); e != nil {
 			m.IdEmp = e.IdEmp
 			m.Name = e.Nombre
@@ -47,13 +48,19 @@ func ShowMicrositio(w http.ResponseWriter, r *http.Request) {
 
 		b, _ = json.Marshal(m)
 		item := &memcache.Item{
-			Key:   "m_"+r.FormValue("id"),
+			Key:   cachename,
 			Value: b,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Error memcache.Add m_idoft : %v", err)
-			w.Write(b)
+			c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Set %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
 		}
 	} else {
 		//c.Infof("memcache retrieve m_idoft : %v", r.FormValue("id"))
