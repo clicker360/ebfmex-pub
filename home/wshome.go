@@ -115,12 +115,15 @@ func carr(w http.ResponseWriter, r *http.Request) {
 
 func directorioTexto(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
+	prefixu := strings.ToLower(r.FormValue("prefix"))
+	if prefixu == "" || !model.ValidAlfa.MatchString(prefixu) || len(prefixu) > 1 {
+		return
+	}
 
 	/*
 		Loop para recorrer todas las empresas 
 	*/
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	prefixu := strings.ToLower(r.FormValue("prefix"))
 	ultimos := r.FormValue("ultimos")
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
@@ -130,7 +133,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
 	var timetolive = 3600 //seconds
-	if ultimos != "1" {
+	if ultimos != "1" && prefixu !="" {
 		var empresas []model.EmpresaNm
 		var lot int
 		cachename := "dirprefix_count_"+prefixu
