@@ -15,6 +15,7 @@ type wsoferta struct {
 	IdEmp       string	`json:"idemp"`
 	IdOft		string	`json:"idoft"`
 	Oferta		string	`json:"oferta"`
+	Empresa		string	`json:"empresa"`
 	Descripcion	string	`json:"descripcion"`
 	Enlinea		bool	`json:"enlinea"`
 	Url			string	`json:"url"`
@@ -50,6 +51,7 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 					wsofs[i].IdEmp = v.IdEmp
 					wsofs[i].IdOft = v.IdOft
 					wsofs[i].Oferta = v.Oferta
+					wsofs[i].Empresa = v.Empresa
 					wsofs[i].Descripcion = v.Descripcion
 					wsofs[i].Enlinea = v.Enlinea
 					wsofs[i].Url = v.Url
