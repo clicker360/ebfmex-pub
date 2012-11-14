@@ -363,7 +363,7 @@ func ofForm(w http.ResponseWriter, r *http.Request, valida bool) (FormDataOf, bo
 			fd.ErrOferta = "invalid"
 			ef = true
 		}
-		if fd.Descripcion == "" || !model.ValidSimpleText.MatchString(fd.Descripcion) && len(fd.Descripcion) > 200 {
+		if fd.Descripcion == "" || !model.ValidSimpleText.MatchString(fd.Descripcion) && len(fd.Descripcion) > 350 {
 			fd.ErrDescripcion = "invalid"
 			ef = true
 		}
