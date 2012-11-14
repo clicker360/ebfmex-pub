@@ -116,15 +116,17 @@ func carr(w http.ResponseWriter, r *http.Request) {
 func directorioTexto(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 	prefixu := strings.ToLower(r.FormValue("prefix"))
-	if prefixu == "" || !model.ValidAlfa.MatchString(prefixu) || len(prefixu) > 1 {
-		return
+	ultimos := r.FormValue("ultimos")
+	if ultimos == "" {
+		if prefixu == "" || !model.ValidAlfa.MatchString(prefixu) || len(prefixu) > 1 {
+			return
+		}
 	}
 
 	/*
 		Loop para recorrer todas las empresas 
 	*/
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	ultimos := r.FormValue("ultimos")
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
 		page = 1
