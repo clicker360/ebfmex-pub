@@ -147,7 +147,7 @@ function getEmpresa(id){
     $.get('wsmicrositio',{id:id},function(empresa){
         if(typeof(empresa) != 'object')
             empresa = JSON.parse(empresa);
-        console.log(empresa);
+        //console.log(empresa);
         var urlEmpresa = 'http://www.elbuenfin.org/micrositio.html?id='+empresa.idemp;
         $("#nomEmp h4").html(empresa.name);
         $("#desEmp p").html(empresa.desc);
