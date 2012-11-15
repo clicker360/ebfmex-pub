@@ -50,7 +50,7 @@ func init() {
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	var timetolive = 1800 //seconds
+	var timetolive = 14400 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
 	var logos [50]carrst
