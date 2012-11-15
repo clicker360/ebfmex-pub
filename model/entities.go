@@ -353,16 +353,30 @@ func (r *Cta) DelEmpresa(c appengine.Context, id string) error {
 
 // Métodos de Empresa
 func GetEmpresa(c appengine.Context, id string) (*Empresa) {
-	q := datastore.NewQuery("Empresa").Filter("IdEmp =", id)
-	for i := q.Run(c); ; {
-		var e Empresa
-		_, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		return &e
+	/* llave de Cta-Empresa */
+	ce := &CtaEmpresa{ IdEmp: id }
+	ceKey := datastore.NewKey(c, "CtaEmpresa", ce.IdEmp, 0, nil)
+	err := datastore.Get(c, ceKey, ce)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
 	}
-	return nil
+
+	/* parent de Empresa */
+	cta := &Cta{ Email: ce.Email }
+	ctaKey := datastore.NewKey(c, "Cta", cta.Email, 0, nil)
+	err = datastore.Get(c, ctaKey, cta)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* Key de empresa */
+	emp := &Empresa{ IdEmp: id }
+	empKey := datastore.NewKey(c, "Empresa", emp.IdEmp, 0, ctaKey)
+	err = datastore.Get(c, empKey, emp)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+	return emp
 }
 
 func GetEmpSucursales(c appengine.Context, IdEmp string) *[]Sucursal {
