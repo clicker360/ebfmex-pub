@@ -53,7 +53,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	var timetolive = 1800 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
-	logos := make([]model.Image, nn, nn)
+	var logos [50]carrst
 	hit := rand.Intn(50)
 	cachename := "carr_"+strconv.Itoa(hit)
 	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
@@ -66,12 +66,27 @@ func carr(w http.ResponseWriter, r *http.Request) {
 			nn = n
 		}
 		q = q.Offset(offset).Limit(nn)
+		var ii int = 0
+		for i := q.Run(c); ; {
+			var e model.Image
+			_, err := i.Next(&e)
+			if err == datastore.Done {
+				break
+			}
+			if e.IdEmp != "" {
+				logos[ii].Name = e.Name
+				logos[ii].Url = e.Sp4
+				ii = ii+1
+			}
+		}
+
+		/*
 		if _, err := q.GetAll(c, &logos); err != nil {
 			if err == datastore.ErrNoSuchEntity {
 				return
 			}
 		}
-
+		*/
 		nn = len(logos)
 		b, _ = json.Marshal(logos)
 		item := &memcache.Item{
@@ -101,7 +116,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	var ti carrst
 	for i, _ := range tn {
 		ti.Name = logos[tn[i]].Name
-		ti.Url = strings.Replace(logos[tn[i]].Sp4, "s180", "s70",1)
+		ti.Url = strings.Replace(logos[tn[i]].Url, "s180", "s70",1)
 		if ti.Url != "" {
 			//b, _ := json.Marshal(ti)
 			//w.Write(b)
