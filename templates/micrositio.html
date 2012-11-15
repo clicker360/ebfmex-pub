@@ -22,7 +22,7 @@
 
 	</script>
 	<script type="text/javascript">
-		var id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
+		id = "{{with .FormData}}{{ .IdEmp|js}}{{end}}";
 		$(document).ready(function(){ $("#enviar").validationEngine({promptPosition : "topRight", scroll: false}); });
 		$(document).ready(function(){ $("#enviarmidata").validationEngine({promptPosition : "topRight", scroll: false}); });
 		function activateCancel(){ $("#cancelbtn").addClass("show") }
