@@ -50,7 +50,7 @@ func init() {
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	var timetolive = 14400 //seconds
+	var timetolive = 21600 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
 	var logos [50]carrst
@@ -149,7 +149,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 7200 //seconds
+	var timetolive = 21600 //seconds
 	if ultimos != "1" && prefixu !="" {
 		var empresas []model.EmpresaNm
 		var lot int
