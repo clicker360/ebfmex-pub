@@ -366,7 +366,25 @@ func GetEmpresa(c appengine.Context, id string) (*Empresa) {
 }
 
 func GetEmpSucursales(c appengine.Context, IdEmp string) *[]Sucursal {
-	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", IdEmp)
+	/* llave de Cta-Empresa */
+	ce := &CtaEmpresa{ IdEmp: IdEmp }
+	ceKey := datastore.NewKey(c, "CtaEmpresa", ce.IdEmp, 0, nil)
+	err := datastore.Get(c, ceKey, ce)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* parent de Empresa */
+	cta := &Cta{ Email: ce.Email }
+	ctaKey := datastore.NewKey(c, "Cta", cta.Email, 0, nil)
+	err = datastore.Get(c, ctaKey, cta)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* Key de empresa */
+	empKey := datastore.NewKey(c, "Empresa", IdEmp, 0, ctaKey)
+	q := datastore.NewQuery("Sucursal").Ancestor(empKey)
 	n, _ := q.Count(c)
 	sucursales := make([]Sucursal, 0, n)
 	if _, err := q.GetAll(c, &sucursales); err != nil {
@@ -389,19 +407,35 @@ func (e *Empresa) Key(c appengine.Context) *datastore.Key {
 	return nil
 }
 
-func TouchSuc(c appengine.Context, id string) error {
-	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
-	for i := q.Run(c); ; {
-		var e Sucursal
-		key, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		// Regresa la sucursal
-		e.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
-		if _, err := datastore.Put(c, key, &e); err != nil {
-			return err
-		}
+func TouchSuc(c appengine.Context, IdSuc string, IdEmp string) error {
+	/* llave de Cta-Empresa */
+	ce := &CtaEmpresa{ IdEmp: IdEmp }
+	ceKey := datastore.NewKey(c, "CtaEmpresa", ce.IdEmp, 0, nil)
+	err := datastore.Get(c, ceKey, ce)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* parent de Empresa */
+	cta := &Cta{ Email: ce.Email }
+	ctaKey := datastore.NewKey(c, "Cta", cta.Email, 0, nil)
+	err = datastore.Get(c, ctaKey, cta)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* Key de empresa */
+	empKey := datastore.NewKey(c, "Empresa", IdEmp, 0, ctaKey)
+
+	suc := &Sucursal{ IdSuc: IdSuc }
+	sucKey := datastore.NewKey(c, "Sucursal", IdSuc, 0, empKey)
+	err = datastore.Get(c, sucKey, suc)
+	if err == datastore.ErrNoSuchEntity {
+		return err
+	}
+	suc.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
+	if _, err = datastore.Put(c, sucKey, suc); err != nil {
+		return err
 	}
 	return nil
 }

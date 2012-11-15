@@ -94,23 +94,18 @@ func (r *Oferta) DelOferta(c appengine.Context) error {
 }
 
 func GetOferta(c appengine.Context, id string) (*Oferta, *datastore.Key) {
-	q := datastore.NewQuery("Oferta").Filter("IdOft =", id)
-	for i := q.Run(c); ; {
-		var e Oferta
-		key, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		// Regresa la oferta
-		return &e, key
+	e := &Oferta{ IdOft: id }
+	key := datastore.NewKey(c, "Oferta", e.IdOft, 0, nil)
+	err := datastore.Get(c, key, e)
+	if err == datastore.ErrNoSuchEntity {
+		// Regresa un cascarón
+		e.IdEmp = "none"
+		e.IdOft = "none"
+		e.IdCat = 0
+		e.BlobKey = "none"
+		return e, nil
 	}
-	// Regresa un cascarón
-	var e Oferta
-	e.IdEmp = "none";
-	e.IdOft = "none";
-	e.IdCat = 0;
-	e.BlobKey = "none";
-	return &e, nil
+	return e, key
 }
 
 func PutOferta(c appengine.Context, oferta *Oferta) error {
@@ -145,7 +140,7 @@ func PutOferta(c appengine.Context, oferta *Oferta) error {
 		ofsuc.StatusPub = oferta.StatusPub
 		ofsuc.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
 		oferta.PutOfertaSucursal(c, &ofsuc)
-		TouchSuc(c, os.IdSuc)
+		TouchSuc(c, os.IdSuc, os.IdEmp)
 	}
 
 	return nil
@@ -178,7 +173,7 @@ func GetOfertaPalabras(c appengine.Context, idoft string, idemp string) *[]Ofert
 	if(idemp != "") {
 		q = q.Filter("IdEmp =", idemp)
 	} else {
-		q = q.Filter("IdOft =", idoft)
+		q = q.Ancestor(datastore.NewKey(c, "Oferta", idoft, 0, nil))
 	}
 	n, _ := q.Count(c)
 	op := make([]OfertaPalabra, 0, n)
@@ -188,26 +183,6 @@ func GetOfertaPalabras(c appengine.Context, idoft string, idemp string) *[]Ofert
 		}
 	}
 	return &op
-}
-
-func GetOfertaSucursalesGeo(c appengine.Context, lat string, lng string, rad string) (*Sucursal, error) {
-	/*
-	q := datastore.NewQuery("Sucursal")
-	for i := q.Run(c); ; {
-		var s Sucursal
-        _, err := i.Next(&s)
-		if err == datastore.Done {
-			break
-        }
-		geo1, _ := strconv.ParseFloat(s.Geo1, 64)
-		geo2, _ := strconv.ParseFloat(s.Geo2, 64)
-		sqdist := (lat - geo1) * (lat - geo1)  + (long - geo2) * (long - geo2);
-		if ( sqdist <= rad * rad) {
-			fmt.Fprintf(w, "lat, long: %s, %s\n", s.Geo1, s.Geo2);
-		}
-	}
-	*/
-	return nil,nil
 }
 
 func GetCategoria(c appengine.Context, id int) *Categoria {
@@ -231,7 +206,7 @@ func (r *Oferta) PutOfertaSucursal(c appengine.Context, ofsuc *OfertaSucursal) e
 	if err != nil {
 		return err
 	}
-	_ = TouchSuc(c, ofsuc.IdSuc)
+	_ = TouchSuc(c, ofsuc.IdSuc, ofsuc.IdEmp)
 	return nil
 }
 
@@ -337,11 +312,11 @@ func DelOfertaSucursal(c appengine.Context, idoft string, idsuc string) error {
 		if err == datastore.Done {
 			break
 		}
+		_ = TouchSuc(c, idsuc, e.IdEmp)
 		if err := datastore.Delete(c, key); err != nil {
 			return err
 		}
 	}
-	_ = TouchSuc(c, idsuc)
 	return nil
 }
 
