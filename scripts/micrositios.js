@@ -10,6 +10,7 @@ $(document).ready(function() {
 			}
 			function update() {
 				$('#pic').remove();
+                                alert(id);
 				var query = "id="+id + "&Avc=" + avoidCache();
 				img = "<img  src = '/simgnocache?"+ query +"' id='pic' width='256px' />";
 				$('#theImage').append(img);
