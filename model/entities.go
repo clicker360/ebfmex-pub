@@ -483,21 +483,16 @@ func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
 }
 
 // Métodos de Sucursal
-func GetSuc(c appengine.Context, id string) (*Sucursal) {
-	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
-	for i := q.Run(c); ; {
-		var e Sucursal
-		_, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		// Regresa la sucursal
-		return &e
+func GetSuc(c appengine.Context, cta *Cta, idsuc string, idemp string) (*Sucursal) {
+	suc := &Sucursal{ IdSuc: idsuc }
+	sucKey := datastore.NewKey(c, "Sucursal", idsuc, 0, datastore.NewKey(c, "Empresa", idemp, 0, cta.Key(c)))
+	err := datastore.Get(c, sucKey, suc)
+	if err == datastore.ErrNoSuchEntity {
+		// Regresa un cascarón
+		suc.IdEmp = "none"
+		return suc
 	}
-	// Regresa un cascarón
-	var e Sucursal
-	e.IdEmp = "none";
-	return &e
+	return suc
 }
 
 func DelSuc(c appengine.Context, id string) error {

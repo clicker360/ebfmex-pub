@@ -49,21 +49,24 @@ func init() {
 func ShowListSuc(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
-		//usuario, _ := model.GetCta(c, s.User)
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
-			tc["Empresa"] = empresa
-			tc["Sucursal"] = listSuc(c, empresa.IdEmp)
+		empresa, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+		tc["Empresa"] = empresa
+		tc["Sucursal"] = listSuc(c, u, empresa.IdEmp)
 		sucadmTpl.ExecuteTemplate(w, "sucursales", tc)
 	} else {
 		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
 }
 
-func listSuc(c appengine.Context, IdEmp string) *[]model.Sucursal {
-	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", IdEmp)
+func listSuc(c appengine.Context, u *model.Cta, IdEmp string) *[]model.Sucursal {
+	q := datastore.NewQuery("Sucursal").Ancestor(datastore.NewKey(c, "Empresa", IdEmp, 0, u.Key(c)))
 	n, _ := q.Count(c)
 	sucursales := make([]model.Sucursal, 0, n)
 	if _, err := q.GetAll(c, &sucursales); err != nil {
@@ -76,21 +79,25 @@ func listSuc(c appengine.Context, IdEmp string) *[]model.Sucursal {
 func SucShow(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		sucursal := model.GetSuc(c, r.FormValue("IdSuc"))
+		sucursal := model.GetSuc(c, u, r.FormValue("IdSuc"), r.FormValue("IdEmp"))
 		var id string
 		if sucursal.IdEmp != "none" {
 			id = sucursal.IdEmp
 		} else {
 			id = r.FormValue("IdEmp")
 		}
-		if empresa := model.GetEmpresa(c, id); empresa != nil {
-			tc["Empresa"] = empresa
-			fd := sucToForm(*sucursal)
-			fd.Entidades = model.ListEnt(c, sucursal.DirEnt)
-			tc["FormDataSuc"] = fd
+		empresa, err := u.GetEmpresa(c, id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+		tc["Empresa"] = empresa
+		fd := sucToForm(*sucursal)
+		fd.Entidades = model.ListEnt(c, sucursal.DirEnt)
+		tc["FormDataSuc"] = fd
 		sucadmTpl.ExecuteTemplate(w, "sucursal", tc)
 	} else {
 		http.Redirect(w, r, "/r/registro", http.StatusFound)
@@ -102,10 +109,15 @@ func SucShow(w http.ResponseWriter, r *http.Request) {
 func SucMod(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
 		fd, valid :=sucForm(w, r, true)
-		empresa := model.GetEmpresa(c, r.FormValue("IdEmp"))
+		empresa, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		sucursal := sucFill(r)
 		if valid {
 			if empresa != nil {

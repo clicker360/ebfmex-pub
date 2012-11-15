@@ -68,12 +68,16 @@ func serveError(c appengine.Context, w http.ResponseWriter, err error) {
 func OfShowList(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
-			tc["Empresa"] = empresa
-			tc["Oferta"] = model.ListOf(c, empresa.IdEmp)
+		empresa, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+		tc["Empresa"] = empresa
+		tc["Oferta"] = model.ListOf(c, empresa.IdEmp)
 		ofadmTpl.ExecuteTemplate(w, "ofertas", tc)
 	} else {
 		http.Redirect(w, r, "/r/registro", http.StatusFound)
@@ -112,6 +116,7 @@ func listCat(c appengine.Context, IdCat int) *[]model.Categoria {
 func OfShow(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
 		oferta, _ := model.GetOferta(c, r.FormValue("IdOft"))
@@ -122,11 +127,14 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 			id = r.FormValue("IdEmp")
 		}
 		fd := ofToForm(*oferta)
-		if empresa := model.GetEmpresa(c, id); empresa != nil {
-			tc["Empresa"] = empresa
-			fd.IdEmp = empresa.IdEmp
-			oferta.Empresa = empresa.Nombre
+		empresa, err := u.GetEmpresa(c, id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+		tc["Empresa"] = empresa
+		fd.IdEmp = empresa.IdEmp
+		oferta.Empresa = empresa.Nombre
 		fd.Categorias = model.ListCat(c, oferta.IdCat);
 
 		/*
@@ -155,6 +163,7 @@ func OfShow(w http.ResponseWriter, r *http.Request) {
 func OfMod(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
+		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
 		var fd FormDataOf
@@ -162,7 +171,9 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 		var ofertamod model.Oferta
 
 		if  r.FormValue("IdOft") == "new" {
-			if empresa := model.GetEmpresa(c, r.FormValue("IdEmp")); empresa != nil {
+			if empresa, err := u.GetEmpresa(c, r.FormValue("IdEmp")); err != nil {
+				http.Redirect(w, r, "/r/le?d=o", http.StatusFound)
+			} else {
 				tc["Empresa"] = empresa
 				fd.IdEmp = empresa.IdEmp
 				fd.Empresa = empresa.Nombre
@@ -175,10 +186,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 				o, err := model.NewOferta(c, &ofertamod)
 				model.Check(err)
 				fd = ofToForm(*o)
-			fd.Ackn = "Ok";
-			} else {
-				// redireccionar
-				http.Redirect(w, r, "/r/le?d=o", http.StatusFound)
+				fd.Ackn = "Ok"
 			}
 		} else {
 			/* 
@@ -203,18 +211,21 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 			if oferta.IdOft != "none" {
 				ofertamod.BlobKey = oferta.BlobKey
 				ofertamod.Codigo = oferta.Codigo
-				if empresa := model.GetEmpresa(c, ofertamod.IdEmp); empresa != nil {
-					tc["Empresa"] = empresa
-					fd.IdEmp = empresa.IdEmp
-					fd.Empresa = empresa.Nombre
-					ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
-					emplogo := model.GetLogo(c, empresa.IdEmp)
-					if emplogo != nil {
-						// Tenga lo que tenga, se pasa Sp4 a Oferta.Promocion
-						if(emplogo.Sp4 != "")  {
-							ofertamod.Promocion = emplogo.Sp4
-							ofertamod.Descuento = strings.Replace(emplogo.Sp4, "s180", "s70",1)
-						}
+				empresa, err := u.GetEmpresa(c, ofertamod.IdEmp)
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+				tc["Empresa"] = empresa
+				fd.IdEmp = empresa.IdEmp
+				fd.Empresa = empresa.Nombre
+				ofertamod.Empresa = strings.ToUpper(empresa.Nombre)
+				emplogo := model.GetLogo(c, empresa.IdEmp)
+				if emplogo != nil {
+					// Tenga lo que tenga, se pasa Sp4 a Oferta.Promocion
+					if(emplogo.Sp4 != "")  {
+						ofertamod.Promocion = emplogo.Sp4
+						ofertamod.Descuento = strings.Replace(emplogo.Sp4, "s180", "s70",1)
 					}
 				}
 				// TODO
@@ -235,7 +246,7 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 					idsucs := strings.Fields(r.FormValue("schain"))
 
 					for _, idsuc := range idsucs {
-						suc := model.GetSuc(c, idsuc)
+						suc := model.GetSuc(c, u, idsuc, ofertamod.IdEmp)
 
 						lat, _ := strconv.ParseFloat(suc.Geo1, 64)
 						lng, _ := strconv.ParseFloat(suc.Geo2, 64)
