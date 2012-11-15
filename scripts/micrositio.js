@@ -23,9 +23,9 @@ $(document).ready(function(){
     getEmpresa(id);
     getSucursales(id);
     pagina = 0;
-    setTimeout('getOfertas("'+id+'")',100);
     cargaOfertas = false;
     inSearch = false;
+    setTimeout('getOfertas("'+id+'")',100);
     $(window).scroll(function(){
         if(cargaOfertas && !inSearch){
             if(($(document).scrollTop() + $(window).height()) >= ($(document).height())){
