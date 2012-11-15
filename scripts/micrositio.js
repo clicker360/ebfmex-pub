@@ -153,7 +153,10 @@ function getEmpresa(id){
         $("#desEmp p").html(empresa.desc);
         imgEmp = empresa.srvurl;//'simg?id='+empresa.idemp;
         var imgEmpShare = empresa.srvurl; //imgEmp//'http://www.elbuenfin.org/simg?id='+empresa.idemp;
-        $(".logoOferta img").attr('src',imgEmp);
+        if(imgEmp != '')
+            $(".logoOferta img").attr('src',imgEmp);
+        else
+            $(".logoOferta img").attr('src','imgs/imageDefault.jpg');
         $(".logoOferta img").error(function() {
 					img = "<img src='imgs/imageDefault.jpg' width='113' id='pic' alt='logo de la empresa' class='first'>";
 					$(this).replaceWith(img);
