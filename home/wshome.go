@@ -149,7 +149,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 3600 //seconds
+	var timetolive = 7200 //seconds
 	if ultimos != "1" && prefixu !="" {
 		var empresas []model.EmpresaNm
 		var lot int
