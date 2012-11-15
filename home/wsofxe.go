@@ -42,7 +42,8 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 	wsbatch := make([]wsoferta, 0, batch)
 	offset := page*batch
 	var b []byte
-	if item, err := memcache.Get(c, "ofxe_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+	cachename := "ofxe_"+r.FormValue("id")
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		emofs := model.ListOf(c, r.FormValue("id"))
 		wsofs := make([]wsoferta, len(*emofs), cap(*emofs))
 		for i,v:= range *emofs {
@@ -68,12 +69,19 @@ func ShowEmpOfertas(w http.ResponseWriter, r *http.Request) {
 		sortutil.AscByField(wsofs, "Oferta")
 		jb, _ := json.Marshal(wsofs)
 		item := &memcache.Item{
-			Key:   "ofxe_"+r.FormValue("id"),
+			Key:   cachename,
 			Value: jb,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Error memcache.Add ofxe_idemp : %v", err)
+			c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Set %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
 		}
 
 		// se pagina la respuesta

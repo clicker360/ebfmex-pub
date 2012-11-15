@@ -235,6 +235,15 @@ func (r *Cta) GetEmpresa(c appengine.Context, id string) (*Empresa, error) {
 	return e, nil
 }
 
+func GetEmpresaM(c appengine.Context, id string) *Empresa {
+	e := &Empresa{ IdEmp: id }
+	err := datastore.Get(c, datastore.NewKey(c, "EmpLogo", e.IdEmp, 0, nil), e)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+	return e
+}
+
 func (r *Cta) PutEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 	//if e.Folio == 0 {
 	//	if err := sharded_counter.Increment(c, "empresa"); err == nil {
