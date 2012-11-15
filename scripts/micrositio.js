@@ -196,6 +196,8 @@ function getOfertas(id){
         $("#ofertCont").html('')
     $("#ofertCont").append('<div class="col-98PR first Bg-ky padd-5px" id="cargador"><div class="cargando"><h4>CARGANDO</h4></div><div>');
     inSearch = true;
+    alert(id);
+    alert(pagina);
     $.get("wsofxe",{id:id,pagina:pagina},function(ofertas){
         if(typeof(ofertas) != 'object')
             ofertas = JSON.parse(ofertas);
