@@ -77,7 +77,7 @@ $(document).ready(function(){
                     $.get('wsdetalle',{id:id},function(data){
                         if(typeof(data) != 'object')
                             data = JSON.parse(data);
-                            console.log(data);
+                            //console.log(data);
 						if(data.hasOwnProperty('srvurl') && data.srvurl != '') {
 							var imgurl = data.srvurl;
 						} else {
@@ -173,7 +173,7 @@ $(document).ready(function(){
 		if(ofertas.length >= 1){
 		  cargaOfertas = true;
 		  for(var i in ofertas){
-                      console.log(ofertas[i]);
+                      //console.log(ofertas[i]);
 			if(ofertas[i].Oferta == "Nueva oferta") continue;
 			var logo;
                         var empresaNombre = (ofertas[i].hasOwnProperty('Empresa')) ? (ofertas[i].Empresa) ? ofertas[i].Empresa : '' : '';

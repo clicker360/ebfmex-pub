@@ -42,5 +42,5 @@ $(document).ready(function() {
 				 update(); }, 1000); 
 			}
 		}); 
-		$("#pic").error(function() { putDefault()});
+		$("img#pic").error(function() { putDefault()});
 })
