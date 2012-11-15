@@ -50,7 +50,7 @@ func init() {
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	var timetolive = 28800 //seconds
+	var timetolive = 1800 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
 	logos := make([]model.Image, 0, nn)
@@ -79,16 +79,16 @@ func carr(w http.ResponseWriter, r *http.Request) {
 			Value: b,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
-		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("memcache.Add %v : %v", cachename, err)
-			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
-				c.Errorf("Memcache.Set %v : %v", cachename, err)
+		//if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			//c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Add %v : %v", cachename, err)
 			} else {
 				c.Infof("memcached %v", cachename)
 			}
-		} else {
-			c.Infof("memcached %v", cachename)
-		}
+		//} else {
+		//	c.Infof("memcached %v", cachename)
+		//}
 	} else {
 		if err := json.Unmarshal(item.Value, &logos); err != nil {
 			c.Errorf("Memcache Unmarshalling %v : %v", cachename, err)
