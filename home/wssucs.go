@@ -33,6 +33,10 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 	cachename := "sucs_"+r.FormValue("id")
 	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		emsucs := model.GetEmpSucursales(c, r.FormValue("id"))
+		if emsucs == nil {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
 		wssucs := make([]wssucursal, len(*emsucs), cap(*emsucs))
 		for i,v:= range *emsucs {
 			wssucs[i].IdSuc = v.IdSuc

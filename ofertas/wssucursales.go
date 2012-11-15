@@ -110,17 +110,19 @@ func ShowOfSucursales(w http.ResponseWriter, r *http.Request) {
 func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	emsucs := model.GetEmpSucursales(c, r.FormValue("IdEmp"))
-	wssucs := make([]WsSucursal, len(*emsucs), cap(*emsucs))
-	for i,v:= range *emsucs {
-		wssucs[i].IdOft = ""
-		wssucs[i].IdSuc = v.IdSuc
-		wssucs[i].IdEmp = v.IdEmp
-		wssucs[i].Sucursal = v.Nombre
-		wssucs[i].FechaHora = v.FechaHora
+	if emsucs != nil {
+		wssucs := make([]WsSucursal, len(*emsucs), cap(*emsucs))
+		for i,v:= range *emsucs {
+			wssucs[i].IdOft = ""
+			wssucs[i].IdSuc = v.IdSuc
+			wssucs[i].IdEmp = v.IdEmp
+			wssucs[i].Sucursal = v.Nombre
+			wssucs[i].FechaHora = v.FechaHora
+		}
+		w.Header().Set("Content-Type", "application/json")
+		b, _ := json.Marshal(wssucs)
+		w.Write(b)
 	}
-	w.Header().Set("Content-Type", "application/json")
-	b, _ := json.Marshal(wssucs)
-	w.Write(b)
 }
 
 /*
@@ -129,22 +131,24 @@ func ShowEmpSucs(w http.ResponseWriter, r *http.Request) {
 func ShowEmpSucursalOft(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	emsucs := model.GetEmpSucursales(c, r.FormValue("idemp"))
-	ofsucs, _ := model.GetOfertaSucursales(c, r.FormValue("idoft"))
-	wssucs := make([]WsSucursal, len(*emsucs), cap(*emsucs))
-	for i,es:= range *emsucs {
-		for _,os:= range *ofsucs {
-			if os.IdSuc == es.IdSuc {
-				wssucs[i].IdOft = os.IdOft
+	if emsucs != nil {
+		ofsucs, _ := model.GetOfertaSucursales(c, r.FormValue("idoft"))
+		wssucs := make([]WsSucursal, len(*emsucs), cap(*emsucs))
+		for i,es:= range *emsucs {
+			for _,os:= range *ofsucs {
+				if os.IdSuc == es.IdSuc {
+					wssucs[i].IdOft = os.IdOft
+				}
 			}
+			wssucs[i].IdSuc = es.IdSuc
+			wssucs[i].IdEmp = es.IdEmp
+			wssucs[i].Sucursal = es.Nombre
+			wssucs[i].FechaHora = es.FechaHora
 		}
-		wssucs[i].IdSuc = es.IdSuc
-		wssucs[i].IdEmp = es.IdEmp
-		wssucs[i].Sucursal = es.Nombre
-		wssucs[i].FechaHora = es.FechaHora
-	}
-	sortutil.AscByField(wssucs, "Sucursal")
+		sortutil.AscByField(wssucs, "Sucursal")
 
-	w.Header().Set("Content-Type", "application/json")
-	b, _ := json.Marshal(wssucs)
-	w.Write(b)
+		w.Header().Set("Content-Type", "application/json")
+		b, _ := json.Marshal(wssucs)
+		w.Write(b)
+	}
 }
