@@ -235,6 +235,15 @@ func (r *Cta) GetEmpresa(c appengine.Context, id string) (*Empresa, error) {
 	return e, nil
 }
 
+func GetEmpresaM(c appengine.Context, id string) *Empresa {
+	e := &Empresa{ IdEmp: id }
+	err := datastore.Get(c, datastore.NewKey(c, "EmpLogo", e.IdEmp, 0, nil), e)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+	return e
+}
+
 func (r *Cta) PutEmpresa(c appengine.Context, e *Empresa) (*Empresa, error) {
 	//if e.Folio == 0 {
 	//	if err := sharded_counter.Increment(c, "empresa"); err == nil {
@@ -357,7 +366,25 @@ func GetEmpresa(c appengine.Context, id string) (*Empresa) {
 }
 
 func GetEmpSucursales(c appengine.Context, IdEmp string) *[]Sucursal {
-	q := datastore.NewQuery("Sucursal").Filter("IdEmp =", IdEmp)
+	/* llave de Cta-Empresa */
+	ce := &CtaEmpresa{ IdEmp: IdEmp }
+	ceKey := datastore.NewKey(c, "CtaEmpresa", ce.IdEmp, 0, nil)
+	err := datastore.Get(c, ceKey, ce)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* parent de Empresa */
+	cta := &Cta{ Email: ce.Email }
+	ctaKey := datastore.NewKey(c, "Cta", cta.Email, 0, nil)
+	err = datastore.Get(c, ctaKey, cta)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* Key de empresa */
+	empKey := datastore.NewKey(c, "Empresa", IdEmp, 0, ctaKey)
+	q := datastore.NewQuery("Sucursal").Ancestor(empKey)
 	n, _ := q.Count(c)
 	sucursales := make([]Sucursal, 0, n)
 	if _, err := q.GetAll(c, &sucursales); err != nil {
@@ -380,19 +407,35 @@ func (e *Empresa) Key(c appengine.Context) *datastore.Key {
 	return nil
 }
 
-func TouchSuc(c appengine.Context, id string) error {
-	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
-	for i := q.Run(c); ; {
-		var e Sucursal
-		key, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		// Regresa la sucursal
-		e.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
-		if _, err := datastore.Put(c, key, &e); err != nil {
-			return err
-		}
+func TouchSuc(c appengine.Context, IdSuc string, IdEmp string) error {
+	/* llave de Cta-Empresa */
+	ce := &CtaEmpresa{ IdEmp: IdEmp }
+	ceKey := datastore.NewKey(c, "CtaEmpresa", ce.IdEmp, 0, nil)
+	err := datastore.Get(c, ceKey, ce)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* parent de Empresa */
+	cta := &Cta{ Email: ce.Email }
+	ctaKey := datastore.NewKey(c, "Cta", cta.Email, 0, nil)
+	err = datastore.Get(c, ctaKey, cta)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
+	}
+
+	/* Key de empresa */
+	empKey := datastore.NewKey(c, "Empresa", IdEmp, 0, ctaKey)
+
+	suc := &Sucursal{ IdSuc: IdSuc }
+	sucKey := datastore.NewKey(c, "Sucursal", IdSuc, 0, empKey)
+	err = datastore.Get(c, sucKey, suc)
+	if err == datastore.ErrNoSuchEntity {
+		return err
+	}
+	suc.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
+	if _, err = datastore.Put(c, sucKey, suc); err != nil {
+		return err
 	}
 	return nil
 }
@@ -440,21 +483,16 @@ func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
 }
 
 // Métodos de Sucursal
-func GetSuc(c appengine.Context, id string) (*Sucursal) {
-	q := datastore.NewQuery("Sucursal").Filter("IdSuc =", id)
-	for i := q.Run(c); ; {
-		var e Sucursal
-		_, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		// Regresa la sucursal
-		return &e
+func GetSuc(c appengine.Context, cta *Cta, idsuc string, idemp string) (*Sucursal) {
+	suc := &Sucursal{ IdSuc: idsuc }
+	sucKey := datastore.NewKey(c, "Sucursal", idsuc, 0, datastore.NewKey(c, "Empresa", idemp, 0, cta.Key(c)))
+	err := datastore.Get(c, sucKey, suc)
+	if err == datastore.ErrNoSuchEntity {
+		// Regresa un cascarón
+		suc.IdEmp = "none"
+		return suc
 	}
-	// Regresa un cascarón
-	var e Sucursal
-	e.IdEmp = "none";
-	return &e
+	return suc
 }
 
 func DelSuc(c appengine.Context, id string) error {

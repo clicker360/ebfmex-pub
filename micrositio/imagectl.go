@@ -71,6 +71,7 @@ func init() {
 	http.HandleFunc("/r/midata", model.ErrorHandler(modData))
 	// simg queda fuera de la ruta segura /r
 	http.HandleFunc("/simg", model.ErrorHandler(img))
+	http.HandleFunc("/simgnocache", model.ErrorHandler(imgnocache))
 	http.HandleFunc("/spic", model.ErrorHandler(imgs))
 }
 
@@ -299,6 +300,19 @@ func keyOf(data []byte) string {
 	return fmt.Sprintf("%x", string(sha.Sum(nil))[0:8])
 }
 
+func imgnocache(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "image/jpeg")
+	c := appengine.NewContext(r)
+	key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
+	im := new(model.Image)
+	if err := datastore.Get(c, key, im); err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		c.Errorf("ImgCtrl No existe id: %v", "EmpLogoDefault")
+	} else {
+		w.Header().Set("Content-type", "image/jpeg")
+		w.Write(im.Data)
+	}
+}
 // img is the HTTP handler for displaying images;
 // it handles "/simg".
 func img(w http.ResponseWriter, r *http.Request) {
@@ -306,7 +320,8 @@ func img(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	var timetolive = 14400 //seconds
 	var data []byte
-	if item, err := memcache.Get(c, "simg_"+r.FormValue("id")); err == memcache.ErrCacheMiss {
+	cachename := "simg_"+r.FormValue("id")
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		key := datastore.NewKey(c, "EmpLogo", r.FormValue("id"), 0, nil)
 		im := new(model.Image)
 		if err := datastore.Get(c, key, im); err != nil {
@@ -325,29 +340,39 @@ func img(w http.ResponseWriter, r *http.Request) {
 				}
 				if err := memcache.Add(c, itemdef); err == memcache.ErrNotStored {
 					c.Errorf("Memcache.Add defaultimg : %v", err)
+					if err := memcache.Set(c, itemdef); err == memcache.ErrNotStored {
+						c.Errorf("Memcache.Set %v : %v", "defaultimg", err)
+					} else {
+						c.Infof("memcached defaultimg")
+					}
+				} else {
+					c.Infof("memcached defaultimg")
 				}
 				data = im.Data
 			} else {
-				//c.Infof("memcache retrieve defaultimg : %v", r.FormValue("id"))
 				data = itemdef.Value
 			}
-			//w.WriteHeader(http.StatusNotFound)
-			//c.Errorf("ImgCtrl No existe id: %v", r.FormValue("id"))
 		} else {
 			data = im.Data
 		}
 		item := &memcache.Item{
-			Key:   "simg_"+r.FormValue("id"),
+			Key:   cachename,
 			Value: data,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Memcache.Add defaultimg : %v", err)
+			c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Set %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
 		}
 		w.Header().Set("Content-type", "image/jpeg")
 		w.Write(data)
 	} else {
-		//c.Infof("memcache retrieve simg : %v", r.FormValue("id"))
 		w.Header().Set("Content-type", "image/jpeg")
 		w.Write(item.Value)
 	}
@@ -358,7 +383,8 @@ func imgs(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	var timetolive = 14400 //seconds
 	var data []byte
-	if item, err := memcache.Get(c, "simg_"+r.FormValue("IdEmp")); err == memcache.ErrCacheMiss {
+	cachename := "simg_"+r.FormValue("IdEmp")
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		key := datastore.NewKey(c, "EmpLogo", r.FormValue("IdEmp"), 0, nil)
 		im := new(model.Image)
 		if err := datastore.Get(c, key, im); err != nil {
@@ -377,29 +403,39 @@ func imgs(w http.ResponseWriter, r *http.Request) {
 				}
 				if err := memcache.Add(c, itemdef); err == memcache.ErrNotStored {
 					c.Errorf("Memcache.Add defaultimg : %v", err)
+					if err := memcache.Set(c, itemdef); err == memcache.ErrNotStored {
+						c.Errorf("Memcache.Set %v : %v", "defaultimg", err)
+					} else {
+						c.Infof("memcached defaultimg")
+					}
+				} else {
+					c.Infof("memcached defaultimg")
 				}
 				data = im.Data
 			} else {
-				//c.Infof("memcache retrieve defaultimg : %v", r.FormValue("IdEmp"))
 				data = itemdef.Value
 			}
-			//w.WriteHeader(http.StatusNotFound)
-			//c.Errorf("ImgCtrl No existe id: %v", r.FormValue("IdEmp"))
 		} else {
 			data = im.Data
 		}
 		item := &memcache.Item{
-			Key:   "simg_"+r.FormValue("IdEmp"),
+			Key:   cachename,
 			Value: data,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Memcache.Add defaultimg : %v", err)
+			c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Set %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
 		}
 		w.Header().Set("Content-type", "image/jpeg")
 		w.Write(data)
 	} else {
-		//c.Infof("memcache retrieve simg : %v", r.FormValue("IdEmp"))
 		w.Header().Set("Content-type", "image/jpeg")
 		w.Write(item.Value)
 	}

@@ -50,12 +50,13 @@ func init() {
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
-	var timetolive = 28800 //seconds
+	var timetolive = 21600 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
-	logos := make([]model.Image, 0, nn)
-	hit := rand.Intn(100)
-	if item, err := memcache.Get(c, "carr_"+strconv.Itoa(hit)); err == memcache.ErrCacheMiss {
+	var logos [50]carrst
+	hit := rand.Intn(50)
+	cachename := "carr_"+strconv.Itoa(hit)
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 		q := datastore.NewQuery("EmpLogo")
 		n, _ := q.Count(c)
 		offset := 0;
@@ -65,26 +66,47 @@ func carr(w http.ResponseWriter, r *http.Request) {
 			nn = n
 		}
 		q = q.Offset(offset).Limit(nn)
+		var ii int = 0
+		for i := q.Run(c); ; {
+			var e model.Image
+			_, err := i.Next(&e)
+			if err == datastore.Done {
+				break
+			}
+			if e.IdEmp != "" {
+				logos[ii].Name = e.Name
+				logos[ii].Url = e.Sp4
+				ii = ii+1
+			}
+		}
+
+		/*
 		if _, err := q.GetAll(c, &logos); err != nil {
 			if err == datastore.ErrNoSuchEntity {
 				return
 			}
 		}
-
+		*/
+		nn = len(logos)
 		b, _ = json.Marshal(logos)
 		item := &memcache.Item{
-			Key:   "carr_"+strconv.Itoa(hit),
+			Key:   cachename,
 			Value: b,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("Memcache.Add carr_idoft : %v", err)
+			c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Add %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
 		}
-		//c.Infof("memcache add carr_page : %v", strconv.Itoa(hit))
 	} else {
-		c.Infof("memcache retrieve carr_page : %v", strconv.Itoa(hit))
 		if err := json.Unmarshal(item.Value, &logos); err != nil {
-			c.Errorf("Unmarshaling EmpLogo item: %v", err)
+			c.Errorf("Memcache Unmarshalling %v : %v", cachename, err)
 		}
 		nn = len(logos)
 	}
@@ -94,7 +116,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	var ti carrst
 	for i, _ := range tn {
 		ti.Name = logos[tn[i]].Name
-		ti.Url = strings.Replace(logos[tn[i]].Sp4, "s180", "s70",1)
+		ti.Url = strings.Replace(logos[tn[i]].Url, "s180", "s70",1)
 		if ti.Url != "" {
 			//b, _ := json.Marshal(ti)
 			//w.Write(b)
@@ -108,13 +130,18 @@ func carr(w http.ResponseWriter, r *http.Request) {
 
 func directorioTexto(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
+	prefixu := strings.ToLower(r.FormValue("prefix"))
+	ultimos := r.FormValue("ultimos")
+	if ultimos == "" {
+		if prefixu == "" || !model.ValidAlfa.MatchString(prefixu) || len(prefixu) > 1 {
+			return
+		}
+	}
 
 	/*
 		Loop para recorrer todas las empresas 
 	*/
 	now := time.Now().Add(time.Duration(model.GMTADJ)*time.Second)
-	prefixu := strings.ToLower(r.FormValue("prefix"))
-	ultimos := r.FormValue("ultimos")
 	page,_ := strconv.Atoi(r.FormValue("pg"))
 	if page < 1 {
 		page = 1
@@ -122,12 +149,13 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 3600 //seconds
-	if ultimos != "1" {
+	var timetolive = 21600 //seconds
+	if ultimos != "1" && prefixu !="" {
 		var empresas []model.EmpresaNm
 		var lot int
+		cachename := "dirprefix_count_"+prefixu
 		q = q.Filter("Nombre >=", prefixu).Filter("Nombre <", prefixu+"\ufffd").Order("Nombre")
-		if item, err := memcache.Get(c, "dirprefix_count_"+prefixu); err == memcache.ErrCacheMiss {
+		if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 			/*
 			 * Se pagina ordenado alfabéticamente el resutlado de la búsqueda 
 			 * y se guarda en Memcache
@@ -135,12 +163,19 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 			lot, _ := q.Count(c)
 			slot := strconv.Itoa(lot)
 			item := &memcache.Item {
-				Key:   "dirprefix_count_"+prefixu,
+				Key:   cachename,
 				Value: []byte(slot),
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("memcache.Add dirprefix_count : %v", err)
+				c.Errorf("memcache.Add %v : %v", cachename, err)
+				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+					c.Errorf("Memcache.Set %v : %v", cachename, err)
+				} else {
+					c.Infof("memcached %v", cachename)
+				}
+			} else {
+				c.Infof("memcached %v", cachename)
 			}
 		} else {
 			lot,_ = strconv.Atoi(string(item.Value))
@@ -161,8 +196,8 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 			tplp, _ := template.New("paginador").Parse(paginadorTpl)
 			tplp.Execute(w, Paginas)
 		}
-		if item, err := memcache.Get(c, "dirprefix_"+prefixu+"_"+strconv.Itoa(page)); err == memcache.ErrCacheMiss {
-			c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
+		cachename = "dirprefix_"+prefixu+"_"+strconv.Itoa(page)
+		if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 			offset := batch * page
 			q = q.Offset(offset).Limit(batch)
 			if _, err := q.GetAll(c, &empresas); err != nil {
@@ -171,16 +206,23 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 
 			b, _ := json.Marshal(empresas)
 			item := &memcache.Item {
-				Key:   "dirprefix_"+prefixu+"_"+strconv.Itoa(page),
+				Key:   cachename,
 				Value: b,
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("memcache.Add dirprefix : %v", err)
+				c.Errorf("memcache.Add %v : %v", cachename, err)
+				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+					c.Errorf("Memcache.Set %v : %v", cachename, err)
+				} else {
+					c.Infof("memcached %v", cachename)
+				}
+			} else {
+				c.Infof("memcached %v", cachename)
 			}
 		} else {
 			if err := json.Unmarshal(item.Value, &empresas); err != nil {
-				c.Errorf("Memcache Unmarshalling dirprefix item: %v", err)
+				c.Errorf("Memcache Unmarshalling %v : %v", cachename, err)
 			}
 		}
 
@@ -207,8 +249,8 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	} else {
 		prefixu = ""
 		var empresas []model.EmpresaNm
-		if item, err := memcache.Get(c, "dirprefix_ultimos"); err == memcache.ErrCacheMiss {
-			//c.Infof("memcached prefix: %v, pagina : %d", prefixu, page)
+		cachename := "dirprefix_ultimos"
+		if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
 			q = datastore.NewQuery("Empresa").Filter("FechaHora >=", now.AddDate(0,0,-2)).Limit(300)
 			var empresas []model.Empresa
 			if _, err := q.GetAll(c, &empresas); err != nil {
@@ -216,16 +258,23 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 			}
 			b, _ := json.Marshal(empresas)
 			item := &memcache.Item {
-				Key:   "dirprefix_ultimos",
+				Key:   cachename,
 				Value: b,
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("memcache.Add dirprefix : %v", err)
+				c.Errorf("memcache.Add %v : %v", cachename, err)
+				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+					c.Errorf("memcache.Set %v : %v", cachename, err)
+				} else {
+					c.Infof("memcached %v", cachename)
+				}
+			} else {
+				c.Infof("memcached %v", cachename)
 			}
 		} else {
 			if err := json.Unmarshal(item.Value, &empresas); err != nil {
-				c.Errorf("Memcache Unmarshalling dirprefix item: %v", err)
+				c.Errorf("Memcache Unmarshalling %v : %v", cachename, err)
 			}
 		}
 

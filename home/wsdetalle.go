@@ -62,7 +62,14 @@ func ShowOfDetalle(w http.ResponseWriter, r *http.Request) {
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
-				c.Errorf("Memcache.Add d_idoft : %v", err)
+				c.Errorf("memcache.Add %v : %v", cachename, err)
+				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+					c.Errorf("Memcache.Set %v : %v", cachename, err)
+				} else {
+					c.Infof("memcached %v", cachename)
+				}
+			} else {
+				c.Infof("memcached %v", cachename)
 			}
 		}
 	} else {
