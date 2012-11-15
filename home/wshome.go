@@ -53,7 +53,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 	var timetolive = 1800 //seconds
 	var b []byte
 	var nn int = 50 // tamaño del carrousel
-	logos := make([]model.Image, 0, nn)
+	logos := make([]model.Image, nn, nn)
 	hit := rand.Intn(50)
 	cachename := "carr_"+strconv.Itoa(hit)
 	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
@@ -79,16 +79,16 @@ func carr(w http.ResponseWriter, r *http.Request) {
 			Value: b,
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
-		//if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			//c.Errorf("memcache.Add %v : %v", cachename, err)
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			c.Errorf("memcache.Add %v : %v", cachename, err)
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
 				c.Errorf("Memcache.Add %v : %v", cachename, err)
 			} else {
 				c.Infof("memcached %v", cachename)
 			}
-		//} else {
-		//	c.Infof("memcached %v", cachename)
-		//}
+		} else {
+			c.Infof("memcached %v", cachename)
+		}
 	} else {
 		if err := json.Unmarshal(item.Value, &logos); err != nil {
 			c.Errorf("Memcache Unmarshalling %v : %v", cachename, err)
