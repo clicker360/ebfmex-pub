@@ -80,8 +80,12 @@ var micrositioTpl = template.Must(template.ParseFiles("templates/micrositio.html
 func micrositio(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
-		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
-		if emp != nil {
+		u, _ := model.GetCta(c, s.User)
+		emp, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		} else {
 			img := model.GetLogo(c, r.FormValue("IdEmp"))
 			if(img == nil) {
 				img = new(model.Image)
@@ -107,7 +111,12 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	imgprops.Size = 180
 	imgprops.Crop = false
 	if s, ok := sess.IsSess(w, r, c); ok {
-		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
+		u, _ := model.GetCta(c, s.User)
+		emp, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
 		if imgo == nil {
 			imgo = new(model.Image)
@@ -246,7 +255,12 @@ const max = 600
 func modData(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if s, ok := sess.IsSess(w, r, c); ok {
-		emp := model.GetEmpresa(c, r.FormValue("IdEmp"))
+		u, _ := model.GetCta(c, s.User)
+		emp, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		imgo := model.GetLogo(c, r.FormValue("IdEmp"))
 		if(imgo == nil) {
 			imgo = new(model.Image)
@@ -280,7 +294,7 @@ func modData(w http.ResponseWriter, r *http.Request) {
 			Sp1: sp1, Sp2: sp2, Sp3: imgo.Sp3, Sp4: imgo.Sp4,
 			Np1: 0, Np2: 0, Np3: 0, Np4: 0,
 		}
-		_, err := model.PutLogo(c, imgo)
+		_, err = model.PutLogo(c, imgo)
 		if err != nil {
 			tc["Error"] = struct { Cantsave string }{ "cantsave" }
 			micrositioTpl.Execute(w, tc)
