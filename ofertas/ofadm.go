@@ -8,8 +8,9 @@ package oferta
 import (
 	"appengine"
 	//"appengine/datastore"
+    "appengine/memcache"
 	"appengine/blobstore"
-	//"appengine/urlfetch"
+	"appengine/urlfetch"
 	"html/template"
 	"net/http"
 	"strings"
@@ -18,7 +19,7 @@ import (
 	"model"
 	"sess"
 	"time"
-	//"fmt"
+	"fmt"
 	"io"
 )
 
@@ -323,6 +324,34 @@ func OfMod(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Redirect(w, r, "/r/registro", http.StatusFound)
 	}
+
+	/*
+	 * FETCH PARA MVBLOB/GENERATE
+	 */
+	cronsecs := 3600
+	cachename := "mvblob_cron"
+	if _, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
+		slot := strconv.Itoa(cronsecs)
+		item := &memcache.Item {
+			Key:   cachename,
+			Value: []byte(slot),
+			Expiration: time.Duration(cronsecs)*time.Second,
+		}
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			//c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Set(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Set %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+				mvblobFetch(c)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
+			mvblobFetch(c)
+		}
+	} else {
+		// DO NOTHING
+	}
 }
 
 func OfDel(w http.ResponseWriter, r *http.Request) {
@@ -407,6 +436,18 @@ func ofToForm(e model.Oferta) FormDataOf {
 	}
 	return fd
 }
+
+func mvblobFetch(c appengine.Context) {
+	client := urlfetch.Client(c)
+	url := fmt.Sprintf( "http://movil.%s.appspot.com/mvblob/generate", appengine.AppID(c))
+	ret, err := client.Get(url)
+	if err != nil {
+		c.Errorf("mvblob in %v, %v %v, %v", appengine.AppID(c), url, ret.Status, err)
+	} else {
+		c.Infof("mvblob in %v, %v %v", appengine.AppID(c), url, ret.Status)
+	}
+}
+
 
 /*
 func generatesearch(c appengine.Context, oftKey *datastore.Key, description string, idcat int) error {

@@ -9,7 +9,7 @@ import (
 
 func init() {
     //http.HandleFunc("/backend/mvblob", MvBlob)
-    http.HandleFunc("/mvblob", RedirMvBlob)
+    //http.HandleFunc("/mvblob", RedirMvBlob)
 }
 
 func MvBlob(w http.ResponseWriter, r *http.Request) {
