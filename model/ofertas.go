@@ -157,7 +157,8 @@ func NewOferta(c appengine.Context, oferta *Oferta) (*Oferta, error) {
 }
 
 func GetOfertaSucursales(c appengine.Context, idoft string) (*[]OfertaSucursal, error) {
-	q := datastore.NewQuery("OfertaSucursal").Filter("IdOft =", idoft)
+	oftKey := datastore.NewKey(c, "Oferta", idoft, 0, nil)
+	q := datastore.NewQuery("OfertaSucursal").Ancestor(oftKey)
 	n, _ := q.Count(c)
 	ofersuc := make([]OfertaSucursal, 0, n)
 	if _, err := q.GetAll(c, &ofersuc); err != nil {

@@ -95,7 +95,7 @@ func carr(w http.ResponseWriter, r *http.Request) {
 			Expiration: time.Duration(timetolive)*time.Second,
 		}
 		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-			c.Errorf("memcache.Add %v : %v", cachename, err)
+			//c.Errorf("memcache.Add %v : %v", cachename, err)
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
 				c.Errorf("Memcache.Add %v : %v", cachename, err)
 			} else {
@@ -168,7 +168,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("memcache.Add %v : %v", cachename, err)
+				//c.Errorf("memcache.Add %v : %v", cachename, err)
 				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
 					c.Errorf("Memcache.Set %v : %v", cachename, err)
 				} else {
@@ -211,7 +211,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("memcache.Add %v : %v", cachename, err)
+				//c.Errorf("memcache.Add %v : %v", cachename, err)
 				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
 					c.Errorf("Memcache.Set %v : %v", cachename, err)
 				} else {
@@ -263,7 +263,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 				Expiration: time.Duration(timetolive)*time.Second,
 			}
 			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
-				c.Errorf("memcache.Add %v : %v", cachename, err)
+				//c.Errorf("memcache.Add %v : %v", cachename, err)
 				if err := memcache.Set(c, item); err == memcache.ErrNotStored {
 					c.Errorf("memcache.Set %v : %v", cachename, err)
 				} else {
