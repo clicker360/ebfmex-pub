@@ -82,17 +82,14 @@ func SucShow(w http.ResponseWriter, r *http.Request) {
 		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
 		tc["Sess"] = s
-		sucursal := model.GetSuc(c, u, r.FormValue("IdSuc"), r.FormValue("IdEmp"))
-		var id string
-		if sucursal.IdEmp != "none" {
-			id = sucursal.IdEmp
-		} else {
-			id = r.FormValue("IdEmp")
-		}
-		empresa, err := u.GetEmpresa(c, id)
+		empresa, err := u.GetEmpresa(c, r.FormValue("IdEmp"))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+		sucursal := model.GetSuc(c, u, r.FormValue("IdSuc"), r.FormValue("IdEmp"))
+		if sucursal == nil {
+			sucursal.IdEmp = empresa.IdEmp
 		}
 		tc["Empresa"] = empresa
 		fd := sucToForm(*sucursal)
@@ -108,6 +105,7 @@ func SucShow(w http.ResponseWriter, r *http.Request) {
 // Requiere IdEmp. IdSuc es opcional, si no hay lo crea, si hay modifica
 func SucMod(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+	c.Errorf("R-EMP: %v", r.FormValue("IdEmp"))
 	if s, ok := sess.IsSess(w, r, c); ok {
 		u, _ := model.GetCta(c, s.User)
 		tc := make(map[string]interface{})
@@ -121,14 +119,14 @@ func SucMod(w http.ResponseWriter, r *http.Request) {
 		sucursal := sucFill(r)
 		if valid {
 			if empresa != nil {
-				newsuc, err := empresa.PutSuc(c, &sucursal)
+				newsuc, err := empresa.PutSuc(c, u, &sucursal, r.FormValue("IdEmp"))
 				//fmt.Fprintf(w, "IdSuc: %s", newsuc.IdSuc);
-				fd = sucToForm(*newsuc)
-				fd.Ackn = "Ok";
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}
+				fd = sucToForm(*newsuc)
+				fd.Ackn = "Ok";
 			}
 		}
 		fd.Entidades = model.ListEnt(c, strings.TrimSpace(r.FormValue("DirEnt")))

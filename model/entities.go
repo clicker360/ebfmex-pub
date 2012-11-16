@@ -407,20 +407,6 @@ func GetEmpSucursales(c appengine.Context, IdEmp string) *[]Sucursal {
 	return &sucursales
 }
 
-func (e *Empresa) Key(c appengine.Context) *datastore.Key {
-	//return datastore.NewKey(c, "Empresa", e.IdEmp, 0, nil)
-	q := datastore.NewQuery("Empresa").Filter("IdEmp =", e.IdEmp)
-	for i := q.Run(c); ; {
-		var e Empresa
-		key, err := i.Next(&e)
-		if err == datastore.Done {
-			break
-		}
-		return key
-	}
-	return nil
-}
-
 func TouchSuc(c appengine.Context, IdSuc string, IdEmp string) error {
 	/* llave de Cta-Empresa */
 	ce := &CtaEmpresa{ IdEmp: IdEmp }
@@ -454,45 +440,18 @@ func TouchSuc(c appengine.Context, IdSuc string, IdEmp string) error {
 	return nil
 }
 
-func (e *Empresa) PutSuc(c appengine.Context, s *Sucursal) (*Sucursal, error) {
+func (e *Empresa) PutSuc(c appengine.Context, cta *Cta, s *Sucursal, idemp string) (*Sucursal, error) {
 	if(s.IdSuc == "") {
 		s.IdSuc = RandId(20)
 		_ = PutChangeControl(c, s.IdSuc, "Sucursal", "A")
 	} else {
 		_ = PutChangeControl(c, s.IdSuc, "Sucursal", "M")
 	}
-	parentKey := e.Key(c)
-    _, err := datastore.Put(c, datastore.NewKey(c, "Sucursal", s.IdSuc, 0, parentKey), s)
+	empKey := datastore.NewKey(c, "Empresa", idemp, 0, cta.Key(c))
+    _, err := datastore.Put(c, datastore.NewKey(c, "Sucursal", s.IdSuc, 0, empKey), s)
 	if err != nil {
 		return nil, err
 	}
-	/* 
-		relación oferta sucursal 
-	ofsucs, _ := GetOfertaSucursales(c, s.IdSuc)
-	for _,os:= range *ofsucs {
-		lat,_ := strconv.ParseFloat(s.Geo1, 64)
-		lng,_ := strconv.ParseFloat(s.Geo2, 64)
-		var ofsuc OfertaSucursal
-		ofsuc.IdOft = os.IdOft
-		ofsuc.IdSuc = os.IdSuc
-		ofsuc.IdEmp = os.IdEmp
-		ofsuc.Sucursal = s.Nombre
-		ofsuc.Lat = lat
-		ofsuc.Lng = lng
-		ofsuc.Empresa = os.Empresa
-		ofsuc.Oferta = os.Oferta
-		ofsuc.Descripcion = os.Descripcion
-		ofsuc.Promocion = os.Promocion
-		ofsuc.Precio = os.Precio
-		ofsuc.Descuento = os.Descuento
-		ofsuc.Enlinea = os.Enlinea
-		ofsuc.Url = os.Url
-		ofsuc.StatusPub = os.StatusPub
-		ofsuc.FechaHora = time.Now().Add(time.Duration(GMTADJ)*time.Second)
-		oferta := GetOferta(c, os.IdOft)
-		_ = oferta.PutOfertaSucursal(c, &ofsuc)
-	}
-	*/	
 	return s, err
 }
 
@@ -503,8 +462,7 @@ func GetSuc(c appengine.Context, cta *Cta, idsuc string, idemp string) (*Sucursa
 	err := datastore.Get(c, sucKey, suc)
 	if err == datastore.ErrNoSuchEntity {
 		// Regresa un cascarón
-		suc.IdEmp = "none"
-		return suc
+		return nil
 	}
 	return suc
 }
