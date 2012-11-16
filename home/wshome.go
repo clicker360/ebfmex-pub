@@ -39,14 +39,11 @@ type Paginador struct {
 func init() {
     rand.Seed(time.Now().UnixNano())
     http.HandleFunc("/dirtexto", directorioTexto)
-    http.HandleFunc("/carr", carr)
+    //http.HandleFunc("/carr", carr)
+    http.HandleFunc("/carr", carrVip)
     rand.Seed(time.Now().UnixNano())
 }
 
-/*
- * La idea es hacer 60 cachés al azar con un tiempo de vida de 30 min
- * Cada que se muere un memcache se genera otro carrousel al azar de logos
- */
 func carr(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Content-Type", "application/json")
     c := appengine.NewContext(r)
@@ -80,13 +77,118 @@ func carr(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		/*
-		if _, err := q.GetAll(c, &logos); err != nil {
-			if err == datastore.ErrNoSuchEntity {
-				return
+		nn = len(logos)
+		b, _ = json.Marshal(logos)
+		item := &memcache.Item{
+			Key:   cachename,
+			Value: b,
+			Expiration: time.Duration(timetolive)*time.Second,
+		}
+		if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+			//c.Errorf("memcache.Add %v : %v", cachename, err)
+			if err := memcache.Add(c, item); err == memcache.ErrNotStored {
+				c.Errorf("Memcache.Add %v : %v", cachename, err)
+			} else {
+				c.Infof("memcached %v", cachename)
+			}
+		} else {
+			c.Infof("memcached %v", cachename)
+		}
+	} else {
+		if err := json.Unmarshal(item.Value, &logos); err != nil {
+			c.Errorf("Memcache Unmarshalling %v : %v", cachename, err)
+		}
+		nn = len(logos)
+	}
+
+	tpl, _ := template.New("Carr").Parse(cajaTpl)
+	tn := rand.Perm(nn)
+	var ti carrst
+	for i, _ := range tn {
+		ti.Name = logos[tn[i]].Name
+		ti.Url = strings.Replace(logos[tn[i]].Url, "s180", "s70",1)
+		if ti.Url != "" {
+			//b, _ := json.Marshal(ti)
+			//w.Write(b)
+			tpl.Execute(w, ti)
+		}
+		if i >= nn  {
+			break
+		}
+	}
+}
+
+
+/*
+ * La idea es hacer 60 cachés al azar con un tiempo de vida de 30 min
+ * Cada que se muere un memcache se genera otro carrousel al azar de logos
+ */
+func carrVip(w http.ResponseWriter, r *http.Request) {
+	//w.Header().Set("Content-Type", "application/json")
+    c := appengine.NewContext(r)
+	var timetolive = 21600 //seconds
+	var b []byte
+	var nn int = 50 // tamaño del carrousel
+
+	IdLogosAncla := []string{
+	"afrbeabbsoun", "ajaypemavzqs", "aqdproooubeb", "axmtchkgntqa", "banfudbpxttk", "bbyjbxwllnot",
+	"bcpybsfpqkyj", "bcyzkjnscmsa", "bdtnmqyhyfyozomrnzph", "bjrnqvqvanng", "bpskvtygscll", "btolawfglrev",
+	"bznstwsghejw", "ckhvjnuhsirb", "clwbsiushkhl", "clwzzrlbzgbg", "cmkbjdkrsfar", "coabzptlaxhi",
+	"coobaqzhxdrd", "cosujgucetkx", "cyjjbbqeyyxj", "davxbehjmylj", "ddsxxqlhrocr", "dgskbfuklwwg",
+	"dgwhvqitwbrd", "dlqhkxmdteyc", "dpnbolxpcuutajfsawqq", "dqshocyjglpi", "dtfebqedzafe", "dtzlczahgoay",
+	"dwraooewawnd", "dxleffzopmgc", "elffrufpqqnk", "eltkpudzdyzv", "eoorbeebakwo", "eoqiiyllvoyy",
+	"eqbrrctlmnji", "ereutfijvbdk", "fbipqwghxyqn", "fciaeqiydhmg", "ffcptezgpzuz", "fgdcgoolotfu",
+	"fipodgnklfxw", "fjmynhyqzyco", "flvruxapdrvf", "fnlgegkxobct", "fstavhmylxna", "gigjbmtrfgcq",
+	"gimpcbbzwpdo", "giwhgatienqg", "gkunxsbitdar", "guwnmehixcio", "gvmnhhxyyvoa", "gzjvxnsoadde",
+	"hazclayygxsd", "hiccgfmydknt", "hiqsxpzvvyep", "hitddymdmlbz", "hlhubhoabfts", "hsdmdencybqx",
+	"htxzwutwoldy", "hztwbvuqyhhr", "ifawjhvuxmln", "igqublscrfnw", "inicdtrvdbuu",
+	"iojrkrqnssmq", "irbuuznbxkyx", "ithlfidnvvdj", "jdulbkmxkbfo", "jnehzkrlwbas", "jpifahhoiito",
+	"jvzrhlgmfqdn", "jxdfxhhwlppd", "jxltschjycda", "jzqmgcgwibnm", "jzxydtrpesdo", "kaatvffbmhmw",
+	"kajbzibavvem", "katnptaevhcg", "kboinbsianoz", "kfkxltlxsjav", "kigufrjgvprg", "kozamniymubo",
+	"kureyuhpuzmh", "kvdsuecjuzpa", "kwcjatzshcnm", "kzatdyhjjaon", "laypeqtkfwqb", "lbwcloputhub",
+	"lfxnzkglivdj", "lhbhcpqvpbjg", "lhcmqxlvmlct", "lhcmqxlvmlct", "lvsxoqzuzhioscvnkeqm", "mboiiylxhjfq",
+	"mekoydpdebln", "mfdacfcuspbs", "mfetisvbsuqm", "mkrudjzstfvj", "mleqgnabuamf", "mmpmbaizdfwi",
+	"mohxswriqvcf", "mviwuqnfkfip", "mxpxsuzdxyys", "ncerycvfbkfy", "nchispndxekk", "nfbtxljjgjpc",
+	"nfnwaesakflc", "nimegsoikwnd", "nyekuvgpyifi", "nznfaeusafdq", "oagsuhzmspyg", "ocfaouprrjbj",
+	"ogxezjvtxztc", "oqafbqtiykbq", "otvgfxnjkpkn", "ouqthztwmxzp", "oxuwenrqyhmp", "pbivvoktfyrf",
+	"phzhbszgqkdh", "pkiebfwndinh", "pmehpruqxthf", "pntfrjobyvrw", "pvtxrqgtacmj", "pwkdwgitftot",
+	"qivckizmfrwc", "qpklccwwjweg", "qrtnxlsshxdl", "qstrhlhbyrfq", "qthwgsxmsvyi", "qvesdexkqwlv",
+	"qwwkhqzktxne", "qxwscvqlsnqe", "rdaipeoorxnt", "rpdsiutntufn", "rukvnnasffbs", "rwibdtugdqgp",
+	"sackvjpqjnct", "sbtaodpaaqbk", "serkxrgdhdtw", "sjgnlwrvavvs", "spvtkggmwlno", "srjdftfhwnqo",
+	"suweumxmkvxh", "swekknkrttah", "temtpvqbphan", "teykipsvfvge", "tjyhgtnayckz", "tkjqjydmxqxcohuisoso",
+	"tnqclfscvvsl", "tpurwfuamaaq", "trochfcbwcah", "tuchdnwrfgtu", "txwhffbtewxh", "ubqpnedgofvj",
+	"uczclvkoruhi", "udjsipdwnxpo", "ujhjyjidvwxo", "ujxgoasxoxvi", "umuapgnspxut", "usmtmmgylukp",
+	"utnhohgsconp", "uzemszdmnwqj", "uztaemonqiqh", "vfxflxvansqb", "vodxmryolyvj", "vssywdcopvfm",
+	"wcetuytvjutx", "wlvjthqzjotr", "wlwmwfkaggga", "wqattzlwokhr", "wqrhohwwgozv", "wsdazclxzvln",
+	"wvbxsssbpboa", "wxojqleuyakb", "wzcnglhfhkmb", "xbgjnhvzjzoc", "xchgjfcxttqx", "xcueqcjrzeiw",
+	"xgpmynrbxcwe", "xhjfujaiiexf", "xjovgmvlwbhe", "xjtrjnwgwbno", "xndyfhccdyaj", "xxeonjjgijyq",
+	"xzugawmatvnt", "ydnewcrsxedt", "yelkvkwztdzo", "ymbhuifsbybc", "ynayolstydlc", "yndkmpybttwm",
+	"yorgmcojckqn", "yqbkghxzqfbx", "yqzmfhqpxmma", "ywtpdkephhyq", "yzqnecpcshsy", "zwmwzvmmhgkb"}
+
+	var logos [50]carrst
+	hit := rand.Intn(nn)
+	cachename := "carrvip_"+strconv.Itoa(hit)
+	if item, err := memcache.Get(c, cachename); err == memcache.ErrCacheMiss {
+		n := len(IdLogosAncla)
+		offset := 0;
+		if(n > nn) {
+			offset = rand.Intn(n-nn)
+		} else {
+			nn = n
+		}
+		slice := IdLogosAncla[offset:offset+nn]
+		var ii int = 0
+		for _, idemp := range slice {
+			lgo := model.GetLogo(c, idemp)
+			if lgo != nil {
+				if lgo.IdEmp != "" {
+					logos[ii].Name = lgo.Name
+					logos[ii].Url = lgo.Sp4
+					ii = ii+1
+				}
 			}
 		}
-		*/
+
 		nn = len(logos)
 		b, _ = json.Marshal(logos)
 		item := &memcache.Item{
