@@ -72,7 +72,15 @@ $(document).ready(function(){
 	return false;
 	}
 	function lighterAjax(){
+            $('#lightback').click(function() {
+                $('#lightback').addClass("hide");
+			});
+            $('.loadingOft').click(function() {
+                $('#lightback').addClass("hide");
+			});
             $(".lighter").click(function() {
+                $('#lightback').removeClass("hide");
+				$(".loadingOft").show();
                     var id = $(this).parent().attr('id');
                     $.get('wsdetalle',{id:id},function(data){
                         if(typeof(data) != 'object')
@@ -133,7 +141,9 @@ $(document).ready(function(){
                         if(imgurl)
                             $("#imgOftLb").html('<img class="img" src="'+imgurl+'" style="max-width: 400px; max-width: 400px;"/>');
                         else
-                            $("#imgOftLb").html('');
+                        $("#imgOftLb").html('');
+
+						$('.loadingOft').hide();
                         $("#titOft h3").html(titOft);
                         $("#desOft p").html(desOft);
                         $("#nomEmp h6").html(nomEmp);

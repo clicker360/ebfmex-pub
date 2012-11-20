@@ -39,7 +39,7 @@ type Paginador struct {
 func init() {
     rand.Seed(time.Now().UnixNano())
     http.HandleFunc("/dirtexto", directorioTexto)
-    //http.HandleFunc("/carr", carr)
+	//http.HandleFunc("/carr", carr)
     http.HandleFunc("/carr", carrVip)
     rand.Seed(time.Now().UnixNano())
 }
@@ -251,7 +251,7 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 	page -= 1
 	const batch = 200
     q := datastore.NewQuery("EmpresaNm")
-	var timetolive = 14400 //seconds
+	var timetolive = 10800 //seconds
 	if ultimos != "1" && prefixu !="" {
 		var empresas []model.EmpresaNm
 		var lot int
@@ -405,7 +405,8 @@ func directorioTexto(w http.ResponseWriter, r *http.Request) {
 
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('/spic?IdEmp={{.IdEmp}}')"></div></div>`
 const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><div class="centerimg" style="background-image:url('{{.Url}}')"></div></div>`
-const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}"><a href="http://www.elbuenfin.org/micrositio.html?id={{.IdEmp}}" target="_blank">{{.Name}}</a></div>`
+//const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}"><a href="http://www.elbuenfin.org/micrositio.html?id={{.IdEmp}}" target="_blank">{{.Name}}</a></div>`
+const empresaTpl = `<div class="gridsubRow bg-Gry{{.Num}}">{{.Name}}</div>`
 const paginadorTpl = `<div class="pagination-H"><ul id="letters">{{range .}}<li><a href="#" class="letter" prfx="{{.Prefix}}" onclick="javascript:paginar({{.Pagina}});"> {{.Pagina}} </a></li>{{end}}</ul></div>`
 //const paginadorTpl = `<div>{{range .}}<a href="javascript:pager({{.Prefix}}, {{.Pagina}});"> {{.Pagina}} </a>{{end}}</div>`
 //const cajaTpl = `<div class="cajaBlanca" title="{{.Name}}"><img class="centerimg" src="/spic?IdEmp={{.IdEmp}}" /></div>`

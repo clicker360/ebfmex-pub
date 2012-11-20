@@ -544,16 +544,12 @@ func (m *Municipio) Key(c appengine.Context) *datastore.Key {
 }
 
 func GetMunicipio(c appengine.Context, cvemun string) *Municipio {
-	q := datastore.NewQuery("Municipio").Filter("CveMun =", cvemun)
-	for i := q.Run(c); ; {
-		var m Municipio
-		_, err := i.Next(&m)
-		if err == datastore.Done {
-			break
-		}
-		return &m
+	e := &Municipio{ CveMun: cvemun }
+	err := datastore.Get(c, e.Key(c), e)
+	if err == datastore.ErrNoSuchEntity {
+		return nil
 	}
-	return nil
+	return e
 }
 
 // Métodos de Imagen
